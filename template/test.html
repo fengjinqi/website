@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% load static %}
+</head>
+<body>
+<script src="{% static 'jquery-3.3.1.min.js' %}"></script>
+<script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<input type="hidden"id="hidden">
+<img src="" alt="">
+<input type="text"id="name">
+<button>更新</button>
+<p>提交</p>
+<script>
+    $(function () {
+           $.ajax({
+             type: "GET",
+             url: "refresh/",
+             dataType: "json",
+             success: function(data){
+                 $('img').attr('src',data.image_url)
+                 $('#hidden').val(data.key)
+                       console.log(data)
+                      },
+             error:function (xht) {
+                 console.log(xht)
+             }
+         });
+    })
+    $('button').on('click',function () {
+   $.ajax({
+             type: "get",
+             url: "refresh/",
+             dataType: "json",
+             success: function(data){
+                 $('img').attr('src',data.image_url)
+                 $('#hidden').val(data.key)
+                       console.log(data)
+                      },
+             error:function (xht) {
+                 console.log(xht)
+             }
+         });
+    })
+    $('p').on('click',function () {
+        $.ajax({
+             type: "post",
+             url: "yan/",
+             dataType: "json",
+            data:{"response":$("#name").val(),"hashkey":$("#hidden").val()},
+            headers:{'X-CSRFToken':$.cookie('csrftoken')},
+             success: function(data){
+                       console.log(data)
+                      },
+             error:function (xht) {
+                 console.log(xht)
+             }
+         });
+    })
+</script>
+</body>
+</html>
