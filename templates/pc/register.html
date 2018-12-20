@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+{% load static %}
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>登录</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <style>
+        body{
+            width: 100%;
+            height: calc(100vh - 100px);
+            background: url("{% static 'img/bg-01.jpg' %}")no-repeat;
+            background-size: cover;
+        }
+        #main{
+            position: fixed;
+            width: 395px;
+            height: 620px;
+            background: #fff;
+            border: 1px solid #ccc;
+            top: 50%;
+            left: 50%;
+            margin-top: -310px;
+            margin-left: -190px;
+            box-shadow: 0px 0px 5px #333333;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+        }
+        .input-group{
+            width: 295px;
+        }
+.login-top {
+    font-size: 24px;
+    margin-top: 40px;
+    padding-left: 40px;
+    box-sizing: border-box;
+    color: #333333;
+    margin-bottom: 50px;
+}
+.login-center {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 40px;
+    margin-bottom: 30px!important;
+}
+.login-button {
+    cursor: pointer;
+    width: 295px;
+    text-align: center;
+    height: 40px;
+    background-color: dodgerblue;
+    border-radius: 5px;
+    margin: 0 auto;
+    margin-top:35px;
+    color: white;
+    margin-left: 40px;
+}
+        .login-button:hover{
+            color: white;
+        }
+        p{
+           width: 370px;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+        }
+        a{
+            text-decoration: none;
+            color: #333;
+        }
+        a:hover{
+            text-decoration: none;
+            color: #333;
+        }
+        .error{
+            font-size: 14px;
+            color: red;
+            padding-left: 40px;
+        }
+    </style>
+</head>
+
+<body>
+<div id="main">
+     <form class="form-inline">
+         <div class="login-top">
+				注册
+			</div>
+      <div class="form-group login-center">
+
+        <div class="input-group">
+          <div class="input-group-addon"><i class="glyphicon glyphicon-user"></i></div>
+          <input type="text" class="form-control" id="exampleInputAmount" required placeholder="请输入用户名">
+        </div>
+      </div>
+         <div class="form-group login-center">
+
+        <div class="input-group">
+          <div class="input-group-addon"><i class="glyphicon glyphicon-phone"></i></div>
+          <input type="text" class="form-control" id="exampleInputAmount" placeholder="请输入手机号"required minlength="11"maxlength="11" >
+        </div>
+      </div>
+         <div class="form-group login-center">
+
+        <div class="input-group">
+          <div class="input-group-addon"style="width: 48px"><i class="glyphicon glyphicon-phone"></i></div>
+          <input type="tel" class="form-control" id="exampleInputAmount" placeholder="请输入手机验证码"style="width: 62%">
+           <button class="btn btn-primary"type="button" style="display: inline;padding:6px 5px" id="zphone">发送验证码</button>
+        </div>
+      </div>
+       <div class="form-group login-center">
+
+        <div class="input-group">
+          <div class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></div>
+          <input type="text" class="form-control" id="exampleInputAmount" minlength="6"required placeholder="请输入密码">
+        </div>
+      </div>
+         <div class="form-group login-center">
+
+        <div class="input-group">
+          <div class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></div>
+          <input type="text" class="form-control" id="exampleInputAmount" minlength="6"required placeholder="请输入密码">
+        </div>
+      </div>
+         <span class="error">手机号码错误</span>
+  <button type="submit" class="btn login-button ">登录</button>
+</form>
+    <p><a href="/login">已有账号?立即登录</a><a href="/index">首页</a></p>
+</div>
+
+	<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script>
+     var iTime = 60;
+    sTime = ''
+    function RemainTime(){
+        if (iTime == 0) {
+            document.getElementById('zphone').disabled = false;
+            sTime="获取验证码";
+            iTime = 60;
+            document.getElementById('zphone').innerHTML = sTime;
+            return;
+        }else{
+            document.getElementById('zphone').disabled = true;
+            sTime="重新发送(" + iTime + ")";
+            iTime--;
+        }
+        setTimeout(function() { RemainTime() },1000)
+        document.getElementById('zphone').innerHTML = sTime;
+    }
+$('#zphone').on('click',function () {
+    RemainTime()
+})
+    // 检查用户输入的手机号是否合法
+    function check_mobile() {
+
+        var re = /^1[345678]\d{9}$/; //校验手机号
+
+        if(re.test($('#mobile').val()))
+        {
+            $('#mobile').next().hide();
+            error_mobile = false;
+            document.getElementById('zphone').disabled = false;
+        }
+        else
+        {
+            $('#mobile').next().html('你输入的手机格式不正确')
+            $('#mobile').next().show();
+            error_mobile = true;
+            document.getElementById('zphone').disabled = true;
+        }
+    }
+
+</script>
+</body>
+
+</html>

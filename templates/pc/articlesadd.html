@@ -1,0 +1,104 @@
+{% extends 'pc/base.html' %}
+{% load static %}
+{% block title %}
+    新增文章
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/article_add.css' %}">
+    <link rel="stylesheet" href="{% static 'markdown/css/editormd.css' %}" />
+{% endblock %}
+{% block link_js %}
+ <script src="{% static 'markdown/editormd.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <section class="main">
+        <h4>发布文章</h4>
+        <form>
+          <div class="form-group">
+            <label >标题</label>
+            <input type="text" class="form-control"name="title"  placeholder="请输入文章标题">
+          </div>
+          <div class="form-group">
+            <label >关键字(Keywords)</label>
+            <input type="text" class="form-control" name="keywords"  placeholder="请输入关键字，以英文逗号分割，利于搜索引擎收录">
+          </div>
+            <div class="form-group">
+            <label >描述(Description)</label>
+            <input type="text" class="form-control" name="desc" placeholder="请输入文章描述">
+          </div>
+            <div class="form-group">
+            <label >列表图(List_pic)</label>
+            <input type="text" class="form-control" name="list_pic" placeholder="请输入文章描述">
+          </div>
+            <div class="form-group">
+            <label >文章内容</label>
+            <div id="test-editormd">
+                <textarea name="" class="form-control" ></textarea></div>
+            </div>
+          <div class="form-group">
+            <label >选择文章分类</label>
+              <select name="" class="form-control">
+                  <option value=""></option>
+              </select>
+          </div>
+          <button type="button" class="btn btn-default" id="btn">文章发布</button>
+        </form>
+    </section>
+{% endblock %}
+{% block js %}
+
+      <script>
+    	var testEditor;
+            $(function() {
+                testEditor = editormd("test-editormd", {
+                    width   : "100%",
+                    height  : 800,
+                    syncScrolling : "single",
+                    path    : "/static/markdown/lib/",
+
+                    saveHTMLToTextarea : true,//注意3：这个配置，textarea可以提交
+                     emoji: true,//emoji表情，默认关闭
+                    /**上传图片相关配置如下*/
+                    imageUpload : true,
+                    imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                    imageUploadURL : "/article/blog_img_upload/",
+                });
+
+            });
+$("#btn").on('click',function () {
+      var title = $("input[name='title']").val()
+        var desc = $("input[name='desc']").val()
+        var keywords =$("input[name='keywords']").val()
+        var list_pic =$("input[name='list_pic']").val()
+    $.ajax({
+            url:'/article/',
+            type:'post',
+            data:{authors:'{{ request.user.id}}',title:title,desc:desc,keywords:keywords,list_pic:list_pic,content:testEditor.getMarkdown(),csrfmiddlewaretoken: '{{ csrf_token }}'},
+            success:function (data) {
+                console.log(data)
+            },
+        error:function (xhr) {
+            console.log(xhr)
+        }
+        })
+})
+    $('#file').on('change',function () {
+        var self = $(this)[0].files[0]
+        console.log(self)
+        var form = new FormData()
+        form.append('file',self)
+        $.ajax({
+            url:'/cms/uplpad_file/',
+            type:'post',
+            processData:false,
+            contentType:false,
+            data:form,
+            headers:{'X-CSRFToken':$.cookie('csrftoken')},
+            success:function (data) {
+                $("#input_file").val(data.data)
+                console.log(data)
+            }
+        })
+    })
+    </script>
+{% endblock %}

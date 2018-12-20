@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+{% load static %}
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>登录</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <style>
+        body{
+            width: 100%;
+            height: calc(100vh - 100px);
+            background: url("{% static 'img/bg-01.jpg' %}")no-repeat;
+            background-size: cover;
+        }
+        #main{
+            position: fixed;
+            width: 350px;
+            height: 500px;
+            background: #fff;
+            border: 1px solid #ccc;
+            top: 50%;
+            left: 50%;
+            margin-top: -250px;
+            margin-left: -175px;
+            box-shadow: 0px 0px 5px #333333;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+        }
+        .input-group{
+            width: 250px;
+        }
+.login-top {
+    font-size: 24px;
+    margin-top: 100px;
+    padding-left: 40px;
+    box-sizing: border-box;
+    color: #333333;
+    margin-bottom: 50px;
+}
+.login-center {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 40px;
+    margin-bottom: 30px!important;
+}
+.login-button {
+    cursor: pointer;
+    width: 250px;
+    text-align: center;
+    height: 40px;
+    background-color: dodgerblue;
+    border-radius: 5px;
+    margin: 0 auto;
+    margin-top:35px;
+    color: white;
+    margin-left: 40px;
+}
+        .login-button:hover{
+            color: white;
+        }
+        p{
+           width: 330px;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+        }
+        a{
+            text-decoration: none;
+            color: #333;
+        }
+        a:hover{
+            text-decoration: none;
+            color: #333;
+        }
+        .error{
+            font-size: 14px;
+            color: red;
+            padding-left: 40px;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+<div id="main">
+     <form class="form-inline">
+         <div class="login-top">
+				登录
+			</div>
+      <div class="form-group login-center">
+
+        <div class="input-group">
+          <div class="input-group-addon"><i class="glyphicon glyphicon-user"></i></div>
+            {% csrf_token %}
+          <input type="text" class="form-control" name="telephone" placeholder="请输入手机号">
+        </div>
+      </div>
+       <div class="form-group login-center">
+
+        <div class="input-group">
+          <div class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></div>
+          <input type="password" class="form-control" name="password" placeholder="请输入密码">
+        </div>
+            <div>
+                <input type="checkbox" name="remember" >记住我
+           </div>
+      </div>
+
+         <span class="error"></span>
+  <button type="button" class="btn login-button" id="login">登录</button>
+</form>
+    <p><a href="">忘记密码?</a><a href="/register">注册</a></p>
+</div>
+
+	<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>  <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script>
+    $(function () {
+    $("#login").on('click',function () {
+        var tel = $("input[name='telephone']").val()
+        var pass = $("input[name='password']").val()
+        var remember =$("input[name='remember']").prop('checked')
+         $.ajax({
+            url:'/login/',
+            type:'post',
+            data:{telephone:tel,password:pass,remember:remember?1:0,csrfmiddlewaretoken: '{{ csrf_token }}'},
+            success:function (data) {
+                console.log(data)
+                if (data.code==200){
+
+                    window.location.href='/index/'
+                }else {
+                    $('.error').text('登录失败,请检查后再登录')
+                }
+            },
+            error:function (err) {
+                console.log(err)
+            }
+        })
+    })
+})
+</script>
+</body>
+
+</html>

@@ -37,9 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.user',
+    'apps.user.apps.UserConfig',
+    'apps.article.apps.ArticleConfig',
     'captcha'
 ]
+#邮箱登录配置
+AUTHENTICATION_BACKENDS=(
+    'apps.user.views.CustomBackend',
+)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -74,7 +79,7 @@ CAPTCHA_TIMEOUT = 1  # 超时(minutes)
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'template')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -94,9 +99,16 @@ WSGI_APPLICATION = 'website.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+       'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME':"web",
+        "HOST":"127.0.0.1",
+        "POST":"3306",
+        "USER":"root",
+        "PASSWORD":"root",
+         'OPTIONS': {
+                    'init_command': 'SET storage_engine=INNODB',
+                },
     }
 }
 
@@ -138,8 +150,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS  =(
-    (os.path.join(BASE_DIR,'static')),
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
 )
 # STATIC_ROOT 配置部署的时候才用
 

@@ -15,12 +15,26 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
+from django.views.static import serve
+
 from apps.user.views import test,captcha_refresh,yan
+from django.views.generic import TemplateView
+
+from website import settings
+from apps.article.views import Article_list
+from apps.user.views import logout_view
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',test), # 这是生成验证码的图片
     url(r'^captcha/', include('captcha.urls')),
     path('refresh/',captcha_refresh), # 这是生成验证码的图片
     path('yan/',yan), # 这是生成验证码的图片
+    path('index/',Article_list),
+    path('login/',include('apps.user.urls')),
+    path('logou/',logout_view,name='logou'),
+    path('register/',TemplateView.as_view(template_name='pc/register.html')),
+    path('article/',include('apps.article.urls')),
+
+    re_path(r'^upload/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
 ]
