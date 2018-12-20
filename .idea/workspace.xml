@@ -1,103 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a0c0078e-36fc-41c3-93c3-f8a7d2ab4887" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/apps/article/forms.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/article/migrations/0001_initial.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/article/migrations/0002_auto_20181220_1732.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/article/migrations/0003_auto_20181220_1737.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/article/migrations/0004_auto_20181220_1739.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/article/migrations/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/article/urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/uitls/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/uitls/message.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/user/urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/css/article_add.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/css/bootstrap-theme.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/css/bootstrap-theme.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/css/bootstrap-theme.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/css/bootstrap-theme.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/css/bootstrap.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/css/bootstrap.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/css/bootstrap.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/css/bootstrap.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/css/index.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/css/main.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/css/normalize.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/css/public.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/css/util.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/HELP-US-OUT.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/css/font-awesome.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/css/font-awesome.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/fonts/FontAwesome.otf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/fonts/fontawesome-webfont.eot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/fonts/fontawesome-webfont.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/fonts/fontawesome-webfont.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/fonts/fontawesome-webfont.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/fonts/fontawesome-webfont.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/less/animated.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/less/bordered-pulled.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/less/core.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/less/fixed-width.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/less/font-awesome.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/less/icons.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/less/larger.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/less/list.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/less/mixins.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/less/path.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/less/rotated-flipped.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/less/screen-reader.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/less/stacked.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/less/variables.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/scss/_animated.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/scss/_bordered-pulled.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/scss/_core.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/scss/_fixed-width.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/scss/_icons.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/scss/_larger.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/scss/_list.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/scss/_mixins.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/scss/_path.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/scss/_rotated-flipped.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/scss/_screen-reader.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/scss/_stacked.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/scss/_variables.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/font-awesome-4.7.0/scss/font-awesome.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/glyphicons-halflings-regular.eot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/glyphicons-halflings-regular.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/glyphicons-halflings-regular.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/glyphicons-halflings-regular.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/glyphicons-halflings-regular.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/iconic/css/material-design-iconic-font.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/iconic/css/material-design-iconic-font.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/iconic/fonts/Material-Design-Iconic-Font.eot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/iconic/fonts/Material-Design-Iconic-Font.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/iconic/fonts/Material-Design-Iconic-Font.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/iconic/fonts/Material-Design-Iconic-Font.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/fonts/iconic/fonts/Material-Design-Iconic-Font.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/img/bg-01.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/js/bootstrap.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/js/bootstrap.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/js/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/js/main.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/js/npm.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/pc/articlesadd.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/pc/base.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/pc/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/pc/logoin.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/pc/register.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/website.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/website.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/user/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/user/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/user/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/user/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/user/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/user/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/user/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/template/test.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/test.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/urls.py" afterDir="false" />
-    </list>
+    <list default="true" id="a0c0078e-36fc-41c3-93c3-f8a7d2ab4887" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -151,11 +55,11 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="article_article_add" value="7" />
-          <entry key="css" value="10" />
+          <entry key="css" value="11" />
           <entry key="html" value="15" />
           <entry key="js" value="3" />
           <entry key="psd" value="2" />
-          <entry key="py" value="62" />
+          <entry key="py" value="63" />
           <entry key="pyi" value="1" />
           <entry key="sql" value="2" />
           <entry key="user_user" value="9" />
@@ -163,12 +67,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="CSS" value="10" />
+          <entry key="CSS" value="11" />
           <entry key="Database Element" value="16" />
           <entry key="HTML" value="15" />
           <entry key="Image" value="2" />
           <entry key="JavaScript" value="3" />
-          <entry key="Python" value="62" />
+          <entry key="Python" value="63" />
           <entry key="PythonStub" value="1" />
           <entry key="Scratch" value="2" />
         </counts>
@@ -176,22 +80,22 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="cell" value="55" />
-          <entry key="css" value="1176" />
+          <entry key="css" value="1179" />
           <entry key="html" value="2415" />
           <entry key="js" value="71" />
-          <entry key="py" value="1669" />
+          <entry key="py" value="1688" />
           <entry key="py@website" value="450" />
           <entry key="txt" value="11" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="CSS" value="1176" />
+          <entry key="CSS" value="1179" />
           <entry key="CommandLine" value="180" />
           <entry key="HTML" value="2415" />
           <entry key="JavaScript" value="71" />
           <entry key="PLAIN_TEXT" value="281" />
-          <entry key="Python" value="1669" />
+          <entry key="Python" value="1688" />
           <entry key="Scratch" value="55" />
         </counts>
       </usages-collector>
@@ -245,15 +149,6 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="das://064e5c3d-5ff6-4b31-a9fd-319e7eaa5207/schema/web/table/article_article_add">
-          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-            <state>
-              <filtering enabled="true" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="das://064e5c3d-5ff6-4b31-a9fd-319e7eaa5207/schema/web/table/user_user">
           <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
             <state>
@@ -274,7 +169,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/pc/base.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="232">
@@ -284,10 +179,19 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/css/public.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="295">
+              <caret line="56" column="17" lean-forward="true" selection-start-line="56" selection-start-column="17" selection-end-line="56" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/apps/user/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="258">
-              <caret line="93" column="12" selection-start-line="93" selection-start-column="12" selection-end-line="93" selection-end-column="12" />
+            <state relative-caret-position="308">
+              <caret line="95" column="40" selection-start-line="95" selection-start-column="40" selection-end-line="95" selection-end-column="40" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -307,11 +211,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/apps/user/urls.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="200">
-              <caret line="9" column="21" selection-start-line="9" selection-start-column="21" selection-end-line="9" selection-end-column="21" />
+              <caret line="9" column="41" lean-forward="true" selection-start-line="9" selection-start-column="41" selection-end-line="9" selection-end-column="41" />
             </state>
           </provider>
         </entry>
@@ -348,14 +252,11 @@
         <option value="$PROJECT_DIR$/apps/user/message.py" />
         <option value="$PROJECT_DIR$/templates/pc/register.html" />
         <option value="$PROJECT_DIR$/static/css/index.css" />
-        <option value="$PROJECT_DIR$/static/css/public.css" />
         <option value="$PROJECT_DIR$/static/css/article_add.css" />
         <option value="$PROJECT_DIR$/apps/article/apps.py" />
         <option value="$PROJECT_DIR$/static/js/index.js" />
         <option value="$PROJECT_DIR$/apps/user/forms.py" />
-        <option value="$PROJECT_DIR$/apps/user/views.py" />
         <option value="$PROJECT_DIR$/templates/pc/logoin.html" />
-        <option value="$PROJECT_DIR$/apps/user/urls.py" />
         <option value="$PROJECT_DIR$/apps/user/models.py" />
         <option value="$PROJECT_DIR$/templates/pc/articlesadd.html" />
         <option value="$PROJECT_DIR$/website/__init__.py" />
@@ -368,6 +269,9 @@
         <option value="$PROJECT_DIR$/apps/article/views.py" />
         <option value="$PROJECT_DIR$/website/urls.py" />
         <option value="$PROJECT_DIR$/templates/pc/base.html" />
+        <option value="$PROJECT_DIR$/static/css/public.css" />
+        <option value="$PROJECT_DIR$/apps/user/views.py" />
+        <option value="$PROJECT_DIR$/apps/user/urls.py" />
       </list>
     </option>
   </component>
@@ -416,6 +320,17 @@
               <item name="website" type="462c0819:PsiDirectoryNode" />
               <item name="apps" type="462c0819:PsiDirectoryNode" />
               <item name="user" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="website" type="b2602c69:ProjectViewProjectNode" />
+              <item name="website" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="website" type="b2602c69:ProjectViewProjectNode" />
+              <item name="website" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="website" type="b2602c69:ProjectViewProjectNode" />
@@ -519,12 +434,18 @@
       <option name="project" value="LOCAL" />
       <updated>1544781101354</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="初始化提交">
+      <created>1545300409020</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1545300409020</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12739871" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -634,13 +555,6 @@
           <folding>
             <element signature="n#style#0;n#div#0;n#div#0;n#div#3;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/public.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="295">
-          <caret line="86" column="3" lean-forward="true" selection-start-line="86" selection-start-column="3" selection-end-line="87" selection-end-column="16" />
         </state>
       </provider>
     </entry>
@@ -866,13 +780,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/user/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="9" column="21" selection-start-line="9" selection-start-column="21" selection-end-line="9" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="das://064e5c3d-5ff6-4b31-a9fd-319e7eaa5207/schema/web/table/article_article_add">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
@@ -884,16 +791,6 @@
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
           <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/article/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="7" column="39" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="39" />
-          <folding>
-            <element signature="e#45#77#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -936,16 +833,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/user/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="258">
-          <caret line="93" column="12" selection-start-line="93" selection-start-column="12" selection-end-line="93" selection-end-column="12" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/website/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="219">
@@ -960,6 +847,40 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="232">
           <caret line="45" column="35" lean-forward="true" selection-start-line="45" selection-start-column="35" selection-end-line="45" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/public.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="295">
+          <caret line="56" column="17" lean-forward="true" selection-start-line="56" selection-start-column="17" selection-end-line="56" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/user/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="95" column="40" selection-start-line="95" selection-start-column="40" selection-end-line="95" selection-end-column="40" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/article/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="7" column="39" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="39" />
+          <folding>
+            <element signature="e#45#77#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/user/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="9" column="41" lean-forward="true" selection-start-line="9" selection-start-column="41" selection-end-line="9" selection-end-column="41" />
         </state>
       </provider>
     </entry>
