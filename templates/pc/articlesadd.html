@@ -16,7 +16,7 @@
         <form>
           <div class="form-group">
             <label >标题</label>
-            <input type="text" class="form-control"name="title"  placeholder="请输入文章标题">
+            <input type="text" class="form-control validate" name="title"  placeholder="请输入文章标题">
           </div>
           <div class="form-group">
             <label >关键字(Keywords)</label>
@@ -28,7 +28,15 @@
           </div>
             <div class="form-group">
             <label >列表图(List_pic)</label>
-            <input type="text" class="form-control" name="list_pic" placeholder="请输入文章描述">
+                <div class="file">
+                    <div class="file_style">
+                        <span></span>
+                        <input type="file" id="file" name="list_pic" accept="image/*">
+                    </div>
+                    <p class="img"><i class="glyphicon glyphicon-remove"></i></p>
+
+                </div>
+
           </div>
             <div class="form-group">
             <label >文章内容</label>
@@ -37,8 +45,12 @@
             </div>
           <div class="form-group">
             <label >选择文章分类</label>
-              <select name="" class="form-control">
-                  <option value=""></option>
+              <select name="category" class="form-control">
+                  <option value="">--请选择--</option>
+                 {% for foo in category %}
+                     <option value="{{ foo.id }}">{{ foo.name }}</option>
+                 {% endfor %}
+
               </select>
           </div>
           <button type="button" class="btn btn-default" id="btn">文章发布</button>
@@ -65,29 +77,69 @@
                 });
 
             });
-$("#btn").on('click',function () {
-      var title = $("input[name='title']").val()
-        var desc = $("input[name='desc']").val()
-        var keywords =$("input[name='keywords']").val()
-        var list_pic =$("input[name='list_pic']").val()
-    $.ajax({
+        function validate(obj,el){
+             if(!obj||obj.trim() == ""){
+                el.css('border-color','red');
+                 return false;
+            }else {
+                 return true
+             }
+        }
+
+        /**
+         * {authors:'{ request.user.id}}',title:title,desc:desc,keywords:keywords,list_pic:list_pic,content:testEditor.getMarkdown(),csrfmiddlewaretoken: '{ csrf_token '},
+         */
+        $("#btn").on('click',function () {
+    if(validate($('.validate').val(),$('.validate')) && validate($('select').val(),$('select')) && validate(testEditor.getMarkdown(),$('#test-editormd'))){
+        var title = $("input[name='title']").val();
+        var desc = $("input[name='desc']").val();
+        var keywords =$("input[name='keywords']").val();
+        var list_pic =$("input[name='list_pic']")[0].files[0];
+        var category =$("select[name='category']").val();
+        var form = new FormData()
+        form.append('authors','{{ request.user.id }}')
+        form.append('title',title)
+        form.append('desc',desc)
+        form.append('keywords',keywords)
+        form.append('list_pic',list_pic)
+        form.append('content',testEditor.getMarkdown())
+        form.append('csrfmiddlewaretoken','{{ csrf_token }}')
+        form.append('category',category)
+        console.log(list_pic)
+        $.ajax({
             url:'/article/',
             type:'post',
-            data:{authors:'{{ request.user.id}}',title:title,desc:desc,keywords:keywords,list_pic:list_pic,content:testEditor.getMarkdown(),csrfmiddlewaretoken: '{{ csrf_token }}'},
+            contentType : false,
+            data:form,
+            processData:false,
             success:function (data) {
-                console.log(data)
+                if(data.code==200){
+                    window.location.href='/index'
+                }
             },
         error:function (xhr) {
             console.log(xhr)
         }
         })
+    }
+
+
 })
     $('#file').on('change',function () {
-        var self = $(this)[0].files[0]
-        console.log(self)
-        var form = new FormData()
-        form.append('file',self)
-        $.ajax({
+         var read=new FileReader() // 创建FileReader对像;
+           read.readAsDataURL(this.files[0])  // 调用readAsDataURL方法读取文件;
+       read.onload=function(){
+            url=read.result  // 拿到读取结果;
+            var img=new Image();
+            img.src=url;
+                $(".img").show()
+                $(".img").append(img)
+            $('.file_style').hide()
+           }
+
+            console.log($("form").serialize())
+
+        /*$.ajax({
             url:'/cms/uplpad_file/',
             type:'post',
             processData:false,
@@ -98,7 +150,13 @@ $("#btn").on('click',function () {
                 $("#input_file").val(data.data)
                 console.log(data)
             }
-        })
+        })*/
     })
+      $('.img i').on('click',function () {
+          $(this).parent().find('img').remove();
+           $('#file').val('');
+          $(this).parent().hide();
+          $('.file_style').show();
+      })
     </script>
 {% endblock %}

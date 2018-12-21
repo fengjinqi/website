@@ -7,3 +7,35 @@
     -moz-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);
     box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);
 }
+.file_style{
+    position: relative;
+}
+.file_style span{
+    width: 128px;
+    display: block;
+    background: url("../img/+.png")no-repeat;
+    height: 128px;
+}
+.file_style input[type='file']{
+    width: 128px;
+    height: 128px;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    opacity: 0;
+    left: 0;
+}
+.img{
+    position: relative;
+    width: 300px;
+    display: none;
+}
+.img i{
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 24px;
+}
+.img img{
+    width: 100%;
+}

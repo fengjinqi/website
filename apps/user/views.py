@@ -93,4 +93,4 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return render(request,'pc/index.html')
+    return redirect('/index')

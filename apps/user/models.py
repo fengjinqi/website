@@ -7,7 +7,8 @@ from django.contrib.auth.models import AbstractUser
 from shortuuidfield import ShortUUIDField
 
 class User(AbstractUser):
-    id = ShortUUIDField(primary_key=True)
+    #id = ShortUUIDField(primary_key=True)
+    id = models.UUIDField(primary_key=True,default=uuid.uuid4)
     name = models.CharField(max_length=60, blank=True, null=True, verbose_name='姓名')
     mobile = models.CharField(max_length=11, verbose_name='手机号码',default='')
     user_imag = models.ImageField(upload_to='user/%Y/%m/%d',blank=True,default='',verbose_name='用户头像')

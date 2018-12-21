@@ -57,6 +57,7 @@ p{
     margin-bottom: 20px;
     padding: 20px 15px;
     border-top: 1px solid #ccc;
+    overflow: hidden;
 }
 .blogs:nth-of-type(2){
     border-top:none;
@@ -72,7 +73,7 @@ p{
 }
 .blogs .blogpic {
     float: left;
-    width: 30%;
+    width: 25%;
     max-height: 170px;
     margin-right: 20px;
     display: block;
