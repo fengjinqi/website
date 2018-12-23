@@ -1,0 +1,56 @@
+{% extends 'pc/base.html' %}
+{% load static %}
+{% block title %}
+    {{ article.title }}
+{% endblock %}
+{% block keywords %}
+    {{ article.keywords }}
+{% endblock %}
+{% block desc %}
+    {{ article.desc }}
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/article_detail.css' %}">
+    <link rel="stylesheet" href="{% static 'markdown/css/editormd.css' %}" />
+{% endblock %}
+{% block link_js %}
+        <script src="{% static 'markdown/lib/marked.min.js' %}"></script>
+        <script src="{% static 'markdown/lib/prettify.min.js' %}"></script>
+        <script src="{% static 'markdown/lib/raphael.min.js' %}"></script>
+        <script src="{% static 'markdown/lib/underscore.min.js' %}"></script>
+        <script src="{% static 'markdown/lib/sequence-diagram.min.js' %}"></script>
+        <script src="{% static 'markdown/lib/flowchart.min.js' %}"></script>
+        <script src="{% static 'markdown/lib/jquery.flowchart.min.js' %}"></script>
+        <script src="{% static 'markdown/editormd.js' %}"></script>
+
+
+{% endblock %}
+{% block content %}
+
+    <div class="main">
+        <article>
+            <div id="test-editormd-view2">
+                <textarea id="append-test" name="test-editormd-markdown-doc" style="display:none;">{{ article.content }}</textarea>
+    </div>
+        </article>
+    <aside>aside</aside>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(function() {
+            var testEditormdView, testEditormdView2;
+            testEditormdView2 = editormd.markdownToHTML("test-editormd-view2", {
+                htmlDecode      : "style,script,iframe",  // you can filter tags decode
+                emoji           : true,
+                taskList        : true,
+                tex             : true,  // 默认不解析
+                flowChart       : true,  // 默认不解析
+                sequenceDiagram : true,  // 默认不解析
+            });
+        });
+    </script>
+{% endblock %}

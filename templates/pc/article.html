@@ -1,34 +1,21 @@
 {% extends 'pc/base.html' %}
 {% load static %}
-<title>{% block title %}
-    首页
-{% endblock %}</title>
-{% block css %}
-<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% block title %}
+文章
 {% endblock %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
 {% block content %}
+
     <section class="section">
-    <article class="main">
-        <div class="tuijian">
-            <div class="tuijian_head">今日推荐</div>
-            <div class="tuijian_cont blogs">
-                <div class="">
-                    <h3 class="blogtitle"><a href="">表情测试</a></h3>
-                    <div class="bloginfo bloginfo1">
-                        <ul>
-                            <li class="author"><a><img src="http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg" alt="">管理员</a></li>
-                            <li class="lmname gray glyphicon glyphicon-th-list"><a href="http://www.fengjinqi.com/category/4">前端</a></li>
-                            <li class="timer gray glyphicon glyphicon-time">2018年12月21日</li>
-                            <li class="view gray glyphicon glyphicon-eye-open"><span>0</span> </li>
-                            <li class="comment gray glyphicon glyphicon-comment">0</li>
-                        </ul>
-                    </div>
+       <article class="main">
+            <div class="banner">
+                 <img src="{% static 'img/banner.png' %}" alt="">
             </div>
-            </div>
-        </div>
-        <div class="banner">
-            <img src="{% static 'img/banner.png' %}" alt="">
-        </div>
         <div class="container">
             <div class="nav">
                 <p class="fl">最新文章</p>
@@ -36,22 +23,22 @@
             </div>
             {% for foo in article %}
                 <div class="blogs">
-                    <h3 class="blogtitle"><a href="{% url 'article:detail' foo.id %}">{{ foo.title }}</a></h3>
-                    <span class="blogpic"><a href="{% url 'article:detail' foo.id %}" title=""><img src="{% if foo.list_pic %}
+                <h3 class="blogtitle"><a href="{% url 'article:detail' foo.id %}">{{ foo.title }}</a></h3>
+                 <span class="blogpic"><a href="{% url 'article:detail' foo.id %}" title=""><img src="{% if foo.list_pic %}
                  {{ MEDIA_URL }}{{ foo.list_pic }}
                  {% else %}
                  http://www.fengjinqi.com/uploads/img/django/a5e8b0e574b0b165092b069f9c819f9a.jpg
                  {% endif %}" style="height: 120px;" alt=""></a></span>
-                    <p class="blogtext">{{ foo.desc }} </p>
-                    <div class="bloginfo">
-                    <ul>
-                        <li class="author"><a><img src="http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg" alt="">{{ foo.authors.username }}</a></li>
-                                            <li class="lmname gray glyphicon glyphicon-th-list"><a href="http://www.fengjinqi.com/category/4">{{ foo.category.name }}</a></li>
-                                            <li class="timer gray glyphicon glyphicon-time">{{ foo.add_time }}</li>
-                        <li class="view gray glyphicon glyphicon-eye-open"><span>{{ foo.click_nums }}</span> </li>
-                        <li class="comment gray glyphicon glyphicon-comment">0</li>
-                    </ul>
-                </div>
+                <p class="blogtext">{{ foo.desc }} </p>
+                <div class="bloginfo">
+                <ul>
+                    <li class="author"><a><img src="http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg" alt="">{{ foo.authors.username }}</a></li>
+                                        <li class="lmname gray glyphicon glyphicon-th-list"><a href="http://www.fengjinqi.com/category/4">{{ foo.category.name }}</a></li>
+                                        <li class="timer gray glyphicon glyphicon-time">{{ foo.add_time }}</li>
+                    <li class="view gray glyphicon glyphicon-eye-open"><span>{{ foo.click_nums }}</span> </li>
+                    <li class="comment gray glyphicon glyphicon-comment">0</li>
+                </ul>
+            </div>
             </div>
             {% endfor %}
 
@@ -124,9 +111,10 @@
             </div>
         </div>
     </aside>
-</section>
-{% endblock %}
-{% block link_js %}
-    <script src="{% static 'js/index.js' %}"></script>
+    </section>
+
 {% endblock %}
 
+{% block js %}
+    <script></script>
+{% endblock %}

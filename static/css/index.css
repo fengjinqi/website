@@ -18,7 +18,7 @@ aside{
 .container{
     margin-top: 20px;
     width: 100%!important;
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
     -webkit-border-radius: 3px;
     padding: 0!important ;
     background: #fff;
@@ -29,11 +29,11 @@ p{
     margin-bottom: 0!important;
 }
 .nav{
-    height: 40px;
-    line-height: 40px;
+    height: 44px;
+    line-height: 44px;
     color: #333;
-    padding: 0 15px!important;
-    border-bottom: 1px solid #ccc;
+    padding: 0 16px!important;
+    border-bottom: 1px solid #ddd;
 }
 .nav input{
     height: 30px;
@@ -54,28 +54,31 @@ p{
     float: left;
 }
 .blogs{
-    margin-bottom: 20px;
-    padding: 20px 15px;
-    border-top: 1px solid #ccc;
+    padding: 20px 16px;
+    border-top: 1px solid #ddd;
     overflow: hidden;
+    position: relative;
 }
 .blogs:nth-of-type(2){
     border-top:none;
 }
 .blogs a{
     text-decoration: #666;
-    color: #666;
+    color: #333;
 }
 .blogs .blogtitle {
-    margin: 0 0 10px 0;
+    margin: 0 0 20px 0;
     font-size: 20px;
     overflow: hidden;
+}
+.blogtitle a{
+    font-weight: bold;
 }
 .blogs .blogpic {
     float: left;
     width: 25%;
     max-height: 170px;
-    margin-right: 20px;
+    margin-right: 2%;
     display: block;
     overflow: hidden;
 }
@@ -90,7 +93,6 @@ p{
     -webkit-box-orient: vertical;
     display: -webkit-box;
     -webkit-line-clamp: 3;
-    margin-top: 20px;
 }
 .blogs .blogpic img {
     width: 100%;
@@ -99,11 +101,16 @@ p{
     -moz-transition: all 0.6s ease;
     -o-transition: all 0.6s ease;
     transition: all 0.6s ease;
-    margin-bottom: 10px;
 }
+
 .bloginfo {
     overflow: hidden;
-    margin-top: 30px;
+    position: absolute;
+    bottom:20px;
+    left: 28%;
+}
+.bloginfo1{
+    position: static;
 }
 .bloginfo ul{
     padding-left: 0;
@@ -111,9 +118,7 @@ p{
 .bloginfo ul li {
     float: left;
     font-size: 12px;
-    margin: 0 15px 0 0;
-
-    line-height: 1.5;
+    margin: 0 16px 0 0;
     display: inline-block;
 }
 .bloginfo ul li img{
@@ -150,15 +155,15 @@ aside
     font-weight: 600;
     margin: 0;
     text-transform: uppercase;
-    padding-bottom: 15px;
+    padding-bottom: 16px;
     margin-bottom: 25px;
     position: relative;
-    padding-left: 15px;
+    padding-left: 16px;
 }
 .hometitle:after {
     content: "";
     background-color: #282828;
-    left: 15px;
+    left: 16px;
     width: 50px;
     height: 2px;
     bottom: 0;
@@ -170,7 +175,7 @@ aside
     transition: 0.5s;
 }
 .sidenews{
-    padding:0 15px;
+    padding:0 16px;
 }
 .sidenews li {
     margin: 0 0 20px 0;
@@ -202,7 +207,7 @@ aside
 .sidenews li p {
     line-height: 24px;
     color: #888;
-    font-size: 15px;
+    font-size: 16px;
     overflow: hidden;
     text-overflow: ellipsis;
     -webkit-box-orient: vertical;
@@ -219,7 +224,7 @@ aside
     display: block;
 }
 .xinwen{
-    padding:0 15px;
+    padding:0 16px;
 }
 .xinwen li{
     line-height: 30px;
@@ -236,9 +241,24 @@ aside
 
 .jiazai{
     width: 120px;
-    margin: 15px auto;
+    margin: 16px auto;
     display: block!important;
 }
 button{
     outline: none;
+}
+.tuijian{
+    background: #fff;
+    border: 1px solid #ddd;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    margin-bottom: 20px;
+}
+.tuijian_head{
+    height: 44px;
+    line-height: 44px;
+    padding:0 16px;
+    color: #333;
+    border-bottom: 1px solid #ddd;
 }
