@@ -1,98 +1,131 @@
-body{
-    background-color: #f7f7f7!important;
-    font-size: 16px!important;
+*{
+    margin:0;
+    padding:0;
 }
-ul{
+body{
+    font-family:"-apple-system,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Arial,sans-serif";
+    font-size: 14px;
+    color: #666;
+    overflow-x: hidden;
+    background: #f5f5f5;
+}
+ul,ul>li{
     list-style: none;
 }
-header{
-    width: 100%;
-    background-color: #fff;
+a{
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-block;
     color: #666;
+    font-size: 16px;
 }
-.header{
-    width: 1200px;
-    margin: 0 auto;
-     display: flex;
-    height: 60px;
+span{
+    display: inline-block;
+}
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
+.clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+/*.clearfix{*+height: 1%;}*/
+.avatar{
+    position: relative;
+
+}
+.avatar ul{
+    position: absolute;
+    top: 59px;
+    left: 0;
+    width: 80px;
+    z-index: 1;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    background: #fff;
+    display: none;
+}
+.avatar ul li{
+    height: 30px;
+    line-height: 30px;
+    border-bottom: 1px solid #ccc;
+}
+.avatar ul li a{
+    display: block;
+
+}
+.img_cover{
+    background-position: 50%!important;
+    background-size: cover!important;
+}
+.flex{
+    display: flex;
+}
+.flex_justify{
+    display: flex;
     justify-content: space-between;
+}
+.change{
+    font-size: 12px;
+}
+.main{
+    width:1200px;
+    margin:0 auto;
+}
+article{
+    width: 880px;
+}
+aside{
+    width: 300px;
+}
+/*头部开始*/
+header{
+    width:100%;
+    height: 60px;
     line-height: 60px;
+    background: #fff;
+    -webkit-box-shadow: 1px 1px 10px #ddd;
+    -moz-box-shadow: 1px 1px 10px #ddd;
+    box-shadow: 1px 1px 10px #ddd;
 }
 .logo{
-    width: 60px;
+    margin-right: 100px;
 }
-.logo img{
-    width: 100%;
-}
-nav{
-    width: 60%;
-}
-nav ul{
-    display: flex;
-    padding-left: 10px;
-}
-nav ul li{
+nav>ul>li{
     padding: 0 20px;
+    font-size: 16px;
 }
-.user-md{
-    display: flex;
+nav>ul>li:hover a,.change:hover{
+    color:#356dd0
 }
-.user-md p i{
-    padding: 0 5px;
+.style a:hover{
+    color:#356dd0
 }
-.user{
-    padding-left: 10px;
-    position: relative;
+.user>ul>li{
+    padding-left: 20px;
+    margin-left: 20px;
+    font-size: 12px;
 }
-.user img{
-    width: 38px;
-    height: 38px;
+.avatar>b{
+    width: 32px;
+    height: 32px;
+    display: block;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
+    margin-top:14px;
 }
-.user ul{
-    position: absolute;
-    padding-left: 0;
-    width: 100px;
-    z-index: 2;
-    margin-bottom: 0;
-    left: -10px;
+
+/*头部结束*/
+.footer{
+    height: 60px;
+    background: #303030;
     text-align: center;
-    display: none;
-    background: #fff;
+     color: #ddd;
+    line-height: 60px;
+    margin-top: 80px;
 }
-.user ul li{
-    line-height: 36px;
-    cursor: pointer;
-    border-bottom: 1px solid #ccc;
-}
-.user ul li:last-child{
-    border-bottom: none;
-}
-.register{
-    padding-left: 10px;
-}
-a:hover{
-    text-decoration: none!important;
-    color: #666;
-}
-.register a{
-    cursor: pointer;
-    padding: 0 10px;
-    color: #666;
-}
-.modal-footer{
-    background: #000;
-    margin-top: 15px;
-    /*position: fixed;*/
-    /*bottom: 0;*/
-    width: 100%;
-}
-.modal-footer p{
-    text-align: center;
-    color: #fff;
-}
-.modal-footer p a{
-    color: #fff;
+.footer a{
+    color: #ddd;
 }

@@ -6,7 +6,17 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta >
+    <!-- 页面关键词 keywords -->
+    <meta name="keywords" content="{% block keywords %}
+
+    {% endblock %}">
+    <!-- 页面描述内容 description -->
+    <meta name="description" content="{% block desc %}
+
+    {% endblock %}">
+    <!-- 定义网页作者 author -->
+    <meta name="author" content="author,email address">
+
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
@@ -15,62 +25,69 @@
     <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
     <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/index.js' %}"></script>
+
     {% block link_js %}
 
     {% endblock %}
 </head>
 <body>
 <header>
-    <div class="header">
-        <div class="logo"><img src="http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg" alt=""></div>
-        <nav>
-             <ul>
-            <li><a href="/index">首页</a></li>
-            <li>文章</li>
-            <li>社区</li>
-            <li>教程</li>
-            <li>关于本站</li>
-        </ul>
+    <div class="main clearfix">
+        <div class="fl logo">LOGO</div>
+        <nav class="fl">
+            <ul class="clearfix">
+                <li class="fl"><a href="/index">首页</a></li>
+                <li class="fl"><a href="">文章</a></li>
+                <li class="fl"><a href="">社区</a></li>
+                <li class="fl"><a href="">教程</a></li>
+                <li class="fl"><a href="">关于本站</a></li>
+            </ul>
         </nav>
-        <div class="user-md">
-            <p><a href="{% url 'article:index' %}"><i class="glyphicon glyphicon-edit"style="color: #666"></i>写文章</a>&nbsp;&nbsp;<i class="glyphicon glyphicon-phone"></i>手机阅读</p>
-             {% if request.user.is_authenticated %}
-                <div class="user">
-                    <img src="http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg" alt="">
+        <div class="fr user">
+            <ul class="clearfix">
+                <li class="fl style" style="background: url({% static 'img/public.png' %})no-repeat 0 50%;"><a href="{% url 'article:created' %}">写文章</a></li>
+                <li class="fl style" style="background: url({% static 'img/phone.png' %})no-repeat 0 50%;"><a href="">手机阅读</a></li>
+
+
+                {% if request.user.is_authenticated %}
+                    <li class="fl avatar"><b href="" class="img_cover" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></b>
                     <ul>
-                        <li>个人中心</li>
-                        {% if user.is_staff %}
-                        <li>系统管理</li>
-                        <li><a href="{% url 'logou' %}">退出登录</a></li>
+                        <li><a href="">个人中心</a></li>
+                        {% if user.is_staff  %}
+                            <li><a href="">系统管理</a></li>
                         {% endif %}
+
+                        <li><a href="{% url 'logou' %}">退出</a></li>
                     </ul>
-                </div>
-                 {% else %}
-                 <div class="register"><a href="/login">登录</a>| <a href="/register">注册</a></div>
-             {% endif %}
-
-
+                </li>
+                    {% else %}
+                    <li class="fl"><a href="/login">登录</a>| <a href="/register">注册</a></li>
+                {% endif %}
+            </ul>
         </div>
     </div>
-
 </header>
 {% block content %}
 
 {% endblock %}
-<footer class="modal-footer">
+<footer class="footer">
     <p>Powered by
         <a>会飞的鱼</a>
                     <a href="http://www.miitbeian.gov.cn" target="_blank">蜀ICP备18023241号-1</a>
     </p>
 </footer>
 <script>
-    $(function () {
-        $('.user').hover(function () {
-            $(this).find('ul').fadeIn()
-        },function () {
-             $(this).find('ul').fadeOut()
-        })
+       $('.avatar').on('mousemove',function () {
+        $(this).find('ul').fadeIn()
+    });
+    $(".avatar ul").hover(function () {
+        $(this).fadeIn()
+    },function () {
+        var _this =$(this);
+        setTimeout(function () {
+            _this.fadeOut()
+        },200)
+
     })
 </script>
 {% block js %}

@@ -1,0 +1,74 @@
+{% extends 'pc/base.html' %}
+{% load static %}
+{% block title %}
+    {{ article.title }}
+{% endblock %}
+{% block keywords %}
+    {{ article.keywords }}
+{% endblock %}
+{% block desc %}
+    {{ article.desc }}
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/article_detail.css' %}">
+    <link rel="stylesheet" href="{% static 'markdown/css/editormd.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/share.min.css' %}" />
+{% endblock %}
+{% block link_js %}
+        <script src="{% static 'markdown/lib/marked.min.js' %}"></script>
+        <script src="{% static 'markdown/lib/prettify.min.js' %}"></script>
+        <script src="{% static 'markdown/lib/raphael.min.js' %}"></script>
+        <script src="{% static 'markdown/lib/underscore.min.js' %}"></script>
+        <script src="{% static 'markdown/lib/sequence-diagram.min.js' %}"></script>
+        <script src="{% static 'markdown/lib/flowchart.min.js' %}"></script>
+        <script src="{% static 'markdown/lib/jquery.flowchart.min.js' %}"></script>
+        <script src="{% static 'markdown/editormd.js' %}"></script>
+        <script src="{% static 'js/social-share.min.js' %}"></script>
+
+
+{% endblock %}
+{% block content %}
+
+    <div class="main">
+        <article>
+            <div id="test-editormd-view2">
+                <textarea id="append-test" name="test-editormd-markdown-doc" style="display:none;">{{ article.content }}</textarea>
+            </div>
+            <div class="social-share"></div>
+        </article>
+    <aside>aside</aside>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(function() {
+            var testEditormdView, testEditormdView2;
+            testEditormdView2 = editormd.markdownToHTML("test-editormd-view2", {
+                htmlDecode      : "style,script,iframe",  // you can filter tags decode
+                emoji           : true,
+                taskList        : true,
+                tex             : true,  // 默认不解析
+                flowChart       : true,  // 默认不解析
+                sequenceDiagram : true,  // 默认不解析
+            });
+        });
+        //一键分享相关配置
+ var $config = {
+      url                 : window.location.href,// 网址，默认使用 window.location.href
+      source              : '', // 来源（QQ空间会用到）, 默认读取head标签：<meta name="site" content="http://overtrue" />
+      title               : '', // 标题，默认读取 document.title 或者 <meta name="title" content="share.js" />
+      description         : '', // 描述, 默认读取head标签：<meta name="description" content="PHP弱类型的实现原理分析" />
+      image               : '', // 图片, 默认取网页中第一个img标签
+      sites               : ['qzone', 'qq', 'weibo','wechat'], // 启用的站点
+      disabled            : ['google', 'facebook', 'twitter'], // 禁用的站点
+      wechatQrcodeTitle   : '微信扫一扫：分享', // 微信二维码提示文字
+      wechatQrcodeHelper  : '<p>微信里点“发现”，扫一下</p><p>二维码便可将本文分享至朋友圈。</p>',
+      target : '_blank' //打开方式
+  };
+
+
+    </script>
+{% endblock %}

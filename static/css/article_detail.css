@@ -1,0 +1,18 @@
+body{
+    background: #f5f5f5;
+}
+article{
+    margin: 15px 0;
+}
+.main{
+    width: 1200px;
+    display: flex;
+    margin: 0 auto;
+}
+article{
+    width: 880px;
+
+}
+aside{
+    width: 300px;
+}
