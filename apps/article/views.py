@@ -1,17 +1,20 @@
-from django.shortcuts import render, redirect,reverse
+from django.shortcuts import render, redirect,reverse,get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse,Http404
 from django.views.decorators.csrf import csrf_exempt
 from PIL import Image
-
 from apps.article.forms import Article_form
 from website import settings
 import os
 import random
 from .models import Article_add,Category_Article
+
+def Article(request):
+    article = Article_add.objects.all().order_by('-add_time')
+    return render(request, 'pc/article.html', {'article': article})
 # Create your views here.
 @login_required(login_url='/login')
-def article_Add(request):
+def Article_Add(request):
     if request.method == 'GET':
         category = Category_Article.objects.all()
         return render(request,'pc/articlesadd.html',{"category":category})
@@ -33,51 +36,30 @@ def article_Add(request):
             article.keywords=keywords
             article.authors = authors
             article.category_id = int(category)
-            img = Image.open(list_pic)
-            width = img.width
-            height = img.height
-            rate = 1.0  # 压缩率
-            # 根据图像大小设置压缩率
-            if width >= 2000 or height >= 2000:
-                rate = 0.3
-            elif width >= 1000 or height >= 1000:
-                rate = 0.5
-            elif width >= 500 or height >= 500:
-                rate = 0.5
-            elif width >=300 or height >=300:
-                rate = 0.5
-
-            width = int(width * rate)  # 新的宽
-            height = int(height * rate)  # 新的高
-
-            img.thumbnail((width, height), Image.ANTIALIAS)  # 生成缩略图
-
-            url = 'article/' + list_pic.name
-            print(request.build_absolute_uri(settings.MEDIA_URL + list_pic.name))
-            name = settings.MEDIA_ROOT + '/' + url
-
-            while os.path.exists(name):
-                file, ext = os.path.splitext(list_pic.name)
-                file = file + str(random.randint(1, 1000))
-                list_pic.name = file + ext
-                url = 'article/' + list_pic.name
-                name = settings.MEDIA_ROOT + '/' + url
+            article.list_pic = list_pic
             try:
-                img.save(name)
-                article.list_pic = url
                 article.save()
                 return JsonResponse({"code": 200, "data": "发布成功"})
             except Exception:
-                return JsonResponse({'success': 0, 'message': '上传失败'})
-
-
-        return JsonResponse({"code":400,"data":"发布失败"})
+                return JsonResponse({"code":400,"data":"发布失败"})
+        return JsonResponse({"code": 400, "data": "验证失败"})
 
 def Article_list(request):
     article=Article_add.objects.all().order_by('-add_time')
-    return render(request,'pc/index.html',{'article':article})
+    popular = Article_add.objects.all().order_by('click_nums')[:5]
+    user = Article_add.objects.filter(authors_id=request.user.id).count()
+    print(user)
+    return render(request, 'pc/index.html', {'article':article,'popular':popular,'count':user})
 
-
+def Article_detail(request,article_id):
+    print(article_id)
+    try:
+        article=Article_add.objects.get(id=article_id)
+        article.click_nums+=1
+        article.save()
+    except Exception:
+        return Http404
+    return render(request,'pc/article_detail.html',{'article':article})
 
 # 写博客上传图片
 @login_required(login_url='/login')

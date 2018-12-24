@@ -1,4 +1,4 @@
-
+import uuid
 from datetime import datetime
 
 
@@ -12,6 +12,7 @@ class Category_Article(models.Model):
     add_time = models.DateTimeField(default=datetime.now)
 
 class Article_add(models.Model):
+    id = models.UUIDField(default=uuid.uuid4,primary_key=True)
     authors = models.ForeignKey(User,on_delete=models.CASCADE)
     category = models.ForeignKey(Category_Article,on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
