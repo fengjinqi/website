@@ -4,11 +4,10 @@
     首页
 {% endblock %}</title>
 {% block css %}
-<link rel="stylesheet" href="{% static 'css/index.css' %}">
 <link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
 {% endblock %}
 {% block content %}
-
     <section class="main clearfix">
     <article class="fl">
         <div class="blogs">
@@ -58,8 +57,8 @@
                                      </a>
                                  </li>
                                 <li class="fl blogs_time">发布于：{{ articles.add_time }}</li>
-                                <li class="fl blogs_view" style="height:18px;line-height:18px;margin-top:5px;background: url({% static 'img/eye.png' %})no-repeat 0 50%;background-size: contain;"> <b>{{ articles.click_nums }}</b></li>
-                                <li class="fl blogs_comment" style="height:18px;line-height: 18px;margin-top: 5px; background: url({% static 'img/comment.png' %})no-repeat 0 50%;background-size: contain;"> <b>{{ articles.click_nums }}</b></li>
+                                <li class="fl blogs_view" style="background: url({% static 'img/eye.png' %})no-repeat 0 50%;"> {{ articles.click_nums }}</li>
+                                <li class="fl blogs_comment" style="background: url({% static 'img/comment.png' %})no-repeat 0 50%;"> {{ articles.click_nums }}</li>
                             </ul>
                         </div>
                              </div>
@@ -106,14 +105,13 @@
                             <h4><span class="blogs_type">{{ foo.category.name }}</span><a href="">{{ foo.title }}</a></h4>
                             <div class="blogs_foot">
                                 <ul class="clearfix">
-                                    <li class="fl blogs_view" style="height:18px;line-height:18px;margin-top:5px;background: url({% static 'img/eye.png' %})no-repeat 0 50%;background-size: contain;">{{ foo.click_nums }}</li>
-                                    <li class="fl blogs_comment" style="height:18px;line-height: 18px;margin-top: 5px; background: url({% static 'img/comment.png' %})no-repeat 0 50%;background-size: contain;">2</li>
+                                    <li class="fl blogs_view" style="background: url({% static 'img/eye.png' %})no-repeat 0 50%;">{{ foo.click_nums }}</li>
+                                    <li class="fl blogs_comment" style="background: url({% static 'img/comment.png' %})no-repeat 0 50%;">2</li>
+                                    <li class="fr blogs_time" style="margin-right: 0;">2018年12月24日 15:49 15</li>
                                 </ul>
                             </div>
                         </div>
                         {% endfor %}
-                        
-
                     </div>
                     <!-- Add Pagination -->
                     <div class="swiper-pagination"></div>
@@ -191,9 +189,8 @@
             el: '.swiper-pagination',
           },
             loop : true,
-            autoplay:true,
+            //autoplay:true,
         });
     });
-
 </script>
 {% endblock %}

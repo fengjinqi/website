@@ -4,6 +4,7 @@
     新增文章
 {% endblock %}
 {% block css %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'css/article_add.css' %}">
     <link rel="stylesheet" href="{% static 'markdown/css/editormd.css' %}" />
 {% endblock %}
@@ -33,7 +34,7 @@
                         <span></span>
                         <input type="file" id="file" name="list_pic" accept="image/*">
                     </div>
-                    <p class="img"><i class="glyphicon glyphicon-remove"></i></p>
+                    <p class="img"><i class="glyphicon glyphicon-remove" style="color: #f5f5f5;"></i></p>
 
                 </div>
 

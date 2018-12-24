@@ -8,26 +8,18 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- 页面关键词 keywords -->
     <meta name="keywords" content="{% block keywords %}
-
     {% endblock %}">
     <!-- 页面描述内容 description -->
     <meta name="description" content="{% block desc %}
-
     {% endblock %}">
     <!-- 定义网页作者 author -->
     <meta name="author" content="author,email address">
-
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'css/public.css' %}">
     {% block css %}{% endblock %}
     <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
     <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-
     {% block link_js %}
-
     {% endblock %}
 </head>
 <body>
@@ -37,7 +29,7 @@
         <nav class="fl">
             <ul class="clearfix">
                 <li class="fl"><a href="/index">首页</a></li>
-                <li class="fl"><a href="">文章</a></li>
+                <li class="fl"><a href="/article">文章</a></li>
                 <li class="fl"><a href="">社区</a></li>
                 <li class="fl"><a href="">教程</a></li>
                 <li class="fl"><a href="">关于本站</a></li>
@@ -47,22 +39,19 @@
             <ul class="clearfix">
                 <li class="fl style" style="background: url({% static 'img/public.png' %})no-repeat 0 50%;"><a href="{% url 'article:created' %}">写文章</a></li>
                 <li class="fl style" style="background: url({% static 'img/phone.png' %})no-repeat 0 50%;"><a href="">手机阅读</a></li>
-
-
                 {% if request.user.is_authenticated %}
-                    <li class="fl avatar"><b href="" class="img_cover" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></b>
-
-                    <ul>
-                        <li><a href="">个人中心</a></li>
-                        {% if user.is_staff  %}
-                            <li><a href="">系统管理</a></li>
-                        {% endif %}
-
-                        <li><a href="{% url 'logou' %}">退出</a></li>
-                    </ul>
-                </li>
+                    <li class="fl avatar">
+                        <a class="img_cover" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></a>
+                        <ul class="meau meau_hide">
+                            <li><a href="">个人中心</a></li>
+                            {% if user.is_staff  %}
+                                <li><a href="">系统管理</a></li>
+                            {% endif %}
+                            <li><a href="{% url 'logou' %}">退出</a></li>
+                        </ul>
+                    </li>
                     {% else %}
-                    <li class="fl"><a href="/login">登录</a>| <a href="/register">注册</a></li>
+                    <li class="fl"><a href="/login">登录 </a> | <a href="/register"> 注册</a></li>
                 {% endif %}
             </ul>
         </div>
@@ -77,22 +66,19 @@
                     <a href="http://www.miitbeian.gov.cn" target="_blank">蜀ICP备18023241号-1</a>
     </p>
 </footer>
-<script>
-       $('.avatar').on('mousemove',function () {
-        $(this).find('ul').fadeIn()
-    });
-    $(".avatar ul").hover(function () {
-        $(this).fadeIn()
-    },function () {
-        var _this =$(this);
-        setTimeout(function () {
-            _this.fadeOut()
-        },200)
 
+<script>
+    $(function(){
+        $('.avatar').click(function(event){
+            event.stopPropagation();
+            $('.meau').fadeIn()
+        })
+        $(document).click(function(){
+            $(".meau").fadeOut();
+            });
     })
 </script>
 {% block js %}
-
 {% endblock %}
 </body>
 </html>

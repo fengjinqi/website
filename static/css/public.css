@@ -3,14 +3,11 @@
     padding:0;
 }
 body{
-
     font-family:"-apple-system,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Arial,sans-serif";
     font-size: 14px;
     color: #666;
     overflow-x: hidden;
     background: #f5f5f5;
-
-
 }
 ul,ul>li{
     list-style: none;
@@ -20,7 +17,9 @@ a{
     cursor: pointer;
     display: inline-block;
     color: #666;
-    font-size: 16px;
+}
+a:hover,.change:hover{
+    color:#356dd0
 }
 span{
     display: inline-block;
@@ -32,42 +31,7 @@ span{
     float: right;
 }
 .clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden}
-/*.clearfix{*+height: 1%;}*/
-.avatar{
-    position: relative;
-
-}
-.avatar ul{
-    position: absolute;
-    top: 59px;
-    left: 0;
-    width: 80px;
-    z-index: 1;
-    text-align: center;
-    border: 1px solid #ccc;
-    border-bottom: none;
-    background: #fff;
-    display: none;
-}
-
-.avatar ul li{
-    height: 30px;
-    line-height: 30px;
-    border-bottom: 1px solid #ccc;
-}
-.avatar ul li a {
-    display: block;
-}
-
-
-nav ul li{
-    padding: 0 20px;
-    font-size: 18px;
-}
-nav ul li a{
-      font-size: 18px;
-
-}
+.clearfix{*+height:1%;}
 .img_cover{
     background-position: 50%!important;
     background-size: cover!important;
@@ -109,27 +73,45 @@ nav>ul>li{
     padding: 0 20px;
     font-size: 16px;
 }
-nav>ul>li:hover a,.change:hover{
-    color:#356dd0
-}
-.style a:hover{
-    color:#356dd0
-}
 .user>ul>li{
     padding-left: 20px;
     margin-left: 20px;
-    font-size: 12px;
 }
-.avatar>b{
+.avatar>a{
     width: 32px;
     height: 32px;
-    display: block;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
     margin-top:14px;
 }
-
+.avatar{
+    position: relative;
+}
+.meau{
+    position: absolute;
+    top: 68px;
+    left: 0;
+    width: 100px;
+    background: #fff;
+    -webkit-box-shadow: 1px 1px 10px #eee;
+    -moz-box-shadow: 1px 1px 10px #eee;
+    box-shadow: 1px 1px 10px #eee;
+    z-index: 999;
+    line-height: 40px;
+}
+.meau_hide{
+    display: none;
+}
+.meau>li>a{
+    width: 100%;
+}
+.meau>li{
+    padding:0 12px;
+}
+.meau>li:hover{
+    background: #f5f5f5;
+}
 /*头部结束*/
 .footer{
     height: 60px;
@@ -139,12 +121,6 @@ nav>ul>li:hover a,.change:hover{
     line-height: 60px;
     margin-top: 80px;
 }
-
 .footer a{
     color: #ddd;
 }
-
-.modal-footer p a{
-    color: #fff;
-}
-
