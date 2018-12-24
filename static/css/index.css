@@ -29,32 +29,48 @@
     padding:20px 0;
     padding-top: 15px;
 }
+
 .blogs_cont h3{
     margin-top: 0;
 }
-.blogs_type{
+.blogs_type {
     font-size: 12px;
     color: #356dd0;
+}
+.container{
+    margin-top: 20px;
+    width: 100%!important;
+    border: 1px solid #ddd;
+
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
     padding:2px 4px;
-    border: 1px solid #356dd0;
+
     margin-right: 8px;
 }
 .blogs_foot{
     margin-top: 16px;
 }
+
 .blogs_foot>ul,.blogs_foot>ul>li{
     height: 24px;
 }
-.blogs_avatar{
+.blogs_avatar {
     width: 24px;
     height: 24px;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
     margin-right: 8px;
+}
+.nav{
+    height: 44px;
+    line-height: 44px;
+    color: #333;
+    padding: 0 16px!important;
+    border-bottom: 1px solid #ddd;
+
 }
 .blogs_name,.blogs_time,.blogs_view,.blogs_comment{
     height: 24px;
@@ -76,18 +92,25 @@
 .blogs_item{
     border-bottom: 1px solid #ddd;
 }
+
 .blogs_info{
     position: relative;
     margin-top: 16px;
 }
-.img_animate{
+.img_animate {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
     position: absolute;
     top: 0;
-    left:0;
+    left: 0;
+}
+.blogs{
+    padding: 20px 16px;
+    border-top: 1px solid #ddd;
+
     overflow: hidden;
+    position: relative;
 }
 .img_animate:hover .blogs_pic{
     transform:scale(1.1);
@@ -96,6 +119,7 @@
     -webkit-transform:scale(1.1); /* Safari 和 Chrome */
     -o-transform:scale(1.1); 	/* Opera */
 }
+
 .blogs_pic{
     width: 200px;
     height: 120px;
@@ -109,10 +133,31 @@
     padding-left: 216px;
     height: 120px;
 }
-.blogs_foot1{
+.blogs_foot1 {
     position: absolute;
     bottom: 0;
-    left:216px
+    left: 216px
+}
+.blogs a{
+    text-decoration: #666;
+    color: #333;
+}
+.blogs .blogtitle {
+    margin: 0 0 20px 0;
+    font-size: 20px;
+    overflow: hidden;
+}
+.blogtitle a{
+    font-weight: bold;
+}
+.blogs .blogpic {
+    float: left;
+    width: 25%;
+    max-height: 170px;
+    margin-right: 2%;
+    display: block;
+    overflow: hidden;
+
 }
 /*列表结束*/
 /*banner开始*/
@@ -124,6 +169,7 @@
     border-radius: 3px;
     margin:20px 0 0 0;
 }
+
 /*banner结束*/
 /*aside开始*/
 .aside_public,.aside_hot,.aside_goodperson,.aside_autor{
@@ -137,13 +183,57 @@
 }
 .blogs_number{
     text-align: center;
-    height: 103px;
+    height: 103px;}
+
+.blogs .blogtext {
+    font-size: 14px;
+    color: #566573;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+}
+.blogs .blogpic img {
+    width: 100%;
+    height: auto;
+    -webkit-transition: all 0.6s ease;
+    -moz-transition: all 0.6s ease;
+    -o-transition: all 0.6s ease;
+    transition: all 0.6s ease;
+}
+
+.bloginfo {
+    overflow: hidden;
+    position: absolute;
+    bottom:20px;
+    left: 28%;
+}
+.bloginfo1{
+    position: static;
+
 }
 .blogs_number>ul{
     padding-top:30px;
 }
-.blogs_number>ul>li{
+
+.blogs_number>ul>li {
     width: 33.33%;
+}
+.bloginfo ul li {
+    float: left;
+    font-size: 12px;
+    margin: 0 16px 0 0;
+    display: inline-block;
+}
+.bloginfo ul li img{
+    width: 26px;
+    height: 26px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    margin-right: 5px;
+
 }
 .blogs_number .number{
     font-size: 18px;
@@ -166,6 +256,7 @@
     width: 6px;
     height: 6px;
 }
+
 .swiper-wrapper{
     height: 288px;
 }
@@ -173,9 +264,38 @@
     position: relative;
     margin-left: 30px;
 }
-.aside_goodperson_item_num{
+.aside_goodperson_item_num {
     height: 44px;
     line-height: 44px;
+}
+.hometitle {
+    font-size: 18px;
+    color: #282828;
+    font-weight: 600;
+    margin: 0;
+    text-transform: uppercase;
+    padding-bottom: 16px;
+    margin-bottom: 25px;
+    position: relative;
+    padding-left: 16px;
+}
+.hometitle:after {
+    content: "";
+    background-color: #282828;
+    left: 16px;
+    width: 50px;
+    height: 2px;
+    bottom: 0;
+    position: absolute;
+    -webkit-transition: 0.5s;
+    -moz-transition: 0.5s;
+    -ms-transition: 0.5s;
+    -o-transition: 0.5s;
+    transition: 0.5s;
+}
+.sidenews{
+    padding:0 16px;
+
 }
 .aside_goodperson_item_user_avatar{
     width: 44px;
@@ -187,12 +307,47 @@
     top: 0;
     left: 0;
 }
-.aside_goodperson_item_user_avatar1{
-     width: 44px;
+
+.aside_goodperson_item_user_avatar1 {
+    width: 44px;
     height: 44px;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
+}
+.sidenews i {
+    width: 100px;
+    height: 75px;
+    overflow: hidden;
+    display: block;
+    border: #efefef 1px solid;
+    float: left;
+    margin-right: 10px;
+}
+.sidenews img {
+    height: 100%;
+    max-height: 75px;
+    margin: auto;
+    -moz-transition: all .5s ease;
+    -webkit-transition: all .5s ease;
+    -ms-transition: all .5s ease;
+    -o-transition: all .5s ease;
+    transition: all .5s ease;
+    transition: all 0.5s;
+}
+.sidenews li:hover i img {
+    transform: scale(1.1);
+}
+.sidenews li p {
+    line-height: 24px;
+    color: #888;
+    font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+
 }
 .swiper-slide h4{
     overflow: hidden;
@@ -203,8 +358,13 @@
 .aside_autor_item{
     font-size: 12px;
 }
+
 .aside_goodperson_item {
     margin: 16px 0;
+}
+.xinwen{
+    padding:0 16px;
+
 }
 .aside_goodperson_item_user_info{
     padding-left: 56px;
@@ -212,7 +372,34 @@
     height: 44px;
     line-height: 24px;
 }
+
 .aside_autor .flex_justify{
     margin: 16px 0;
 }
 /*aside结束*/
+
+
+.jiazai{
+    width: 120px;
+    margin: 16px auto;
+    display: block!important;
+}
+button{
+    outline: none;
+}
+.tuijian{
+    background: #fff;
+    border: 1px solid #ddd;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    margin-bottom: 20px;
+}
+.tuijian_head{
+    height: 44px;
+    line-height: 44px;
+    padding:0 16px;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+}
+

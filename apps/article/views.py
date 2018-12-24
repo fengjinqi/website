@@ -51,6 +51,9 @@ def Article_list(request):
     print(user)
     return render(request, 'pc/index.html', {'article':article,'popular':popular,'count':user})
 
+
+
+
 def Article_detail(request,article_id):
     print(article_id)
     try:

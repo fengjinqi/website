@@ -15,20 +15,26 @@
         <property name="yearIsDateType" value="false" />
       </driver-properties>
     </data-source>
+<<<<<<< HEAD
     <data-source source="LOCAL" name="db1 [2]" uuid="f2d22117-fc3b-4d24-95c3-cc81be851ac7">
+=======
+    <data-source source="LOCAL" name="db1" uuid="ba2aedb6-f604-481d-9e86-29327c313c60">
+>>>>>>> 7448aa8a82af10e5297d2d7d5fc140b8ce76c0c0
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>SQLite</remarks>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\admin\Desktop\home\website\db1.sqlite3</jdbc-url>
+      <jdbc-url>jdbc:sqlite:D:\Users\admin\Desktop\website\website\db1.sqlite3</jdbc-url>
       <driver-properties>
         <property name="enable_load_extension" value="true" />
       </driver-properties>
       <libraries>
         <library>
-          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.25.1/license.txt</url>
+          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.20.1.1/sqlite-jdbc-3.20.1.1.jar</url>
         </library>
         <library>
-          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.25.1/sqlite-jdbc-3.25.1.jar</url>
+          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.20.1.1/xerial-sqlite-license.txt</url>
         </library>
       </libraries>
     </data-source>

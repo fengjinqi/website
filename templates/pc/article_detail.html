@@ -13,7 +13,9 @@
 {% block css %}
     <link rel="stylesheet" href="{% static 'css/article_detail.css' %}">
     <link rel="stylesheet" href="{% static 'markdown/css/editormd.css' %}" />
+
     <link rel="stylesheet" href="{% static 'css/share.min.css' %}" />
+
 {% endblock %}
 {% block link_js %}
         <script src="{% static 'markdown/lib/marked.min.js' %}"></script>
@@ -24,7 +26,9 @@
         <script src="{% static 'markdown/lib/flowchart.min.js' %}"></script>
         <script src="{% static 'markdown/lib/jquery.flowchart.min.js' %}"></script>
         <script src="{% static 'markdown/editormd.js' %}"></script>
+
         <script src="{% static 'js/social-share.min.js' %}"></script>
+
 
 
 {% endblock %}
@@ -34,8 +38,12 @@
         <article>
             <div id="test-editormd-view2">
                 <textarea id="append-test" name="test-editormd-markdown-doc" style="display:none;">{{ article.content }}</textarea>
+
             </div>
             <div class="social-share"></div>
+
+
+
         </article>
     <aside>aside</aside>
     </div>
@@ -55,6 +63,7 @@
                 sequenceDiagram : true,  // 默认不解析
             });
         });
+
         //一键分享相关配置
  var $config = {
       url                 : window.location.href,// 网址，默认使用 window.location.href
