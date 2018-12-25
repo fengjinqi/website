@@ -9,10 +9,13 @@ from django.http import Http404, HttpResponse,JsonResponse
 from django.shortcuts import render, redirect,reverse
 
 # Create your views here.
-from django.views.decorators.http import require_http_methods
 
-from apps.user.models import User
-from .forms import CaptchaTestForm, LoginForms
+from django.contrib.auth.views import method_decorator,login_required
+from django.views.decorators.http import require_http_methods
+from django.views.generic.base import View
+
+from apps.user.models import User, Follow
+from .forms import CaptchaTestForm, LoginForms, Follow_Forms
 
 
 def test(request):
@@ -71,7 +74,6 @@ def login_view(request):
             print(remember)
             user = authenticate(request,username=telephone,password=password)
             if user:
-
                 if user.is_active:
                     login(request,user)
                     if remember:
@@ -94,3 +96,32 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('/index')
+
+
+class Author(View):
+    def get(self,request):
+        return
+    #@method_decorator(login_required(login_url='/login'))
+    def post(self,request):
+        if request.user is not None and  request.user.is_authenticated:
+            froms = Follow_Forms(request.POST)
+            if froms.is_valid():
+                follow = Follow()
+                print(request.POST.get('follow'))
+                print(request.user.id)
+                print(request.user.id == request.POST.get('follow'))
+                if request.POST.get('follow') == request.user.id:
+                    print('====')
+                    return JsonResponse({'status': 201, 'message': '不能自己关注自己'})
+                else:
+                    cun = Follow.objects.filter(follow=froms.cleaned_data.get('follow'),fan=request.user.id)
+                    if cun:
+                        cun.delete()
+                        print(cun)
+                        return JsonResponse({'status': 200, 'message': '已取消关注'})
+                    # follow.follow = froms.cleaned_data.get('follow')
+                    # follow.fan_id = request.user.id
+                    # follow.save()
+                    #print(request.user.id)
+                    return JsonResponse({'status':200,'message':'成功关注'})
+        return JsonResponse({"status":302,"message":"未登录"})

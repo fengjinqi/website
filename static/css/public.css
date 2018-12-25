@@ -30,8 +30,9 @@ span{
 .fr{
     float: right;
 }
-.clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden}
-.clearfix{*+height:1%;}
+/*.clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden}*/
+/*.clearfix{*+height:1%;}*/
+.clearfix:after{visibility:hidden;display:block;font-size:0;content:" ";clear:both;height:0}
 .img_cover{
     background-position: 50%!important;
     background-size: cover!important;

@@ -16,6 +16,17 @@ class User(AbstractUser):
 
 
 
+
+class Follow(models.Model):
+    """关注表"""
+    follow = models.ForeignKey(User,on_delete=models.CASCADE,related_name='follow',verbose_name='被关注的，作者')
+    fan = models.ForeignKey(User,on_delete=models.CASCADE,related_name='fan',verbose_name='粉丝')
+    add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
+
+
+
+
+
 class VerifyCode(models.Model):
     """短信验证码"""
     code = models.CharField(verbose_name='验证码',max_length=10)

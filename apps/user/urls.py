@@ -8,4 +8,5 @@ app_name='user'
 from . import views
 urlpatterns = [
   path('',views.login_view,name='index'),
+  path('author/',views.Author.as_view(),name='author'),
 ]

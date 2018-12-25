@@ -3,7 +3,7 @@
 from django import forms
 from captcha.fields import CaptchaField
 
-from apps.user.models import User
+from apps.user.models import User, Follow
 
 
 class CaptchaTestForm(forms.Form):
@@ -28,3 +28,9 @@ class LoginForms(forms.Form):
             return new_errors
         else:
             return {}
+
+class Follow_Forms(forms.ModelForm):
+
+    class Meta:
+        model = Follow
+        fields = ['follow']

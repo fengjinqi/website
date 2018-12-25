@@ -90,70 +90,32 @@
 {#                </ul>#}
 {#            </div>#}
 {#        </div>#}
-        <div class="aside_hot">
-            <div class="blogs_head" style="background: url(img/public.png)no-repeat 0 50%;">热门排行<a class="fr change">更多</a></div>
-            <div class="blogs_cal">
-                <div class="swiper-container">
-                    <div class="swiper-wrapper">
-                        {% for foo in popular %}
-                            <div class="swiper-slide">
-                            <div class="swiper_pic img_cover" style="background: url({% if foo.list_pic %}
-                                      {{ MEDIA_URL }}{{ foo.list_pic }}
-                                          {% else %}
-                                          {% static 'img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg' %}
-                                      {% endif %})no-repeat;"></div>
-                            <h4><span class="blogs_type">{{ foo.category.name }}</span><a href="">{{ foo.title }}</a></h4>
-                            <div class="blogs_foot">
-                                <ul class="clearfix">
-                                    <li class="fl blogs_view" style="background: url({% static 'img/eye.png' %})no-repeat 0 50%;">{{ foo.click_nums }}</li>
-                                    <li class="fl blogs_comment" style="background: url({% static 'img/comment.png' %})no-repeat 0 50%;">2</li>
-                                    <li class="fr blogs_time" style="margin-right: 0;">2018年12月24日 15:49 15</li>
-                                </ul>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    <!-- Add Pagination -->
-                    <div class="swiper-pagination"></div>
-                </div>
-            </div>
-        </div>
+        {% include 'pc/base_aside.html' %}
         <div class="aside_goodperson">
-            <div class="blogs_head" style="background: url(img/public.png)no-repeat 0 50%;">本周牛人<a class="fr change">更多</a></div>
+            <div class="blogs_head" style="background: url(img/public.png)no-repeat 0 50%;">热门牛人<a class="fr change">更多</a></div>
             <div>
-                <div class="aside_goodperson_item clearfix">
-                    <div class="fl aside_goodperson_item_num">1</div>
+                {% for foo in count %}
+                    <div class="aside_goodperson_item clearfix">
+                    <div class="fl aside_goodperson_item_num">{{ forloop.counter }}</div>
                     <div class="fl aside_goodperson_item_user">
                         <div class="aside_goodperson_item_user_avatar img_cover" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></div>
                         <div class="aside_goodperson_item_user_info">
-                            <p>-狙击手-</p>
-                            <p>更博：34</p>
+                            <p>{{ foo.username }}</p>
+                            <p>更博：{{ foo.article_add_set.count }}</p>
                         </div>
                     </div>
-                    <div class="fr aside_goodperson_item_num">关注</div>
+                    <div class="fr aside_goodperson_item_num follow" data-actions-icnt="{{ foo.id }}" onclick="flollw(this)">
+
+
+                        {% if request.user.id == foo.follow.first.fan.id%}
+                            已关注
+                            {% else %}
+                            关注
+                        {% endif %}</div>
                 </div>
-                <div class="aside_goodperson_item clearfix">
-                    <div class="fl aside_goodperson_item_num">1</div>
-                    <div class="fl aside_goodperson_item_user">
-                        <div class="aside_goodperson_item_user_avatar img_cover" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></div>
-                        <div class="aside_goodperson_item_user_info">
-                            <p>-狙击手-</p>
-                            <p>更博：34</p>
-                        </div>
-                    </div>
-                    <div class="fr aside_goodperson_item_num">关注</div>
-                </div>
-                <div class="aside_goodperson_item clearfix">
-                    <div class="fl aside_goodperson_item_num">1</div>
-                    <div class="fl aside_goodperson_item_user">
-                        <div class="aside_goodperson_item_user_avatar img_cover" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></div>
-                        <div class="aside_goodperson_item_user_info">
-                            <p>-狙击手-</p>
-                            <p>更博：34</p>
-                        </div>
-                    </div>
-                    <div class="fr aside_goodperson_item_num">关注</div>
-                </div>
+                {% endfor %}
+
+
             </div>
         </div>
         <div class="aside_autor">
@@ -182,15 +144,24 @@
 
 {% block js %}
 <script src="{% static 'js/swiper.min.js' %}"></script>
-<script>
-    $(function () {
-        var swiper = new Swiper('.swiper-container', {
-          pagination: {
-            el: '.swiper-pagination',
-          },
-            loop : true,
-            //autoplay:true,
-        });
-    });
-</script>
+<script src="{% static 'js/index.js' %}"></script>
+    <script>
+    function flollw (obj){
+        console.log($(obj).attr('data-actions-icnt'))
+        follow = $(obj).attr('data-actions-icnt')
+          $.ajax({
+                url:'/login/author/',
+                type:'post',
+                data:{follow:follow},
+                  headers:{'X-CSRFToken':$.cookie('csrftoken')},
+                success:function (data) {
+                    console.log(data)
+                },
+                error:function (xhr) {
+                    console.log(xhr)
+                }
+            })
+    }
+
+    </script>
 {% endblock %}

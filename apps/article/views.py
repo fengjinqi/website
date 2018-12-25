@@ -4,6 +4,7 @@ from django.http import JsonResponse,Http404
 from django.views.decorators.csrf import csrf_exempt
 from PIL import Image
 from apps.article.forms import Article_form
+from apps.user.models import User, Follow
 from website import settings
 import os
 import random
@@ -15,6 +16,11 @@ def Article(request):
 # Create your views here.
 @login_required(login_url='/login')
 def Article_Add(request):
+    """
+    新增文章
+    :param request:
+    :return:
+    """
     if request.method == 'GET':
         category = Category_Article.objects.all()
         return render(request,'pc/articlesadd.html',{"category":category})
@@ -45,16 +51,28 @@ def Article_Add(request):
         return JsonResponse({"code": 400, "data": "验证失败"})
 
 def Article_list(request):
+    """
+    首页
+    :param request:
+    :return:
+    """
     article=Article_add.objects.all().order_by('-add_time')
     popular = Article_add.objects.all().order_by('click_nums')[:5]
-    user = Article_add.objects.filter(authors_id=request.user.id).count()
-    print(user)
+    user = User.objects.all().order_by('-follow')
+    for i in user:
+        print(i.follow.all())
     return render(request, 'pc/index.html', {'article':article,'popular':popular,'count':user})
 
 
 
 
 def Article_detail(request,article_id):
+    """
+    文章详情页
+    :param request:
+    :param article_id:
+    :return:
+    """
     print(article_id)
     try:
         article=Article_add.objects.get(id=article_id)

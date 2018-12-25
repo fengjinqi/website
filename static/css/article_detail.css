@@ -6,15 +6,27 @@ article{
     margin: 15px 0;
 }
 
-.main{
+.container{
     width: 1200px;
-    display: flex;
     margin: 0 auto;
+    height: calc(100% - 10px);
 }
 article{
     width: 880px;
+    margin-top: 20px;
+    background: #fff;
 
+}
+
+#test-editormd-view2 {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.social-share{
+    padding-left: 15px;
 }
 aside{
     width: 300px;
+
 }

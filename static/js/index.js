@@ -11,3 +11,12 @@ $(function () {
         }
     })
 })
+$(function () {
+    var swiper = new Swiper('.swiper-container', {
+      pagination: {
+        el: '.swiper-pagination',
+      },
+        loop : true,
+        autoplay:true,
+    });
+});

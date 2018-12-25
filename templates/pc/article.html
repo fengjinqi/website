@@ -1,9 +1,10 @@
 {% extends 'pc/base.html' %}
 {% load static %}
 <title>{% block title %}
-    首页
+    文章
 {% endblock %}</title>
 {% block css %}
+<link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">
 <link rel="stylesheet" href="{% static 'css/index.css' %}">
 {% endblock %}
 {% block content %}
@@ -175,34 +176,7 @@
 {#                </ul>#}
 {#            </div>#}
 {#        </div>#}
-        <div class="aside_hot">
-            <div class="blogs_head" style="background: url(img/public.png)no-repeat 0 50%;">热门排行<a class="fr change">更多</a></div>
-            <div class="blogs_cal">
-                <div class="swiper-container">
-                    <div class="swiper-wrapper">
-                        {% for foo in popular %}
-                            <div class="swiper-slide">
-                            <div class="swiper_pic img_cover" style="background: url({% if foo.list_pic %}
-                                      {{ MEDIA_URL }}{{ foo.list_pic }}
-                                          {% else %}
-                                          {% static 'img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg' %}
-                                      {% endif %})no-repeat;"></div>
-                            <h4><span class="blogs_type">{{ foo.category.name }}</span><a href="">{{ foo.title }}</a></h4>
-                            <div class="blogs_foot">
-                                <ul class="clearfix">
-                                    <li class="fl blogs_view" style="background: url({% static 'img/eye.png' %})no-repeat 0 50%;">{{ foo.click_nums }}</li>
-                                    <li class="fl blogs_comment" style="background: url({% static 'img/comment.png' %})no-repeat 0 50%;">2</li>
-                                    <li class="fr blogs_time" style="margin-right: 0;">2018年12月24日 15:49 15</li>
-                                </ul>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    <!-- Add Pagination -->
-                    <div class="swiper-pagination"></div>
-                </div>
-            </div>
-        </div>
+            {% include 'pc/base_aside.html' %}
         <div class="aside_goodperson">
             <div class="blogs_head" style="background: url(img/public.png)no-repeat 0 50%;">本周牛人<a class="fr change">更多</a></div>
             <div>
@@ -215,7 +189,7 @@
                             <p>更博：34</p>
                         </div>
                     </div>
-                    <div class="fr aside_goodperson_item_num">关注</div>
+                    <div class="fr aside_goodperson_item_num"data-actions-icnt="">关注</div>
                 </div>
                 <div class="aside_goodperson_item clearfix">
                     <div class="fl aside_goodperson_item_num">1</div>
@@ -266,7 +240,10 @@
 {% endblock %}
 
 {% block js %}
+    <script src="{% static 'js/swiper.min.js' %}"></script>
+    <script src="{% static 'js/index.js' %}"></script>
 <script>
+
     $(function () {
        $('.fiter_nav>ul>li').mouseover(function(){
            $(this).siblings().removeClass('fiter_active');

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.user.apps.UserConfig',
     'apps.article.apps.ArticleConfig',
+    'apps.article.templatetags',
     'captcha'
 ]
 #邮箱登录配置

@@ -1,0 +1,33 @@
+{% load aside_tag %}
+{% load static %}
+<div class="aside_hot">
+    <div class="blogs_head" style="background: url({% static 'img/public.png' %})no-repeat 0 50%;">热门排行<a class="fr change">更多</a></div>
+    <div class="blogs_cal">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+            {% get_categories as get_tag %}
+                {% for foo in get_tag %}
+                    <div class="swiper-slide">
+                        <a href="{% url 'article:detail' foo.id %}"style="display: block">
+                            <div class="swiper_pic img_cover" style="background: url({% if foo.list_pic %}
+                              {{ MEDIA_URL }}{{ foo.list_pic }}
+                                  {% else %}
+                                  {% static 'img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg' %}
+                              {% endif %})no-repeat;"></div>
+                        </a>
+                    <h4><span class="blogs_type">{{ foo.category.name }}</span><a href="{% url 'article:detail' foo.id %}">{{ foo.title }}</a></h4>
+                    <div class="blogs_foot">
+                        <ul class="clearfix">
+                            <li class="fl blogs_view" style="background: url({% static 'img/eye.png' %})no-repeat 0 50%;">{{ foo.click_nums }}</li>
+                            <li class="fl blogs_comment" style="background: url({% static 'img/comment.png' %})no-repeat 0 50%;">2</li>
+                            <li class="fr blogs_time" style="margin-right: 0;">{{ foo.add_time }}</li>
+                        </ul>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <!-- Add Pagination -->
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</div>

@@ -11,6 +11,10 @@
 {% endblock %}
 
 {% block css %}
+    <link rel="stylesheet" href="{% static 'css/public.css' %}">
+    <link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+
     <link rel="stylesheet" href="{% static 'css/article_detail.css' %}">
     <link rel="stylesheet" href="{% static 'markdown/css/editormd.css' %}" />
 
@@ -18,6 +22,7 @@
 
 {% endblock %}
 {% block link_js %}
+        <script src="{% static 'js/swiper.min.js' %}"></script>
         <script src="{% static 'markdown/lib/marked.min.js' %}"></script>
         <script src="{% static 'markdown/lib/prettify.min.js' %}"></script>
         <script src="{% static 'markdown/lib/raphael.min.js' %}"></script>
@@ -34,8 +39,8 @@
 {% endblock %}
 {% block content %}
 
-    <div class="main">
-        <article>
+    <div class="container clearfix">
+        <article class="fl">
             <div id="test-editormd-view2">
                 <textarea id="append-test" name="test-editormd-markdown-doc" style="display:none;">{{ article.content }}</textarea>
 
@@ -45,13 +50,17 @@
 
 
         </article>
-    <aside>aside</aside>
+    <aside class="fr">
+        {% include 'pc/base_aside.html' %}
+    </aside>
     </div>
 
 {% endblock %}
 
 {% block js %}
+    <script src="{% static 'js/index.js' %}"></script>
     <script>
+
         $(function() {
             var testEditormdView, testEditormdView2;
             testEditormdView2 = editormd.markdownToHTML("test-editormd-view2", {
