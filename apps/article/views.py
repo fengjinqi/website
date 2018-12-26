@@ -89,7 +89,7 @@ def Article_detail(request,article_id):
         article.save()
     except Exception:
         return Http404
-    return render(request,'pc/article_detail.html',{'article':article})
+    return render(request,'pc/article_detail.html',{'article':article,'id':article_id})
 
 # 写博客上传图片
 @login_required(login_url='/login')
@@ -138,7 +138,7 @@ def blog_img_upload(request):
 """==========================================api"""
 
 class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 5
+    page_size = 8
     # page_size_query_param = 'page_size'#每页设置展示多少条
     # page_query_param = 'page'
     # max_page_size = 100
