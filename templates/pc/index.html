@@ -31,7 +31,12 @@
         </div>
         <div class="banner" style="background: url({% static 'img/banner.png' %})no-repeat 0 50%;"></div>
          <div class="blogs">
-             <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">最新文章</div>
+             <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">
+                 <ul class="follow">
+                     <li>最新文章</li>
+                     <li>我关注的</li>
+                 </ul>
+             </div>
              <div>
                  {% for articles in article %}
                     <div class="blogs_item">
@@ -105,14 +110,12 @@
                         </div>
                     </div>
                     <div class="fr aside_goodperson_item_num follow" data-actions-icnt="{{ foo.id }}" onclick="flollw(this)">
-
-
                         {% if request.user.id == foo.follow.first.fan.id%}
                             已关注
                             {% else %}
                             关注
                         {% endif %}</div>
-                </div>
+                    </div>
                 {% endfor %}
 
 
@@ -146,8 +149,23 @@
 <script src="{% static 'js/swiper.min.js' %}"></script>
 <script src="{% static 'js/index.js' %}"></script>
     <script>
+    $(function () {
+        $.ajax({
+            url: '/api/article_list/',
+            type: 'get',
+            dataType:'json',
+            success:function (data) {
+                console.log(data)
+            },
+            error:function (err) {
+
+            }
+        })
+    })
+
     function flollw (obj){
         console.log($(obj).attr('data-actions-icnt'))
+        var _self= $(obj)
         follow = $(obj).attr('data-actions-icnt')
           $.ajax({
                 url:'/login/author/',
@@ -155,6 +173,13 @@
                 data:{follow:follow},
                   headers:{'X-CSRFToken':$.cookie('csrftoken')},
                 success:function (data) {
+                    if(data.status==201 && data.message=='不能自己关注自己'){
+                        alert('不能自己关注自己')
+                    }else if(data.status==200 && data.message=='成功关注'){
+                        _self.html('已关注')
+                    }else if(data.status==200 && data.message=='已取消关注'){
+                        _self.html('关注')
+                    }
                     console.log(data)
                 },
                 error:function (xhr) {

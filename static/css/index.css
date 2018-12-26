@@ -253,3 +253,15 @@
     margin-right: 12px;
     cursor: pointer;
 }
+
+
+.follow{
+    display: flex;
+}
+
+.follow li{
+    padding-left: 15px;
+}
+.follow li:first-child{
+    padding-left: 0;
+}

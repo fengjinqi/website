@@ -3,7 +3,12 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse,Http404
 from django.views.decorators.csrf import csrf_exempt
 from PIL import Image
+from rest_framework import viewsets,mixins
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
+
 from apps.article.forms import Article_form
+from apps.article.serializers import ArticleSerializer
 from apps.user.models import User, Follow
 from website import settings
 import os
@@ -56,11 +61,15 @@ def Article_list(request):
     :param request:
     :return:
     """
+
+
+
+
+
     article=Article_add.objects.all().order_by('-add_time')
     popular = Article_add.objects.all().order_by('click_nums')[:5]
     user = User.objects.all().order_by('-follow')
-    for i in user:
-        print(i.follow.all())
+
     return render(request, 'pc/index.html', {'article':article,'popular':popular,'count':user})
 
 
@@ -124,3 +133,42 @@ def blog_img_upload(request):
         except Exception as e:
             return JsonResponse({'success': 0, 'message': '上传失败'})
 
+
+
+"""==========================================api"""
+
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 5
+    # page_size_query_param = 'page_size'#每页设置展示多少条
+    # page_query_param = 'page'
+    # max_page_size = 100
+
+
+class ArticleListView(viewsets.ReadOnlyModelViewSet):
+    """
+     TODO 列出所有的文章 详情页
+    """
+    queryset = Article_add.objects.all().order_by('-add_time')
+    serializer_class = ArticleSerializer
+    pagination_class = StandardResultsSetPagination
+
+
+
+
+
+class FollowListView(viewsets.ReadOnlyModelViewSet):
+    queryset = Article_add.objects.all().order_by('-add_time')
+    serializer_class = ArticleSerializer
+    pagination_class = StandardResultsSetPagination
+
+
+    def list(self, request, *args, **kwargs):
+        print(Article_add.objects.filter(authors__follow__fan_id=self.request.user.id))
+        queryset = Article_add.objects.filter(authors__follow__fan_id=self.request.user.id).order_by('-add_time')
+
+        serializer = ArticleSerializer(queryset, many=True)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        return Response(serializer.data)

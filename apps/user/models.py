@@ -21,10 +21,11 @@ class Follow(models.Model):
     """关注表"""
     follow = models.ForeignKey(User,on_delete=models.CASCADE,related_name='follow',verbose_name='被关注的，作者')
     fan = models.ForeignKey(User,on_delete=models.CASCADE,related_name='fan',verbose_name='粉丝')
-    add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
+    add_time = models.DateTimeField(auto_now_add=True, verbose_name='添加时间')
 
 
-
+    def __str__(self):
+        return str(self.follow.id)
 
 
 class VerifyCode(models.Model):

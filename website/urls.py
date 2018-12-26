@@ -22,22 +22,32 @@ from apps.user.views import test,captcha_refresh,yan
 from django.views.generic import TemplateView
 
 from website import settings
-from apps.article.views import Article_list
+from apps.article import views
 from apps.user.views import logout_view
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register('article_list', views.ArticleListView)
+router.register('follow_list', views.FollowListView)
+
 
 urlpatterns = [
+
     path('admin/', admin.site.urls),
     path('',test), # 这是生成验证码的图片
     url(r'^captcha/', include('captcha.urls')),
     path('refresh/',captcha_refresh), # 这是生成验证码的图片
     path('yan/',yan), # 这是生成验证码的图片
-    path('index/',Article_list,name='home'),
+    path('index/',views.Article_list,name='home'),
     path('login/',include('apps.user.urls')),
     path('logou/',logout_view,name='logou'),
     path('register/',TemplateView.as_view(template_name='pc/register.html')),
     path('article/',include('apps.article.urls')),
 
-    re_path(r'^upload/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
 
+
+    re_path(r'^upload/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    url(r'api/', include(router.urls)),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     #re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATI_ROOT})  # 配置文件上传html显示
 ]
