@@ -25,9 +25,10 @@ class Article_add(models.Model):
 
 
 class Article_Comment(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    user = models.ForeignKey(User,on_delete=models.CASCADE,verbose_name='用户')
     article =models.ForeignKey(Article_add,verbose_name='文章',on_delete=models.CASCADE)
     comments = models.TextField(verbose_name='评论')
+    aomments_id = models.ForeignKey('self',on_delete=models.SET_NULL,blank=True,null=True)
     add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
 
     def __str__(self):

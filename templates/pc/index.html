@@ -110,7 +110,10 @@
                         </div>
                     </div>
                     <div class="fr aside_goodperson_item_num follow" data-actions-icnt="{{ foo.id }}" onclick="flollw(this)">
+
+                    {{ foo.follow.count }}
                         {% if request.user.id == foo.follow.first.fan.id%}
+
                             已关注
                             {% else %}
                             关注
