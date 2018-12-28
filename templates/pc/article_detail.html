@@ -259,10 +259,16 @@ var dateDiff = function (timestamp) {
     console.log(dateDiff('116765118'))
      console.log(getPastHalfYear())
     is_active=true;
-    html="<div class='clearfix text'><textarea name=''class='form-control' rows='5'></textarea><button class='btn btn-primary fr 'onclick=\"mask(this)\">评论</button></div>";
+    html="<div class='clearfix text'><textarea name=''class='form-control' rows='5'></textarea><button class='btn btn-primary fr 'onclick=\"masks(this)\">评论</button></div>";
         function establish(obj) {
             console.log($(obj).parents('.list-block-gw'))
-            $(obj).parents('.list-block-gw').find('.text').remove();
+            try {
+                $(obj).parents('.list-block-gw').find('.text').remove();
+            }
+            catch (e) {
+
+            }
+
              $(obj).after(html);
         }
 
@@ -281,10 +287,50 @@ var dateDiff = function (timestamp) {
             data.cname = returnCitySN['cname']
             data.date = dateDiff(new Date().getTime())
             console.log(data)
-            var html="78"
+            var html=`
+             <div class="list-main">
+                            <div class="img-corner"><img src="http://0d077ef9e74d8.cdn.sohucs.com/c_zoom,w_200/fac494264beff70ed91fedf32783552b_default_1449555978993_jpg" alt=""></div>
+                            <div class="list-text">
+                                <div class="list-person clearfix"><div class="fl"><a href="">${data.user}</a> ${data.cname}</div> <p class="fr">${dateDiff(new Date().getTime())}</p></div>
+                                <p class="text-con">${data.conent}</p>
+                                <p class="fr"onclick="establish(this)">回复 </p>
+                            </div>
+                        </div>
+            `
              $('.list-block-gw').append(html)
         }
+        function masks(obj){
+            var val = $(obj).parent().find('textarea').val()
+            if (val.trim()==''||val==undefined){
+                alert('你没有填写')
+                return false
+            }
+            console.log(returnCitySN)
+            var data = new  Object()
+            data.id = $("input[name='hidden']").val()
+            data.conent = $(obj).prev().val()
+            data.user = 'admin'
+            data.cip = returnCitySN['cip']
+            data.cname = returnCitySN['cname']
+            data.date = dateDiff(new Date().getTime())
+            console.log(data)
+            var html=`
+              <div class="reply-list">
+                                    <div class="img-corner"><img src="http://0d077ef9e74d8.cdn.sohucs.com/c_zoom,w_200/fac494264beff70ed91fedf32783552b_default_1449555978993_jpg" alt=""></div>
+                                    <div class="list-text">
+                                        <div class="list-person clearfix">
+                                            <div class="fl"><a href="">${data.user}</a>回复<a href="">瓜婆娘</a> ${data.cname}</div> <p class="fr">${dateDiff(new Date().getTime())}</p>
+                                        </div>
+                                        <p class="text-con">${data.conent}</p>
+                                        <p class="fr"onclick="establish(this)">回复 </p>
 
+                                </div>
+
+                            </div>
+            `
+             $(obj).parents('.list-main>.list-text').append(html)
+            $('.text').remove()
+        }
 
         $(function() {
             var testEditormdView, testEditormdView2;

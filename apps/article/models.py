@@ -7,11 +7,17 @@ from django.db import models
 from apps.user.models import User
 # Create your models here.
 
+
 class Category_Article(models.Model):
+    """
+    分类
+    """
     name = models.CharField(max_length=100)
     add_time = models.DateTimeField(default=datetime.now)
 
+
 class Article_add(models.Model):
+    """文章"""
     id = models.UUIDField(default=uuid.uuid4,primary_key=True)
     authors = models.ForeignKey(User,on_delete=models.CASCADE)
     category = models.ForeignKey(Category_Article,on_delete=models.CASCADE)
@@ -28,7 +34,7 @@ class Article_Comment(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,verbose_name='用户')
     article =models.ForeignKey(Article_add,verbose_name='文章',on_delete=models.CASCADE)
     comments = models.TextField(verbose_name='评论')
-    aomments_id = models.ForeignKey('self',on_delete=models.SET_NULL,blank=True,null=True)
+    aomments_id = models.ForeignKey('self',on_delete=models.CASCADE,related_name='sub_cat',null=True,blank=True)
     add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
 
     def __str__(self):

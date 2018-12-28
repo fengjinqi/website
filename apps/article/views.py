@@ -3,17 +3,18 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse,Http404
 from django.views.decorators.csrf import csrf_exempt
 from PIL import Image
-from rest_framework import viewsets,mixins
+from rest_framework import viewsets, mixins, status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
 from apps.article.forms import Article_form
-from apps.article.serializers import ArticleSerializer
+from apps.article.serializers import ArticleSerializer, Article_CommentSerializer
 from apps.user.models import User, Follow
 from website import settings
 import os
 import random
-from .models import Article_add,Category_Article
+from .models import Article_add, Category_Article, Article_Comment
+
 
 def Article(request):
     article = Article_add.objects.all().order_by('-add_time')
@@ -153,22 +154,28 @@ class ArticleListView(viewsets.ReadOnlyModelViewSet):
     pagination_class = StandardResultsSetPagination
 
 
-
-
-
 class FollowListView(viewsets.ReadOnlyModelViewSet):
     queryset = Article_add.objects.all().order_by('-add_time')
     serializer_class = ArticleSerializer
     pagination_class = StandardResultsSetPagination
 
-
     def list(self, request, *args, **kwargs):
         print(Article_add.objects.filter(authors__follow__fan_id=self.request.user.id))
         queryset = Article_add.objects.filter(authors__follow__fan_id=self.request.user.id).order_by('-add_time')
-
         serializer = ArticleSerializer(queryset, many=True)
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
         return Response(serializer.data)
+
+
+class ArticleCommintView(mixins.CreateModelMixin,viewsets.GenericViewSet):
+    serializer_class = Article_CommentSerializer
+    queryset = Article_Comment.objects.all()
+    # def create(self, request, *args, **kwargs):
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     self.perform_create(serializer)
+    #     headers = self.get_success_headers(serializer.data)
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)

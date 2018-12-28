@@ -29,6 +29,7 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 router.register('article_list', views.ArticleListView)
 router.register('follow_list', views.FollowListView)
+router.register('article_Comment', views.ArticleCommintView)
 
 
 urlpatterns = [
