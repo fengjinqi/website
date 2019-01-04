@@ -18,25 +18,47 @@ class Category_ArticleSerializer(serializers.ModelSerializer):
         fields = ('name',)
 
 
-class Article_CommentSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+class Article_CommentSerializerAdd(serializers.ModelSerializer):
+
     class Meta:
         model = Article_Comment
         fields = '__all__'
 
 
 class Article_CommentSerializer1(serializers.ModelSerializer):
-    sub_cat = Article_CommentSerializer(many=True)
+
+    user = UserSerializer()
     class Meta:
         model = Article_Comment
         fields = '__all__'
 
 
+
+
+
+
+class Article_CommentSerializer(serializers.ModelSerializer):
+    # def to_representation(self, instance):
+    #     res=super().to_representation(instance=instance)
+    #     if res['aomments_id'] is None:
+    #         print(res)
+    #         return res
+    #     else:
+    #         print('ok')
+    #         pass
+    #         return
+    #sub_cat = Article_CommentSerializer1(many=True)
+    user = UserSerializer()
+    class Meta:
+        model = Article_Comment
+        fields = '__all__'
+
 class ArticleSerializer(serializers.ModelSerializer):
     authors = UserSerializer()
     category = Category_ArticleSerializer()
-    article_comment_set = Article_CommentSerializer1(many=True)
+    article_comment_set = Article_CommentSerializer(many=True)
     class Meta:
         model = Article_add
         fields = '__all__'
+
 

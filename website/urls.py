@@ -23,13 +23,14 @@ from django.views.generic import TemplateView
 
 from website import settings
 from apps.article import views
-from apps.user.views import logout_view
+from apps.user.views import logout_view,Person,PersonApi
 from rest_framework import routers
 
 router = routers.DefaultRouter()
 router.register('article_list', views.ArticleListView)
 router.register('follow_list', views.FollowListView)
 router.register('article_Comment', views.ArticleCommintView)
+router.register('PersonApi', PersonApi)
 
 
 urlpatterns = [
@@ -41,6 +42,7 @@ urlpatterns = [
     path('yan/',yan), # 这是生成验证码的图片
     path('index/',views.Article_list,name='home'),
     path('login/',include('apps.user.urls')),
+    path('person/',Person.as_view(),name='person'),
     path('logou/',logout_view,name='logou'),
     path('register/',TemplateView.as_view(template_name='pc/register.html')),
     path('article/',include('apps.article.urls')),

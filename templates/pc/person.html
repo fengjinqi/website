@@ -1,0 +1,179 @@
+{% extends 'pc/base.html' %}
+{% load static %}
+{% block title %}
+{{ request.user }}
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/person.css' %}" />
+{% endblock %}
+{% block content %}
+<section class="main clearfix">
+    <div class="person fl">
+        <div class="person_banner">
+        <div class="person_bannerbgd img_cover"></div>
+        <div class="person_nav">
+            <ul class="clearfix">
+                <li class="fl">
+                    <a href="">发布</a>
+                </li>
+                <li class="fl">
+                    <a href="">关注</a>
+                </li>
+                <li class="fl">
+                    <a href="">人脉</a>
+                </li>
+                <li class="fl">
+                    <a href="">资料</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+        <div class="clearfix">
+            <div class="fl left_nav">
+                <ul>
+                    <li>
+                        <a href="">全部</a>
+                    </li>
+                    <li>
+                        <a href="">原创</a>
+                    </li>
+                    <li>
+                        <a href="">转载</a>
+                    </li>
+                </ul>
+            </div>
+            <article class="fr">
+                 <div class="blogs">
+                     <div class="blogs_head" style="background: url(img/recommend.png)no-repeat 0 50%;">最新文章</div>
+                     <div>
+                         <div class="blogs_item">
+                             <div class="blogs_cont blogs_cont1">
+                                 <h3><span class="blogs_type">前端</span><a href="">Nginx 动静分离与负载均衡的实现</a></h3>
+                                     <div class="blogs_info clearfix">
+                                          <div class="img_animate fl ">
+                                              <div class="blogs_pic img_cover" style="background: url(img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg)no-repeat;"></div>
+                                          </div>
+                                          <div class="fl blogs_describe">
+                                              <p>不管是在学习中还是在工作中，都会使用到PDF文件，在很多的时候，大家都会使用到PDF文件，对于PDF文件的修改，
+            则是需要使用到PDF编辑软件的，那么，如何用PDF编辑工具拆分PDF文件呢，是不是有很多的小伙伴都想知道应该</p>
+                                          </div>
+                                          <div class="blogs_foot blogs_foot1">
+                                    <ul class="clearfix">
+                                        <li class="fl">
+                                             <a href="" class="clearfix">
+                                                 <span class="fl img_cover blogs_avatar" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></span>
+                                                 <span class="fl blogs_name">管理员</span>
+                                             </a>
+                                         </li>
+                                        <li class="fl blogs_time">发布于：2018-12-23 12:30:45</li>
+                                        <li class="fl blogs_view" style="background: url(img/public.png)no-repeat 0 50%;">9</li>
+                                        <li class="fl blogs_comment" style="background: url(img/public.png)no-repeat 0 50%;">2</li>
+                                    </ul>
+                                </div>
+                                     </div>
+                             </div>
+                         </div>
+                         <div class="blogs_item">
+                             <div class="blogs_cont blogs_cont1">
+                                 <h3><span class="blogs_type">前端</span><a href="">Nginx 动静分离与负载均衡的实现</a></h3>
+                                     <div class="blogs_info clearfix">
+                                          <div class="img_animate fl ">
+                                              <div class="blogs_pic img_cover" style="background: url(img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg)no-repeat;"></div>
+                                          </div>
+                                          <div class="fl blogs_describe">
+                                              <p>不管是在学习中还是在工作中，都会使用到PDF文件，在很多的时候，大家都会使用到PDF文件，对于PDF文件的修改，
+            则是需要使用到PDF编辑软件的，那么，如何用PDF编辑工具拆分PDF文件呢，是不是有很多的小伙伴都想知道应该</p>
+                                          </div>
+                                          <div class="blogs_foot blogs_foot1">
+                                    <ul class="clearfix">
+                                        <li class="fl">
+                                             <a href="" class="clearfix">
+                                                 <span class="fl img_cover blogs_avatar" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></span>
+                                                 <span class="fl blogs_name">管理员</span>
+                                             </a>
+                                         </li>
+                                        <li class="fl blogs_time">发布于：2018-12-23 12:30:45</li>
+                                        <li class="fl blogs_view" style="background: url(img/public.png)no-repeat 0 50%;">9</li>
+                                        <li class="fl blogs_comment" style="background: url(img/public.png)no-repeat 0 50%;">2</li>
+                                    </ul>
+                                </div>
+                                     </div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+            </article>
+        </div>
+    </div>
+    <aside class="fr">
+        <div class="aside_my">
+            <div class="aside_my_info">
+                <div style="text-align: center;">
+                    <div class="my_head img_cover"></div>
+                    <p style="margin:16px 0 4px 0">冯金琪</p>
+                    <p style="font-size: 12px;color: #999;">前端开发 | 3年</p>
+                </div>
+            </div>
+            <div class="aside_my_num flex_justify">
+               <div class="aside_my_div">
+                   <p>346</p>
+                   <p>关注</p>
+               </div>
+                <div class="aside_my_div">
+                    <p>346</p>
+                    <p>粉丝</p>
+                </div>
+            </div>
+        </div>
+        <div class="aside_pubnum">
+            <div class="flex_justify">
+               <div class="aside_my_div">
+                   <p><img src="img/public.png" alt=""></p>
+                   <p>写文章</p>
+               </div>
+                <div class="aside_my_div">
+                    <p><img src="img/public.png" alt=""></p>
+                    <p>提问</p>
+                </div>
+            </div>
+        </div>
+        <div class="aside_visit">
+            <div>
+                <div class="blogs_head" style="background: url(img/recommend.png)no-repeat 0 50%;">访客</div>
+                <div>
+                    <div class="visit_item">
+                         <div class="visit_head img_cover"></div>
+                        <div class="visit_info_text">
+                            <p>狙击手</p>
+                            <p class="vi_co">48分钟前</p>
+                        </div>
+                    </div>
+                     <div class="visit_item">
+                         <div class="visit_head img_cover"></div>
+                        <div class="visit_info_text">
+                            <p>狙击手</p>
+                            <p class="vi_co">48分钟前</p>
+                        </div>
+                    </div>
+                     <div class="visit_item">
+                         <div class="visit_head img_cover"></div>
+                        <div class="visit_info_text">
+                            <p>狙击手</p>
+                            <p class="vi_co">48分钟前</p>
+                        </div>
+                    </div>
+                     <div class="visit_item">
+                         <div class="visit_head img_cover"></div>
+                        <div class="visit_info_text">
+                            <p>狙击手</p>
+                            <p class="vi_co">48分钟前</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+</section>
+{% endblock %}
+

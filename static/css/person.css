@@ -1,0 +1,126 @@
+body{
+    background: #f7f7f7;
+}
+.person{
+    width: 1030px;
+}
+.person_banner{
+    width: 100%;
+    height: 240px;
+    background: #fff;
+    border: 1px solid #ddd;
+     -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+.person_bannerbgd{
+    width: 100%;
+    height: 196px;
+    background:#000;
+}
+.person_nav{
+    padding:0 16px;
+    line-height: 44px;
+    height: 44px;
+}
+.person_nav>ul>li{
+    margin-right: 40px;
+    color: #666;
+}
+.person_nav>ul>li:hover a{
+    color: #356dd0;
+}
+aside{
+    width: 150px;
+}
+.left_nav{
+    width: 130px;
+    margin-top: 20px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+}
+.left_nav>ul>li{
+    border-bottom: 1px solid #ececec;
+    cursor: pointer;
+    height: 32px;
+    line-height: 32px;
+    background: #fff;
+    padding:0 16px;
+}
+.left_nav>ul>li>a{
+    width: 100%;
+}
+.left_nav>ul>li:hover{
+    background: #356dd0;
+}
+.left_nav>ul>li:hover a{
+    color: #fff;
+}
+.aside_my,.aside_pubnum,.aside_visit{
+    background: #fff;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    border: 1px solid #ececec;
+}
+.aside_my_info{
+    height: 196px;
+}
+.aside_my_info>div{
+    padding:16px;
+}
+.my_head{
+    width: 103px;
+    height: 103px;
+    background: #000;
+    margin:0 auto;
+}
+.aside_my_num{
+    height: 44px;
+    width: 100%;
+    border-top: 1px solid #ddd;
+}
+.aside_my_div{
+    text-align: center;
+     width: 50%;
+    font-size: 12px;
+    margin-top: 4px;
+}
+.aside_pubnum{
+    height: 60px;
+    margin-top: 20px;
+    border: 1px solid #ddd;
+}
+.aside_pubnum .aside_my_div{
+    font-size: 14px;
+    margin-top: 14px;
+}
+.aside_visit{
+    border: 1px solid #ddd;
+    padding:0 16px;
+    margin-top: 20px;
+}
+.visit_item{
+    position: relative;
+    margin-top: 10px;
+}
+.visit_head{
+    width: 52px;
+    height: 52px;
+    position: absolute;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    background: #000;
+}
+.visit_info_text{
+    padding-left: 60px;
+    font-size: 12px;
+    height: 52px;
+    padding-top: 10px;
+}
+.vi_co{
+    color: #999;
+}

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'apps.article.apps.ArticleConfig',
     'apps.article.templatetags',
     'rest_framework',
+    'django_filters',
     'captcha'
 ]
 #邮箱登录配置
@@ -140,10 +141,16 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 #drf
-# REST_FRAMEWORK = {
-#     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-#     'PAGE_SIZE': 2
-# }
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 4,
+    # 'DEFAULT_AUTHENTICATION_CLASSES': (
+    #     #'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    #     'rest_framework.authentication.BasicAuthentication',
+    #     'rest_framework.authentication.SessionAuthentication',
+    #     #'rest_framework.authentication.TokenAuthentication',#全局配置token
+    # )
+}
 
 
 # Internationalization

@@ -68,17 +68,39 @@
                     <div class="list-block-gw">
                         <p class="newest">最新评论</p>
 
-                        <div class="list-main">
+                    {% for foo in article.article_comment_set.all %}
+                        {% if foo.aomments_id_id is None %}
+                            <div class="list-main">
                             <div class="img-corner"><img src="http://0d077ef9e74d8.cdn.sohucs.com/c_zoom,w_200/fac494264beff70ed91fedf32783552b_default_1449555978993_jpg" alt=""></div>
                             <div class="list-text">
-                                <div class="list-person clearfix"><div class="fl"><a href="">瓜婆娘</a> 四川省成都市</div> <p class="fr">2018:12:12</p></div>
-                                <p class="text-con">SystemError: error return without exception set
-[27/Dec/2018 13:50:50] "GET /static/css/article_detail.css HTTP/1.1" 200 2798
-[27/Dec/2018 13:50:50] "GET /static/js/swiper.min.js.map HTTP/1.1" 404 1684
-Exception ignored in: < generator object get_finders at 0x00000225996E6A98></p>
+                                <div class="list-person clearfix"><div class="fl"><a href="">{{ foo.user.username }}</a> 四川省成都市</div> <p class="fr">{{ foo.add_time }}</p></div>
+                                <p class="text-con">{{ foo.comments }}</p>
                                 <p class="fr"onclick="establish(this)">回复 </p>
+                                {% for childer in foo.sub_cat.all %}
+                                     <div class="reply-list">
+                                    <div class="img-corner"><img src="http://0d077ef9e74d8.cdn.sohucs.com/c_zoom,w_200/fac494264beff70ed91fedf32783552b_default_1449555978993_jpg" alt=""></div>
+                                    <div class="list-text">
+                                        <div class="list-person clearfix">
+                                            <div class="fl"><a href="">{{ childer.user.username }}</a>回复<a href="">{{ foo.user.username  }}</a> 四川省成都市</div> <p class="fr">{{ childer.add_time }}</p>
+                                        </div>
+                                        <p class="text-con">{{ childer.comments }}</p>
+                                        <p class="fr"onclick="establish(this)">回复 </p>
+
+                                </div>
+
+                            </div>
+                                {% endfor %}
+
+
+                                
                             </div>
                         </div>
+                        {% endif %}
+
+                    {% endfor %}
+
+
+
                         <div class="list-main">
                             <div class="img-corner">
                                 <img src="http://0d077ef9e74d8.cdn.sohucs.com/c_zoom,w_200/fac494264beff70ed91fedf32783552b_default_1449555978993_jpg" alt="">

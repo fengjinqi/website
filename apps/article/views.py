@@ -3,12 +3,15 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse,Http404
 from django.views.decorators.csrf import csrf_exempt
 from PIL import Image
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, mixins, status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
+from apps.article.filter import GoodsFilter
 from apps.article.forms import Article_form
-from apps.article.serializers import ArticleSerializer, Article_CommentSerializer
+from apps.article.serializers import ArticleSerializer, Article_CommentSerializer, Article_CommentSerializer1, \
+    Article_CommentSerializerAdd
 from apps.user.models import User, Follow
 from website import settings
 import os
@@ -153,8 +156,35 @@ class ArticleListView(viewsets.ReadOnlyModelViewSet):
     serializer_class = ArticleSerializer
     pagination_class = StandardResultsSetPagination
 
+    def list(self, request, *args, **kwargs):
+        queryset = Article_add.objects.all()
+        serializer = ArticleSerializer(queryset, many=True)
+        json_list = []
+        article_comment_set = []
+        for item in serializer.data:
+            json_dict = {}
+            # json_dict['id'] =item['id']
+            # json_dict['authors']= item['authors']
+            # json_dict['category']= item['category']
+            # json_dict['title']= item['title']
+            # json_dict['keywords']= item['keywords']
+            # json_dict['desc']= item['desc']
+            # json_dict['list_pic']= item['list_pic']
+            # json_dict['content']= item['content']
+            # json_dict['click_nums']= item['click_nums']
+            json_dict['article_comment_set']= item['article_comment_set']
+            json_list.append(json_dict)
+            for set in item['article_comment_set']:
+                if set['aomments_id'] is not None:
+                    print(set)
+        #print(json_list)
+        return Response(serializer.data)
+
 
 class FollowListView(viewsets.ReadOnlyModelViewSet):
+    """
+    TODO 我关注的文章
+    """
     queryset = Article_add.objects.all().order_by('-add_time')
     serializer_class = ArticleSerializer
     pagination_class = StandardResultsSetPagination
@@ -171,7 +201,7 @@ class FollowListView(viewsets.ReadOnlyModelViewSet):
 
 
 class ArticleCommintView(mixins.CreateModelMixin,viewsets.GenericViewSet):
-    serializer_class = Article_CommentSerializer
+    serializer_class = Article_CommentSerializerAdd
     queryset = Article_Comment.objects.all()
     # def create(self, request, *args, **kwargs):
     #     serializer = self.get_serializer(data=request.data)

@@ -44,7 +44,7 @@
                     <li class="fl avatar">
                         <a class="img_cover" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></a>
                         <ul class="meau meau_hide">
-                            <li><a href="">个人中心</a></li>
+                            <li><a href="{% url 'person' %}">个人中心</a></li>
                             {% if user.is_staff  %}
                                 <li><a href="">系统管理</a></li>
                             {% endif %}

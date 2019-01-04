@@ -13,10 +13,16 @@ from django.shortcuts import render, redirect,reverse
 from django.contrib.auth.views import method_decorator,login_required
 from django.views.decorators.http import require_http_methods
 from django.views.generic.base import View
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
 
+from apps.article.models import Article_add
+from apps.article.serializers import ArticleSerializer
+from apps.uitls.permissions import IsOwnerOrReadOnly
 from apps.user.models import User, Follow
 from .forms import CaptchaTestForm, LoginForms, Follow_Forms
-
+from rest_framework import viewsets, mixins, status, permissions
+from rest_framework.pagination import PageNumberPagination
 
 def test(request):
     form = CaptchaTestForm()
@@ -116,3 +122,25 @@ class Author(View):
                     follow.save()
                     return JsonResponse({'status':200,'message':'成功关注'})
         return JsonResponse({"status":302,"message":"未登录"})
+
+
+"""个人中心"""
+class Person(View):
+    @method_decorator(login_required(login_url='/login'))
+    def get(self,request):
+        print(request)
+        return render(request,'pc/person.html')
+
+
+
+
+
+class PersonApi(viewsets.ReadOnlyModelViewSet):
+
+    queryset = Article_add.objects.all()
+    serializer_class = ArticleSerializer
+    permission_classes = (IsAuthenticated,IsOwnerOrReadOnly)#未登录禁止访问
+
+    authentication_classes = (SessionAuthentication,)
+    def get_queryset(self):
+        return Article_add.objects.filter(authors_id=self.request.user.id)
