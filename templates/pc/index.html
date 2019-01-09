@@ -1,9 +1,12 @@
 {% extends 'pc/base.html' %}
 {% load static %}
+{% load i18n %}
 <title>{% block title %}
     首页
 {% endblock %}</title>
 {% block css %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/public.css' %}">
 <link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">
 <link rel="stylesheet" href="{% static 'css/index.css' %}">
 {% endblock %}
@@ -38,7 +41,7 @@
                  </ul>
              </div>
              <div>
-                 {% for articles in article %}
+                 {% for articles in article.object_list %}
                     <div class="blogs_item">
                      <div class="blogs_cont blogs_cont1">
                          <h3><span class="blogs_type">{{ articles.category.name }}</span><a href="{% url 'article:detail' articles.id %}">{{ articles.title }}</a></h3>
@@ -57,13 +60,25 @@
                             <ul class="clearfix">
                                 <li class="fl">
                                      <a href="" class="clearfix">
-                                         <span class="fl img_cover blogs_avatar" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></span>
+                                         <span class="fl img_cover blogs_avatar" style="background: url(
+                                         {% if articles.authors.user_imag%}
+                            {{ MEDIA_URL }}{{ articles.authors.user_imag }}
+                            {% else %}
+                            http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg
+                        {% endif %})no-repeat"></span>
                                          <span class="fl blogs_name">{{ articles.authors.username }}</span>
                                      </a>
                                  </li>
                                 <li class="fl blogs_time">发布于：{{ articles.add_time }}</li>
                                 <li class="fl blogs_view" style="background: url({% static 'img/eye.png' %})no-repeat 0 50%;"> {{ articles.click_nums }}</li>
-                                <li class="fl blogs_comment" style="background: url({% static 'img/comment.png' %})no-repeat 0 50%;"> {{ articles.click_nums }}</li>
+                                <li class="fl blogs_comment" style="background: url({% static 'img/comment.png' %})no-repeat 0 50%;">
+{#                                {{ articles.get_number }}#}
+
+                                  {{ articles.get_number }}
+
+
+
+                                    </li>
                             </ul>
                         </div>
                              </div>
@@ -72,7 +87,38 @@
                  {% endfor %}
              </div>
          </div>
+       <div class="pageturn">
+                        <ul class="pagination">
+                        <li><a href="/index">首页</a></li>
+                        {% if article.has_previous %}
+                             <li class="long"><a href="?{{ article.previous_page_number.querystring }}" class="prev">上一页</a></li>
+                            {% else %}
+                                <li class="long"><span class="disabled prev btn"disabled="">上一页</span></li>
+                            {% endif %}
+                            {% for page in article.pages %}
 
+                                  {% if page %}
+                                    {% ifequal page article.number %}
+                                       <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                                    {% else %}
+                                        <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
+                                    {% endifequal %}
+                                  {% else %}
+                                     <li><span class="disabled  btn" disabled="">...</span></li>
+                                  {% endif %}
+
+
+                            {% endfor %}
+                            {% if article.has_next %}
+                                 <li class="long"><a href="?{{ article.next_page_number.querystring }}" class="next"> 下一页</a></li>
+                            {% else %}
+                                <li class="long"><span class="disabled next btn"disabled=""> 下一页</span></li>
+                            {% endif %}
+                        <li><a href="?page={{ article.paginator.num_pages }}">尾页</a></li>
+                        <li>跳转到<input type="text"class="form-control" name="page"></li>
+                        </ul>
+       当前{{ article.number }}/总共{{ article.paginator.num_pages }}页
+                     </div>
     </article>
 
     <aside class="fr">
@@ -100,6 +146,7 @@
             <div class="blogs_head" style="background: url(img/public.png)no-repeat 0 50%;">热门牛人<a class="fr change">更多</a></div>
             <div>
                 {% for foo in count %}
+                    {{ foo }}
                     <div class="aside_goodperson_item clearfix">
                     <div class="fl aside_goodperson_item_num">{{ forloop.counter }}</div>
                     <div class="fl aside_goodperson_item_user">
@@ -161,10 +208,32 @@
                 console.log(data)
             },
             error:function (err) {
-
             }
         })
     })
+    $("input[name='page']").blur(function () {
+        if($(this).val()==""){
+            return false
+        }else{
+        window.location.href='/index?page='+$(this).val()}
+    })
+
+     $(window).scroll(function(){
+      var page = 1;
+      totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());
+       if($(document).height() <= totalheight){
+           page++;
+           $.ajax({
+            url:'/api/article_list/?page='+page,
+            type:'get',
+            dataType:'json',
+            success:function(result){
+              console.log(result)
+            }
+           });
+      //     alert("到底部了");
+       }
+  });
 
     function flollw (obj){
         console.log($(obj).attr('data-actions-icnt'))
@@ -182,6 +251,8 @@
                         _self.html('已关注')
                     }else if(data.status==200 && data.message=='已取消关注'){
                         _self.html('关注')
+                    }else if(data.status==302&&data.message=='未登录'){
+                        window.location.href='/login'
                     }
                     console.log(data)
                 },

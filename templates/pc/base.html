@@ -42,7 +42,11 @@
                 <li class="fl style" style="background: url({% static 'img/phone.png' %})no-repeat 0 50%;"><a href="">手机阅读</a></li>
                 {% if request.user.is_authenticated %}
                     <li class="fl avatar">
-                        <a class="img_cover" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></a>
+                        <a class="img_cover" style="background: url({% if request.user.user_imag %}
+                            {{ MEDIA_URL }}{{ request.user.user_imag  }}
+                            {% else %}
+                            http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg
+                        {% endif %})no-repeat"></a>
                         <ul class="meau meau_hide">
                             <li><a href="{% url 'person' %}">个人中心</a></li>
                             {% if user.is_staff  %}
@@ -67,7 +71,7 @@
                     <a href="http://www.miitbeian.gov.cn" target="_blank">蜀ICP备18023241号-1</a>
     </p>
 </footer>
-
+<a href="javascript:;" id="toTop"></a>
 <script>
     $(function(){
         $('.avatar').click(function(event){
@@ -77,6 +81,22 @@
         $(document).click(function(){
             $(".meau").fadeOut();
             });
+         $(window).scroll(function(){
+                if ($(window).scrollTop()>100){
+                    $("#toTop").fadeIn(1500);
+                }
+                else
+                {
+                    $("#toTop").fadeOut(1000);
+                }
+            });
+            //当点击跳转链接后，回到页面顶部位置
+            $("#toTop").click(function(){
+                $('body,html').animate({scrollTop:0},1000);
+                return false;
+            });
+
+
     })
 </script>
 {% block js %}

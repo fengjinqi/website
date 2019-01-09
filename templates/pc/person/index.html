@@ -45,9 +45,10 @@
             </div>
             <article class="fr">
                  <div class="blogs">
-                     <div class="blogs_head" style="background: url(img/recommend.png)no-repeat 0 50%;">最新文章</div>
-                     <div>
-                         <div class="blogs_item">
+                     <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">最新文章</div>
+                     <div id="mains">
+
+                      {% comment %}   <div class="blogs_item">
                              <div class="blogs_cont blogs_cont1">
                                  <h3><span class="blogs_type">前端</span><a href="">Nginx 动静分离与负载均衡的实现</a></h3>
                                      <div class="blogs_info clearfix">
@@ -100,7 +101,7 @@
                                 </div>
                                      </div>
                              </div>
-                         </div>
+                         </div>{% endcomment %}
                      </div>
                  </div>
             </article>
@@ -176,4 +177,65 @@
     </aside>
 </section>
 {% endblock %}
+{% block js %}
+    <script>
+        $(function () {
+            $.ajax({
+                url:'/api/PersonApi/',
+                type:'get',
+                beforeSend:function(){
+                    $("#mains").append("<p class='loading'><img src='/static/img/5-121204193R0-50.gif'></p>")
+                },
+                success:function (data) {
+                    $('.loading').remove()
+                    var html =''
+                    n=[]
+                    for(var i=0;i<data.results.length;i++){
+                        var currentItem = data.results[i];
+                        currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:'/static/img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'
 
+                        n.push(currentItem.article_comment_set.length);
+                        for(var j=0,len=currentItem.article_comment_set.length;j<len;j++){
+                            var currentChildItem = currentItem.article_comment_set[j];
+                            n[i] += currentChildItem.articlecommentreply_set.length;
+                        }
+
+
+                        html+=" <div class=\"blogs_item\">\n" +
+                            "                             <div class=\"blogs_cont blogs_cont1\">\n" +
+                            "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/article_detail/"+data.results[i].id+"\">"+data.results[i].title+"</a></h3>\n" +
+                            "                                     <div class=\"blogs_info clearfix\">\n" +
+                            "                                          <div class=\"img_animate fl \">\n" +
+                            "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+data.results[i].list_pic+"')no-repeat;\"></div>\n" +
+                            "                                          </div>\n" +
+                            "                                          <div class=\"fl blogs_describe\">\n" +
+                            "                                              <p>"+data.results[i].keywords+"</p>\n" +
+                            "                                          </div>\n" +
+                            "                                          <div class=\"blogs_foot blogs_foot1\">\n" +
+                            "                                    <ul class=\"clearfix\">\n" +
+                            "                                        <li class=\"fl\">\n" +
+                            "                                             <a href=\"\" class=\"clearfix\">\n" +
+                            "                                                 <span class=\"fl img_cover blogs_avatar\" style=\"background: url('"+data.results[i].authors.user_imag+"')no-repeat\"></span>\n" +
+                            "                                                 <span class=\"fl blogs_name\">"+data.results[i].authors.username+"</span>\n" +
+                            "                                             </a>\n" +
+                            "                                         </li>\n" +
+                            "                                        <li class=\"fl blogs_time\">发布于:"+data.results[i].add_time+"</li>\n" +
+                            "                                        <li class=\"fl blogs_view\" style=\"background: url(/static/img/eye.png)no-repeat 0 50%;\">"+data.results[i].click_nums+"</li>\n" +
+                            "                                        <li class=\"fl blogs_comment\" style=\"background: url(/static/img/comment.png)no-repeat 0 50%;\">"+n[i]+"</li>\n" +
+                            "                                    </ul>\n" +
+                            "                                </div>\n" +
+                            "                                     </div>\n" +
+                            "                             </div>\n" +
+                            "                         </div>"
+                    }
+                    $("#mains").append(html)
+                    console.log(data)
+                },
+                error:function () {
+                    alert('加载失败')
+                }
+            })
+        })
+
+    </script>
+{% endblock %}

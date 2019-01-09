@@ -10,14 +10,14 @@ from rest_framework.response import Response
 
 from apps.article.filter import GoodsFilter
 from apps.article.forms import Article_form
-from apps.article.serializers import ArticleSerializer, Article_CommentSerializer, Article_CommentSerializer1, \
-    Article_CommentSerializerAdd
+from apps.article.serializers import ArticleSerializer, Article_CommentSerializer, ArticleCommentReply ,\
+    Article_CommentSerializerAdd, ArticleCommentReplySerializer
 from apps.user.models import User, Follow
 from website import settings
 import os
 import random
 from .models import Article_add, Category_Article, Article_Comment
-
+from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
 def Article(request):
     article = Article_add.objects.all().order_by('-add_time')
@@ -65,16 +65,20 @@ def Article_list(request):
     :param request:
     :return:
     """
-
-
-
-
-
     article=Article_add.objects.all().order_by('-add_time')
     popular = Article_add.objects.all().order_by('click_nums')[:5]
-    user = User.objects.all().order_by('-follow')
-
-    return render(request, 'pc/index.html', {'article':article,'popular':popular,'count':user})
+    user = User.objects.all()
+    print(user)
+    try:
+        page = request.GET.get('page', 1)
+        if page == '':
+            page = 1
+    except PageNotAnInteger:
+        page = 1
+    # Provide Paginator with the request object for complete querystring generation
+    p = Paginator(article,2,request=request)
+    people = p.page(page)
+    return render(request, 'pc/index.html', {'article':people,'popular':popular,'count':user})
 
 
 
@@ -156,30 +160,6 @@ class ArticleListView(viewsets.ReadOnlyModelViewSet):
     serializer_class = ArticleSerializer
     pagination_class = StandardResultsSetPagination
 
-    def list(self, request, *args, **kwargs):
-        queryset = Article_add.objects.all()
-        serializer = ArticleSerializer(queryset, many=True)
-        json_list = []
-        article_comment_set = []
-        for item in serializer.data:
-            json_dict = {}
-            # json_dict['id'] =item['id']
-            # json_dict['authors']= item['authors']
-            # json_dict['category']= item['category']
-            # json_dict['title']= item['title']
-            # json_dict['keywords']= item['keywords']
-            # json_dict['desc']= item['desc']
-            # json_dict['list_pic']= item['list_pic']
-            # json_dict['content']= item['content']
-            # json_dict['click_nums']= item['click_nums']
-            json_dict['article_comment_set']= item['article_comment_set']
-            json_list.append(json_dict)
-            for set in item['article_comment_set']:
-                if set['aomments_id'] is not None:
-                    print(set)
-        #print(json_list)
-        return Response(serializer.data)
-
 
 class FollowListView(viewsets.ReadOnlyModelViewSet):
     """
@@ -190,7 +170,7 @@ class FollowListView(viewsets.ReadOnlyModelViewSet):
     pagination_class = StandardResultsSetPagination
 
     def list(self, request, *args, **kwargs):
-        print(Article_add.objects.filter(authors__follow__fan_id=self.request.user.id))
+
         queryset = Article_add.objects.filter(authors__follow__fan_id=self.request.user.id).order_by('-add_time')
         serializer = ArticleSerializer(queryset, many=True)
         page = self.paginate_queryset(queryset)
@@ -209,3 +189,10 @@ class ArticleCommintView(mixins.CreateModelMixin,viewsets.GenericViewSet):
     #     self.perform_create(serializer)
     #     headers = self.get_success_headers(serializer.data)
     #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+
+class ArticleCommentReplyView(mixins.CreateModelMixin,viewsets.GenericViewSet):
+    serializer_class = ArticleCommentReplySerializer
+    queryset = ArticleCommentReply.objects.all()
+

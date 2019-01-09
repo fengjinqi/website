@@ -41,14 +41,21 @@ INSTALLED_APPS = [
     'apps.article.apps.ArticleConfig',
     'apps.article.templatetags',
     'rest_framework',
+    'pure_pagination',
     'django_filters',
     'captcha'
 ]
+
 #邮箱登录配置
 AUTHENTICATION_BACKENDS=(
     'apps.user.views.CustomBackend',
 )
+PAGINATION_SETTINGS = {
+    'PAGE_RANGE_DISPLAYED': 1,
+    'MARGIN_PAGES_DISPLAYED': 2,
 
+    'SHOW_FIRST_PAGE_WHEN_INVALID': True,
+}
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

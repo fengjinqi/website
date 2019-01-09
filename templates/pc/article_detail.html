@@ -61,92 +61,98 @@
                         </ul>
                         <div class="cmt-list-border"></div>
                         <div class="cmt-list-number">
-                            <span class="comment-number">
-                                <span class="cy-number">3</span>人参与,<span class="cy-number">3</span>条评论</span>
+{#                            <span class="comment-number">#}
+{#                                <span class="cy-number">3</span>人参与,<span class="cy-number">{{ article.article_comment_set.all.count }}</span>条评论</span>#}
                         </div>
                     </div>
                     <div class="list-block-gw">
                         <p class="newest">最新评论</p>
 
                     {% for foo in article.article_comment_set.all %}
-                        {% if foo.aomments_id_id is None %}
-                            <div class="list-main">
-                            <div class="img-corner"><img src="http://0d077ef9e74d8.cdn.sohucs.com/c_zoom,w_200/fac494264beff70ed91fedf32783552b_default_1449555978993_jpg" alt=""></div>
+
+                        <div class="list-main">
+                            <div class="img-corner"><img src="{% if foo.user.user_imag %}
+                                {{ MEDIA_URL }}{{  foo.user.user_imag}}
+                                {% else %}
+                                http://0d077ef9e74d8.cdn.sohucs.com/c_zoom,w_200/fac494264beff70ed91fedf32783552b_default_1449555978993_jpg
+                            {% endif %}" alt=""></div>
                             <div class="list-text">
-                                <div class="list-person clearfix"><div class="fl"><a href="">{{ foo.user.username }}</a> 四川省成都市</div> <p class="fr">{{ foo.add_time }}</p></div>
+                                <div class="list-person clearfix"><div class="fl" data-id="{{ foo.user.id }}"><a href="">{{ foo.user.username }}</a> {{ foo.address }}</div> <p class="fr">{{ foo.add_time }}</p></div>
                                 <p class="text-con">{{ foo.comments }}</p>
-                                <p class="fr"onclick="establish(this)">回复 </p>
-                                {% for childer in foo.sub_cat.all %}
-                                     <div class="reply-list">
-                                    <div class="img-corner"><img src="http://0d077ef9e74d8.cdn.sohucs.com/c_zoom,w_200/fac494264beff70ed91fedf32783552b_default_1449555978993_jpg" alt=""></div>
+                                <p class="fr to" onclick="establish(this)" data-id="{{ foo.id }}">回复 </p>
+                                {% for childr in foo.articlecommentreply_set.all %}
+                                    <div class="reply-list">
+                                    <div class="img-corner"><img src="
+                                    {% if childr.user.user_imag %}
+                                        {{ MEDIA_URL }}{{ childr.user.user_imag }}
+                                        {% else %}
+                                                            http://0d077ef9e74d8.cdn.sohucs.com/c_zoom,w_200/fac494264beff70ed91fedf32783552b_default_1449555978993_jpg
+                                    {% endif %}
+
+                            " alt="" ></div>
                                     <div class="list-text">
                                         <div class="list-person clearfix">
-                                            <div class="fl"><a href="">{{ childer.user.username }}</a>回复<a href="">{{ foo.user.username  }}</a> 四川省成都市</div> <p class="fr">{{ childer.add_time }}</p>
+                                            <div class="fl"data-id="{{ childr.user.id }}"><a href="">{{ childr.user.username }}</a>回复<a href="">{{ childr.to_uids.username }}</a> {{ foo.address }}</div> <p class="fr">{{ childr.add_time }}</p>
                                         </div>
-                                        <p class="text-con">{{ childer.comments }}</p>
-                                        <p class="fr"onclick="establish(this)">回复 </p>
-
+                                        <p class="text-con">{{ childr.comments}}</p>
+                                        <p class="fr to" onclick="establish(this)" data-id="{{ foo.id }}">回复 </p>
                                 </div>
-
                             </div>
                                 {% endfor %}
-
-
-                                
                             </div>
                         </div>
-                        {% endif %}
-
+                        {% empty %}
+                        暂无评论。。
                     {% endfor %}
 
 
 
-                        <div class="list-main">
-                            <div class="img-corner">
-                                <img src="http://0d077ef9e74d8.cdn.sohucs.com/c_zoom,w_200/fac494264beff70ed91fedf32783552b_default_1449555978993_jpg" alt="">
-                            </div>
-                            <div class="list-text">
-                                <div class="list-person clearfix">
-                                    <div class="fl"><a href="">瓜婆娘1</a> 四川省成都市</div> <p class="fr">2018:12:12</p>
-                                </div>
-                                <p class="text-con">SystemError: error return without exception set
-[27/Dec/2018 13:50:50] "GET /static/css/article_detail.css HTTP/1.1" 200 2798
-[27/Dec/2018 13:50:50] "GET /static/js/swiper.min.js.map HTTP/1.1" 404 1684
-Exception ignored in: < generator object get_finders at 0x00000225996E6A98></p>
-                                <p class="fr"onclick="establish(this)">回复 </p>
-                                <div class="reply-list">
-                                    <div class="img-corner"><img src="http://0d077ef9e74d8.cdn.sohucs.com/c_zoom,w_200/fac494264beff70ed91fedf32783552b_default_1449555978993_jpg" alt=""></div>
-                                    <div class="list-text">
-                                        <div class="list-person clearfix">
-                                            <div class="fl"><a href="">二老婆</a>回复<a href="">瓜婆娘</a> 四川省成都市</div> <p class="fr">2018:12:12</p>
-                                        </div>
-                                        <p class="text-con">SystemError: error return without exception set
-        [27/Dec/2018 13:50:50] "GET /static/css/article_detail.css HTTP/1.1" 200 2798
-        [27/Dec/2018 13:50:50] "GET /static/js/swiper.min.js.map HTTP/1.1" 404 1684
-        Exception ignored in: &lt; generator object get_finders at 0x00000225996E6A98&gt;</p>
-                                        <p class="fr"onclick="establish(this)">回复 </p>
-
-                                </div>
-
-                            </div>
-                                 <div class="reply-list">
-                                    <div class="img-corner"><img src="http://0d077ef9e74d8.cdn.sohucs.com/c_zoom,w_200/fac494264beff70ed91fedf32783552b_default_1449555978993_jpg" alt=""></div>
-                                    <div class="list-text">
-                                        <div class="list-person clearfix">
-                                            <div class="fl"><a href="">三老婆</a>回复<a href="">二老婆</a> 四川省成都市</div> <p class="fr">2018:12:12</p>
-                                        </div>
-                                        <p class="text-con">SystemError: error return without exception set
-        [27/Dec/2018 13:50:50] "GET /static/css/article_detail.css HTTP/1.1" 200 2798
-        [27/Dec/2018 13:50:50] "GET /static/js/swiper.min.js.map HTTP/1.1" 404 1684
-        Exception ignored in: &lt; generator object get_finders at 0x00000225996E6A98&gt;</p>
-                                        <p class="fr"onclick="establish(this)">回复 </p>
-
-
-                                </div>
-
-                            </div>
-                        </div>
-                        </div>
+{#                        <div class="list-main">#}
+{#                            <div class="img-corner">#}
+{#                                <img src="http://0d077ef9e74d8.cdn.sohucs.com/c_zoom,w_200/fac494264beff70ed91fedf32783552b_default_1449555978993_jpg" alt="">#}
+{#                            </div>#}
+{#                            <div class="list-text">#}
+{#                                <div class="list-person clearfix">#}
+{#                                    <div class="fl"><a href="">瓜婆娘1</a> 四川省成都市</div> <p class="fr">2018:12:12</p>#}
+{#                                </div>#}
+{#                                <p class="text-con">SystemError: error return without exception set#}
+{#[27/Dec/2018 13:50:50] "GET /static/css/article_detail.css HTTP/1.1" 200 2798#}
+{#[27/Dec/2018 13:50:50] "GET /static/js/swiper.min.js.map HTTP/1.1" 404 1684#}
+{#Exception ignored in: < generator object get_finders at 0x00000225996E6A98></p>#}
+{#                                <p class="fr"onclick="establish(this)">回复 </p>#}
+{#                                <div class="reply-list">#}
+{#                                    <div class="img-corner"><img src="http://0d077ef9e74d8.cdn.sohucs.com/c_zoom,w_200/fac494264beff70ed91fedf32783552b_default_1449555978993_jpg" alt=""></div>#}
+{#                                    <div class="list-text">#}
+{#                                        <div class="list-person clearfix">#}
+{#                                            <div class="fl"><a href="">二老婆</a>回复<a href="">瓜婆娘</a> 四川省成都市</div> <p class="fr">2018:12:12</p>#}
+{#                                        </div>#}
+{#                                        <p class="text-con">SystemError: error return without exception set#}
+{#        [27/Dec/2018 13:50:50] "GET /static/css/article_detail.css HTTP/1.1" 200 2798#}
+{#        [27/Dec/2018 13:50:50] "GET /static/js/swiper.min.js.map HTTP/1.1" 404 1684#}
+{#        Exception ignored in: &lt; generator object get_finders at 0x00000225996E6A98&gt;</p>#}
+{#                                        <p class="fr"onclick="establish(this)">回复 </p>#}
+{##}
+{#                                </div>#}
+{##}
+{#                            </div>#}
+{#                                 <div class="reply-list">#}
+{#                                    <div class="img-corner"><img src="http://0d077ef9e74d8.cdn.sohucs.com/c_zoom,w_200/fac494264beff70ed91fedf32783552b_default_1449555978993_jpg" alt=""></div>#}
+{#                                    <div class="list-text">#}
+{#                                        <div class="list-person clearfix">#}
+{#                                            <div class="fl"><a href="">三老婆</a>回复<a href="">二老婆</a> 四川省成都市</div> <p class="fr">2018:12:12</p>#}
+{#                                        </div>#}
+{#                                        <p class="text-con">SystemError: error return without exception set#}
+{#        [27/Dec/2018 13:50:50] "GET /static/css/article_detail.css HTTP/1.1" 200 2798#}
+{#        [27/Dec/2018 13:50:50] "GET /static/js/swiper.min.js.map HTTP/1.1" 404 1684#}
+{#        Exception ignored in: &lt; generator object get_finders at 0x00000225996E6A98&gt;</p>#}
+{#                                        <p class="fr"onclick="establish(this)">回复 </p>#}
+{##}
+{##}
+{#                                </div>#}
+{##}
+{#                            </div>#}
+{#                        </div>#}
+{#                        </div>#}
                     </div>
 
 
@@ -155,8 +161,6 @@ Exception ignored in: < generator object get_finders at 0x00000225996E6A98></p>
             </div>
 
 
-        <!--PC版-->
-       {% comment %} <div id="SOHUCS" sid="{{ id }}"></div>{% endcomment %}
 
         </article>
     <aside class="fr">
@@ -168,129 +172,19 @@ Exception ignored in: < generator object get_finders at 0x00000225996E6A98></p>
 
 {% block js %}
     <script src="{% static 'js/index.js' %}"></script>
-    <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js" ></script>
+    <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
-    <script type="text/javascript">
-    window.changyan.api.config({
-    appid: 'cytT09Foc',
-    conf: 'prod_f9829a64fc745ac7cd388e82766dd0d0'
-    });
-    </script>
+
 
     <script>
-    function getPastHalfYear() {
-    // 先获取当前时间
-    var curDate = (new Date()).getTime();
-    // 将半年的时间单位换算成毫秒
-    var halfYear = 365 / 2 * 24 * 3600 * 1000;
-    var pastResult = curDate - halfYear;  // 半年前的时间（毫秒单位）
 
-    // 日期函数，定义起点为半年前
-    var pastDate = new Date(),
-        pastYear = pastDate.getFullYear(),
-        pastMonth = pastDate.getMonth() + 1,
-        pastDay = pastDate.getDate(),
-		pastH=pastDate.getHours(),
-		pastM=pastDate.getMinutes(),
-		pastS=pastDate.getSeconds();
-
-    return pastYear + '年' + pastMonth + '月' + pastDay+'日 '+pastH+':'+pastM+':'+pastS;
-}
-
-    function jsDateDiff(publishTime){
-    var d_minutes,d_hours,d_days;
-    var timeNow = parseInt(new Date().getTime()/1000);
-    var d;
-    d = timeNow - publishTime;
-    d_days = parseInt(d/86400);
-    d_hours = parseInt(d/3600);
-    d_minutes = parseInt(d/60);
-    if(d_days>0 && d_days<4){
-        return d_days+"天前";
-    }else if(d_days<=0 && d_hours>0){
-        return d_hours+"小时前";
-    }else if(d_hours<=0 && d_minutes>0){
-        return d_minutes+"分钟前";
-    }else{
-        var s = new Date(publishTime*1000);
-        // s.getFullYear()+"年";
-        return (s.getMonth()+1)+"月"+s.getDate()+"日";
-    }
-}
-
-
-
-var dateDiff = function (timestamp) {
-    // 补全为13位
-    var arrTimestamp = (timestamp + '').split('');
-    for (var start = 0; start < 13; start++) {
-        if (!arrTimestamp[start]) {
-            arrTimestamp[start] = '0';
-        }
-    }
-    timestamp = arrTimestamp.join('') * 1;
-
-    var minute = 1000 * 60;
-    var hour = minute * 60;
-    var day = hour * 24;
-    var halfamonth = day * 15;
-    var month = day * 30;
-    var now = new Date().getTime();
-    var diffValue = now - timestamp;
-
-    // 如果本地时间反而小于变量时间
-    if (diffValue < 0) {
-        return '不久前';
-    }
-
-    // 计算差异时间的量级
-    var monthC = diffValue / month;
-    var weekC = diffValue / (7 * day);
-    var dayC = diffValue / day;
-    var hourC = diffValue / hour;
-    var minC = diffValue / minute;
-
-    // 数值补0方法
-    var zero = function (value) {
-        if (value < 10) {
-            return '0' + value;
-        }
-        return value;
-    };
-
-    // 使用
-    if (monthC > 12) {
-        // 超过1年，直接显示年月日
-        return (function () {
-            var date = new Date(timestamp);
-            return date.getFullYear() + '年' + zero(date.getMonth() + 1) + '月' + zero(date.getDate()) + '日';
-        })();
-    } else if (monthC >= 1) {
-        return parseInt(monthC) + "月前";
-    } else if (weekC >= 1) {
-        return parseInt(weekC) + "周前";
-    } else if (dayC >= 1) {
-        return parseInt(dayC) + "天前";
-    } else if (hourC >= 1) {
-        return parseInt(hourC) + "小时前";
-    } else if (minC >= 1) {
-        return parseInt(minC) + "分钟前";
-    }
-    return '刚刚';
-};
-    console.log(dateDiff('116765118'))
-     console.log(getPastHalfYear())
-    is_active=true;
     html="<div class='clearfix text'><textarea name=''class='form-control' rows='5'></textarea><button class='btn btn-primary fr 'onclick=\"masks(this)\">评论</button></div>";
         function establish(obj) {
-            console.log($(obj).parents('.list-block-gw'))
             try {
                 $(obj).parents('.list-block-gw').find('.text').remove();
             }
             catch (e) {
-
             }
-
              $(obj).after(html);
         }
 
@@ -300,26 +194,38 @@ var dateDiff = function (timestamp) {
                 alert('你没有填写')
                 return false
             }
-            console.log(returnCitySN)
             var data = new  Object()
-            data.id = $("input[name='hidden']").val()
-            data.conent = $(obj).prev().val()
-            data.user = 'admin'
+            data.article = $("input[name='hidden']").val()
+            data.comments = $(obj).prev().val()
+            data.user = '{{ request.user.id }}'
             data.cip = returnCitySN['cip']
-            data.cname = returnCitySN['cname']
-            data.date = dateDiff(new Date().getTime())
-            console.log(data)
-            var html=`
-             <div class="list-main">
-                            <div class="img-corner"><img src="http://0d077ef9e74d8.cdn.sohucs.com/c_zoom,w_200/fac494264beff70ed91fedf32783552b_default_1449555978993_jpg" alt=""></div>
-                            <div class="list-text">
-                                <div class="list-person clearfix"><div class="fl"><a href="">${data.user}</a> ${data.cname}</div> <p class="fr">${dateDiff(new Date().getTime())}</p></div>
-                                <p class="text-con">${data.conent}</p>
-                                <p class="fr"onclick="establish(this)">回复 </p>
-                            </div>
-                        </div>
+            data.address = returnCitySN['cname']
+             var html=`
+     <div class="list-main">
+                    <div class="img-corner"><img src="http://0d077ef9e74d8.cdn.sohucs.com/c_zoom,w_200/fac494264beff70ed91fedf32783552b_default_1449555978993_jpg" alt=""></div>
+                    <div class="list-text">
+                        <div class="list-person clearfix"><div class="fl"><a href="">${data.user}</a> ${data.cname}</div> <p class="fr"></p></div>
+                        <p class="text-con">${data.comments}</p>
+                        <p class="fr"onclick="establish(this)">回复 </p>
+                    </div>
+                </div>
             `
-             $('.list-block-gw').append(html)
+            $.ajax({
+                url:'/api/article_Comment/',
+                type:'post',
+                headers:{'X-CSRFToken':$.cookie('csrftoken')},
+                data:data,
+                success:function (data) {
+
+                  window.location.reload()
+                     //$('.list-block-gw').append(html)
+                },
+                 error:function () {
+                     alert('失败')
+                 }
+            })
+
+
         }
         function masks(obj){
             var val = $(obj).parent().find('textarea').val()
@@ -329,19 +235,20 @@ var dateDiff = function (timestamp) {
             }
             console.log(returnCitySN)
             var data = new  Object()
-            data.id = $("input[name='hidden']").val()
-            data.conent = $(obj).prev().val()
-            data.user = 'admin'
+
+            data.comments = $(obj).prev().val()
+            data.user = '{{ request.user.id }}'
             data.cip = returnCitySN['cip']
-            data.cname = returnCitySN['cname']
-            data.date = dateDiff(new Date().getTime())
+            data.address = returnCitySN['cname']
+            data.to_uids =$(obj).parent().parent().find('div.fl').attr('data-id')
+            data.aomments_id =$(obj).parent().parent().find('.to').attr('data-id')
             console.log(data)
             var html=`
               <div class="reply-list">
                                     <div class="img-corner"><img src="http://0d077ef9e74d8.cdn.sohucs.com/c_zoom,w_200/fac494264beff70ed91fedf32783552b_default_1449555978993_jpg" alt=""></div>
                                     <div class="list-text">
                                         <div class="list-person clearfix">
-                                            <div class="fl"><a href="">${data.user}</a>回复<a href="">瓜婆娘</a> ${data.cname}</div> <p class="fr">${dateDiff(new Date().getTime())}</p>
+                                            <div class="fl"><a href="">${data.user}</a>回复<a href="">瓜婆娘</a> ${data.cname}</div> <p class="fr"></p>
                                         </div>
                                         <p class="text-con">${data.conent}</p>
                                         <p class="fr"onclick="establish(this)">回复 </p>
@@ -350,8 +257,21 @@ var dateDiff = function (timestamp) {
 
                             </div>
             `
-             $(obj).parents('.list-main>.list-text').append(html)
-            $('.text').remove()
+             $.ajax({
+                url:'/api/comment_reply/',
+                type:'post',
+                headers:{'X-CSRFToken':$.cookie('csrftoken')},
+                data:data,
+                success:function (data) {
+                    window.location.reload()
+                     //$('.list-block-gw').append(html)
+                },
+                 error:function () {
+                     alert('失败')
+                 }
+            })
+             //$(obj).parents('.list-main>.list-text').append(html)
+            //$('.text').remove()
         }
 
         $(function() {

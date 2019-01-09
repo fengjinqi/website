@@ -29,18 +29,37 @@ class Article_add(models.Model):
     click_nums = models.IntegerField(default=0,verbose_name='阅读数量')
     add_time = models.DateTimeField(auto_now_add=True)
 
+    def get_number(self):
+        n= self.article_comment_set.all()
+        num = self.article_comment_set.all().count()
+        for i in n:
+            num+=i.articlecommentreply_set.count()
+        return num
+
 
 class Article_Comment(models.Model):
     """"评论"""
     user = models.ForeignKey(User,on_delete=models.CASCADE,verbose_name='用户')
-    article =models.ForeignKey(Article_add,verbose_name='文章',on_delete=models.CASCADE,null=True,blank=True)
+    article =models.ForeignKey(Article_add,verbose_name='文章',on_delete=models.CASCADE)
     comments = models.TextField(verbose_name='评论')
-    aomments_id = models.ForeignKey('self',on_delete=models.CASCADE,related_name='sub_cat',null=True,blank=True)
+    address = models.CharField(max_length=50,verbose_name='地址',blank=True,null=True)
     add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
-
     def __str__(self):
         return self.article.title
 
     class Meta:
         verbose_name ='文章评论'
         verbose_name_plural=verbose_name
+        ordering = ('-add_time',)
+
+
+
+class ArticleCommentReply(models.Model):
+    """评论回复"""
+    user = models.ForeignKey(User,on_delete=models.CASCADE,verbose_name='当前用户',related_name='form_uid')
+    to_uids = models.ForeignKey(User,on_delete=models.CASCADE,verbose_name='目标用户',related_name='to_uids',default='')
+    comments = models.TextField(verbose_name='回复内容')
+    aomments_id = models.ForeignKey(Article_Comment,on_delete=models.CASCADE,verbose_name='回复id')
+    address = models.CharField(max_length=50, verbose_name='地址',blank=True,null=True)
+    add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
+

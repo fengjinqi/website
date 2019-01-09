@@ -124,3 +124,12 @@ aside{
 .vi_co{
     color: #999;
 }
+#mains{
+    position: relative;
+}
+.loading{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    margin-left: -64px;
+}

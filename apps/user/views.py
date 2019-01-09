@@ -15,6 +15,7 @@ from django.views.decorators.http import require_http_methods
 from django.views.generic.base import View
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 from apps.article.models import Article_add
 from apps.article.serializers import ArticleSerializer
@@ -125,11 +126,11 @@ class Author(View):
 
 
 """个人中心"""
+
 class Person(View):
     @method_decorator(login_required(login_url='/login'))
     def get(self,request):
-        print(request)
-        return render(request,'pc/person.html')
+        return render(request,'pc/person/index.html')
 
 
 
@@ -142,5 +143,13 @@ class PersonApi(viewsets.ReadOnlyModelViewSet):
     permission_classes = (IsAuthenticated,IsOwnerOrReadOnly)#未登录禁止访问
 
     authentication_classes = (SessionAuthentication,)
-    def get_queryset(self):
-        return Article_add.objects.filter(authors_id=self.request.user.id)
+    # def list(self, request, *args, **kwargs):
+    #     queryset =  Article_add.objects.filter(authors_id=self.request.user.id).order_by('-add_time')
+    #     serializer = ArticleSerializer(queryset, many=True)
+    #     page = self.paginate_queryset(queryset)
+    #     if page is not None:
+    #         serializer = self.get_serializer(page, many=True)
+    #         return self.get_paginated_response(serializer.data)
+    #     return Response(serializer.data)
+    # def get_queryset(self):
+    #     return Article_add.objects.filter(authors_id=self.request.user.id)
