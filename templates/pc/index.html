@@ -5,7 +5,7 @@
     首页
 {% endblock %}</title>
 {% block css %}
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+{#    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">#}
         <link rel="stylesheet" href="{% static 'css/public.css' %}">
 <link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">
 <link rel="stylesheet" href="{% static 'css/index.css' %}">
@@ -72,7 +72,6 @@
                                 <li class="fl blogs_time">发布于：{{ articles.add_time }}</li>
                                 <li class="fl blogs_view" style="background: url({% static 'img/eye.png' %})no-repeat 0 50%;"> {{ articles.click_nums }}</li>
                                 <li class="fl blogs_comment" style="background: url({% static 'img/comment.png' %})no-repeat 0 50%;">
-{#                                {{ articles.get_number }}#}
 
                                   {{ articles.get_number }}
 
@@ -88,37 +87,34 @@
              </div>
          </div>
        <div class="pageturn">
-                        <ul class="pagination">
-                        <li><a href="/index">首页</a></li>
-                        {% if article.has_previous %}
-                             <li class="long"><a href="?{{ article.previous_page_number.querystring }}" class="prev">上一页</a></li>
-                            {% else %}
-                                <li class="long"><span class="disabled prev btn"disabled="">上一页</span></li>
-                            {% endif %}
-                            {% for page in article.pages %}
-
-                                  {% if page %}
-                                    {% ifequal page article.number %}
-                                       <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
-                                    {% else %}
-                                        <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
-                                    {% endifequal %}
-                                  {% else %}
-                                     <li><span class="disabled  btn" disabled="">...</span></li>
-                                  {% endif %}
-
-
-                            {% endfor %}
-                            {% if article.has_next %}
-                                 <li class="long"><a href="?{{ article.next_page_number.querystring }}" class="next"> 下一页</a></li>
-                            {% else %}
-                                <li class="long"><span class="disabled next btn"disabled=""> 下一页</span></li>
-                            {% endif %}
-                        <li><a href="?page={{ article.paginator.num_pages }}">尾页</a></li>
-                        <li>跳转到<input type="text"class="form-control" name="page"></li>
-                        </ul>
-       当前{{ article.number }}/总共{{ article.paginator.num_pages }}页
-                     </div>
+           <ul class="pagination">
+               <li><a href="/index">首页</a></li>
+               {% if article.has_previous %}
+                   <li class="long"><a href="?{{ article.previous_page_number.querystring }}" class="prev">上一页</a></li>
+               {% else %}
+                   <li class="long"><span class="disabled prev btn"disabled="">上一页</span></li>
+               {% endif %}
+               {% for page in article.pages %}
+                   {% if page %}
+                       {% ifequal page article.number %}
+                           <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                       {% else %}
+                           <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
+                       {% endifequal %}
+                   {% else %}
+                       <li><span class="disabled  btn" disabled="">...</span></li>
+                   {% endif %}
+               {% endfor %}
+               {% if article.has_next %}
+                   <li class="long"><a href="?{{ article.next_page_number.querystring }}" class="next"> 下一页</a></li>
+               {% else %}
+                   <li class="long"><span class="disabled next btn"disabled=""> 下一页</span></li>
+               {% endif %}
+               <li><a href="?page={{ article.paginator.num_pages }}">尾页</a></li>
+               <li class="hrefto">跳转到<input type="text"class="form-control" name="page"></li>
+           </ul>
+            当前{{ article.number }}/总共{{ article.paginator.num_pages }}页
+       </div>
     </article>
 
     <aside class="fr">
@@ -216,6 +212,15 @@
             return false
         }else{
         window.location.href='/index?page='+$(this).val()}
+    })
+    $("input[name='page']").keydown(function (evt) {
+        if (evt.keyCode==13){
+             if($(this).val()==""){
+            return false
+        }else{
+        window.location.href='/index?page='+$(this).val()}
+        }
+
     })
 
      $(window).scroll(function(){

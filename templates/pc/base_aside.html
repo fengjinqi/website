@@ -19,7 +19,7 @@
                     <div class="blogs_foot">
                         <ul class="clearfix">
                             <li class="fl blogs_view" style="background: url({% static 'img/eye.png' %})no-repeat 0 50%;">{{ foo.click_nums }}</li>
-                            <li class="fl blogs_comment" style="background: url({% static 'img/comment.png' %})no-repeat 0 50%;">2</li>
+                            <li class="fl blogs_comment" style="background: url({% static 'img/comment.png' %})no-repeat 0 50%;">{{ foo.get_number }}</li>
                             <li class="fr blogs_time" style="margin-right: 0;">{{ foo.add_time }}</li>
                         </ul>
                     </div>
