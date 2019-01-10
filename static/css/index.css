@@ -99,10 +99,22 @@
     padding-left: 216px;
     height: 120px;
 }
+.divp{
+        height: 120px;
+    position: relative;
+}
 .blogs_foot1{
     position: absolute;
     bottom: 0;
     left:216px
+}
+.ulw{
+    width: 100%;
+    left: 0;
+}
+.blogs_edit{
+    color: #ff1c1c;
+    cursor: pointer;
 }
 /*列表结束*/
 /*banner开始*/

@@ -131,7 +131,7 @@
                 form.append('type',type)
                 console.log(list_pic)
                 $.ajax({
-                    url:'/article/article_update/{{ article.id }}',
+                    url:'/article/update/{{ article.id }}',
                     type:'post',
                     contentType : false,
                     data:form,

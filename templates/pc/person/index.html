@@ -205,14 +205,14 @@
                             "                             <div class=\"blogs_cont blogs_cont1\">\n" +
                             "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+data.results[i].title+"</a></h3>\n" +
                             "                                     <div class=\"blogs_info clearfix\">\n" +
-                            "                                          <div class=\"img_animate fl \">\n" +
+                            "                                          <div class=\"img_animate  \">\n" +
                             "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+data.results[i].list_pic+"')no-repeat;\"></div>\n" +
                             "                                          </div>\n" +
-                            "                                          <div class=\"fl blogs_describe\">\n" +
+                            "                                          <div class=\" blogs_describe\">\n" +
+                            "                                     <div class=\" divp\">\n" +
                             "                                              <p>"+data.results[i].keywords+"</p>\n" +
-                            "                                          </div>\n" +
-                            "                                          <div class=\"blogs_foot blogs_foot1\">\n" +
-                            "                                    <ul class=\"clearfix\">\n" +
+                            "                                          <div class=\"blogs_foot blogs_foot1 ulw\">\n" +
+                            "                                    <ul class=\"clearfix \">\n" +
                             "                                        <li class=\"fl\">\n" +
                             "                                             <a href=\"\" class=\"clearfix\">\n" +
                             "                                                 <span class=\"fl img_cover blogs_avatar\" style=\"background: url('"+data.results[i].authors.user_imag+"')no-repeat\"></span>\n" +
@@ -222,7 +222,10 @@
                             "                                        <li class=\"fl blogs_time\">发布于:"+data.results[i].add_time+"</li>\n" +
                             "                                        <li class=\"fl blogs_view\" style=\"background: url(/static/img/eye.png)no-repeat 0 50%;\">"+data.results[i].click_nums+"</li>\n" +
                             "                                        <li class=\"fl blogs_comment\" style=\"background: url(/static/img/comment.png)no-repeat 0 50%;\">"+n[i]+"</li>\n" +
+                            "                                        <li class=\"fr blogs_edit\"><a href=\"/article/update/"+data.results[i].id+"\" >编辑</a></li>\n" +
                             "                                    </ul>\n" +
+                            "                                </div>\n" +
+                            "                                </div>\n" +
                             "                                </div>\n" +
                             "                                     </div>\n" +
                             "                             </div>\n" +

@@ -12,9 +12,9 @@
     <article class="fl">
         <div class="fiter clearfix">
             <ul class="nav">
-            <li style="padding: 10px 15px;display: inline-block"><a class="active" href="/article">全部</a></li>
+            <li class="all" style="padding: 10px 15px;display: inline-block"><a class="active" href="/article">全部</a></li>
                 {% for foo in category %}
-                    <li style="padding: 10px 15px;display: inline-block"><a href="?type={{ foo.id }}">{{ foo.name }}</a></li>
+                    <li class="nav_item" data-key="{{ foo.id }}"  style="padding: 10px 15px;display: inline-block"><a href="?type={{ foo.id }}">{{ foo.name }}</a></li>
                 {% endfor %}
 
             </ul>
@@ -162,7 +162,7 @@
 
            <ul class="pagination">
 
-               <li><a href="?page=1">首页</a></li>
+               <li class="first"><a href="?page=1">首页</a></li>
                {% if article.has_previous %}
                    <li class="long"><a href="?{{ article.previous_page_number.querystring }}" class="prev">上一页</a></li>
                {% else %}
@@ -184,10 +184,11 @@
                {% else %}
                    <li class="long"><span class="disabled next btn"disabled=""> 下一页</span></li>
                {% endif %}
-               <li><a href="?page={{ article.paginator.num_pages }}">尾页</a></li>
-               <li class="hrefto">跳转到<input type="text"class="form-control" name="page"></li>
+               <li class="last"><a href="?page={{ article.paginator.num_pages }}">尾页</a></li>
+{#               <li class="hrefto">跳转到<input type="text"class="form-control" name="page"></li>#}
            </ul>
-            当前{{ article.number }}/总共{{ article.paginator.num_pages }}页
+             <div class="num_pages" style="display: none;">{{ article.paginator.num_pages }}</div>
+{#            当前{{ article.number }}/总共{{ article.paginator.num_pages }}页#}
        </div>
              </div>
 
@@ -284,29 +285,55 @@
 <script>
 
     $(function () {
-       $('.fiter_nav>ul>li').mouseover(function(){
+
+        $('.fiter_nav>ul>li').mouseover(function(){
            $(this).siblings().removeClass('fiter_active');
            $(this).addClass('fiter_active');
            $(this).find('.er_meau').addClass('er_meau_active');
            $(this).siblings().find('.er_meau').removeClass('er_meau_active');
        })
-
-          $("input[name='page']").blur(function () {
-        if($(this).val()==""){
-            return false
-        }else{
-        window.location.href='{{ request.get_full_path }}?page='+$(this).val()}
-    })
-    $("input[name='page']").keydown(function (evt) {
-        if (evt.keyCode==13){
-             if($(this).val()==""){
-            return false
-        }else{
-        window.location.href='{{ request.get_full_path }}?page='+$(this).val()}
+        $("input[name='page']").blur(function () {
+            if($(this).val()==""){
+                return false
+            }else{
+                window.location.href='{{ request.get_full_path }}?page='+$(this).val()
+            }
+        })
+        $("input[name='page']").keydown(function (evt) {
+            if (evt.keyCode==13){
+                 if($(this).val()==""){
+                return false
+            }else{
+            window.location.href='{{ request.get_full_path }}?page='+$(this).val()}
+            }
+        })
+        //获取地址栏参数
+        function getParam(paramName) {
+            paramValue = "", isFound = !1;
+            if (this.location.search.indexOf("?") == 0 && this.location.search.indexOf("=") > 1) {
+                arrSource = unescape(this.location.search).substring(1, this.location.search.length).split("&"), i = 0;
+                while (i < arrSource.length && !isFound) arrSource[i].indexOf("=") > 0 && arrSource[i].split("=")[0].toLowerCase() == paramName.toLowerCase() && (paramValue = arrSource[i].split("=")[1], isFound = !0), i++
+            }
+            return paramValue == "" && (paramValue = null), paramValue
         }
+        console.log(getParam("type"));
+        var type=getParam("type");
+        //$('[data-key='+type+']').find("a").addClass('active');
+        $('.nav_item').each(function(){
+            if($(this).attr('data-key')){
+                if($(this).attr('data-key')==type){
+                    $(this).find("a").addClass('active');
+                    $('.all').find("a").removeClass('active');
+                }
+            }
 
-    })
-
+          });
+        //首尾页
+        if(type){
+            var num_pages = $('.num_pages').html();
+            $('.first>a').attr('href','?type='+type+'&page=1');
+            $('.last>a').attr('href','?type='+type+'&page='+num_pages+'');
+        }
 
     });
 </script>
