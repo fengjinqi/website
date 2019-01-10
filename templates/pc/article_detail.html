@@ -51,7 +51,11 @@
                 <div class="comment-main clearfix">
                     <textarea  class="form-control" name="" id=""  rows="5"placeholder="来说点什么吧..."></textarea>
                     <button class="btn btn-primary fr "onclick="mask(this)">评论</button>
-                    {#                <div class="mask"><a href="/login">未登录</a></div>#}
+                    {% if request.user.is_authenticated  %}
+                        {% else %}
+                         <div class="mask"><a href="/login">未登录</a></div>
+                    {% endif %}
+
                 </div>
 
                 <div class="comment-fask">

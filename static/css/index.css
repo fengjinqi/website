@@ -265,3 +265,6 @@
 .follow li:first-child{
     padding-left: 0;
 }
+.nav li a.active{
+    color: #356dd0;
+}

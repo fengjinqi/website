@@ -2,7 +2,7 @@
     margin:0;
     padding:0;
 }
-#toTop{display: none;text-decoration: none;position: fixed;bottom: 10px;right: 10px;overflow: hidden;width: 50px;height: 50px;border: none;text-indent: 100%;background: url(../img/返回顶部.png) no-repeat #1F2729 10px 15px;text-align: center;}
+#toTop{display: none;text-decoration: none;position: fixed;bottom: 10px;right: 10px;overflow: hidden;width: 50px;height: 50px;border: none;text-indent: 100%;background: url(../img/top.png) no-repeat #1F2729 10px 15px;text-align: center;}
 
 body{
     font-family:"-apple-system,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Arial,sans-serif";

@@ -141,27 +141,34 @@
         <div class="aside_goodperson">
             <div class="blogs_head" style="background: url(img/public.png)no-repeat 0 50%;">热门牛人<a class="fr change">更多</a></div>
             <div>
+            {{ count }}
                 {% for foo in count %}
-                    {{ foo }}
-                    <div class="aside_goodperson_item clearfix">
+                    {% for n in foo.data %}
+                        {{ n.username }}
+                         <div class="aside_goodperson_item clearfix">
                     <div class="fl aside_goodperson_item_num">{{ forloop.counter }}</div>
                     <div class="fl aside_goodperson_item_user">
                         <div class="aside_goodperson_item_user_avatar img_cover" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></div>
                         <div class="aside_goodperson_item_user_info">
-                            <p>{{ foo.username }}</p>
-                            <p>更博：{{ foo.article_add_set.count }}</p>
+                            <p>{{ n.username }}</p>
+                            <p>更博：{{ n.article_add_set.count }}</p>
                         </div>
                     </div>
-                    <div class="fr aside_goodperson_item_num follow" data-actions-icnt="{{ foo.id }}" onclick="flollw(this)">
+                    <div class="fr aside_goodperson_item_num follow" data-actions-icnt="{{ n.id }}" onclick="flollw(this)">
 
-                    {{ foo.follow.count }}
-                        {% if request.user.id == foo.follow.first.fan.id%}
+                    {{ n.follow.count }}
+                        {% if request.user.id == n.follow.first.fan.id%}
 
                             已关注
                             {% else %}
                             关注
                         {% endif %}</div>
                     </div>
+
+                    {% endfor %}
+
+
+
                 {% endfor %}
 
 
@@ -257,7 +264,7 @@
                     }else if(data.status==200 && data.message=='已取消关注'){
                         _self.html('关注')
                     }else if(data.status==302&&data.message=='未登录'){
-                        window.location.href='/login'
+                        //window.location.href='/login'
                     }
                     console.log(data)
                 },

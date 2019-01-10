@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect,reverse,get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from django.http import JsonResponse,Http404
 from django.views.decorators.csrf import csrf_exempt
 from PIL import Image
@@ -20,8 +21,28 @@ from .models import Article_add, Category_Article, Article_Comment
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
 def Article(request):
+    """
+    文章list
+    :param request:
+    :return:
+    """
     article = Article_add.objects.all().order_by('-add_time')
-    return render(request, 'pc/article.html', {'article': article})
+    category = Category_Article.objects.all()
+    type = request.GET.get('type', '')
+    try:
+        page = request.GET.get('page', 1)
+        if type:
+            article =Article_add.objects.filter(category_id=type)
+        if page == '':
+            page = 1
+    except PageNotAnInteger:
+        page = 1
+    # Provide Paginator with the request object for complete querystring generation
+    p = Paginator(article,2,request=request)
+    people = p.page(page)
+    return render(request, 'pc/article.html', {'article': people,'category':category})
+
+
 # Create your views here.
 @login_required(login_url='/login')
 def Article_Add(request):
@@ -59,6 +80,68 @@ def Article_Add(request):
                 return JsonResponse({"code":400,"data":"发布失败"})
         return JsonResponse({"code": 400, "data": "验证失败"})
 
+
+@login_required(login_url='/login')
+def ArticleUpdate(request,article_id):
+    """
+    文章修改
+    :param request:
+    :param article_id:
+    :return:
+    """
+    if request.method == 'GET':
+        category = Category_Article.objects.all()
+        try:
+            article = Article_add.objects.get(id=article_id)
+        except Exception:
+            return Http404
+        print(article)
+        return render(request, 'pc/article_update.html', {'article': article, 'category': category})
+    if request.method == 'POST':
+        forms = Article_form(request.POST)
+        if forms.is_valid():
+            title = forms.cleaned_data.get('title')
+            content = forms.cleaned_data.get('content')
+            category = request.POST.get('category', '')
+            desc = request.POST.get('desc', '')
+            keywords = request.POST.get('keywords', '')
+            type = request.POST.get('type','')
+            if type:
+                list_pic = request.FILES.get('list_pic', '')
+            else:
+                list_pic = request.POST.get('list_pic', '')
+            authors = forms.cleaned_data.get('authors', '')
+            article = Article_add.objects.get(id=article_id)
+            article.title = title
+            article.content = content
+            article.desc = desc
+            article.keywords = keywords
+            article.authors = authors
+            article.category_id = int(category)
+            article.list_pic = list_pic
+            try:
+                article.save()
+                return JsonResponse({"code": 200, "data": "发布成功"})
+            except Exception:
+                return JsonResponse({"code": 400, "data": "发布失败"})
+        return JsonResponse({"code": 400, "data": "验证失败"})
+
+
+@login_required(login_url='/login')
+@require_POST
+def RemoveImage(request,article_id):
+    """
+    删除图片
+    :param request:
+    :param article_id:
+    :return:
+    """
+    if request.method == 'POST':
+        article = Article_add.objects.get(id=article_id)
+        article.list_pic=''
+        article.save()
+        return JsonResponse({'data':200})
+
 def Article_list(request):
     """
     首页
@@ -67,8 +150,16 @@ def Article_list(request):
     """
     article=Article_add.objects.all().order_by('-add_time')
     popular = Article_add.objects.all().order_by('click_nums')[:5]
-    user = User.objects.all()
-    print(user)
+    #user = Follow.objects.values('follow_id').distinct().order_by('-follow_id')
+    user = Follow.objects.values('follow_id').distinct().order_by('-follow_id')
+    item=[]
+    for i in user:
+        data={}
+        #print(User.objects.filter(follow__follow__id=i['follow_id']))
+        data['data']=User.objects.filter(follow__follow__id=i['follow_id']).distinct()
+        print(data)
+        item.append(data)
+    #print(item)
     try:
         page = request.GET.get('page', 1)
         if page == '':
@@ -78,7 +169,7 @@ def Article_list(request):
     # Provide Paginator with the request object for complete querystring generation
     p = Paginator(article,2,request=request)
     people = p.page(page)
-    return render(request, 'pc/index.html', {'article':people,'popular':popular,'count':user})
+    return render(request, 'pc/index.html', {'article':people,'popular':popular,'count':item})
 
 
 
@@ -90,7 +181,6 @@ def Article_detail(request,article_id):
     :param article_id:
     :return:
     """
-    print(article_id)
     try:
         article=Article_add.objects.get(id=article_id)
         article.click_nums+=1
@@ -98,6 +188,7 @@ def Article_detail(request,article_id):
     except Exception:
         return Http404
     return render(request,'pc/article_detail.html',{'article':article,'id':article_id})
+
 
 # 写博客上传图片
 @login_required(login_url='/login')

@@ -11,7 +11,14 @@
     <section class="main clearfix">
     <article class="fl">
         <div class="fiter clearfix">
-            <div class="fl fiter_nav">
+            <ul class="nav">
+            <li style="padding: 10px 15px;display: inline-block"><a class="active" href="/article">全部</a></li>
+                {% for foo in category %}
+                    <li style="padding: 10px 15px;display: inline-block"><a href="?type={{ foo.id }}">{{ foo.name }}</a></li>
+                {% endfor %}
+
+            </ul>
+            {% comment %}<div class="fl fiter_nav">
                 <ul>
                     <li class="fiter_active">
                         <ul class="flex_justify">
@@ -113,13 +120,13 @@
                         </ul>
                     </li>
                 </ul>
-            </div>
+            </div>{% endcomment %}
         </div>
         <div class="banner" style="background: url({% static 'img/banner.png' %})no-repeat 0 50%;"></div>
          <div class="blogs">
              <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">最新文章</div>
              <div>
-                 {% for articles in article %}
+                 {% for articles in article.object_list %}
                     <div class="blogs_item">
                      <div class="blogs_cont blogs_cont1">
                          <h3><span class="blogs_type">{{ articles.category.name }}</span><a href="{% url 'article:detail' articles.id %}">{{ articles.title }}</a></h3>
@@ -151,7 +158,39 @@
                      </div>
                  </div>
                  {% endfor %}
+             <div class="pageturn">
+
+           <ul class="pagination">
+
+               <li><a href="?page=1">首页</a></li>
+               {% if article.has_previous %}
+                   <li class="long"><a href="?{{ article.previous_page_number.querystring }}" class="prev">上一页</a></li>
+               {% else %}
+                   <li class="long"><span class="disabled prev btn"disabled="">上一页</span></li>
+               {% endif %}
+               {% for page in article.pages %}
+                   {% if page %}
+                       {% ifequal page article.number %}
+                           <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                       {% else %}
+                           <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
+                       {% endifequal %}
+                   {% else %}
+                       <li><span class="disabled  btn" disabled="">...</span></li>
+                   {% endif %}
+               {% endfor %}
+               {% if article.has_next %}
+                   <li class="long"><a href="?{{ article.next_page_number.querystring }}" class="next"> 下一页</a></li>
+               {% else %}
+                   <li class="long"><span class="disabled next btn"disabled=""> 下一页</span></li>
+               {% endif %}
+               <li><a href="?page={{ article.paginator.num_pages }}">尾页</a></li>
+               <li class="hrefto">跳转到<input type="text"class="form-control" name="page"></li>
+           </ul>
+            当前{{ article.number }}/总共{{ article.paginator.num_pages }}页
+       </div>
              </div>
+
          </div>
 
     </article>
@@ -251,6 +290,24 @@
            $(this).find('.er_meau').addClass('er_meau_active');
            $(this).siblings().find('.er_meau').removeClass('er_meau_active');
        })
+
+          $("input[name='page']").blur(function () {
+        if($(this).val()==""){
+            return false
+        }else{
+        window.location.href='{{ request.get_full_path }}?page='+$(this).val()}
+    })
+    $("input[name='page']").keydown(function (evt) {
+        if (evt.keyCode==13){
+             if($(this).val()==""){
+            return false
+        }else{
+        window.location.href='{{ request.get_full_path }}?page='+$(this).val()}
+        }
+
+    })
+
+
     });
 </script>
 {% endblock %}

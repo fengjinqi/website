@@ -7,6 +7,9 @@ section{
     -moz-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);
     box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);
 }
+img {
+    vertical-align: baseline;
+}
 .file_style{
     position: relative;
 }

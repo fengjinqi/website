@@ -105,7 +105,7 @@ def logout_view(request):
 class Author(View):
     def get(self,request):
         return
-    #@method_decorator(login_required(login_url='/login'))
+    @method_decorator(login_required(login_url='/login'))
     def post(self,request):
         if request.user is not None and  request.user.is_authenticated:
             froms = Follow_Forms(request.POST)
@@ -122,13 +122,15 @@ class Author(View):
                     follow.fan_id = request.user.id
                     follow.save()
                     return JsonResponse({'status':200,'message':'成功关注'})
+            else:
+                return JsonResponse({'status':400,'message':'失败'})
         return JsonResponse({"status":302,"message":"未登录"})
 
 
 """个人中心"""
-
+@method_decorator(login_required(login_url='/login'),name='dispatch')
 class Person(View):
-    @method_decorator(login_required(login_url='/login'))
+    @method_decorator(login_required(login_url='/login'),name='dispatch')
     def get(self,request):
         return render(request,'pc/person/index.html')
 
@@ -143,13 +145,13 @@ class PersonApi(viewsets.ReadOnlyModelViewSet):
     permission_classes = (IsAuthenticated,IsOwnerOrReadOnly)#未登录禁止访问
 
     authentication_classes = (SessionAuthentication,)
-    # def list(self, request, *args, **kwargs):
-    #     queryset =  Article_add.objects.filter(authors_id=self.request.user.id).order_by('-add_time')
-    #     serializer = ArticleSerializer(queryset, many=True)
-    #     page = self.paginate_queryset(queryset)
-    #     if page is not None:
-    #         serializer = self.get_serializer(page, many=True)
-    #         return self.get_paginated_response(serializer.data)
-    #     return Response(serializer.data)
+    def list(self, request, *args, **kwargs):
+        queryset =  Article_add.objects.filter(authors_id=self.request.user.id).order_by('-add_time')
+        serializer = ArticleSerializer(queryset, many=True)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        return Response(serializer.data)
     # def get_queryset(self):
     #     return Article_add.objects.filter(authors_id=self.request.user.id)

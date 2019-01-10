@@ -15,8 +15,6 @@ class User(AbstractUser):
     email = models.EmailField(blank=True,null=True)
 
 
-
-
 class Follow(models.Model):
     """关注表"""
     follow = models.ForeignKey(User,on_delete=models.CASCADE,related_name='follow',verbose_name='被关注的，作者')
@@ -27,6 +25,8 @@ class Follow(models.Model):
     def __str__(self):
         return str(self.follow.id)
 
+    class Meta:
+        ordering = ('-follow',)
 
 class VerifyCode(models.Model):
     """短信验证码"""

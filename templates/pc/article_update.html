@@ -1,0 +1,187 @@
+{% extends 'pc/base.html' %}
+{% load static %}
+{% block title %}
+    文章修改
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/article_add.css' %}">
+    <link rel="stylesheet" href="{% static 'markdown/css/editormd.css' %}" />
+{% endblock %}
+{% block link_js %}
+ <script src="{% static 'markdown/editormd.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <section class="main">
+        <h4>文章编辑</h4>
+        <form>
+          <div class="form-group">
+            <label >标题</label>
+            <input type="text" class="form-control validate" name="title" value="{{ article.title }}" placeholder="请输入文章标题">
+          </div>
+          <div class="form-group">
+            <label >关键字(Keywords)</label>
+            <input type="text" class="form-control" name="keywords" value="{{ article.keywords }}" placeholder="请输入关键字，以英文逗号分割，利于搜索引擎收录">
+          </div>
+            <div class="form-group">
+            <label >描述(Description)</label>
+            <input type="text" class="form-control" name="desc" value="{{ article.desc }}" placeholder="请输入文章描述">
+          </div>
+            <div class="form-group">
+            <label >列表图(List_pic)</label>
+                <div class="file">
+                {% if article.list_pic == '' %}
+                    <div class="file_style">
+                            <span></span>
+                            <input type="file" id="file" name="list_pic" accept="image/*">
+                        </div>
+                    {% else %}
+                     <div class="file_style"style="display: none">
+                            <span></span>
+                            <input type="file" id="file" name="list_pic" accept="image/*">
+                        </div>
+                {% endif %}
+
+                    <p class="img"style="{% if article.list_pic %}
+                    display: block;
+                    {% endif %}">{% if article.list_pic %}
+                    <img src="{{ MEDIA_URL }}{{ article.list_pic }}" alt="">
+                    {% endif %}<i class="glyphicon glyphicon-remove" {% if article.list_pic %}
+                    onclick="serverremove(this)"
+                                  {% else %}
+                                  onclick="localremove(this)"
+                    {% endif %} style="color: #f5f5f5;"></i>
+                    </p>
+
+
+
+                </div>
+
+          </div>
+            <div class="form-group">
+            <label >文章内容</label>
+            <div id="test-editormd">
+                <textarea name="" class="form-control" >{{ article.content }}</textarea></div>
+            </div>
+          <div class="form-group">
+            <label >选择文章分类</label>
+              <select name="category" class="form-control">
+                  <option value="">--请选择--</option>
+                 {% for foo in category %}
+                     {% if article.category.name == foo.name %}
+                        <option value="{{ foo.id }}" selected="selected">{{ foo.name }}</option>
+                         {% else %}
+                            <option value="{{ foo.id }}">{{ foo.name }}</option>
+                     {% endif %}
+
+                 {% endfor %}
+
+              </select>
+          </div>
+          <button type="button" class="btn btn-default" id="btn">文章发布</button>
+        </form>
+    </section>
+{% endblock %}
+{% block js %}
+
+      <script>
+    	var testEditor;
+            $(function() {
+                testEditor = editormd("test-editormd", {
+                    width   : "100%",
+                    height  : 800,
+                    syncScrolling : "single",
+                    path    : "/static/markdown/lib/",
+
+                    saveHTMLToTextarea : true,//注意3：这个配置，textarea可以提交
+                     emoji: true,//emoji表情，默认关闭
+                    /**上传图片相关配置如下*/
+                    imageUpload : true,
+                    imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                    imageUploadURL : "/article/blog_img_upload/",
+                });
+
+            });
+        function validate(obj,el){
+             if(!obj||obj.trim() == ""){
+                el.css('border-color','red');
+                 return false;
+            }else {
+                 return true
+             }
+        }
+        $("#btn").on('click',function () {
+            if(validate($('.validate').val(),$('.validate')) && validate($('select').val(),$('select')) && validate(testEditor.getMarkdown(),$('#test-editormd'))){
+                var title = $("input[name='title']").val();
+                var desc = $("input[name='desc']").val();
+                var keywords =$("input[name='keywords']").val();
+                console.log($("input[name='list_pic']")[0].files[0]?$("input[name='list_pic']")[0].files[0]:'56')
+                var list_pic =$("input[name='list_pic']")[0].files[0]?$("input[name='list_pic']")[0].files[0]:'{{ article.list_pic }}'
+                var type = $("input[name='list_pic']")[0].files[0]?1:''
+                var category =$("select[name='category']").val();
+                var form = new FormData()
+                form.append('authors','{{ request.user.id }}')
+                form.append('title',title)
+                form.append('desc',desc)
+                form.append('keywords',keywords)
+                form.append('list_pic',list_pic)
+                form.append('content',testEditor.getMarkdown())
+                form.append('csrfmiddlewaretoken','{{ csrf_token }}')
+                form.append('category',category)
+                form.append('type',type)
+                console.log(list_pic)
+                $.ajax({
+                    url:'/article/article_update/{{ article.id }}',
+                    type:'post',
+                    contentType : false,
+                    data:form,
+                    processData:false,
+                    success:function (data) {
+                        if(data.code==200){
+                           window.location.href='/index'
+                        }
+                    },
+                error:function (xhr) {
+                    console.log(xhr)
+                }
+                })
+            }
+
+
+})
+    $('body').on('change','#file',function () {
+         var read=new FileReader() // 创建FileReader对像;
+           read.readAsDataURL(this.files[0])  // 调用readAsDataURL方法读取文件;
+       read.onload=function(){
+            url=read.result  // 拿到读取结果;
+            var img=new Image();
+            img.src=url;
+                $(".img").show()
+                $(".img").append(img)
+            $('.file_style').hide()
+           }
+            $('.img i').show()
+            console.log($("form").serialize())
+    })
+
+      function localremove(n) {
+          $(n).parent().find('img').remove();
+           $('#file').val('');
+          $(this).parent().hide();
+          $('.file_style').show();
+      }
+      function serverremove(n) {
+          $.ajax({
+              url:'/article/update_image/{{ article.id }}',
+              type: "POST",
+              headers:{'X-CSRFToken':$.cookie('csrftoken')},
+              success:function (data) {
+                  console.log(data)
+                   $(n).parent().find('img').remove();
+                  $(n).hide()
+                  $('.file_style').show();
+              }
+          })
+      }
+    </script>
+{% endblock %}

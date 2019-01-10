@@ -10,5 +10,7 @@ urlpatterns = [
 
   path('',views.Article,name='index'),
   path('blog_img_upload/',views.blog_img_upload,name='blog_img_upload'),
-  path('article_detail/<uuid:article_id>',views.Article_detail,name='detail')
+  path('detail/<uuid:article_id>',views.Article_detail,name='detail'),
+  path('update/<uuid:article_id>',views.ArticleUpdate,name='update'),
+  path('update_image/<uuid:article_id>',views.RemoveImage,name='update_image')
 ]
