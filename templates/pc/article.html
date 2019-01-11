@@ -292,7 +292,7 @@
            $(this).find('.er_meau').addClass('er_meau_active');
            $(this).siblings().find('.er_meau').removeClass('er_meau_active');
        })
-        $("input[name='page']").blur(function () {
+       /* $("input[name='page']").blur(function () {
             if($(this).val()==""){
                 return false
             }else{
@@ -306,7 +306,7 @@
             }else{
             window.location.href='{{ request.get_full_path }}?page='+$(this).val()}
             }
-        })
+        })*/
         //获取地址栏参数
         function getParam(paramName) {
             paramValue = "", isFound = !1;

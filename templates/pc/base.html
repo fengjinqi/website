@@ -32,7 +32,7 @@
                 <li class="fl"><a href="/index">首页</a></li>
                 <li class="fl"><a href="/article">文章</a></li>
                 <li class="fl"><a href="">社区</a></li>
-                <li class="fl"><a href="">教程</a></li>
+                <li class="fl"><a href="{% url 'course:index' %}">教程</a></li>
                 <li class="fl"><a href="">关于本站</a></li>
             </ul>
         </nav>
@@ -48,7 +48,7 @@
                             http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg
                         {% endif %})no-repeat"></a>
                         <ul class="meau meau_hide">
-                            <li><a href="{% url 'person' %}">个人中心</a></li>
+                            <li><a href="{% url 'user:person' %}">个人中心</a></li>
                             {% if user.is_staff  %}
                                 <li><a href="">系统管理</a></li>
                             {% endif %}

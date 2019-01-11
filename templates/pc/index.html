@@ -59,7 +59,7 @@
                                   <div class="blogs_foot blogs_foot1">
                             <ul class="clearfix">
                                 <li class="fl">
-                                     <a href="" class="clearfix">
+                                     <a href="{% url 'user:author_detaile' articles.authors.id %}" class="clearfix">
                                          <span class="fl img_cover blogs_avatar" style="background: url(
                                          {% if articles.authors.user_imag%}
                             {{ MEDIA_URL }}{{ articles.authors.user_imag }}

@@ -55,6 +55,14 @@ aside{
 .left_nav>ul>li:hover{
     background: #356dd0;
 }
+.left_nav>ul>li.active {
+    background: #356dd0;
+    color: #fff;
+}
+.left_nav>ul>li.active a{
+    background: #356dd0;
+    color: #fff;
+}
 .left_nav>ul>li:hover a{
     color: #fff;
 }
@@ -127,9 +135,24 @@ aside{
 #mains{
     position: relative;
 }
+.img_cover{
+    background-position: initial !important;
+}
 .loading{
     position: absolute;
     top: 0;
     left: 50%;
     margin-left: -64px;
+}
+.M-box a{
+    padding: 10px 15px;
+    background: #fff;
+    border:1px solid #ccc;
+    margin: 0 10px;
+}
+.M-box span.active{
+     padding: 10px 15px;
+    border:1px solid #ccc;
+    margin: 0 10px;
+    background: #1da1f2;
 }

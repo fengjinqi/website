@@ -45,60 +45,6 @@
                      <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">最新文章</div>
                      <div id="mains">
 
-                      {% comment %}   <div class="blogs_item">
-                             <div class="blogs_cont blogs_cont1">
-                                 <h3><span class="blogs_type">前端</span><a href="">Nginx 动静分离与负载均衡的实现</a></h3>
-                                     <div class="blogs_info clearfix">
-                                          <div class="img_animate fl ">
-                                              <div class="blogs_pic img_cover" style="background: url(img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg)no-repeat;"></div>
-                                          </div>
-                                          <div class="fl blogs_describe">
-                                              <p>不管是在学习中还是在工作中，都会使用到PDF文件，在很多的时候，大家都会使用到PDF文件，对于PDF文件的修改，
-            则是需要使用到PDF编辑软件的，那么，如何用PDF编辑工具拆分PDF文件呢，是不是有很多的小伙伴都想知道应该</p>
-                                          </div>
-                                          <div class="blogs_foot blogs_foot1">
-                                    <ul class="clearfix">
-                                        <li class="fl">
-                                             <a href="" class="clearfix">
-                                                 <span class="fl img_cover blogs_avatar" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></span>
-                                                 <span class="fl blogs_name">管理员</span>
-                                             </a>
-                                         </li>
-                                        <li class="fl blogs_time">发布于：2018-12-23 12:30:45</li>
-                                        <li class="fl blogs_view" style="background: url(img/public.png)no-repeat 0 50%;">9</li>
-                                        <li class="fl blogs_comment" style="background: url(img/public.png)no-repeat 0 50%;">2</li>
-                                    </ul>
-                                </div>
-                                     </div>
-                             </div>
-                         </div>
-                         <div class="blogs_item">
-                             <div class="blogs_cont blogs_cont1">
-                                 <h3><span class="blogs_type">前端</span><a href="">Nginx 动静分离与负载均衡的实现</a></h3>
-                                     <div class="blogs_info clearfix">
-                                          <div class="img_animate fl ">
-                                              <div class="blogs_pic img_cover" style="background: url(img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg)no-repeat;"></div>
-                                          </div>
-                                          <div class="fl blogs_describe">
-                                              <p>不管是在学习中还是在工作中，都会使用到PDF文件，在很多的时候，大家都会使用到PDF文件，对于PDF文件的修改，
-            则是需要使用到PDF编辑软件的，那么，如何用PDF编辑工具拆分PDF文件呢，是不是有很多的小伙伴都想知道应该</p>
-                                          </div>
-                                          <div class="blogs_foot blogs_foot1">
-                                    <ul class="clearfix">
-                                        <li class="fl">
-                                             <a href="" class="clearfix">
-                                                 <span class="fl img_cover blogs_avatar" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></span>
-                                                 <span class="fl blogs_name">管理员</span>
-                                             </a>
-                                         </li>
-                                        <li class="fl blogs_time">发布于：2018-12-23 12:30:45</li>
-                                        <li class="fl blogs_view" style="background: url(img/public.png)no-repeat 0 50%;">9</li>
-                                        <li class="fl blogs_comment" style="background: url(img/public.png)no-repeat 0 50%;">2</li>
-                                    </ul>
-                                </div>
-                                     </div>
-                             </div>
-                         </div>{% endcomment %}
                      </div>
                      <div class="M-box pagination"></div>
                  </div>
@@ -112,13 +58,13 @@
 
                     <div class="my_head"style="
 
-                            {% if request.user.user_imag  %}
+                            {% if user.user_imag  %}
 
-                        background: url('{{ MEDIA_URL }}{{ request.user.user_imag }}')no-repeat;background-size: cover;
+                        background: url('{{ MEDIA_URL }}{{ user.user_imag  }}')no-repeat;background-size: cover;
                         {% else %}
                         background: #000;
                     {% endif %}"></div>
-                    <p style="margin:16px 0 4px 0">{{ request.user.username }}</p>
+                    <p style="margin:16px 0 4px 0">{{ user.username }}</p>
                     <p style="font-size: 12px;color: #999;">前端开发 | 3年</p>
                 </div>
             </div>
@@ -189,7 +135,7 @@
     <script>
         $(function () {
             $.ajax({
-                url:'/api/PersonApi/',
+                url:'/api/PersonOthers/{{ user.id }}',
                 type:'get',
                 beforeSend:function(){
                     $("#mains").append("<p class='loading'><img src='/static/img/5-121204193R5-50.gif'></p>")
@@ -252,7 +198,7 @@
                         current:1,                    //当前页码
                         callback:function (api) {
                             $.ajax({
-                                url:'/api/PersonApi/',
+                                url:'/api/PersonOthers/{{ user.id }}',
                                 type:'get',
                                 data:{
                                     page:api.getCurrent()    //这个方法就是用来获取点击了哪一页的，因为我  //的接口文档中页数是从0开始的，所以减1，当我点击第一页的时候去获取第0页的数据
@@ -325,7 +271,7 @@
         function filter(self) {
             self.addClass('active').siblings().removeClass('active')
                 $.ajax({
-                    url:'/api/PersonApi/?category='+self.attr('data-type'),
+                    url:'/api/PersonOthers/{{ user.id }}?category='+self.attr('data-type'),
                     type:'get',
                     beforeSend:function(){
                         $("#mains").append("<p class='loading'><img src='/static/img/5-121204193R5-50.gif'></p>")
@@ -391,7 +337,7 @@
                             current:1,                    //当前页码
                             callback:function (api) {
                                 $.ajax({
-                                   url:'/api/PersonApi/?category='+self.attr('data-type'),
+                                   url:'/api/PersonOthers/{{ user.id }}?category='+self.attr('data-type'),
                                     type:'get',
                                     data:{
                                         page:api.getCurrent()    //这个方法就是用来获取点击了哪一页的，因为我  //的接口文档中页数是从0开始的，所以减1，当我点击第一页的时候去获取第0页的数据

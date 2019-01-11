@@ -7,6 +7,9 @@ from django.urls import path, include
 app_name='user'
 from . import views
 urlpatterns = [
-  path('',views.login_view,name='index'),
+  #path('',views.login_view,name='index'),
+  path('',views.Person.as_view(),name='person'),
   path('author/',views.Author.as_view(),name='author'),
+  #path('<uuid:article_id>/',views.PersonDetaile.as_view(),name='author_detaile'),
+
 ]

@@ -27,6 +27,7 @@ class Article_add(models.Model):
     list_pic = models.ImageField(upload_to='article/%Y%m%d',blank=True,null=True)
     content = models.TextField()
     click_nums = models.IntegerField(default=0,verbose_name='阅读数量')
+    is_show = models.BooleanField(default=True,verbose_name='是否显示')
     add_time = models.DateTimeField(auto_now_add=True)
 
     def get_number(self):

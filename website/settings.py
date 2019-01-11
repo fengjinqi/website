@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.user.apps.UserConfig',
     'apps.article.apps.ArticleConfig',
+    'apps.course.apps.CourseConfig',
     'apps.article.templatetags',
     'rest_framework',
     'pure_pagination',

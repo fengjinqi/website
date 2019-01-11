@@ -18,12 +18,13 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.static import serve
 
-from apps.user.views import test,captcha_refresh,yan
+
+from apps.user.views import test, captcha_refresh, yan, login_view
 from django.views.generic import TemplateView
 
 from website import settings
 from apps.article import views
-from apps.user.views import logout_view,Person,PersonApi
+from apps.user.views import logout_view,Person,PersonApi, PersonOthers
 from rest_framework import routers
 
 router = routers.DefaultRouter()
@@ -32,6 +33,8 @@ router.register('follow_list', views.FollowListView)
 router.register('article_Comment', views.ArticleCommintView)
 router.register('comment_reply', views.ArticleCommentReplyView)
 router.register('PersonApi', PersonApi)
+router.register('PersonOthers', PersonOthers)
+
 
 
 urlpatterns = [
@@ -42,11 +45,12 @@ urlpatterns = [
     path('refresh/',captcha_refresh), # 这是生成验证码的图片
     path('yan/',yan), # 这是生成验证码的图片
     path('index/',views.Article_list,name='home'),
-    path('login/',include('apps.user.urls')),
-    path('person/',Person.as_view(),name='person'),
+    path('login/',login_view,name='index'),
+    path('person/',include('apps.user.urls')),
     path('logou/',logout_view,name='logou'),
     path('register/',TemplateView.as_view(template_name='pc/register.html')),
     path('article/',include('apps.article.urls')),
+    path('course/',include('apps.course.urls')),
 
 
 

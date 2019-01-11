@@ -1,0 +1,137 @@
+@charset "UTF-8";
+body {
+    word-wrap: break-word;
+    background: #fff;
+}
+
+h1 {
+    font-size: 40px;
+}
+
+p,
+pre {
+    margin: 10px 0;
+}
+
+::selection {
+    background: #000;
+    color: #fff;
+}
+
+.wrapper {
+    margin: 0 auto;
+    width: 960px;
+    height: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+
+/*底部版权*/
+
+footer {
+    margin: 100px 0 50px 300px;
+    padding: 0 20px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+footer p {
+    border-top: 1px solid #ebebeb;
+    opacity: .5;
+    filter: alpha(opacity=50);
+    text-align: right;
+    font-size: 12px;
+    line-height: 3;
+    font-family: "Hiragino Sans GB", "Microsoft YaHei", "\5FAE\8F6F\96C5\9ED1", tahoma, arial, simsun, "\5B8B\4F53";
+}
+
+footer p a {
+    color: #000;
+}
+
+footer p .spe {
+    padding: 0 5px;
+}
+
+.right-bg {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    margin-top: -215px;
+    width: 215px;
+    height: 430px;
+    background: url('../../image/right_bg.png') no-repeat;
+}
+
+
+/*组件样式*/
+
+table {
+    width: 100%;
+    border: 1px solid #CAD3DA;
+}
+
+table td {
+    padding: 10px;
+    width: 150px;
+    border: 1px solid #CAD3DA;
+}
+
+table thead tr {
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border-bottom: 1px solid #CAD3DA;
+}
+
+table thead td {
+    padding: 0;
+    border-left: 1px solid #CAD3DA;
+    background: #DFEBFB;
+}
+
+table .explain {
+    width: 500px;
+}
+
+table tbody tr:nth-child(even) {
+    background: #E7EFF9;
+}
+
+.hljs, .hljs-subst {
+    padding: 10px;
+    font-family: Monaco, Consolas, "Courier New";
+}
+
+.method {
+    font-family: Monaco, Consolas, "Courier New";
+}
+
+.eg {
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px dashed #bdbdbd;
+    background: #f9f9f9;
+}
+
+.update-log .title {
+    margin: 0;
+    font-size: 20px;
+}
+
+.update-log ul li {
+    margin: 5px 0;
+}
+
+.bad {
+    padding: 0 0 0 10px;
+    border: 1px dashed #bdbdbd;
+    color: #757575;
+    background: #f9f9f9;
+    font-family: Monaco, Consolas, "Courier New";
+}

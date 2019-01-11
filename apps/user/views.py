@@ -13,14 +13,19 @@ from django.shortcuts import render, redirect,reverse
 from django.contrib.auth.views import method_decorator,login_required
 from django.views.decorators.http import require_http_methods
 from django.views.generic.base import View
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from apps.article.models import Article_add
+from apps.article.models import Article_add, Category_Article
 from apps.article.serializers import ArticleSerializer
+from apps.article.views import StandardResultsSetPagination
 from apps.uitls.permissions import IsOwnerOrReadOnly
+from apps.user.filter import CategoryFilter, UserFilter
 from apps.user.models import User, Follow
+from apps.user.serializers import UserSerializer
 from .forms import CaptchaTestForm, LoginForms, Follow_Forms
 from rest_framework import viewsets, mixins, status, permissions
 from rest_framework.pagination import PageNumberPagination
@@ -130,28 +135,80 @@ class Author(View):
 """个人中心"""
 @method_decorator(login_required(login_url='/login'),name='dispatch')
 class Person(View):
+
     @method_decorator(login_required(login_url='/login'),name='dispatch')
     def get(self,request):
-        return render(request,'pc/person/index.html')
+        category = Category_Article.objects.all()
+        count = User.objects.filter(follow__fan__id=request.user.id).count()
+        floow = User.objects.filter(fan__follow_id=request.user.id).count()
+        return render(request,'pc/person/index.html',{'category':category,'count':count,'floow':floow})
 
+
+class PersonDetaile(View):
+
+    def get(self,request,article_id):
+        category = Category_Article.objects.all()
+        count = User.objects.filter(follow__fan__id=article_id).count()
+        floow = User.objects.filter(follow__fan__id=article_id).count()
+        user = User.objects.get(id=article_id)
+        print(user)
+        return render(request,'pc/person/index1.html',{'category':category,'count':count,'floow':floow,'user':user})
 
 
 
 
 class PersonApi(viewsets.ReadOnlyModelViewSet):
-
-    queryset = Article_add.objects.all()
+    """
+    个人中心
+    """
+    queryset = Article_add.objects.filter(is_show=True)
     serializer_class = ArticleSerializer
     permission_classes = (IsAuthenticated,IsOwnerOrReadOnly)#未登录禁止访问
-
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = CategoryFilter
     authentication_classes = (SessionAuthentication,)
-    def list(self, request, *args, **kwargs):
-        queryset =  Article_add.objects.filter(authors_id=self.request.user.id).order_by('-add_time')
-        serializer = ArticleSerializer(queryset, many=True)
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-        return Response(serializer.data)
+    # def list(self, request, *args, **kwargs):
+    #         queryset =  Article_add.objects.filter(authors_id=self.request.user.id).order_by('-add_time')
+    #         serializer = ArticleSerializer(queryset, many=True)
+    #
+    #         page = self.paginate_queryset(queryset)
+    #         if page is not None:
+    #             serializer = self.get_serializer(page, many=True)
+    #             return self.get_paginated_response(serializer.data)
+    #         return Response(serializer.data)
     # def get_queryset(self):
     #     return Article_add.objects.filter(authors_id=self.request.user.id)
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases
+        for the currently authenticated user.
+        """
+        user = self.request.user
+        #User.objects.filter()
+        return Article_add.objects.filter(authors_id=self.request.user.id).filter(is_show=True).order_by('-add_time')
+
+
+# def PersonOthers(request,article_id):
+#     if request.method == 'GET':
+#         snippets = User.objects.get(pk=article_id)
+#         serializer = UserSerializer(snippets, many=True)
+#
+#         filter_backends = (DjangoFilterBackend,)
+#         filter_class = UserFilter
+#
+#         return Response(serializer.data)
+
+class PersonOthers(viewsets.ReadOnlyModelViewSet):
+    """
+    他个人中心
+    """
+    #print()
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (IsAuthenticated,IsOwnerOrReadOnly)#未登录禁止访问
+    filter_backends = (DjangoFilterBackend,filters.SearchFilter)
+    filter_class = UserFilter
+    search_fields = ('mobile',)
+    authentication_classes = (SessionAuthentication,)
+    # def get_queryset(self):
+    #     print(self.request.query_params.get('article_id'))

@@ -148,8 +148,8 @@ def Article_list(request):
     :param request:
     :return:
     """
-    article=Article_add.objects.all().order_by('-add_time')
-    popular = Article_add.objects.all().order_by('click_nums')[:5]
+    article=Article_add.objects.filter(is_show=True).order_by('-add_time')
+    popular = Article_add.objects.filter(is_show=True).order_by('click_nums')[:5]
     #user = Follow.objects.values('follow_id').distinct().order_by('-follow_id')
     user = Follow.objects.values('follow_id').distinct().order_by('-follow_id')
     item=[]
@@ -247,7 +247,7 @@ class ArticleListView(viewsets.ReadOnlyModelViewSet):
     """
      TODO 列出所有的文章 详情页
     """
-    queryset = Article_add.objects.all().order_by('-add_time')
+    queryset = Article_add.objects.filter(is_show=True).order_by('-add_time')
     serializer_class = ArticleSerializer
     pagination_class = StandardResultsSetPagination
 
@@ -256,13 +256,13 @@ class FollowListView(viewsets.ReadOnlyModelViewSet):
     """
     TODO 我关注的文章
     """
-    queryset = Article_add.objects.all().order_by('-add_time')
+    queryset = Article_add.objects.filter(is_show=True).order_by('-add_time')
     serializer_class = ArticleSerializer
     pagination_class = StandardResultsSetPagination
 
     def list(self, request, *args, **kwargs):
 
-        queryset = Article_add.objects.filter(authors__follow__fan_id=self.request.user.id).order_by('-add_time')
+        queryset = Article_add.objects.filter(authors__follow__fan_id=self.request.user.id).filter(is_show=True).order_by('-add_time')
         serializer = ArticleSerializer(queryset, many=True)
         page = self.paginate_queryset(queryset)
         if page is not None:
