@@ -33,7 +33,7 @@ router.register('follow_list', views.FollowListView)
 router.register('article_Comment', views.ArticleCommintView)
 router.register('comment_reply', views.ArticleCommentReplyView)
 router.register('PersonApi', PersonApi)
-router.register('PersonOthers', PersonOthers)
+#router.register('PersonOthers', PersonOthers)
 
 
 

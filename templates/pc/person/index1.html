@@ -135,7 +135,7 @@
     <script>
         $(function () {
             $.ajax({
-                url:'/api/PersonOthers/{{ user.id }}',
+                url:'api/PersonApi/?pk={{ user.id }}',
                 type:'get',
                 beforeSend:function(){
                     $("#mains").append("<p class='loading'><img src='/static/img/5-121204193R5-50.gif'></p>")
@@ -176,7 +176,6 @@
                             "                                        <li class=\"fl blogs_time\">发布于:"+data.results[i].add_time+"</li>\n" +
                             "                                        <li class=\"fl blogs_view\" style=\"background: url(/static/img/eye.png)no-repeat 0 50%;\">"+data.results[i].click_nums+"</li>\n" +
                             "                                        <li class=\"fl blogs_comment\" style=\"background: url(/static/img/comment.png)no-repeat 0 50%;\">"+n[i]+"</li>\n" +
-                            "                                        <li class=\"fr blogs_edit\"><a href=\"/article/update/"+data.results[i].id+"\" >编辑</a></li>\n" +
                             "                                    </ul>\n" +
                             "                                </div>\n" +
                             "                                </div>\n" +
@@ -198,7 +197,7 @@
                         current:1,                    //当前页码
                         callback:function (api) {
                             $.ajax({
-                                url:'/api/PersonOthers/{{ user.id }}',
+                                url:'api/PersonApi/?pk={{ user.id }}',
                                 type:'get',
                                 data:{
                                     page:api.getCurrent()    //这个方法就是用来获取点击了哪一页的，因为我  //的接口文档中页数是从0开始的，所以减1，当我点击第一页的时候去获取第0页的数据
@@ -239,7 +238,6 @@
                                             "                                        <li class=\"fl blogs_time\">发布于:"+data.results[i].add_time+"</li>\n" +
                                             "                                        <li class=\"fl blogs_view\" style=\"background: url(/static/img/eye.png)no-repeat 0 50%;\">"+data.results[i].click_nums+"</li>\n" +
                                             "                                        <li class=\"fl blogs_comment\" style=\"background: url(/static/img/comment.png)no-repeat 0 50%;\">"+b[i]+"</li>\n" +
-                                            "                                        <li class=\"fr blogs_edit\"><a href=\"/article/update/"+data.results[i].id+"\" >编辑</a></li>\n" +
                                             "                                    </ul>\n" +
                                             "                                </div>\n" +
                                             "                                </div>\n" +
@@ -271,7 +269,7 @@
         function filter(self) {
             self.addClass('active').siblings().removeClass('active')
                 $.ajax({
-                    url:'/api/PersonOthers/{{ user.id }}?category='+self.attr('data-type'),
+                    url:'api/PersonApi/?pk={{ user.id }}&category='+self.attr('data-type'),
                     type:'get',
                     beforeSend:function(){
                         $("#mains").append("<p class='loading'><img src='/static/img/5-121204193R5-50.gif'></p>")
@@ -312,7 +310,6 @@
                                 "                                        <li class=\"fl blogs_time\">发布于:"+data.results[i].add_time+"</li>\n" +
                                 "                                        <li class=\"fl blogs_view\" style=\"background: url(/static/img/eye.png)no-repeat 0 50%;\">"+data.results[i].click_nums+"</li>\n" +
                                 "                                        <li class=\"fl blogs_comment\" style=\"background: url(/static/img/comment.png)no-repeat 0 50%;\">"+n[i]+"</li>\n" +
-                                "                                        <li class=\"fr blogs_edit\"><a href=\"/article/update/"+data.results[i].id+"\" >编辑</a></li>\n" +
                                 "                                    </ul>\n" +
                                 "                                </div>\n" +
                                 "                                </div>\n" +
@@ -337,7 +334,7 @@
                             current:1,                    //当前页码
                             callback:function (api) {
                                 $.ajax({
-                                   url:'/api/PersonOthers/{{ user.id }}?category='+self.attr('data-type'),
+                                   url:'api/PersonApi/?pk={{ user.id }}&category='+self.attr('data-type'),
                                     type:'get',
                                     data:{
                                         page:api.getCurrent()    //这个方法就是用来获取点击了哪一页的，因为我  //的接口文档中页数是从0开始的，所以减1，当我点击第一页的时候去获取第0页的数据
@@ -378,7 +375,6 @@
                                                 "                                        <li class=\"fl blogs_time\">发布于:"+data.results[i].add_time+"</li>\n" +
                                                 "                                        <li class=\"fl blogs_view\" style=\"background: url(/static/img/eye.png)no-repeat 0 50%;\">"+data.results[i].click_nums+"</li>\n" +
                                                 "                                        <li class=\"fl blogs_comment\" style=\"background: url(/static/img/comment.png)no-repeat 0 50%;\">"+b[i]+"</li>\n" +
-                                                "                                        <li class=\"fr blogs_edit\"><a href=\"/article/update/"+data.results[i].id+"\" >编辑</a></li>\n" +
                                                 "                                    </ul>\n" +
                                                 "                                </div>\n" +
                                                 "                                </div>\n" +

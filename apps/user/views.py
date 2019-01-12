@@ -185,7 +185,14 @@ class PersonApi(viewsets.ReadOnlyModelViewSet):
         """
         user = self.request.user
         #User.objects.filter()
-        return Article_add.objects.filter(authors_id=self.request.user.id).filter(is_show=True).order_by('-add_time')
+
+        user_id = self.request.query_params.get('pk')
+        if user_id:
+            return Article_add.objects.filter(authors_id=user_id).filter(is_show=True).order_by('-add_time')
+        else:
+            return Article_add.objects.filter(authors_id=self.request.user.id).filter(is_show=True).order_by(
+                '-add_time')
+
 
 
 # def PersonOthers(request,article_id):
@@ -202,13 +209,33 @@ class PersonOthers(viewsets.ReadOnlyModelViewSet):
     """
     他个人中心
     """
-    #print()
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+    queryset = Article_add.objects.filter(is_show=True)
+    serializer_class = ArticleSerializer
     permission_classes = (IsAuthenticated,IsOwnerOrReadOnly)#未登录禁止访问
-    filter_backends = (DjangoFilterBackend,filters.SearchFilter)
-    filter_class = UserFilter
-    search_fields = ('mobile',)
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = CategoryFilter
     authentication_classes = (SessionAuthentication,)
+    def get_queryset(self):
+        print(self.request.query_params.get('pk'))
+        try:
+            #print(self.kwargs['pk'])
+            #user_id = self.kwargs['pk']
+            user_id = self.request.query_params.get('pk')
+            if user_id:
+                print(Article_add.objects.filter(authors_id=user_id).filter(is_show=True).order_by('-add_time'))
+                return Article_add.objects.filter(authors_id=user_id).filter(is_show=True).order_by('-add_time')
+        except Exception:
+            pass
+
+
+
+    #print()
+    # queryset = User.objects.all()
+    # serializer_class = UserSerializer
+    # permission_classes = (IsAuthenticated,IsOwnerOrReadOnly)#未登录禁止访问
+    # filter_backends = (DjangoFilterBackend,filters.SearchFilter)
+    # filter_class = UserFilter
+    # search_fields = ('mobile',)
+    # authentication_classes = (SessionAuthentication,)
     # def get_queryset(self):
     #     print(self.request.query_params.get('article_id'))
