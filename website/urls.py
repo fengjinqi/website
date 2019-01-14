@@ -24,7 +24,7 @@ from django.views.generic import TemplateView
 
 from website import settings
 from apps.article import views
-from apps.user.views import logout_view,Person,PersonApi, PersonOthers
+from apps.user.views import logout_view,Person,PersonApi
 from rest_framework import routers
 
 router = routers.DefaultRouter()

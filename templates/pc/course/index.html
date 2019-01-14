@@ -1,11 +1,145 @@
 {% extends 'pc/base.html' %}
 {% load static %}
-{% block title %}文章{% endblock %}
+{% block title %}教程{% endblock %}
 {% block css %}
-
+    <link rel="stylesheet" href="{% static 'css/course.css' %}">
 {% endblock %}
 {% block content %}
     <div class="container">
-    文章
+        <h1>全部教程</h1>
+        <div id="main"class="clearfix">
+            <div class="course">
+                <a href="">
+                     <img src="{% static 'img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'%}" alt="">
+                <div class="desc">
+                    <p>Django教程开发</p>
+                    <span>  {
+            "id": "bc4bb023-dfde-431a-8c5c-7e4d54552d50",
+            "authors": {
+                "username": "admin",
+                "user_imag": "http://127.0.0.1:8000/upload/article/1.jpg",
+                "id": "d0d32205-ba9c-4574-a70c-ea416ed565a9"
+            },
+            "category": {
+                "name": "前端"
+            },
+            "article_comment_set": [
+                {
+                    "id": 11,
+                    "user": {
+                        "username": "admin",
+                        "user_imag": "http://127.0.0.1:8000/upload/article/1.jpg",
+                        "id": "d0d32205-ba9c-4574-a70c-ea416ed565a9"
+                    },
+                    "articlecommentreply_set": [],
+                    "comments": "6",
+                    "address": "四川省成都市",
+                    "add_time": "2019-01-09T15:29:40.720536+08:00",
+                    "article": "bc4bb023-dfde-431a-8c5c-7e4d54552d50"
+                },
+                {
+                    "id": 9,
+                    "user": {
+                        "username": "admin",
+                        "user_imag": "http://127.0.0.1:8000/upload/article/1.jpg",
+                        "id": "d0d32205-ba9c-4574-a70c-ea416ed565a9"
+                    },
+                    "articlecommentreply_set": [],
+                    "comments": "我是admin",</span>
+                    <div class="article__footer">
+                        2018-10-12
+                    </div>
+                </div>
+                </a>
+
+
+            </div>
+            <div class="course">
+                <a href="">
+                     <img src="{% static 'img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'%}" alt="">
+                <div class="desc">
+                    <p>Django教程开发</p>
+                    <span>  {
+            "id": "bc4bb023-dfde-431a-8c5c-7e4d54552d50",
+            "authors": {
+                "username": "admin",
+                "user_imag": "http://127.0.0.1:8000/upload/article/1.jpg",
+                "id": "d0d32205-ba9c-4574-a70c-ea416ed565a9"
+            },
+            "category": {
+                "name": "前端"
+            },
+            "article_comment_set": [
+                {
+                    "id": 11,
+                    "user": {
+                        "username": "admin",
+                        "user_imag": "http://127.0.0.1:8000/upload/article/1.jpg",
+                        "id": "d0d32205-ba9c-4574-a70c-ea416ed565a9"
+                    },
+                    "articlecommentreply_set": [],
+                    "comments": "6",
+                    "address": "四川省成都市",
+                    "add_time": "2019-01-09T15:29:40.720536+08:00",
+                    "article": "bc4bb023-dfde-431a-8c5c-7e4d54552d50"
+                },
+                {
+                    "id": 9,
+                    "user": {
+                        "username": "admin",
+                        "user_imag": "http://127.0.0.1:8000/upload/article/1.jpg",
+                        "id": "d0d32205-ba9c-4574-a70c-ea416ed565a9"
+                    },
+                    "articlecommentreply_set": [],
+                    "comments": "我是admin",</span>
+                </div>
+                </a>
+
+
+            </div>
+            <div class="course">
+                <a href="">
+                     <img src="{% static 'img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'%}" alt="">
+                <div class="desc">
+                    <p>Django教程开发</p>
+                    <span>  {
+            "id": "bc4bb023-dfde-431a-8c5c-7e4d54552d50",
+            "authors": {
+                "username": "admin",
+                "user_imag": "http://127.0.0.1:8000/upload/article/1.jpg",
+                "id": "d0d32205-ba9c-4574-a70c-ea416ed565a9"
+            },
+            "category": {
+                "name": "前端"
+            },
+            "article_comment_set": [
+                {
+                    "id": 11,
+                    "user": {
+                        "username": "admin",
+                        "user_imag": "http://127.0.0.1:8000/upload/article/1.jpg",
+                        "id": "d0d32205-ba9c-4574-a70c-ea416ed565a9"
+                    },
+                    "articlecommentreply_set": [],
+                    "comments": "6",
+                    "address": "四川省成都市",
+                    "add_time": "2019-01-09T15:29:40.720536+08:00",
+                    "article": "bc4bb023-dfde-431a-8c5c-7e4d54552d50"
+                },
+                {
+                    "id": 9,
+                    "user": {
+                        "username": "admin",
+                        "user_imag": "http://127.0.0.1:8000/upload/article/1.jpg",
+                        "id": "d0d32205-ba9c-4574-a70c-ea416ed565a9"
+                    },
+                    "articlecommentreply_set": [],
+                    "comments": "我是admin",</span>
+                </div>
+                </a>
+
+
+            </div>
+        </div>
     </div>
 {% endblock %}

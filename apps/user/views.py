@@ -138,9 +138,11 @@ class Person(View):
 
     @method_decorator(login_required(login_url='/login'),name='dispatch')
     def get(self,request):
+
         category = Category_Article.objects.all()
         count = User.objects.filter(follow__fan__id=request.user.id).count()
         floow = User.objects.filter(fan__follow_id=request.user.id).count()
+
         return render(request,'pc/person/index.html',{'category':category,'count':count,'floow':floow})
 
 
@@ -151,10 +153,10 @@ class PersonDetaile(View):
         count = User.objects.filter(follow__fan__id=article_id).count()
         floow = User.objects.filter(follow__fan__id=article_id).count()
         user = User.objects.get(id=article_id)
-        print(user)
+
+        if article_id ==request.user.id:
+            return redirect(reverse('user:person'))
         return render(request,'pc/person/index1.html',{'category':category,'count':count,'floow':floow,'user':user})
-
-
 
 
 class PersonApi(viewsets.ReadOnlyModelViewSet):
@@ -178,6 +180,7 @@ class PersonApi(viewsets.ReadOnlyModelViewSet):
     #         return Response(serializer.data)
     # def get_queryset(self):
     #     return Article_add.objects.filter(authors_id=self.request.user.id)
+
     def get_queryset(self):
         """
         This view should return a list of all the purchases
@@ -194,38 +197,27 @@ class PersonApi(viewsets.ReadOnlyModelViewSet):
                 '-add_time')
 
 
-
-# def PersonOthers(request,article_id):
-#     if request.method == 'GET':
-#         snippets = User.objects.get(pk=article_id)
-#         serializer = UserSerializer(snippets, many=True)
-#
-#         filter_backends = (DjangoFilterBackend,)
-#         filter_class = UserFilter
-#
-#         return Response(serializer.data)
-
-class PersonOthers(viewsets.ReadOnlyModelViewSet):
-    """
-    他个人中心
-    """
-    queryset = Article_add.objects.filter(is_show=True)
-    serializer_class = ArticleSerializer
-    permission_classes = (IsAuthenticated,IsOwnerOrReadOnly)#未登录禁止访问
-    filter_backends = (DjangoFilterBackend,)
-    filter_class = CategoryFilter
-    authentication_classes = (SessionAuthentication,)
-    def get_queryset(self):
-        print(self.request.query_params.get('pk'))
-        try:
-            #print(self.kwargs['pk'])
-            #user_id = self.kwargs['pk']
-            user_id = self.request.query_params.get('pk')
-            if user_id:
-                print(Article_add.objects.filter(authors_id=user_id).filter(is_show=True).order_by('-add_time'))
-                return Article_add.objects.filter(authors_id=user_id).filter(is_show=True).order_by('-add_time')
-        except Exception:
-            pass
+# class PersonOthers(viewsets.ReadOnlyModelViewSet):
+#     """
+#     他个人中心 (未用)
+#     """
+#     queryset = Article_add.objects.filter(is_show=True)
+#     serializer_class = ArticleSerializer
+#     permission_classes = (IsAuthenticated,IsOwnerOrReadOnly)#未登录禁止访问
+#     filter_backends = (DjangoFilterBackend,)
+#     filter_class = CategoryFilter
+#     authentication_classes = (SessionAuthentication,)
+#     def get_queryset(self):
+#         print(self.request.query_params.get('pk'))
+#         try:
+#             #print(self.kwargs['pk'])
+#             #user_id = self.kwargs['pk']
+#             user_id = self.request.query_params.get('pk')
+#             if user_id:
+#                 print(Article_add.objects.filter(authors_id=user_id).filter(is_show=True).order_by('-add_time'))
+#                 return Article_add.objects.filter(authors_id=user_id).filter(is_show=True).order_by('-add_time')
+#         except Exception:
+#             pass
 
 
 

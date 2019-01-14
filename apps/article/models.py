@@ -45,6 +45,7 @@ class Article_Comment(models.Model):
     comments = models.TextField(verbose_name='评论')
     address = models.CharField(max_length=50,verbose_name='地址',blank=True,null=True)
     add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
+
     def __str__(self):
         return self.article.title
 

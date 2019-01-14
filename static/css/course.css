@@ -1,0 +1,39 @@
+.container{
+    width: 1200px;
+    margin: 20px auto;
+}
+h1{
+    text-align: center;
+}
+#main{
+    width: 100%;
+    padding: 15px;
+}
+#main>div{
+    float: left;
+    width: 30%;
+    background: #fff;
+    margin: 15px 15px;
+}
+#main>.course>a>img{
+    width: 100%;
+}
+.desc{
+    padding: 15px;
+
+}
+.desc p{
+    font-weight: bold;
+    text-align: center;
+    padding-bottom: 15px ;
+}
+.desc span{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+}
+a:hover{
+    color: #757575;
+}
