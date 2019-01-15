@@ -50,7 +50,7 @@ body{
     font-size: 14px;
     color: #666;
     overflow-x: hidden;
-    background: #f5f5f5;
+    background: #f7f7f7;
 }
 ul,ul>li{
     list-style: none;
@@ -106,9 +106,9 @@ header{
     height: 60px;
     line-height: 60px;
     background: #fff;
-    -webkit-box-shadow: 1px 1px 10px #ddd;
-    -moz-box-shadow: 1px 1px 10px #ddd;
-    box-shadow: 1px 1px 10px #ddd;
+    -webkit-box-shadow: 1px 1px 10px #f1f1f1;
+    -moz-box-shadow: 1px 1px 10px #f1f1f1;
+    box-shadow: 1px 1px 10px #f1f1f1;
 }
 .logo{
     margin-right: 100px;
