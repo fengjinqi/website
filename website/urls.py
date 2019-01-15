@@ -17,9 +17,9 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.static import serve
+from rest_framework_jwt.views import obtain_jwt_token
 
-
-from apps.user.views import test, captcha_refresh, yan, login_view
+from apps.user.views import test, captcha_refresh, yan, login_view, UserGetInfo, UserGetAllInfo
 from django.views.generic import TemplateView
 
 from website import settings
@@ -33,6 +33,8 @@ router.register('follow_list', views.FollowListView)
 router.register('article_Comment', views.ArticleCommintView)
 router.register('comment_reply', views.ArticleCommentReplyView)
 router.register('PersonApi', PersonApi)
+router.register('info', UserGetInfo)
+router.register('all_info', UserGetAllInfo)
 #router.register('PersonOthers', PersonOthers)
 
 
@@ -57,5 +59,6 @@ urlpatterns = [
     re_path(r'^upload/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     url(r'api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    re_path(r'api/login/$', obtain_jwt_token),#jwt认证
     #re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATI_ROOT})  # 配置文件上传html显示
 ]
