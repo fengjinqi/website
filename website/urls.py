@@ -19,7 +19,7 @@ from django.urls import path, include, re_path
 from django.views.static import serve
 from rest_framework_jwt.views import obtain_jwt_token
 
-from apps.user.views import test, captcha_refresh, yan, login_view, UserGetInfo, UserGetAllInfo
+from apps.user.views import test, captcha_refresh, yan, login_view, UserGetInfo, UserGetAllInfo, UserDisbale
 from django.views.generic import TemplateView
 
 from website import settings
@@ -30,11 +30,13 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 router.register('article_list', views.ArticleListView)
 router.register('follow_list', views.FollowListView)
+router.register('category', views.CategoryView)
 router.register('article_Comment', views.ArticleCommintView)
 router.register('comment_reply', views.ArticleCommentReplyView)
 router.register('PersonApi', PersonApi)
 router.register('info', UserGetInfo)
 router.register('all_info', UserGetAllInfo)
+router.register('user_disbale', UserDisbale)
 #router.register('PersonOthers', PersonOthers)
 
 

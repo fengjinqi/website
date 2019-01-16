@@ -11,8 +11,8 @@ from rest_framework.response import Response
 
 from apps.article.filter import GoodsFilter
 from apps.article.forms import Article_form
-from apps.article.serializers import ArticleSerializer, Article_CommentSerializer, ArticleCommentReply ,\
-    Article_CommentSerializerAdd, ArticleCommentReplySerializer
+from apps.article.serializers import ArticleSerializer, Article_CommentSerializer, ArticleCommentReply, \
+    Article_CommentSerializerAdd, ArticleCommentReplySerializer, Category_ArticleSerializer
 from apps.user.models import User, Follow
 from website import settings
 import os
@@ -237,7 +237,7 @@ def blog_img_upload(request):
 """==========================================api"""
 
 class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 8
+    page_size = 6
     # page_size_query_param = 'page_size'#每页设置展示多少条
     # page_query_param = 'page'
     # max_page_size = 100
@@ -272,18 +272,18 @@ class FollowListView(viewsets.ReadOnlyModelViewSet):
 
 
 class ArticleCommintView(mixins.CreateModelMixin,viewsets.GenericViewSet):
+    """TODO 評論"""
     serializer_class = Article_CommentSerializerAdd
     queryset = Article_Comment.objects.all()
-    # def create(self, request, *args, **kwargs):
-    #     serializer = self.get_serializer(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     self.perform_create(serializer)
-    #     headers = self.get_success_headers(serializer.data)
-    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
 
 
 class ArticleCommentReplyView(mixins.CreateModelMixin,viewsets.GenericViewSet):
+    """TODO 回復評論"""
     serializer_class = ArticleCommentReplySerializer
     queryset = ArticleCommentReply.objects.all()
 
+
+class CategoryView(viewsets.ReadOnlyModelViewSet):
+    """TODO 分類"""
+    queryset = Category_Article.objects.all()
+    serializer_class = Category_ArticleSerializer

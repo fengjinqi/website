@@ -16,10 +16,11 @@ class UsersSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id',)
 
+
 class Category_ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category_Article
-        fields = ('name',)
+        fields = ('name','id',)
 
 
 class Article_CommentSerializerAdd(serializers.ModelSerializer):

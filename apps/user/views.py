@@ -170,6 +170,7 @@ class PersonApi(viewsets.ReadOnlyModelViewSet):
     filter_backends = (DjangoFilterBackend,)
     filter_class = CategoryFilter
     authentication_classes = (SessionAuthentication,)
+    pagination_class = StandardResultsSetPagination
     # def list(self, request, *args, **kwargs):
     #         queryset =  Article_add.objects.filter(authors_id=self.request.user.id).order_by('-add_time')
     #         serializer = ArticleSerializer(queryset, many=True)
@@ -233,19 +234,22 @@ class PersonApi(viewsets.ReadOnlyModelViewSet):
     # def get_queryset(self):
     #     print(self.request.query_params.get('article_id'))
 
-
-class UserGetInfo(viewsets.ReadOnlyModelViewSet):
+class UserGetAllInfo(mixins.ListModelMixin,mixins.UpdateModelMixin,viewsets.GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
-    authentication_classes = [SessionAuthentication,JSONWebTokenAuthentication]
+    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
 
+
+class UserGetInfo(UserGetAllInfo):
     def get_queryset(self):
         return User.objects.filter(pk=self.request.user.id)
 
 
-class UserGetAllInfo(viewsets.ReadOnlyModelViewSet):
+class UserDisbale(mixins.ListModelMixin,mixins.UpdateModelMixin,viewsets.GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
-    authentication_classes = (SessionAuthentication,JSONWebTokenAuthentication)
+    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+
+    pass

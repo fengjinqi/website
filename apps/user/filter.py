@@ -10,6 +10,7 @@ from apps.user.models import User
 class CategoryFilter(django_filters.rest_framework.FilterSet):
 
     category = django_filters.rest_framework.CharFilter(field_name='category__id', lookup_expr='icontains')
+    title = django_filters.rest_framework.CharFilter(field_name='title', lookup_expr='icontains')
     # top_category = django_filters.rest_framework.NumberFilter(method='top_category_filter')
     #
     # def top_category_filter(self, queryset, name, value):
@@ -19,7 +20,7 @@ class CategoryFilter(django_filters.rest_framework.FilterSet):
 
     class Meta:
         model = Article_add
-        fields = ['category', ]
+        fields = ['category','title', ]
 
 
 class UserFilter(django_filters.rest_framework.FilterSet):
