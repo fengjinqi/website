@@ -10,11 +10,11 @@
 
 {% endblock %}
 {% block content %}
-<section class="main clearfix">
-    <div class="person fl">
-        <div class="person_banner">
-        <div class="person_bannerbgd img_cover"></div>
-        <div class="person_nav">
+    <div class="person_banner">
+        <div class="person_bannerbgd img_cover">
+            <div></div>
+        </div>
+        <div class="person_nav main">
             <ul class="clearfix">
                 <li class="fl">
                     <a href="">发布</a>
@@ -30,7 +30,38 @@
                 </li>
             </ul>
         </div>
+        <div class="aside_my">
+            <div class="aside_my_info">
+                <div style="text-align: center;">
+
+                    <div class="my_head"style="
+
+                            {% if request.user.user_imag  %}
+
+                        background: url('{{ MEDIA_URL }}{{ request.user.user_imag }}')no-repeat;background-size: cover;
+                        {% else %}
+                        background: #000;
+                    {% endif %}"></div>
+                    <p style="margin:16px 0 4px 0">{{ request.user.username }}</p>
+                    <p style="font-size: 12px;">前端开发 | 3年</p>
+                </div>
+            </div>
+            <div class="aside_my_num flex_justify">
+               <div class="aside_my_div">
+                   <p>{{ count}}</p>
+                   <p>关注</p>
+               </div>
+                <div class="aside_my_div">
+                    <p>{{ floow }}</p>
+                    <p>粉丝</p>
+                </div>
+            </div>
+        </div>
     </div>
+<section class="main clearfix">
+    {% block end %}
+         <div class="person fl">
+
         <div class="clearfix">
             <div class="fl left_nav">
                 <ul id="category">
@@ -106,33 +137,7 @@
         </div>
     </div>
     <aside class="fr">
-        <div class="aside_my">
-            <div class="aside_my_info">
-                <div style="text-align: center;">
 
-                    <div class="my_head"style="
-
-                            {% if request.user.user_imag  %}
-
-                        background: url('{{ MEDIA_URL }}{{ request.user.user_imag }}')no-repeat;background-size: cover;
-                        {% else %}
-                        background: #000;
-                    {% endif %}"></div>
-                    <p style="margin:16px 0 4px 0">{{ request.user.username }}</p>
-                    <p style="font-size: 12px;color: #999;">前端开发 | 3年</p>
-                </div>
-            </div>
-            <div class="aside_my_num flex_justify">
-               <div class="aside_my_div">
-                   <p>{{ count}}</p>
-                   <p>关注</p>
-               </div>
-                <div class="aside_my_div">
-                    <p>{{ floow }}</p>
-                    <p>粉丝</p>
-                </div>
-            </div>
-        </div>
     {{ request.path }}
         <div class="aside_pubnum">
             <div class="flex_justify">
@@ -182,6 +187,8 @@
             </div>
         </div>
     </aside>
+    {% endblock %}
+
 </section>
 {% endblock %}
 {% block js %}

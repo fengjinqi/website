@@ -1,5 +1,5 @@
 body{
-    background: #f7f7f7;
+    /*background: #fff;*/
 }
 .person{
     width: 1030px;
@@ -8,15 +8,22 @@ body{
     width: 100%;
     height: 240px;
     background: #fff;
-    border: 1px solid #ddd;
      -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
+    position: relative;
 }
 .person_bannerbgd{
     width: 100%;
     height: 196px;
-    background:#000;
+    background:url(http://uploads.5068.com/allimg/1801/78-1P1050R300-50.jpg);
+    position: relative;
+}
+.person_bannerbgd>div{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.3);
 }
 .person_nav{
     padding:0 16px;
@@ -39,10 +46,9 @@ aside{
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    border: 1px solid #ddd;
 }
 .left_nav>ul>li{
-    border-bottom: 1px solid #ececec;
+
     cursor: pointer;
     height: 32px;
     line-height: 32px;
@@ -51,6 +57,8 @@ aside{
 }
 .left_nav>ul>li>a{
     width: 100%;
+
+
 }
 .left_nav>ul>li:hover{
     background: #356dd0;
@@ -66,13 +74,20 @@ aside{
 .left_nav>ul>li:hover a{
     color: #fff;
 }
-.aside_my,.aside_pubnum,.aside_visit{
+.aside_pubnum,.aside_visit{
     background: #fff;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    border: 1px solid #ececec;
 }
+.aside_my{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    margin-left:292px;
+    color: #fff;
+}
+
 .aside_my_info{
     height: 196px;
 }
@@ -84,6 +99,10 @@ aside{
     height: 103px;
     background: #000;
     margin:0 auto;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    border:2px solid #fff
 }
 .aside_my_num{
     height: 44px;
@@ -95,18 +114,17 @@ aside{
      width: 50%;
     font-size: 12px;
     margin-top: 4px;
+    color: #666;
 }
 .aside_pubnum{
     height: 60px;
     margin-top: 20px;
-    border: 1px solid #ddd;
 }
 .aside_pubnum .aside_my_div{
     font-size: 14px;
     margin-top: 14px;
 }
 .aside_visit{
-    border: 1px solid #ddd;
     padding:0 16px;
     margin-top: 20px;
 }
@@ -155,4 +173,35 @@ aside{
     border:1px solid #ccc;
     margin: 0 10px;
     background: #1da1f2;
+}
+
+/*人脉*/
+.follow_main{
+    padding:15px;
+    background: #fff;
+}
+.follow_main .follow_item_img{
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+.follow_item{
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+}
+.follow_item dt{
+    margin-right: 15px;
+}
+.follow_item_name{
+    min-width: 460px;
+}
+.follow_item_name>a{
+   font-weight: 700;
+}
+.follow_item_info>span{
+    color: #999;
+}
+.follow_num{
+    margin-right: 20px;
 }

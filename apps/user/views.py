@@ -158,7 +158,8 @@ class PersonDetaile(View):
         if article_id ==request.user.id:
             return redirect(reverse('user:person'))
         return render(request,'pc/person/index1.html',{'category':category,'count':count,'floow':floow,'user':user})
-
+def Persons(request):
+    return render(request,'pc/person/person.html')
 
 class PersonApi(viewsets.ReadOnlyModelViewSet):
     """

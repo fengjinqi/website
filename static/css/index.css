@@ -1,6 +1,6 @@
 /*列表开始*/
 .blogs{
-    border: 1px solid #ddd;
+
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
@@ -129,12 +129,12 @@
 /*banner结束*/
 /*aside开始*/
 .aside_public,.aside_hot,.aside_goodperson,.aside_autor{
-    border: 1px solid #ddd;
+
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
     background: #fff;
-    padding: 0 16px;
+    padding: 0 16px 16px 16px;
     margin-top: 9px;
 }
 .blogs_number{
@@ -163,7 +163,7 @@
     margin-bottom: 16px;
 }
 .swiper-pagination{
-    padding:14px 0;
+    padding:14px 0 0 0;
     border-top: 1px solid #ddd;
     bottom: 0!important;
 }
@@ -209,7 +209,7 @@
     font-size: 12px;
 }
 .aside_goodperson_item {
-    margin: 16px 0;
+    margin: 16px 0 0 0;
 }
 .aside_goodperson_item_user_info{
     padding-left: 56px;
@@ -218,7 +218,7 @@
     line-height: 24px;
 }
 .aside_autor .flex_justify{
-    margin: 16px 0;
+    margin: 16px 0 0 0;
 }
 /*aside结束*/
 /*文章css*/
@@ -229,7 +229,6 @@
     background: #fff;
     /*padding: 16px 16px 0 16px;*/
     margin-top: 20px;
-    border: 1px solid #ddd;
 }
 .fiter_nav{
     border-right:0;

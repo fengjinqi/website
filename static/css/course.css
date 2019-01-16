@@ -3,7 +3,7 @@
     margin: 20px auto;
 }
 body{
-    background: #fff;
+    /*background: #fff;*/
 }
 h1{
     text-align: center;
@@ -58,4 +58,38 @@ a:hover{
     -moz-border-radius: 3px;
     border-radius: 3px;
     color: #356dd0!important;
+}
+/*详情*/
+.Catalog{
+    width: 198px;
+    border: 1px solid #ddd;
+    background: #fff;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+.Catalog>ul>li{
+    height: 48px;
+    line-height: 48px;
+    cursor: pointer;
+    padding:0 15px;
+}
+.Catalog>ul>li:hover{
+    color:#356dd0;
+}
+.content{
+    width: 978px;
+    height: 500px;
+    background: #fff;
+    border: 1px solid #ddd;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+.content .pageNav{
+    height:48px;
+    line-height: 48px;
+    background: #f7f7f7;
+    border-bottom: 1px solid #ddd;
+    padding:0 15px;
 }

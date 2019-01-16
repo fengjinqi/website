@@ -10,11 +10,11 @@
 
 {% endblock %}
 {% block content %}
-<section class="main clearfix">
-    <div class="person fl">
-        <div class="person_banner">
-        <div class="person_bannerbgd img_cover"></div>
-        <div class="person_nav">
+    <div class="person_banner">
+        <div class="person_bannerbgd img_cover">
+            <div></div>
+        </div>
+        <div class="person_nav main">
             <ul class="clearfix">
                 <li class="fl">
                     <a href="">发布</a>
@@ -30,27 +30,6 @@
                 </li>
             </ul>
         </div>
-    </div>
-        <div class="clearfix">
-            <div class="fl left_nav">
-                <ul id="category">
-                    <li data-type="" class="active"><a href="javascript:;">全部</a></li>
-                    {% for foo in category %}
-                        <li data-type="{{ foo.id }}"><a href="javascript:;">{{ foo.name }}</a></li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <article class="fr">
-                 <div class="blogs">
-                     <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">最新文章</div>
-                     <div id="mains">
-
-                     </div>
-                     <div class="M-box pagination"></div>
-                 </div>
-            </article>
-        </div>
-    </div>
     <aside class="fr">
         <div class="aside_my">
             <div class="aside_my_info">
@@ -81,6 +60,31 @@
         </div>
 
     </aside>
+    </div>
+<section class="main clearfix">
+    <div class="person fl">
+
+        <div class="clearfix">
+            <div class="fl left_nav">
+                <ul id="category">
+                    <li data-type="" class="active"><a href="javascript:;">全部</a></li>
+                    {% for foo in category %}
+                        <li data-type="{{ foo.id }}"><a href="javascript:;">{{ foo.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <article class="fr">
+                 <div class="blogs">
+                     <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">最新文章</div>
+                     <div id="mains">
+
+                     </div>
+                     <div class="M-box pagination"></div>
+                 </div>
+            </article>
+        </div>
+    </div>
+
 </section>
 {% endblock %}
 {% block js %}

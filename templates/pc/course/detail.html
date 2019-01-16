@@ -4,11 +4,25 @@
     <link rel="stylesheet" href="{% static 'css/course.css' %}">
 {% endblock %}
 {% block content %}
-    <div class="container">
-        <div class="Catalog">
+    <div class="container clearfix">
+        <div class="Catalog fl">
             <ul>
-                <li>目录</li>
+                <li>目录1</li>
+                <li>目录1</li>
+                <li>目录1</li>
+                <li>目录1</li>
+                <li>目录1</li>
             </ul>
+        </div>
+        <div class="content fr">
+            <div class="pageNav clearfix">
+                <div class="fl">
+                    < 前一页
+                </div>
+                <div class="fr">
+                    后一页 >
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
