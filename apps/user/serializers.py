@@ -6,8 +6,6 @@ from apps.article.serializers import ArticleSerializer
 
 
 class UserSerializer(serializers.ModelSerializer):
-    article_add_set = ArticleSerializer(many=True)
-
     class Meta:
         model = User
-        fields = ('id','username','mobile','user_imag','email','article_add_set',)
+        fields = ('id','username','mobile','user_imag','email',)

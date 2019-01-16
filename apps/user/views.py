@@ -18,6 +18,7 @@ from rest_framework import filters
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from apps.article.models import Article_add, Category_Article
 from apps.article.serializers import ArticleSerializer
@@ -231,3 +232,20 @@ class PersonApi(viewsets.ReadOnlyModelViewSet):
     # authentication_classes = (SessionAuthentication,)
     # def get_queryset(self):
     #     print(self.request.query_params.get('article_id'))
+
+
+class UserGetInfo(viewsets.ReadOnlyModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
+    authentication_classes = [SessionAuthentication,JSONWebTokenAuthentication]
+
+    def get_queryset(self):
+        return User.objects.filter(pk=self.request.user.id)
+
+
+class UserGetAllInfo(viewsets.ReadOnlyModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
+    authentication_classes = (SessionAuthentication,JSONWebTokenAuthentication)
