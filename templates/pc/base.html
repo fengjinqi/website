@@ -65,13 +65,17 @@
 {% block content %}
 
 {% endblock %}
+
 <footer class="footer">
-    <p>Powered by
+    <p class="main">Powered by
         <a>会飞的鱼</a>
                     <a href="http://www.miitbeian.gov.cn" target="_blank">蜀ICP备18023241号-1</a>
+
+
     </p>
+
 </footer>
-<a href="javascript:;" id="toTop"></a>
+ <a href="javascript:;" id="toTop"></a>
 <script>
     $(function(){
         $('.avatar').click(function(event){
@@ -81,7 +85,7 @@
         $(document).click(function(){
             $(".meau").fadeOut();
             });
-         $(window).scroll(function(){
+        $(window).scroll(function(){
                 if ($(window).scrollTop()>100){
                     $("#toTop").fadeIn(1500);
                 }
@@ -89,14 +93,17 @@
                 {
                     $("#toTop").fadeOut(1000);
                 }
-            });
+        });
             //当点击跳转链接后，回到页面顶部位置
             $("#toTop").click(function(){
                 $('body,html').animate({scrollTop:0},1000);
                 return false;
             });
-
-
+        //底部栏位置始终在最底部
+        //console.log(window.screen.availHeight)
+        $("body").css({
+            "min-height": $(window).height()
+        })
     })
 </script>
 {% block js %}

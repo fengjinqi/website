@@ -141,8 +141,8 @@ class Person(View):
     def get(self,request):
 
         category = Category_Article.objects.all()
-        count = User.objects.filter(follow__fan__id=request.user.id).count()
-        floow = User.objects.filter(fan__follow_id=request.user.id).count()
+        count = User.objects.filter(follow__fan__id=request.user.id)
+        floow = User.objects.filter(fan__follow_id=request.user.id)
 
         return render(request,'pc/person/index.html',{'category':category,'count':count,'floow':floow})
 
@@ -158,8 +158,15 @@ class PersonDetaile(View):
         if article_id ==request.user.id:
             return redirect(reverse('user:person'))
         return render(request,'pc/person/index1.html',{'category':category,'count':count,'floow':floow,'user':user})
-def Persons(request):
-    return render(request,'pc/person/person.html')
+def Profile(request):
+    count = User.objects.filter(follow__fan__id=request.user.id)
+    floow = User.objects.filter(fan__follow_id=request.user.id)
+    return render(request,'pc/person/profile.html',{'count':count,'floow':floow})
+
+def Info(request):
+    count = User.objects.filter(follow__fan__id=request.user.id)
+    floow = User.objects.filter(fan__follow_id=request.user.id)
+    return render(request,'pc/person/info.html',{'count':count,'floow':floow})
 
 class PersonApi(viewsets.ReadOnlyModelViewSet):
     """
