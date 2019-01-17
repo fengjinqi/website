@@ -17,16 +17,17 @@
                      <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">我的关注</div>
                      <div class="follow_main">
                          <ul class="clearfix">
-                             <li class="follow_item">
+                             {% for foo in count %}
+                                    <li class="follow_item">
                                  <dl class="clearfix">
                                      <dt class="fl">
                                          <a target="_blank" title="" href="">
-                                            <img class="follow_item_img" width="50" height="50" alt="" src="/upload/article/1.jpg">
+                                            <img class="follow_item_img" width="50" height="50" alt="" src="{{ MEDIA_URL }}{{ foo.user_imag }}">
                                          </a>
                                      </dt>
                                      <dd class="fl">
                                          <div class="follow_item_name">
-                                            <a target="_blank" title="" alt="" href="">a女知青R白纸相赠</a>
+                                            <a target="_blank" title="" alt="" href="">{{ foo.username }}</a>
                                          </div>
                                          <div class="follow_item_info">
                                             <span>前端工程师</span>
@@ -35,13 +36,13 @@
                                      <dd class="fl follow_num">
                                          <div class="">
                                              <div>关注</div>
-                                             <div>333</div>
+                                             <div>{{ foo.follow.count }}</div>
                                          </div>
                                      </dd>
                                      <dd class="fl fans_num">
                                          <div class="">
                                              <div>粉丝</div>
-                                             <div>666</div>
+                                             <div>{{ foo.fan.count }}</div>
                                          </div>
                                      </dd>
                                      <dd class="fr follow_btn">
@@ -49,70 +50,7 @@
                                      </dd>
                                  </dl>
                              </li>
-                             <li class="follow_item">
-                                 <dl class="clearfix">
-                                     <dt class="fl">
-                                         <a target="_blank" title="" href="">
-                                            <img class="follow_item_img" width="50" height="50" alt="" src="/upload/article/1.jpg">
-                                         </a>
-                                     </dt>
-                                     <dd class="fl">
-                                         <div class="follow_item_name">
-                                            <a target="_blank" title="" alt="" href="">a女知青R白纸相赠</a>
-                                         </div>
-                                         <div class="follow_item_info">
-                                            <span>前端工程师</span>
-                                         </div>
-                                     </dd>
-                                     <dd class="fl follow_num">
-                                         <div class="">
-                                             <div>关注</div>
-                                             <div>333</div>
-                                         </div>
-                                     </dd>
-                                     <dd class="fl fans_num">
-                                         <div class="">
-                                             <div>粉丝</div>
-                                             <div>666</div>
-                                         </div>
-                                     </dd>
-                                     <dd class="fr follow_btn">
-                                         <a href="">取消关注</a>
-                                     </dd>
-                                 </dl>
-                             </li>
-                             <li class="follow_item">
-                                 <dl class="clearfix">
-                                     <dt class="fl">
-                                         <a target="_blank" title="" href="">
-                                            <img class="follow_item_img" width="50" height="50" alt="" src="/upload/article/1.jpg">
-                                         </a>
-                                     </dt>
-                                     <dd class="fl">
-                                         <div class="follow_item_name">
-                                            <a target="_blank" title="" alt="" href="">a女知青R白纸相赠</a>
-                                         </div>
-                                         <div class="follow_item_info">
-                                            <span>前端工程师</span>
-                                         </div>
-                                     </dd>
-                                     <dd class="fl follow_num">
-                                         <div class="">
-                                             <div>关注</div>
-                                             <div>333</div>
-                                         </div>
-                                     </dd>
-                                     <dd class="fl fans_num">
-                                         <div class="">
-                                             <div>粉丝</div>
-                                             <div>666</div>
-                                         </div>
-                                     </dd>
-                                     <dd class="fr follow_btn">
-                                         <a href="">取消关注</a>
-                                     </dd>
-                                 </dl>
-                             </li>
+                             {% endfor %}
                          </ul>
                      </div>
                  </div>

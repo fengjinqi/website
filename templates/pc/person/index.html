@@ -17,13 +17,10 @@
         <div class="person_nav main">
             <ul class="clearfix">
                 <li class="fl">
-                    <a href="">发布</a>
+                    <a href="{% url 'user:person' %}">个人中心</a>
                 </li>
                 <li class="fl">
-                    <a href="">关注</a>
-                </li>
-                <li class="fl">
-                    <a href="">人脉</a>
+                    <a href="{% url 'user:profile' %}">人脉</a>
                 </li>
                 <li class="fl">
                     <a href="">资料</a>
@@ -48,11 +45,11 @@
             </div>
             <div class="aside_my_num flex_justify">
                <div class="aside_my_div">
-                   <p>{{ count}}</p>
+                   <p>{{ count.count}}</p>
                    <p>关注</p>
                </div>
                 <div class="aside_my_div">
-                    <p>{{ floow }}</p>
+                    <p>{{ floow.count }}</p>
                     <p>粉丝</p>
                 </div>
             </div>
@@ -331,7 +328,7 @@
         })
         function filter(self) {
             self.addClass('active').siblings().removeClass('active')
-                $.ajax({
+            $.ajax({
                     url:'/api/PersonApi/?category='+self.attr('data-type'),
                     type:'get',
                     beforeSend:function(){
@@ -344,14 +341,11 @@
                         for(var i=0;i<data.results.length;i++){
                             var currentItem = data.results[i];
                             currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:'/static/img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'
-
                             n.push(currentItem.article_comment_set.length);
                             for(var j=0,len=currentItem.article_comment_set.length;j<len;j++){
                                 var currentChildItem = currentItem.article_comment_set[j];
                                 n[i] += currentChildItem.articlecommentreply_set.length;
                             }
-
-
                             html+=" <div class=\"blogs_item\">\n" +
                                 "                             <div class=\"blogs_cont blogs_cont1\">\n" +
                                 "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+data.results[i].title+"</a></h3>\n" +
@@ -410,14 +404,11 @@
                                         for(var i=0;i<data.results.length;i++){
                                             var currentItem = data.results[i];
                                             currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:'/static/img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'
-
                                             b.push(currentItem.article_comment_set.length);
                                             for(var j=0,len=currentItem.article_comment_set.length;j<len;j++){
                                                 var currentChildItem = currentItem.article_comment_set[j];
                                                 b[i] += currentChildItem.articlecommentreply_set.length;
                                             }
-
-
                                             html+=" <div class=\"blogs_item\">\n" +
                                                 "                             <div class=\"blogs_cont blogs_cont1\">\n" +
                                                 "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+data.results[i].title+"</a></h3>\n" +
@@ -451,13 +442,8 @@
                                         $("#mains").html(html)
                                     }
                                 })
-
-
                             }
                         });
-
-
-
                     },
                     error:function () {
                         alert('加载失败')
