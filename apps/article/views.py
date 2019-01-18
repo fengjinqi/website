@@ -237,7 +237,7 @@ def blog_img_upload(request):
 """==========================================api"""
 
 class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 6
+    page_size = 2
     # page_size_query_param = 'page_size'#每页设置展示多少条
     # page_query_param = 'page'
     # max_page_size = 100

@@ -162,18 +162,20 @@ aside{
     left: 50%;
     margin-left: -64px;
 }
-.M-box a{
-    padding: 10px 15px;
-    background: #fff;
-    border:1px solid #ccc;
-    margin: 0 10px;
-}
-.M-box span.active{
-     padding: 10px 15px;
-    border:1px solid #ccc;
-    margin: 0 10px;
-    background: #1da1f2;
-}
+/*.M-box a{*/
+
+    /*background: #fff;*/
+    /*border:1px solid #ccc;*/
+    /*margin: 0 10px;*/
+/*}*/
+/*.M-box span.active{*/
+    /*border:1px solid #ccc;*/
+    /*margin: 0 10px;*/
+    /*background: #1da1f2;*/
+/*}*/
+
+
+
 
 /*人脉*/
 .follow_main{
@@ -204,4 +206,25 @@ aside{
 }
 .follow_num{
     margin-right: 20px;
+}
+.fix{
+    position: fixed;
+    top: 0;
+    margin-top: 14px;
+}
+/*资料*/
+.info_item{
+    margin-bottom: 15px;
+}
+.info_item label{
+    display: inline-block;
+    width: 90px;
+    text-align: right;
+}
+.info_item input{
+    text-align: left;
+    float: none;
+    width: 30%;
+    padding:0 12px;
+    margin:0
 }

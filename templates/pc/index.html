@@ -88,7 +88,7 @@
          </div>
        <div class="pageturn">
            <ul class="pagination">
-               <li><a href="/index">首页</a></li>
+{#               <li><a href="/index">首页</a></li>#}
                {% if article.has_previous %}
                    <li class="long"><a href="?{{ article.previous_page_number.querystring }}" class="prev">上一页</a></li>
                {% else %}
@@ -110,7 +110,7 @@
                {% else %}
                    <li class="long"><span class="disabled next btn"disabled=""> 下一页</span></li>
                {% endif %}
-               <li><a href="?page={{ article.paginator.num_pages }}">尾页</a></li>
+{#               <li><a href="?page={{ article.paginator.num_pages }}">尾页</a></li>#}
                <li class="hrefto">跳转到<input type="text"class="form-control" name="page"></li>
            </ul>
             当前{{ article.number }}/总共{{ article.paginator.num_pages }}页

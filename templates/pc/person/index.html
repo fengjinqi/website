@@ -4,10 +4,9 @@
 {{ request.user }}
 {% endblock %}
 {% block css %}
-        <link rel="stylesheet" href="{% static 'css/pagination.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/pagination.css' %}" />
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <link rel="stylesheet" href="{% static 'css/person.css' %}" />
-
 {% endblock %}
 {% block content %}
     <div class="person_banner">
@@ -23,7 +22,7 @@
                     <a href="{% url 'user:profile' %}">人脉</a>
                 </li>
                 <li class="fl">
-                    <a href="">资料</a>
+                    <a href="{% url 'user:info' %}">资料</a>
                 </li>
             </ul>
         </div>
@@ -128,7 +127,7 @@
                              </div>
                          </div>{% endcomment %}
                      </div>
-                     <div class="M-box pagination"></div>
+                     <div class="M-box pagination m-style"></div>
                  </div>
             </article>
         </div>
@@ -192,6 +191,16 @@
     <script src="{% static 'js/jquery.pagination.js' %}"></script>
     <script>
         $(function () {
+            //监听滚动条事件
+            $(window).scroll(function(){
+                var winPos = $(window).scrollTop();
+                var objTop = $(".left_nav").offset().top;
+                if(winPos >= 300){
+                    $('.left_nav').addClass('fix');
+                }else{
+                    $('.left_nav').removeClass('fix');
+                }
+            });
             $.ajax({
                 url:'/api/PersonApi/',
                 type:'get',
@@ -246,12 +255,13 @@
                     $("#mains").append(html)
                     console.log(data)
                     $('.M-box').pagination({
-                        pageCount:Math.ceil(data.count/4),   //总页码
+                        pageCount:Math.ceil(data.count/1),   //总页码
                         coping:true,                 //是否开启首页和末页
-                        homePage:'首页',
-                        endPage:'末页',
-                        prevContent:'上页',
-                        nextContent:'下页',
+                        {#homePage:'首页',#}
+                        {#endPage:'末页',#}
+                        {#showData: 5,#}
+                        prevContent:'上一页',
+                        nextContent:'下一页',
                          jump:true,
                         current:1,                    //当前页码
                         callback:function (api) {
@@ -382,12 +392,12 @@
                              $("#mains").append("<p class=' blogs_item' style='text-align:center;padding:50px 0;'>暂无数据...</p>")
                         }
                         $('.M-box').pagination({
-                            pageCount:Math.ceil(data.count/4),   //总页码
+                            pageCount:Math.ceil(data.count/1),   //总页码
                             coping:true,                 //是否开启首页和末页
-                            homePage:'首页',
-                            endPage:'末页',
-                            prevContent:'上页',
-                            nextContent:'下页',
+                            {#homePage:'首页',#}
+                            {#endPage:'末页',#}
+                            prevContent:'上一页',
+                            nextContent:'下一页',
                              jump:true,
                             current:1,                    //当前页码
                             callback:function (api) {

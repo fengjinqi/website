@@ -165,6 +165,12 @@ def Profile(request):
     user = User.objects.get(id=request.user.id)
     return render(request, 'pc/person/profile.html',{'count':count,'floow':floow,'user':user})
 
+
+def Info(request):
+    count = User.objects.filter(follow__fan__id=request.user.id)
+    floow = User.objects.filter(fan__follow_id=request.user.id)
+    return render(request,'pc/person/info.html',{'count':count,'floow':floow})
+
 class PersonApi(viewsets.ReadOnlyModelViewSet):
     """
     个人中心
