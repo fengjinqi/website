@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>登录</title>
+	<title>注册</title>
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
 	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
@@ -86,7 +86,8 @@
 
 <body>
 <div id="main">
-     <form class="form-inline">
+     <form class="form-inline" action="{% url 'register' %}" method="post">
+         {% csrf_token %}
          <div class="login-top">
 				注册
 			</div>
@@ -94,36 +95,54 @@
 
         <div class="input-group">
           <div class="input-group-addon"><i class="glyphicon glyphicon-user"></i></div>
-          <input type="text" class="form-control" id="exampleInputAmount" required placeholder="请输入用户名">
+          <input type="text" class="form-control" name="username" required placeholder="请输入用户名">
         </div>
       </div>
          <div class="form-group login-center">
 
         <div class="input-group">
+          <div class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></div>
+          <input type="email" class="form-control" name="email" placeholder="请输入邮箱"required >
+        </div>
+      </div>
+             <div class="form-group login-center">
+
+        <div class="input-group">
+          <div class="input-group-addon"style="width: 48px"><i class="glyphicon glyphicon-phone"></i></div>
+          <input type="text" class="form-control" name="captcha" placeholder="请输入验证码"style="width: 50%">
+            {{ form.captcha }}
+            <img src="" alt=""style="display: inline;padding:4px 5px;float: right">
+
+        </div>
+      </div>
+       {% comment %}  <div class="form-group login-center">
+
+        <div class="input-group">
           <div class="input-group-addon"><i class="glyphicon glyphicon-phone"></i></div>
           <input type="text" class="form-control" id="exampleInputAmount" placeholder="请输入手机号"required minlength="11"maxlength="11" >
         </div>
-      </div>
-         <div class="form-group login-center">
+      </div>{% endcomment %}
+     {% comment %}    <div class="form-group login-center">
 
         <div class="input-group">
           <div class="input-group-addon"style="width: 48px"><i class="glyphicon glyphicon-phone"></i></div>
           <input type="tel" class="form-control" id="exampleInputAmount" placeholder="请输入手机验证码"style="width: 62%">
            <button class="btn btn-primary"type="button" style="display: inline;padding:6px 5px" id="zphone">发送验证码</button>
         </div>
-      </div>
+      </div>{% endcomment %}
+         <input type="hidden" id="hidden">
        <div class="form-group login-center">
 
         <div class="input-group">
           <div class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></div>
-          <input type="text" class="form-control" id="exampleInputAmount" minlength="6"required placeholder="请输入密码">
+          <input type="text" class="form-control" name="password" minlength="6"required placeholder="请输入密码">
         </div>
       </div>
          <div class="form-group login-center">
 
         <div class="input-group">
           <div class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></div>
-          <input type="text" class="form-control" id="exampleInputAmount" minlength="6"required placeholder="请输入密码">
+          <input type="text" class="form-control" name="password1" minlength="6"required placeholder="请确认密码">
         </div>
       </div>
          <span class="error">手机号码错误</span>
@@ -133,7 +152,45 @@
 </div>
 
 	<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/jquery.cookie.min.js' %}"></script>
 <script>
+    function Verification (){
+        $.ajax({
+             type: "GET",
+             url: "/refresh/",
+             dataType: "json",
+             success: function(data){
+                 $('img').attr('src',data.image_url)
+                 $('#hidden').val(data.key)
+                       console.log(data)
+                      },
+             error:function (xht) {
+                 console.log(xht)
+             }
+         });
+    }
+    Verification()
+    $('img').on('click',function () {
+        Verification()
+    })
+    $("input[name='email']").on('blur',function () {
+        var self = $(this)
+        $.ajax({
+             type: "post",
+             url: "/yan/",
+             dataType: "json",
+            data:{"response":self.val(),"hashkey":$("#hidden").val()},
+            headers:{'X-CSRFToken':$.cookie('csrftoken')},
+             success: function(data){
+                       console.log(data)
+                      },
+             error:function (xht) {
+                 console.log(xht)
+             }
+         });
+    })
+</script>
+{% comment %}<script>
      var iTime = 60;
     sTime = ''
     function RemainTime(){
@@ -174,7 +231,7 @@ $('#zphone').on('click',function () {
         }
     }
 
-</script>
+</script>{% endcomment %}
 </body>
 
 </html>

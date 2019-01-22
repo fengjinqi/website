@@ -12,120 +12,24 @@
     <article class="fl">
         <div class="fiter clearfix">
             <ul class="nav">
-            <li class="all" style="padding: 10px 15px;display: inline-block"><a class="active" href="/article">全部</a></li>
+            <li class="all" style="padding: 10px 15px;display: inline-block"><a class="active" href="{% url 'article:index' %}">全部</a></li>
                 {% for foo in category %}
                     <li class="nav_item" data-key="{{ foo.id }}"  style="padding: 10px 15px;display: inline-block"><a href="?type={{ foo.id }}">{{ foo.name }}</a></li>
                 {% endfor %}
 
             </ul>
-            {% comment %}<div class="fl fiter_nav">
-                <ul>
-                    <li class="fiter_active">
-                        <ul class="flex_justify">
-                            <li>前端</li>
-                            <li>前端</li>
-                            <li>前端</li>
-                        </ul>
-                        <ul class="er_meau er_meau_active">
-                            <li>
-                                <ul class="clearfix">
-                                    <li class="fl">前端：</li>
-                                    <li class="fl">html</li>
-                                    <li class="fl">html</li>
-                                    <li class="fl">html</li>
-                                </ul>
-                            </li>
-                            <li>
-                                <ul class="clearfix">
-                                    <li class="fl">前端：</li>
-                                    <li class="fl">html</li>
-                                    <li class="fl">html</li>
-                                    <li class="fl">html</li>
-                                </ul>
-                            </li>
-                            <li>
-                                <ul class="clearfix">
-                                    <li class="fl">前端：</li>
-                                    <li class="fl">html</li>
-                                    <li class="fl">html</li>
-                                    <li class="fl">html</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <ul class="flex_justify">
-                            <li>前端</li>
-                            <li>前端</li>
-                            <li>前端</li>
-                        </ul>
-                        <ul class="er_meau">
-                            <li>
-                                <ul class="clearfix">
-                                    <li class="fl">前端：</li>
-                                    <li class="fl">html1</li>
-                                    <li class="fl">html1</li>
-                                    <li class="fl">html1</li>
-                                </ul>
-                            </li>
-                            <li>
-                                <ul class="clearfix">
-                                    <li class="fl">前端：</li>
-                                    <li class="fl">html</li>
-                                    <li class="fl">html</li>
-                                    <li class="fl">html</li>
-                                </ul>
-                            </li>
-                            <li>
-                                <ul class="clearfix">
-                                    <li class="fl">前端：</li>
-                                    <li class="fl">html2</li>
-                                    <li class="fl">html2</li>
-                                    <li class="fl">html2</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <ul class="flex_justify">
-                            <li >前端</li>
-                            <li >前端</li>
-                            <li >前端</li>
-                        </ul>
-                        <ul class="er_meau">
-                            <li>
-                                <ul class="clearfix">
-                                    <li class="fl">前端：</li>
-                                    <li class="fl">html</li>
-                                    <li class="fl">html</li>
-                                    <li class="fl">html</li>
-                                </ul>
-                            </li>
-                            <li>
-                                <ul class="clearfix">
-                                    <li class="fl">前端：</li>
-                                    <li class="fl">html</li>
-                                    <li class="fl">html</li>
-                                    <li class="fl">html</li>
-                                </ul>
-                            </li>
-                            <li>
-                                <ul class="clearfix">
-                                    <li class="fl">前端：</li>
-                                    <li class="fl">html</li>
-                                    <li class="fl">html</li>
-                                    <li class="fl">html</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>{% endcomment %}
         </div>
         <div class="banner" style="background: url({% static 'img/banner.png' %})no-repeat 0 50%;"></div>
          <div class="blogs">
-             <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">最新文章</div>
-             <div>
+         {{  request.path|slice:'12' }}
+             <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">
+                 <a href="{% url 'article:index' %}" class="{% if request.path|slice:'9' == '/article/' and request.path|slice:'12' != '/article/me/' %}
+                 active
+                 {% endif %}">全部文章</a><a href="{% url 'article:me' %}"class="{% if request.path|slice:'12' == '/article/me/' %}
+                 active
+                 {% endif %}">我关注的</a></div>
+                {% block me %}
+                    <div>
                  {% for articles in article.object_list %}
                     <div class="blogs_item">
                      <div class="blogs_cont blogs_cont1">
@@ -191,6 +95,8 @@
 {#            当前{{ article.number }}/总共{{ article.paginator.num_pages }}页#}
        </div>
              </div>
+                {% endblock %}
+
 
          </div>
 

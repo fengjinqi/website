@@ -1,0 +1,72 @@
+{% extends 'pc/article.html' %}
+{% load staticfiles %}
+   {% block me %}
+                    <div>
+                 {% for articles in article.object_list %}
+                    <div class="blogs_item">
+                     <div class="blogs_cont blogs_cont1">
+                         <h3><span class="blogs_type">{{ articles.category.name }}</span><a href="{% url 'article:detail' articles.id %}">{{ articles.title }}</a></h3>
+                             <div class="blogs_info clearfix">
+                                  <div class="img_animate fl ">
+                                      <a href="{% url 'article:detail' articles.id %}"><div class="blogs_pic img_cover" style="background: url({% if articles.list_pic %}
+                                      {{ MEDIA_URL }}{{ articles.list_pic }}
+                                          {% else %}
+                                          {% static 'img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg' %}
+                                      {% endif %})no-repeat;"></div></a>
+                                  </div>
+                                  <div class="fl blogs_describe">
+                                      <p class="blogtext">{{ articles.desc }}</p>
+                                  </div>
+                                  <div class="blogs_foot blogs_foot1">
+                            <ul class="clearfix">
+                                <li class="fl">
+                                     <a href="{% url 'user:author_detaile' articles.authors.id %}" class="clearfix">
+                                         <span class="fl img_cover blogs_avatar" style="background: url('{% if articles.authors.user_imag %}{{ MEDIA_URL }}{{ articles.authors.user_imag }}{% endif %}')no-repeat"></span>
+                                         <span class="fl blogs_name">{{ articles.authors.username }}</span>
+                                     </a>
+                                 </li>
+                                <li class="fl blogs_time">发布于：{{ articles.add_time }}</li>
+                                <li class="fl blogs_view" style="background: url({% static 'img/eye.png' %})no-repeat 0 50%;"> {{ articles.click_nums }}</li>
+                                <li class="fl blogs_comment" style="background: url({% static 'img/comment.png' %})no-repeat 0 50%;"> {{ articles.click_nums }}</li>
+                            </ul>
+                        </div>
+                             </div>
+                     </div>
+                 </div>
+                     {% empty %}
+                     ...暂无文章
+                 {% endfor %}
+             <div class="pageturn">
+
+           <ul class="pagination">
+
+               <li class="first"><a href="?page=1">首页</a></li>
+               {% if article.has_previous %}
+                   <li class="long"><a href="?{{ article.previous_page_number.querystring }}" class="prev">上一页</a></li>
+               {% else %}
+                   <li class="long"><span class="disabled prev btn"disabled="">上一页</span></li>
+               {% endif %}
+               {% for page in article.pages %}
+                   {% if page %}
+                       {% ifequal page article.number %}
+                           <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                       {% else %}
+                           <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
+                       {% endifequal %}
+                   {% else %}
+                       <li><span class="disabled  btn" disabled="">...</span></li>
+                   {% endif %}
+               {% endfor %}
+               {% if article.has_next %}
+                   <li class="long"><a href="?{{ article.next_page_number.querystring }}" class="next"> 下一页</a></li>
+               {% else %}
+                   <li class="long"><span class="disabled next btn"disabled=""> 下一页</span></li>
+               {% endif %}
+               <li class="last"><a href="?page={{ article.paginator.num_pages }}">尾页</a></li>
+{#               <li class="hrefto">跳转到<input type="text"class="form-control" name="page"></li>#}
+           </ul>
+             <div class="num_pages" style="display: none;">{{ article.paginator.num_pages }}</div>
+{#            当前{{ article.number }}/总共{{ article.paginator.num_pages }}页#}
+       </div>
+             </div>
+                {% endblock %}

@@ -32,7 +32,6 @@
         <script src="{% static 'markdown/lib/flowchart.min.js' %}"></script>
         <script src="{% static 'markdown/lib/jquery.flowchart.min.js' %}"></script>
         <script src="{% static 'markdown/editormd.js' %}"></script>
-
         <script src="{% static 'js/jquery.share.min.js' %}"></script>
 
 
@@ -169,6 +168,19 @@
         </article>
     <aside class="fr">
         {% include 'pc/base_aside.html' %}
+         <div class="sidebar">
+      <div class="tuijian">
+        <h2 class="hometitle">相关文章推荐</h2>
+        <ul class="sidenews zhan">
+             {% for foo in content %}
+                    <li><a href="{% url 'article:detail' foo.id %}">{{ foo.title }}</a></li>
+                {% endfor %}
+        </ul>
+    </div>
+
+    </div>
+
+
     </aside>
     </div>
 
@@ -189,7 +201,16 @@
             }
             catch (e) {
             }
-             $(obj).after(html);
+            var is_user = '{{ request.user.id }}';
+
+            if(is_user==="None"){
+                window.location.href='/login'
+                return false
+            }else {
+                $(obj).after(html);
+            }
+            console.log(is_user!=='None')
+
         }
 
         function mask(obj){

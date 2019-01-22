@@ -5,50 +5,46 @@
 
         <div class="clearfix">
             <div class="fl left_nav">
-                <ul id="category">
-                    <li data-type="" class="active"><a href="javascript:;">基本信息</a></li>
-                    <li data-type="" class=""><a href="javascript:;">联系信息</a></li>
-                    <li data-type="" class=""><a href="javascript:;">修改资料</a></li>
-                    <li data-type="" class=""><a href="javascript:;">修改密码</a></li>
+                <ul id="info">
+                    <li data-type="" class="active"><a href="javascript:;">个人资料</a></li>
                 </ul>
             </div>
             <article class="fr">
                  <div class="blogs">
-                     <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">基本信息</div>
+                     <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">个人资料</div>
                      <div class="follow_main">
                          <div class="info_item clearfix">
-                             <label for="name">登录名：</label>
-                             <input type="text" value="18381753236">
+                             <label for="name">头像:</label>
+                             <img class="info_img" src="{{ MEDIA_URL }}{{ request.user.user_imag }}" alt="">
+                             <input type="file" id="file">
                          </div>
                          <div class="info_item clearfix">
-                             <label for="name">昵称：</label>
-                             <input type="text" value="既然青春留不住不如做大叔">
+                             <label for="name">用户名：</label>
+                             <input type="text" name="username"class="val" value="{{ user.username }}" disabled>
+                         </div>
+                          <div class="info_item clearfix">
+                             <label for="name">邮箱</label>
+                             <input type="text" name="email"class="val" value="{{ user.email }}" disabled>
                          </div>
                          <div class="info_item clearfix">
-                             <label for="name">真实姓名 ：</label>
-                                 <input type="text" value="冯金琪">
+                             <label for="name">手机号</label>
+                             <input type="text" name="mobile"class="val" value="{{ user.mobile }}" disabled>
+                         </div>
+                         <div class="info_item clearfix">
+                             <label for="name">职位</label>
+                                 <input type="text" name="position"class="val" value="{{ user.position }}"disabled>
                              </div>
                          <div class="info_item clearfix">
-                             <div class="info_item fl">
-                                 <label for="name">所在地 ：</label>
+                             <label for="name">个人介绍</label>
+                                 <input type="text" name="info" class="val" value="{{ user.info }}"disabled>100字
                              </div>
-                             <div class="fl">
-                                 <select name="四川" id="">
-                                     <option value="四川" selected>四川</option>
-                                 </select>
-                             </div>
-                             <div class="fl">
-                                 <select name="成都" id="">
-                                     <option value="成都" selected>成都</option>
-                                 </select>
-                             </div>
-                         </div>
+                         <button type="button" id="btn">提交</button>
                      </div>
                  </div>
             </article>
         </div>
     </div>
- <aside class="fr">
+{% comment %} <aside class="fr">
 
 
         <div class="aside_pubnum">
@@ -98,5 +94,25 @@
                 </div>
             </div>
         </div>
-    </aside>
+    </aside>{% endcomment %}
+{% endblock %}
+{% block js %}
+    <script>
+        var form = new FormData()
+        $('#file').on('change',function () {
+            form.set('file',$(this)[0].files)
+
+        })
+        obj ={}
+        $('#btn').on('click',function () {
+            $(".val").each(function (i,item) {
+             form.set($(item).attr('name'),$(item).val())
+            obj[$(item).attr('name')] = $(item).val()
+
+        })
+                   console.log(obj)
+        })
+
+
+    </script>
 {% endblock %}

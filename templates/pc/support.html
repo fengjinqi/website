@@ -1,0 +1,45 @@
+{% extends 'pc/base.html' %}
+{% load staticfiles %}
+{% block title %}
+赞助支持
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/support.css' %}">
+{% endblock %}
+{% block content %}
+    <section class="main">
+        <h1 class="titles">支持本站</h1>
+        <p> 如果本站对你有帮助, 你又有点小钱，那么你可以通过以下方式支持我们, 将用于支付服务器等必要费用！.</p>
+        <div class="one-time">
+            <h3>偶尔赞助</h3>
+            <hr>
+            <span>你可以通过以下方式偶尔赞助我们</span>
+            <div class="img">
+                <div>
+                    <img src="{% static 'img/微信图片_20190121121034.jpg' %}" alt="">
+                </div>
+                <div>
+                     <img src="{% static 'img/微信图片_20190121121042.jpg' %}" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="one-time">
+            <h3>
+周期赞助</h3>
+            <hr>
+            <span>如果你选择周期赞助我们, 赞助后可以通过邮件联系我们在该站添加你的链接(需提供赞助途径与单号) </span>
+            <br>
+            <p style="text-align: center">赞助方式同上</p>
+        </div>
+        <div class="one-time">
+            <h3>商务合作</h3>
+            <hr>
+            <div>
+                <p>邮箱:<a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=iuzv5O3g4_T748rs7_Tt4OPk__Ok6eXn" style="text-decoration:none;">fengjinqi@fengjinqi.com</a>
+                </p>
+                <p style="margin: 10px 0;">QQ:1218525402</p>
+            </div>
+
+        </div>
+    </section>
+{% endblock %}

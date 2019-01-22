@@ -211,6 +211,7 @@ aside{
     position: fixed;
     top: 0;
     margin-top: 14px;
+    z-index: 9;
 }
 /*资料*/
 .info_item{
@@ -227,4 +228,11 @@ aside{
     width: 30%;
     padding:0 12px;
     margin:0
+}
+.info_img{
+    width:120px;
+    height:120px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
 }

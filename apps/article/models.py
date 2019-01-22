@@ -16,7 +16,7 @@ class Category_Article(models.Model):
     add_time = models.DateTimeField(default=datetime.now)
 
 
-class Article_add(models.Model):
+class Article(models.Model):
     """文章"""
     id = models.UUIDField(default=uuid.uuid4,primary_key=True)
     authors = models.ForeignKey(User,on_delete=models.CASCADE,verbose_name='用户')
@@ -27,7 +27,7 @@ class Article_add(models.Model):
     list_pic = models.ImageField(upload_to='article/%Y%m%d',blank=True,null=True)
     content = models.TextField()
     click_nums = models.IntegerField(default=0,verbose_name='阅读数量')
-    is_show = models.BooleanField(default=True,verbose_name='是否显示')
+    is_show = models.BooleanField(default=True,verbose_name='是否删除')
     add_time = models.DateTimeField(auto_now_add=True)
 
     def get_number(self):
@@ -37,11 +37,29 @@ class Article_add(models.Model):
             num+=i.articlecommentreply_set.count()
         return num
 
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = '文章'
+        verbose_name_plural = verbose_name
+        ordering = ('-add_time',)
+
+
+class Recommend(models.Model):
+    recommends = models.ForeignKey(Article,on_delete=models.CASCADE,null=True,)
+    is_recommend = models.BooleanField(default=False, verbose_name='是否推荐')
+    add_time = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        verbose_name = '文章推荐'
+        verbose_name_plural = verbose_name
+        ordering = ('-add_time',)
+
 
 class Article_Comment(models.Model):
     """"评论"""
     user = models.ForeignKey(User,on_delete=models.CASCADE,verbose_name='用户')
-    article =models.ForeignKey(Article_add,verbose_name='文章',on_delete=models.CASCADE)
+    article =models.ForeignKey(Article,verbose_name='文章',on_delete=models.CASCADE)
     comments = models.TextField(verbose_name='评论')
     address = models.CharField(max_length=50,verbose_name='地址',blank=True,null=True)
     add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')

@@ -37,7 +37,6 @@
              <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">
                  <ul class="follow">
                      <li>最新文章</li>
-                     <li>我关注的</li>
                  </ul>
              </div>
              <div>
@@ -118,27 +117,41 @@
     </article>
 
     <aside class="fr">
-{#        <div class="aside_public">#}
-{#            <div class="blogs_head" style="background: url(img/public.png)no-repeat 0 50%;">我要写文章</div>#}
-{#            <div class="blogs_number">#}
-{#                <ul class="clearfix">#}
-{#                    <li class="fl">#}
-{#                        <p class="number">{{ count}}</p>#}
-{#                        <p>发布</p>#}
-{#                    </li>#}
-{#                    <li class="fl">#}
-{#                        <p class="number">643</p>#}
-{#                        <p>浏览</p>#}
-{#                    </li>#}
-{#                    <li class="fl">#}
-{#                        <p class="number">643</p>#}
-{#                        <p>评价</p>#}
-{#                    </li>#}
-{#                </ul>#}
-{#            </div>#}
-{#        </div>#}
         {% include 'pc/base_aside.html' %}
-        <div class="aside_goodperson">
+        <div class="sidebar">
+      <div class="tuijian">
+        <h2 class="hometitle">站长推荐</h2>
+        <ul class="sidenews zhan">
+             {% for foo in recommend %}
+                    <li><a href="{% url 'article:detail' foo.recommends.id %}">{{ foo.recommends.title }}</a></li>
+                {% endfor %}
+        </ul>
+    </div>
+
+    </div>
+        <div class="sidebar">
+            <div class="tuijian">
+        <h2 class="hometitle">交流群</h2>
+        <ul class="sidenews zhan">
+            <p>学习讨论:180522631</p>
+              <br>
+            <p>前端招聘群:135684334</p>
+
+        </ul>
+    </div>
+        </div>
+        <div class="sidebar">
+      <div class="tuijian">
+        <h2 class="hometitle">商务合作</h2>
+        <ul class="sidenews zhan">
+            <p>邮箱:<a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=iuzv5O3g4_T748rs7_Tt4OPk__Ok6eXn" style="text-decoration:none;">fengjinqi@fengjinqi.com</a></p>
+            <br>
+            <p>QQ:1218525402</p>
+        </ul>
+    </div>
+
+    </div>
+     {% comment %}   <div class="aside_goodperson">
             <div class="blogs_head" style="background: url(img/public.png)no-repeat 0 50%;">热门牛人<a class="fr change">更多</a></div>
             <div>
             {{ count }}
@@ -194,6 +207,7 @@
                 </div>
             </div>
         </div>
+{% endcomment %}
     </aside>
 </section>
 {% endblock %}

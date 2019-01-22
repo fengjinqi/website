@@ -86,7 +86,7 @@ span{
 /*.clearfix{*+height:1%;}*/
 .clearfix:after{visibility:hidden;display:block;font-size:0;content:" ";clear:both;height:0}
 .img_cover{
-    background-position: 50%!important;
+    /*background-position: 50%!important;*/
     background-size: cover!important;
 }
 .flex{
@@ -108,6 +108,7 @@ article{
 }
 aside{
     width: 300px;
+    margin-top: 20px;
 }
 /*头部开始*/
 header{
@@ -122,6 +123,9 @@ header{
 .logo{
     margin-right: 100px;
 }
+.headers_nav a.active{
+    color: #356dd0;
+}
 nav>ul>li{
     padding: 0 20px;
     font-size: 16px;
@@ -129,6 +133,7 @@ nav>ul>li{
 .user>ul>li{
     padding-left: 20px;
     margin-left: 20px;
+    height: 60px;
 }
 .avatar>a{
     width: 32px;

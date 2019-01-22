@@ -28,12 +28,20 @@
     <div class="main clearfix">
         <div class="fl logo"style="height: 60px"><img style="width: 40px;padding-top: 10px;" src="{% static 'img/logo.png' %}" alt=""></div>
         <nav class="fl">
-            <ul class="clearfix">
-                <li class="fl"><a href="/index">首页</a></li>
-                <li class="fl"><a href="/article">文章</a></li>
+            <ul class="clearfix headers_nav">
+                <li class="fl"><a class="{% if request.path|slice:'7' == '/index/' %}
+                active
+                {% endif %}" href="/index">首页</a></li>
+                <li class="fl"><a class=" {% if request.path|slice:'9' == '/article/' %}
+                active
+                {% endif %}"href="/article">文章</a></li>
                 <li class="fl"><a href="">社区</a></li>
-                <li class="fl"><a href="{% url 'course:index' %}">教程</a></li>
-                <li class="fl"><a href="">关于本站</a></li>
+                <li class="fl"><a class=" {% if request.path|slice:'8' == '/course/' %}
+                active
+                {% endif %} "href="{% url 'course:index' %}">教程</a></li>
+                <li class="fl"><a class=" {% if request.path|slice:'9' == '/support/' %}
+                active
+                {% endif %}" href="{% url 'support:support' %}">支持与赞助</a></li>
             </ul>
         </nav>
         <div class="fr user">
@@ -96,7 +104,7 @@
         });
             //当点击跳转链接后，回到页面顶部位置
             $("#toTop").click(function(){
-                $('body,html').animate({scrollTop:0},1000);
+                $('body,html').animate({scrollTop:0},500);
                 return false;
             });
         //底部栏位置始终在最底部

@@ -1,3 +1,4 @@
+from django.db.models import Q, Count
 from django.shortcuts import render, redirect,reverse,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
@@ -13,26 +14,61 @@ from apps.article.filter import GoodsFilter
 from apps.article.forms import Article_form
 from apps.article.serializers import ArticleSerializer, Article_CommentSerializer, ArticleCommentReply, \
     Article_CommentSerializerAdd, ArticleCommentReplySerializer, Category_ArticleSerializer
-from apps.user.models import User, Follow
+from apps.user.models import User, Follows
 from website import settings
 import os
 import random
-from .models import Article_add, Category_Article, Article_Comment
+from .models import Article, Category_Article, Article_Comment, Recommend
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
-def Article(request):
+
+def Article_list(request):
+    """
+    首页
+    :param request:
+    :return:
+    """
+    article=Article.objects.filter(is_show=True)
+    popular = Article.objects.filter(is_show=True).order_by('click_nums')[:5]
+    recommend = Recommend.objects.filter(is_recommend=True)[:10]
+
+    #user = Follow.objects.values('follow_id').distinct().order_by('-follow_id')
+    user = Follows.objects.values('follow_id').distinct().order_by('-follow_id')
+    item=[]
+    for i in user:
+        data={}
+        #print(User.objects.filter(follow__follow__id=i['follow_id']))
+        data['data']=User.objects.filter(follow__follow__id=i['follow_id']).distinct()
+        print(data)
+        item.append(data)
+    #print(item)
+    try:
+        page = request.GET.get('page', 1)
+        if page == '':
+            page = 1
+    except PageNotAnInteger:
+        page = 1
+    # Provide Paginator with the request object for complete querystring generation
+    p = Paginator(article,2,request=request)
+    people = p.page(page)
+    return render(request, 'pc/index.html', {'article':people,'popular':popular,'count':item,'recommend':recommend})
+
+
+def ArticleList(request):
+
     """
     文章list
     :param request:
     :return:
     """
-    article = Article_add.objects.all().order_by('-add_time')
+    article = Article.objects.all()
+
     category = Category_Article.objects.all()
     type = request.GET.get('type', '')
     try:
         page = request.GET.get('page', 1)
         if type:
-            article =Article_add.objects.filter(category_id=type)
+            article =Article.objects.filter(category_id=type)
         if page == '':
             page = 1
     except PageNotAnInteger:
@@ -41,6 +77,32 @@ def Article(request):
     p = Paginator(article,2,request=request)
     people = p.page(page)
     return render(request, 'pc/article.html', {'article': people,'category':category})
+
+
+@login_required(login_url='/login')
+def ArticleMe(request):
+
+    """
+    我关注的人文章
+    :param request:
+    :return:
+    """
+    article = Article.objects.filter(authors__follow__fan_id=request.user.id)
+
+    category = Category_Article.objects.all()
+    type = request.GET.get('type', '')
+    try:
+        page = request.GET.get('page', 1)
+        if type:
+            article =Article.objects.filter(category_id=type)
+        if page == '':
+            page = 1
+    except PageNotAnInteger:
+        page = 1
+    # Provide Paginator with the request object for complete querystring generation
+    p = Paginator(article,2,request=request)
+    people = p.page(page)
+    return render(request, 'pc/article_me.html', {'article': people,'category':category})
 
 
 # Create your views here.
@@ -65,7 +127,7 @@ def Article_Add(request):
             keywords = request.POST.get('keywords','')
             list_pic = request.FILES.get('list_pic','')
             authors = forms.cleaned_data.get('authors','')
-            article = Article_add()
+            article = Article()
             article.title=title
             article.content=content
             article.desc=desc
@@ -92,7 +154,7 @@ def ArticleUpdate(request,article_id):
     if request.method == 'GET':
         category = Category_Article.objects.all()
         try:
-            article = Article_add.objects.get(id=article_id)
+            article = Article.objects.get(id=article_id)
         except Exception:
             return Http404
         print(article)
@@ -111,7 +173,7 @@ def ArticleUpdate(request,article_id):
             else:
                 list_pic = request.POST.get('list_pic', '')
             authors = forms.cleaned_data.get('authors', '')
-            article = Article_add.objects.get(id=article_id)
+            article = Article.objects.get(id=article_id)
             article.title = title
             article.content = content
             article.desc = desc
@@ -137,39 +199,11 @@ def RemoveImage(request,article_id):
     :return:
     """
     if request.method == 'POST':
-        article = Article_add.objects.get(id=article_id)
+        article = Article.objects.get(id=article_id)
         article.list_pic=''
         article.save()
         return JsonResponse({'data':200})
 
-def Article_list(request):
-    """
-    首页
-    :param request:
-    :return:
-    """
-    article=Article_add.objects.filter(is_show=True).order_by('-add_time')
-    popular = Article_add.objects.filter(is_show=True).order_by('click_nums')[:5]
-    #user = Follow.objects.values('follow_id').distinct().order_by('-follow_id')
-    user = Follow.objects.values('follow_id').distinct().order_by('-follow_id')
-    item=[]
-    for i in user:
-        data={}
-        #print(User.objects.filter(follow__follow__id=i['follow_id']))
-        data['data']=User.objects.filter(follow__follow__id=i['follow_id']).distinct()
-        print(data)
-        item.append(data)
-    #print(item)
-    try:
-        page = request.GET.get('page', 1)
-        if page == '':
-            page = 1
-    except PageNotAnInteger:
-        page = 1
-    # Provide Paginator with the request object for complete querystring generation
-    p = Paginator(article,2,request=request)
-    people = p.page(page)
-    return render(request, 'pc/index.html', {'article':people,'popular':popular,'count':item})
 
 
 
@@ -182,12 +216,16 @@ def Article_detail(request,article_id):
     :return:
     """
     try:
-        article=Article_add.objects.get(id=article_id)
+        article=Article.objects.get(id=article_id)
+        id = article.category.id
         article.click_nums+=1
         article.save()
     except Exception:
         return Http404
-    return render(request,'pc/article_detail.html',{'article':article,'id':article_id})
+    print(id)
+    content = Article.objects.filter(category_id=id).exclude(id=article_id).order_by('-click_nums')[:10]
+    print(content.annotate())
+    return render(request,'pc/article_detail.html',{'article':article,'id':article_id,'content':content})
 
 
 # 写博客上传图片
@@ -237,7 +275,7 @@ def blog_img_upload(request):
 """==========================================api"""
 
 class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 2
+    page_size = 1
     # page_size_query_param = 'page_size'#每页设置展示多少条
     # page_query_param = 'page'
     # max_page_size = 100
@@ -247,7 +285,7 @@ class ArticleListView(viewsets.ReadOnlyModelViewSet):
     """
      TODO 列出所有的文章 详情页
     """
-    queryset = Article_add.objects.filter(is_show=True).order_by('-add_time')
+    queryset = Article.objects.filter(is_show=True).order_by('-add_time')
     serializer_class = ArticleSerializer
     pagination_class = StandardResultsSetPagination
 
@@ -256,13 +294,13 @@ class FollowListView(viewsets.ReadOnlyModelViewSet):
     """
     TODO 我关注的文章
     """
-    queryset = Article_add.objects.filter(is_show=True).order_by('-add_time')
+    queryset = Article.objects.filter(is_show=True).order_by('-add_time')
     serializer_class = ArticleSerializer
     pagination_class = StandardResultsSetPagination
 
     def list(self, request, *args, **kwargs):
 
-        queryset = Article_add.objects.filter(authors__follow__fan_id=self.request.user.id).filter(is_show=True).order_by('-add_time')
+        queryset = Article.objects.filter(authors__follow__fan_id=self.request.user.id).filter(is_show=True).order_by('-add_time')
         serializer = ArticleSerializer(queryset, many=True)
         page = self.paginate_queryset(queryset)
         if page is not None:

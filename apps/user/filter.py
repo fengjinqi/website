@@ -3,7 +3,7 @@
 import django_filters
 from django.db.models import Q
 
-from apps.article.models import Article_add
+from apps.article.models import Article
 from apps.user.models import User
 
 
@@ -19,7 +19,7 @@ class CategoryFilter(django_filters.rest_framework.FilterSet):
     #     return queryset
 
     class Meta:
-        model = Article_add
+        model = Article
         fields = ['category','title', ]
 
 

@@ -1,7 +1,7 @@
 #!/usr/bin/python  
 # -*- coding:utf-8 -*-  
 from rest_framework import serializers
-from .models import Article_add, Category_Article,Article_Comment,ArticleCommentReply
+from .models import Article, Category_Article,Article_Comment,ArticleCommentReply
 from apps.user.models import User
 
 
@@ -73,7 +73,7 @@ class ArticleSerializer(serializers.ModelSerializer):
     article_comment_set = Article_CommentSerializer(many=True)
     add_time = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
     class Meta:
-        model = Article_add
+        model = Article
         fields = '__all__'
 
 

@@ -11,11 +11,13 @@ class User(AbstractUser):
     id = models.UUIDField(primary_key=True,default=uuid.uuid4)
     name = models.CharField(max_length=60, blank=True, null=True, verbose_name='姓名')
     mobile = models.CharField(max_length=11, verbose_name='手机号码',default='')
+    position = models.CharField(max_length=30,verbose_name='职位',default='',null=True,blank=True)
+    info = models.CharField(max_length=100,verbose_name='个人介绍',default='',null=True,blank=True)
     user_imag = models.ImageField(upload_to='user/%Y/%m/%d',blank=True,default='',verbose_name='用户头像')
     email = models.EmailField(blank=True,null=True)
 
 
-class Follow(models.Model):
+class Follows(models.Model):
     """关注表"""
     follow = models.ForeignKey(User,on_delete=models.CASCADE,related_name='follow',verbose_name='被关注的，作者')
     fan = models.ForeignKey(User,on_delete=models.CASCADE,related_name='fan',verbose_name='粉丝')

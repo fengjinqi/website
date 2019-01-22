@@ -11,6 +11,7 @@ from django.shortcuts import render, redirect,reverse
 # Create your views here.
 
 from django.contrib.auth.views import method_decorator,login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.views.generic.base import View
 from django_filters.rest_framework import DjangoFilterBackend
@@ -20,14 +21,14 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-from apps.article.models import Article_add, Category_Article
+from apps.article.models import Article, Category_Article
 from apps.article.serializers import ArticleSerializer
 from apps.article.views import StandardResultsSetPagination
 from apps.uitls.permissions import IsOwnerOrReadOnly
 from apps.user.filter import CategoryFilter, UserFilter
-from apps.user.models import User, Follow
+from apps.user.models import User, Follows
 from apps.user.serializers import UserSerializer
-from .forms import CaptchaTestForm, LoginForms, Follow_Forms
+from .forms import CaptchaTestForm, LoginForms, Follow_Forms, RegisterForm
 from rest_framework import viewsets, mixins, status, permissions
 from rest_framework.pagination import PageNumberPagination
 
@@ -54,7 +55,7 @@ def yan(request):
     if cs:
         return JsonResponse({"success":"ok"})
     else:
-        return JsonResponse({'error':'shibai'})
+        return JsonResponse({'error':'失败'})
 
 
 
@@ -106,7 +107,16 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('/index')
+class Register(View):
+    def get(self,request):
+        form = RegisterForm()
+        return render(request,'pc/register.html',{'form':form})
 
+    def post(self,request):
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            form.clean()
+        return HttpResponse({'data':form.errors})
 
 class Author(View):
     def get(self,request):
@@ -116,11 +126,11 @@ class Author(View):
         if request.user is not None and  request.user.is_authenticated:
             froms = Follow_Forms(request.POST)
             if froms.is_valid():
-                follow = Follow()
+                follow = Follows()
                 if request.POST.get('follow') == str(request.user.id):
                     return JsonResponse({'status': 201, 'message': '不能自己关注自己'})
                 else:
-                    cun = Follow.objects.filter(follow=froms.cleaned_data.get('follow'),fan=request.user.id)
+                    cun = Follows.objects.filter(follow=froms.cleaned_data.get('follow'),fan=request.user.id)
                     if cun:
                         cun.delete()
                         return JsonResponse({'status': 200, 'message': '已取消关注'})
@@ -151,37 +161,71 @@ class PersonDetaile(View):
     def get(self,request,article_id):
         category = Category_Article.objects.all()
         count = User.objects.filter(follow__fan__id=article_id).count()
-        floow = User.objects.filter(follow__fan__id=article_id).count()
+        floow = User.objects.filter(fan__follow_id=article_id).count()
         user = User.objects.get(id=article_id)
 
         if article_id ==request.user.id:
             return redirect(reverse('user:person'))
         return render(request,'pc/person/index1.html',{'category':category,'count':count,'floow':floow,'user':user})
 
-
+@login_required(login_url='/login')
 def Profile(request):
+    """
+    人脉
+    :param request:
+    :return:
+    """
     count = User.objects.filter(follow__fan__id=request.user.id)
     floow = User.objects.filter(fan__follow_id=request.user.id)
     user = User.objects.get(id=request.user.id)
     return render(request, 'pc/person/profile.html',{'count':count,'floow':floow,'user':user})
 
 
+@csrf_exempt
+def Guan(request):
+    if request.method == 'POST':
+        if request.user.id is not None:
+            froms = Follow_Forms(request.POST)
+            if froms.is_valid():
+                floows = froms.cleaned_data.get('follow','')
+                user = request.POST.get('user','')
+                table=Follows.objects.filter(follow_id=floows,fan_id=user).delete()
+                return JsonResponse({'message':'ok','data':200})
+        else:
+            return JsonResponse({'massage':'未登录'})
+    return HttpResponse()
+
+
+@login_required(login_url='/login')
 def Info(request):
+    """
+    资料
+    :param request:
+    :return:
+    """
     count = User.objects.filter(follow__fan__id=request.user.id)
     floow = User.objects.filter(fan__follow_id=request.user.id)
-    return render(request,'pc/person/info.html',{'count':count,'floow':floow})
+    user = User.objects.get(id=request.user.id)
 
-class PersonApi(viewsets.ReadOnlyModelViewSet):
+    if request.method == 'POST':
+
+        return JsonResponse({'data':200})
+    return render(request,'pc/person/info.html',{'count':count,'floow':floow,'user':user})
+
+class PersonApiabstohr(viewsets.ReadOnlyModelViewSet):
+    queryset = Article.objects.filter(is_show=True)
+    serializer_class = ArticleSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = CategoryFilter
+    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    pagination_class = StandardResultsSetPagination
+
+
+class PersonApi(PersonApiabstohr):
     """
     个人中心
     """
-    queryset = Article_add.objects.filter(is_show=True)
-    serializer_class = ArticleSerializer
-    permission_classes = (IsAuthenticated,IsOwnerOrReadOnly)#未登录禁止访问
-    filter_backends = (DjangoFilterBackend,)
-    filter_class = CategoryFilter
-    authentication_classes = (SessionAuthentication,)
-    pagination_class = StandardResultsSetPagination
+    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
     # def list(self, request, *args, **kwargs):
     #         queryset =  Article_add.objects.filter(authors_id=self.request.user.id).order_by('-add_time')
     #         serializer = ArticleSerializer(queryset, many=True)
@@ -202,48 +246,27 @@ class PersonApi(viewsets.ReadOnlyModelViewSet):
         user = self.request.user
         #User.objects.filter()
 
-        user_id = self.request.query_params.get('pk')
-        if user_id:
-            return Article_add.objects.filter(authors_id=user_id).filter(is_show=True).order_by('-add_time')
-        else:
-            return Article_add.objects.filter(authors_id=self.request.user.id).filter(is_show=True).order_by(
+        # user_id = self.request.query_params.get('pk')
+        # if user_id:
+        #     return Article_add.objects.filter(authors_id=user_id).filter(is_show=True).order_by('-add_time')
+        # else:
+        return Article.objects.filter(authors_id=self.request.user.id).filter(is_show=True).order_by(
                 '-add_time')
 
 
-# class PersonOthers(viewsets.ReadOnlyModelViewSet):
-#     """
-#     他个人中心 (未用)
-#     """
-#     queryset = Article_add.objects.filter(is_show=True)
-#     serializer_class = ArticleSerializer
-#     permission_classes = (IsAuthenticated,IsOwnerOrReadOnly)#未登录禁止访问
-#     filter_backends = (DjangoFilterBackend,)
-#     filter_class = CategoryFilter
-#     authentication_classes = (SessionAuthentication,)
-#     def get_queryset(self):
-#         print(self.request.query_params.get('pk'))
-#         try:
-#             #print(self.kwargs['pk'])
-#             #user_id = self.kwargs['pk']
-#             user_id = self.request.query_params.get('pk')
-#             if user_id:
-#                 print(Article_add.objects.filter(authors_id=user_id).filter(is_show=True).order_by('-add_time'))
-#                 return Article_add.objects.filter(authors_id=user_id).filter(is_show=True).order_by('-add_time')
-#         except Exception:
-#             pass
+class PersonOthers(PersonApiabstohr):
+    """
+    他个人中心 (未用)
+    """
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases
+        for the currently authenticated user.
+        """
+        user_id = self.request.query_params.get('pk')
+        if user_id:
+            return Article.objects.filter(authors_id=user_id).filter(is_show=True).order_by('-add_time')
 
-
-
-    #print()
-    # queryset = User.objects.all()
-    # serializer_class = UserSerializer
-    # permission_classes = (IsAuthenticated,IsOwnerOrReadOnly)#未登录禁止访问
-    # filter_backends = (DjangoFilterBackend,filters.SearchFilter)
-    # filter_class = UserFilter
-    # search_fields = ('mobile',)
-    # authentication_classes = (SessionAuthentication,)
-    # def get_queryset(self):
-    #     print(self.request.query_params.get('article_id'))
 
 class UserGetAllInfo(mixins.ListModelMixin,mixins.UpdateModelMixin,viewsets.GenericViewSet):
     queryset = User.objects.all()

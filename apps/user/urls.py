@@ -13,4 +13,5 @@ urlpatterns = [
   path('<uuid:article_id>/',views.PersonDetaile.as_view(),name='author_detaile'),
   path('profile/', views.Profile,name='profile'),
   path('info/', views.Info, name='info'),
+  path('Guan/', views.Guan, name='Guan'),
 ]

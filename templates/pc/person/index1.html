@@ -1,7 +1,7 @@
 {% extends 'pc/base.html' %}
 {% load static %}
 {% block title %}
-{{ request.user }}
+{{ user }}
 {% endblock %}
 {% block css %}
         <link rel="stylesheet" href="{% static 'css/pagination.css' %}" />
@@ -92,7 +92,7 @@
     <script>
         $(function () {
             $.ajax({
-                url:'api/PersonApi/?pk={{ user.id }}',
+                url:'api/PersonOthers/?pk={{ user.id }}',
                 type:'get',
                 beforeSend:function(){
                     $("#mains").append("<p class='loading'><img src='/static/img/5-121204193R5-50.gif'></p>")
@@ -144,7 +144,7 @@
                     $("#mains").append(html)
                     console.log(data)
                     $('.M-box').pagination({
-                        pageCount:Math.ceil(data.count/4),   //总页码
+                        pageCount:Math.ceil(data.count/1),   //总页码
                         coping:true,                 //是否开启首页和末页
                         homePage:'首页',
                         endPage:'末页',
@@ -154,7 +154,7 @@
                         current:1,                    //当前页码
                         callback:function (api) {
                             $.ajax({
-                                url:'api/PersonApi/?pk={{ user.id }}',
+                                url:'api/PersonOthers/?pk={{ user.id }}',
                                 type:'get',
                                 data:{
                                     page:api.getCurrent()    //这个方法就是用来获取点击了哪一页的，因为我  //的接口文档中页数是从0开始的，所以减1，当我点击第一页的时候去获取第0页的数据
@@ -226,7 +226,7 @@
         function filter(self) {
             self.addClass('active').siblings().removeClass('active')
                 $.ajax({
-                    url:'api/PersonApi/?pk={{ user.id }}&category='+self.attr('data-type'),
+                    url:'api/PersonOthers/?pk={{ user.id }}&category='+self.attr('data-type'),
                     type:'get',
                     beforeSend:function(){
                         $("#mains").append("<p class='loading'><img src='/static/img/5-121204193R5-50.gif'></p>")
@@ -281,7 +281,7 @@
                              $("#mains").append("<p class=' blogs_item' style='text-align:center;padding:50px 0;'>暂无数据...</p>")
                         }
                         $('.M-box').pagination({
-                            pageCount:Math.ceil(data.count/4),   //总页码
+                            pageCount:Math.ceil(data.count/1),   //总页码
                             coping:true,                 //是否开启首页和末页
                             homePage:'首页',
                             endPage:'末页',
@@ -291,7 +291,7 @@
                             current:1,                    //当前页码
                             callback:function (api) {
                                 $.ajax({
-                                   url:'api/PersonApi/?pk={{ user.id }}&category='+self.attr('data-type'),
+                                   url:'api/PersonOthers/?pk={{ user.id }}&category='+self.attr('data-type'),
                                     type:'get',
                                     data:{
                                         page:api.getCurrent()    //这个方法就是用来获取点击了哪一页的，因为我  //的接口文档中页数是从0开始的，所以减1，当我点击第一页的时候去获取第0页的数据

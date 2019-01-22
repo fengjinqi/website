@@ -1,5 +1,6 @@
 {% load aside_tag %}
 {% load static %}
+{% comment %}
 <div class="aside_hot">
     <div class="blogs_head" style="background: url({% static 'img/public.png' %})no-repeat 0 50%;">热门排行<a class="fr change">更多</a></div>
     <div class="blogs_cal">
@@ -29,5 +30,27 @@
             <!-- Add Pagination -->
             <div class="swiper-pagination"></div>
         </div>
+    </div>
+</div>
+{% endcomment %}
+
+<div class="sidebar">
+    <div class="tuijian">
+
+        <h2 class="hometitle">点击排行</h2>
+        <ul class="sidenews">
+             {% get_categories as get_tag %}
+        {% for foo in get_tag %}
+
+                <li> <i><img src="{% if foo.list_pic %}
+                      {{ MEDIA_URL }}{{ foo.list_pic }}
+                          {% else %}
+                          {% static 'img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg' %}{% endif %}" style="width:100%;"></i>
+                <p><a href="{% url 'article:detail' foo.id %}">{{ foo.title }}</a></p>
+                <span>{{ foo.add_time}}</span> </li>
+
+        {% endfor %}
+
+                            </ul>
     </div>
 </div>

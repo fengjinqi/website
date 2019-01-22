@@ -1,0 +1,34 @@
+*{
+    color: #333;
+}
+.titles{
+    text-align: center;
+    margin: 30px auto 15px;
+}
+.one-time{
+    margin-top: 50px;
+}
+h3{
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+hr{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+span{
+    margin-bottom: 15px;
+}
+.img{
+    display: flex;
+}
+.img div{
+    width: 300px;
+    margin: 0 auto;
+}
+.img div img{
+    width: 100%;
+    height: 100%;
+}

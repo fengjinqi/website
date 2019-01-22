@@ -19,7 +19,8 @@ from django.urls import path, include, re_path
 from django.views.static import serve
 from rest_framework_jwt.views import obtain_jwt_token
 
-from apps.user.views import test, captcha_refresh, yan, login_view, UserGetInfo, UserGetAllInfo, UserDisbale
+from apps.user.views import test, captcha_refresh, yan, login_view, UserGetInfo, UserGetAllInfo, UserDisbale, \
+    PersonOthers, Register
 from django.views.generic import TemplateView
 
 from website import settings
@@ -37,7 +38,7 @@ router.register('PersonApi', PersonApi)
 router.register('info', UserGetInfo)
 router.register('all_info', UserGetAllInfo)
 router.register('user_disbale', UserDisbale)
-#router.register('PersonOthers', PersonOthers)
+router.register('PersonOthers', PersonOthers)
 
 
 
@@ -52,9 +53,10 @@ urlpatterns = [
     path('login/',login_view,name='index'),
     path('person/',include('apps.user.urls')),
     path('logou/',logout_view,name='logou'),
-    path('register/',TemplateView.as_view(template_name='pc/register.html')),
+    path('register/',Register.as_view(),name='register'),
     path('article/',include('apps.article.urls')),
     path('course/',include('apps.course.urls')),
+    path('support/',include('apps.support.urls')),
 
 
 

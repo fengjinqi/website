@@ -8,7 +8,8 @@ urlpatterns = [
 
   path('created/',views.Article_Add,name='created'),
 
-  path('',views.Article,name='index'),
+  path('',views.ArticleList,name='index'),
+  path('me/',views.ArticleMe,name='me'),
   path('blog_img_upload/',views.blog_img_upload,name='blog_img_upload'),
   path('detail/<uuid:article_id>',views.Article_detail,name='detail'),
   path('update/<uuid:article_id>',views.ArticleUpdate,name='update'),

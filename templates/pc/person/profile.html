@@ -5,10 +5,9 @@
 
         <div class="clearfix">
             <div class="fl left_nav">
-                <ul id="category">
+                <ul id="follow">
                     <li data-type="" class="active"><a href="javascript:;">关注</a></li>
                     <li data-type="" class=""><a href="javascript:;">粉丝</a></li>
-                    <li data-type="" class=""><a href="javascript:;">推荐</a></li>
 
                 </ul>
             </div>
@@ -17,37 +16,70 @@
                      <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">我的关注</div>
                      <div class="follow_main">
                          <ul class="clearfix">
+
                              {% for foo in count %}
                                     <li class="follow_item">
                                  <dl class="clearfix">
                                      <dt class="fl">
-                                         <a target="_blank" title="" href="">
-                                            <img class="follow_item_img" width="50" height="50" alt="" src="{{ MEDIA_URL }}{{ foo.user_imag }}">
+                                         <a target="_blank" title="" href="{% url 'user:author_detaile' foo.id %}">
+                                            <img class="follow_item_img" width="50" height="50" alt="" src="{% if foo.user_imag %}
+                                            {{ MEDIA_URL }}{{ foo.user_imag }}
+                                            {% else %}
+                                            {% static 'img/logo.png' %}
+                                            {% endif %}">
                                          </a>
                                      </dt>
                                      <dd class="fl">
                                          <div class="follow_item_name">
-                                            <a target="_blank" title="" alt="" href="">{{ foo.username }}</a>
+                                            <a target="_blank" title="" alt="" href="{% url 'user:author_detaile' foo.id %}">{{ foo.username }}</a>
                                          </div>
                                          <div class="follow_item_info">
                                             <span>前端工程师</span>
                                          </div>
                                      </dd>
-                                     <dd class="fl follow_num">
-                                         <div class="">
-                                             <div>关注</div>
-                                             <div>{{ foo.follow.count }}</div>
-                                         </div>
-                                     </dd>
-                                     <dd class="fl fans_num">
-                                         <div class="">
-                                             <div>粉丝</div>
-                                             <div>{{ foo.fan.count }}</div>
-                                         </div>
-                                     </dd>
+{#                                     <dd class="fl follow_num">#}
+{#                                         <div class="">#}
+{#                                             <div>关注</div>#}
+{#                                             <div>{{ floow.count }}</div>#}
+{#                                         </div>#}
+{#                                     </dd>#}
+{#                                     <dd class="fl fans_num">#}
+{#                                         <div class="">#}
+{#                                             <div>粉丝</div>#}
+{#                                             <div>{{ floow.count }}</div>#}
+{#                                         </div>#}
+{#                                     </dd>#}
                                      <dd class="fr follow_btn">
-                                         <a href="">取消关注</a>
+                                         <a href="javascript:;" type_id="{{ foo.id }}" class="guan">取消关注</a>
                                      </dd>
+                                 </dl>
+                             </li>
+                             {% endfor %}
+                         </ul>
+                     </div>
+                    <div class="follow_main" style="display: none">
+                         <ul class="clearfix">
+                             {% for foo in floow %}
+                                    <li class="follow_item">
+                                 <dl class="clearfix">
+                                     <dt class="fl">
+                                         <a target="_blank" title="" href="{% url 'user:author_detaile' foo.id %}">
+                                            <img class="follow_item_img" width="50" height="50" alt="" src="{% if foo.user_imag %}
+                                            {{ MEDIA_URL }}{{ foo.user_imag }}
+                                            {% else %}
+                                            {% static 'img/logo.png' %}
+                                            {% endif %}">
+                                         </a>
+                                     </dt>
+                                     <dd class="fl">
+                                         <div class="follow_item_name">
+                                            <a target="_blank" title="" alt="" href="{% url 'user:author_detaile' foo.id %}">{{ foo.username }}</a>
+                                         </div>
+                                         <div class="follow_item_info">
+                                            <span>前端工程师</span>
+                                         </div>
+                                     </dd>
+
                                  </dl>
                              </li>
                              {% endfor %}
@@ -57,7 +89,7 @@
             </article>
         </div>
     </div>
- <aside class="fr">
+{% comment %} <aside class="fr">
 
 
         <div class="aside_pubnum">
@@ -107,5 +139,46 @@
                 </div>
             </div>
         </div>
-    </aside>
+    </aside>{% endcomment %}
+{% endblock %}
+{% block js %}
+    <script src="{% static 'js/promise.min.js' %}"></script>
+    <script src="{% static 'js/sweetalert.min.js' %}"></script>
+    <script>
+    $(function () {
+        $('.guan').on('click',function () {
+            var n = $(this).attr('type_id')
+            var self = $(this)
+             $.ajax({
+                url:"/person/Guan/",
+                type:'POST',
+                data:{follow:n,user:'{{ request.user.id }}'},
+                success:function (data) {
+                    if(data.data==200){
+                          swal({
+                              text: "已取消!",
+                              icon: "success",
+                            }).then(function () {
+                               self.parents('li').remove()
+                           })
+                    }else {
+                          swal({
+                              text: "取消失败,稍后重试!",
+                              icon: "error",
+                            })
+                    }
+
+
+
+                }
+            })
+        })
+        $('#follow li').on('click',function () {
+            $(this).addClass('active').siblings().removeClass('active')
+            var index= $(this).index()
+            $('.follow_main').eq(index).show().siblings('.follow_main').hide()
+        })
+
+    })
+    </script>
 {% endblock %}
