@@ -12,7 +12,7 @@ class CaptchaTestForm(forms.Form):
 
 
 class RegisterForm(forms.ModelForm):
-    captcha = CaptchaField()  # 为生成的验证码图片，以及输入框
+    #captcha = CaptchaField()  # 为生成的验证码图片，以及输入框
     password1 = forms.CharField(max_length=32)
     class Meta:
         model = User
@@ -20,9 +20,10 @@ class RegisterForm(forms.ModelForm):
     def clean(self):
         clend = super(RegisterForm, self).clean()
         password = clend.get('password')
-        password1 = clend.get('password')
+        password1 = clend.get('password1')
         if password != password1:
-            raise forms.ValidationError('两次密码不一样')
+            self._errors['mssage'] = '两次密码不一样'
+            #raise forms.ValidationError(message='两次密码不一样')
         return clend
 
 

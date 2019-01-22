@@ -53,9 +53,9 @@ def captcha_refresh(request):
 def yan(request):
     cs = CaptchaStore.objects.filter(response=request.POST['response'], hashkey=request.POST['hashkey'])
     if cs:
-        return JsonResponse({"success":"ok"})
+        return JsonResponse({"status":200})
     else:
-        return JsonResponse({'error':'失败'})
+        return JsonResponse({'status':400})
 
 
 
@@ -115,8 +115,13 @@ class Register(View):
     def post(self,request):
         form = RegisterForm(request.POST)
         if form.is_valid():
-            form.clean()
-        return HttpResponse({'data':form.errors})
+            username = form.cleaned_data.get('username','')
+            email = form.cleaned_data.get('email', '')
+            password = form.cleaned_data.get('password', '')
+            isact = User.objects.filter(username=username,email=email).exists()
+            print(User.objects.filter(username=username,email=email))
+            print(isact)
+        return JsonResponse({'data':form.errors})
 
 class Author(View):
     def get(self,request):

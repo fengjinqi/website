@@ -95,22 +95,21 @@
 
         <div class="input-group">
           <div class="input-group-addon"><i class="glyphicon glyphicon-user"></i></div>
-          <input type="text" class="form-control" name="username" required placeholder="请输入用户名">
+          <input type="text" class="form-control verification" name="username" required placeholder="请输入用户名">
         </div>
       </div>
          <div class="form-group login-center">
 
         <div class="input-group">
           <div class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></div>
-          <input type="email" class="form-control" name="email" placeholder="请输入邮箱"required >
+          <input type="email" class="form-control verification" name="email" placeholder="请输入邮箱"required >
         </div>
       </div>
              <div class="form-group login-center">
 
         <div class="input-group">
           <div class="input-group-addon"style="width: 48px"><i class="glyphicon glyphicon-phone"></i></div>
-          <input type="text" class="form-control" name="captcha" placeholder="请输入验证码"style="width: 50%">
-            {{ form.captcha }}
+          <input type="text" class="form-control " name="captcha" placeholder="请输入验证码"style="width: 50%">
             <img src="" alt=""style="display: inline;padding:4px 5px;float: right">
 
         </div>
@@ -135,18 +134,18 @@
 
         <div class="input-group">
           <div class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></div>
-          <input type="text" class="form-control" name="password" minlength="6"required placeholder="请输入密码">
+          <input type="text" class="form-control verification" name="password" minlength="6"required placeholder="请输入密码">
         </div>
       </div>
          <div class="form-group login-center">
 
         <div class="input-group">
           <div class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></div>
-          <input type="text" class="form-control" name="password1" minlength="6"required placeholder="请确认密码">
+          <input type="text" class="form-control verification" name="password1" minlength="6"required placeholder="请确认密码">
         </div>
       </div>
          <span class="error">手机号码错误</span>
-  <button type="submit" class="btn login-button ">登录</button>
+  <button type="submit" class="btn login-button " id="submit">注册</button>
 </form>
     <p><a href="/login">已有账号?立即登录</a><a href="/index">首页</a></p>
 </div>
@@ -173,7 +172,11 @@
     $('img').on('click',function () {
         Verification()
     })
-    $("input[name='email']").on('blur',function () {
+     $("input[name='captcha']").on('focus',function () {
+         var self = $(this)
+         self.css('border-color','#ccc')
+     })
+    $("input[name='captcha']").on('blur',function () {
         var self = $(this)
         $.ajax({
              type: "post",
@@ -183,11 +186,21 @@
             headers:{'X-CSRFToken':$.cookie('csrftoken')},
              success: function(data){
                        console.log(data)
-                      },
+                 if(data.status!=200){
+                    self.css('border-color','red')
+                 }
+              },
              error:function (xht) {
                  console.log(xht)
              }
          });
+    })
+    var obj={}
+    $('#submit').on('click',function () {
+        $(".verification").each(function (i,item) {
+            obj[$(item).attr('name')]=$(item).val()
+        })
+        console.log(obj)
     })
 </script>
 {% comment %}<script>
