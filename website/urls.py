@@ -17,10 +17,11 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.static import serve
+
 from rest_framework_jwt.views import obtain_jwt_token
 
 from apps.user.views import test, captcha_refresh, yan, login_view, UserGetInfo, UserGetAllInfo, UserDisbale, \
-    PersonOthers, Register
+    PersonOthers, Register, active_user
 from django.views.generic import TemplateView
 
 from website import settings
@@ -57,6 +58,7 @@ urlpatterns = [
     path('article/',include('apps.article.urls')),
     path('course/',include('apps.course.urls')),
     path('support/',include('apps.support.urls')),
+    url(r'^activate/(?P<token>\w+.[-_\w]*\w+.[-_\w]*\w+)/$',active_user,name='active_user'),
 
 
 

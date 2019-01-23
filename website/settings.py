@@ -176,7 +176,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -192,3 +192,13 @@ MEDIA_URL = "/upload/"   # 媒体文件别名(相对路径) 和 绝对路径
 MEDIA_ROOT = (
     os.path.join(BASE_DIR, 'upload')
 )
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+DOMAIN = 'http://127.0.0.1:8000'
+EMAIL_HOST = "smtp.exmail.qq.com"
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'fengjinqi@fengjinqi.com'
+EMAIL_HOST_PASSWORD = 'Feng19961024yao.'
+
+EMAIL_USE_TLS = True   #是否使用TLS安全传输协议
+EMAIL_FROM = 'fengjinqi.com'

@@ -12,7 +12,7 @@ class CaptchaTestForm(forms.Form):
 
 
 class RegisterForm(forms.ModelForm):
-    #captcha = CaptchaField()  # 为生成的验证码图片，以及输入框
+    """注册"""
     password1 = forms.CharField(max_length=32)
     class Meta:
         model = User
@@ -22,13 +22,13 @@ class RegisterForm(forms.ModelForm):
         password = clend.get('password')
         password1 = clend.get('password1')
         if password != password1:
-            self._errors['mssage'] = '两次密码不一样'
-            #raise forms.ValidationError(message='两次密码不一样')
+            self._errors['password'] = '两次密码不一样'
         return clend
 
 
 class LoginForms(forms.Form):
-    telephone = forms.CharField(max_length=11,)
+    """登录"""
+    telephone = forms.CharField()
     password = forms.CharField(max_length=16, min_length=6)
     remember = forms.IntegerField(required=False)
     def get_errors(self):
@@ -43,6 +43,20 @@ class LoginForms(forms.Form):
             return new_errors
         else:
             return {}
+
+
+class ModifyForm(forms.Form):
+    """修改密码"""
+    password = forms.CharField(required=True)
+    password1 = forms.CharField(required=True)
+    email = forms.EmailField(required=True)
+
+
+class EmailForm(forms.Form):
+    """邮箱修改"""
+    username = forms.CharField(required=True)
+    email = forms.EmailField(required=True)
+    code = forms.CharField(required=True,max_length=4,min_length=4)
 
 class Follow_Forms(forms.ModelForm):
 

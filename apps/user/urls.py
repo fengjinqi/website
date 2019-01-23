@@ -13,5 +13,8 @@ urlpatterns = [
   path('<uuid:article_id>/',views.PersonDetaile.as_view(),name='author_detaile'),
   path('profile/', views.Profile,name='profile'),
   path('info/', views.Info, name='info'),
+  path('modify/', views.Modify.as_view(), name='modify'),
+  path('sing_email/', views.ResetUserView.as_view(), name='sing_email'),
+  path('email_update/', views.EmailView.as_view(), name='email_update'),
   path('Guan/', views.Guan, name='Guan'),
 ]

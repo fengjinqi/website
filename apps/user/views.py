@@ -1,9 +1,13 @@
 import json
+import time
+from datetime import datetime
 
 from captcha.helpers import captcha_image_url
 from captcha.models import CaptchaStore
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.backends import ModelBackend
+from django.contrib.auth.hashers import make_password
+from django.core.mail import send_mail
 from django.db.models import Q
 from django.http import Http404, HttpResponse,JsonResponse
 from django.shortcuts import render, redirect,reverse
@@ -15,6 +19,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.views.generic.base import View
 from django_filters.rest_framework import DjangoFilterBackend
+from pytz import unicode
 from rest_framework import filters
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -24,11 +29,14 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from apps.article.models import Article, Category_Article
 from apps.article.serializers import ArticleSerializer
 from apps.article.views import StandardResultsSetPagination
+from apps.uitls.EmailToken import token_confirm
+from apps.uitls.email_send import send_register_email
 from apps.uitls.permissions import IsOwnerOrReadOnly
 from apps.user.filter import CategoryFilter, UserFilter
-from apps.user.models import User, Follows
+from apps.user.models import User, Follows, VerifyCode
 from apps.user.serializers import UserSerializer
-from .forms import CaptchaTestForm, LoginForms, Follow_Forms, RegisterForm
+from website import settings
+from .forms import CaptchaTestForm, LoginForms, Follow_Forms, RegisterForm, ModifyForm, EmailForm
 from rest_framework import viewsets, mixins, status, permissions
 from rest_framework.pagination import PageNumberPagination
 
@@ -52,10 +60,11 @@ def captcha_refresh(request):
 
 def yan(request):
     cs = CaptchaStore.objects.filter(response=request.POST['response'], hashkey=request.POST['hashkey'])
+    print(cs)
     if cs:
-        return JsonResponse({"status":200})
+        return JsonResponse({"valid":True})
     else:
-        return JsonResponse({'status':400})
+        return JsonResponse({'valid':False})
 
 
 
@@ -67,7 +76,7 @@ class CustomBackend(ModelBackend):
 
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
-            user = User.objects.get(Q(mobile=username) | Q(username=username))
+            user = User.objects.get(Q(email=username) | Q(username=username))
             if user.check_password(password):
                 return user
         except Exception as e:
@@ -94,10 +103,10 @@ def login_view(request):
                     return JsonResponse({"code":200,"message":"","data":{}})
                     #return restful.result()
                 else:
-                    return JsonResponse({"code": 401, "message": "此账号暂无权限，请联系管理员", "data": {}})
+                    return JsonResponse({"code": 401, "message": "此账号暂未激活，请联系管理员", "data": {}})
                     #return restful.unauth(message='此账号暂无权限，请联系管理员')
             else:
-                return JsonResponse({"code": 400, "message": "手机号码或者密码错误", "data": {}})
+                return JsonResponse({"code": 400, "message": "账号或者密码错误", "data": {}})
                 #return restful.params_error(message="手机号码或者密码错误")
         else:
             errors = form.get_errors()
@@ -107,21 +116,112 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('/index')
+
+
 class Register(View):
     def get(self,request):
-        form = RegisterForm()
-        return render(request,'pc/register.html',{'form':form})
-
-    def post(self,request):
+        return render(request,'pc/register.html')
+    def post(self, request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username','')
             email = form.cleaned_data.get('email', '')
             password = form.cleaned_data.get('password', '')
-            isact = User.objects.filter(username=username,email=email).exists()
-            print(User.objects.filter(username=username,email=email))
-            print(isact)
-        return JsonResponse({'data':form.errors})
+            users = User()
+            users.username = username
+            users.password =make_password(password)
+            users.email = email
+            users.is_active = False
+            users.save()
+            token = token_confirm.generate_validate_token(username)
+            # message = "\n".join([u'{0},欢迎加入我的博客'.format(username), u'请访问该链接，完成用户验证,该链接1个小时内有效',
+            #                      '/'.join([settings.DOMAIN, 'activate', token])])
+            # send_mail(u'注册用户验证信息', message, settings.EMAIL_HOST_USER, [email], fail_silently=False)
+            send_register_email(email=email,username=username,token=token,send_type="register")
+            return JsonResponse({'valid':True,'status':200, 'message': u"请登录到注册邮箱中验证用户，有效期为1个小时"})
+        return JsonResponse({'status':400,'data':form.errors,'valid':False})
+
+
+def active_user(request, token):
+    #激活验证
+    try:
+        username = token_confirm.confirm_validate_token(token)
+    except:
+        username = token_confirm.remove_validate_token(token)
+        users = User.objects.filter(username=username)
+        for user in users:
+            if user.is_active==False:
+                user.delete()
+                return render(request, 'pc/message.html', {'message': u'对不起，验证链接已经过期，请重新<a href=\"' + unicode(settings.DOMAIN) + u'/signup\">注册</a>'})
+            else:
+                return render(request, 'pc/message.html', {'message': u'此账号已经验证过，请重新<a href=\"' + unicode(settings.DOMAIN) + u'/signup\">注册</a>'})
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return render(request, 'pc/message.html', {'message': u"对不起，您所验证的用户不存在，请重新注册"})
+    user.is_active = True
+    user.save()
+    message = u'验证成功，请进行<a href=\"' + unicode(settings.DOMAIN) + u'/login\">登录</a>操作'
+    return render(request, 'pc/message.html', {'message':message})
+
+
+@method_decorator(login_required(login_url='/login'),name='dispatch')
+class ResetUserView(View):
+    """更换邮箱发送验证码"""
+    def post(self,request):
+        email = request.POST.get('email')
+        username = request.POST.get('username')
+        if email is not None and username is not None:
+            if User.objects.filter(email=email):
+                return JsonResponse({'status':400,'message':'邮箱已经存在'})
+            send_register_email(email=email, username=username,send_type='update_email')
+            return JsonResponse({'status': 200, 'message': u"验证码发送成功，有效期为30分钟"})
+        return JsonResponse({'status':400,'message':'用户名与邮箱不能为空'})
+
+
+@method_decorator(login_required(login_url='/login'),name='dispatch')
+class EmailView(View):
+    """更换邮箱"""
+    def post(self,request):
+        forms = EmailForm(request.POST)
+        if forms.is_valid():
+
+            email = forms.cleaned_data.get('email')
+            username = forms.cleaned_data.get('username')
+            code = forms.cleaned_data.get('code')
+            end_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time() - 1800))
+            items = VerifyCode.objects.filter(send_time__lt=end_time)
+            for item in items:
+                item.delete()
+            exitsed = VerifyCode.objects.filter(code__icontains=code,email=email,send_type='update_email')
+
+            if exitsed:
+                user=request.user
+                user.email=email
+                user.save()
+                return JsonResponse({'status': 200, 'message': '修改成功,请重新登录'})
+            else:
+                return JsonResponse({'status': 400, 'message': '验证码已过期或错误'})
+        return JsonResponse({'status':400,'message':'验证失败请检查后提交'})
+
+
+@method_decorator(login_required(login_url='/login'),name='dispatch')
+class Modify(View):
+    """密码修改"""
+    def post(self,request):
+         forms = ModifyForm(request.POST)
+         if forms.is_valid():
+             pwd1 = forms.cleaned_data.get('password')
+             pwd2 = forms.cleaned_data.get('password1')
+             email = forms.cleaned_data.get('email')
+             if pwd1!=pwd2:
+                 return JsonResponse({'status':400,"email":email,"message":"密码不一致"})
+             User.objects.filter(email=email).update(password=make_password(pwd2))
+             return JsonResponse({'status':200,"email":email,"message":"密码修改成功"})
+         else:
+            email = request.POST.get('email')
+            return JsonResponse({'status':400,"email":email, "message":'验证失败请检查后提交'})
+
 
 class Author(View):
     def get(self,request):
@@ -163,6 +263,7 @@ class Person(View):
 
 
 class PersonDetaile(View):
+    """个人中心（他人）"""
     def get(self,request,article_id):
         category = Category_Article.objects.all()
         count = User.objects.filter(follow__fan__id=article_id).count()
@@ -188,6 +289,7 @@ def Profile(request):
 
 @csrf_exempt
 def Guan(request):
+    """取关"""
     if request.method == 'POST':
         if request.user.id is not None:
             froms = Follow_Forms(request.POST)

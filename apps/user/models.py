@@ -14,7 +14,7 @@ class User(AbstractUser):
     position = models.CharField(max_length=30,verbose_name='职位',default='',null=True,blank=True)
     info = models.CharField(max_length=100,verbose_name='个人介绍',default='',null=True,blank=True)
     user_imag = models.ImageField(upload_to='user/%Y/%m/%d',blank=True,default='',verbose_name='用户头像')
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=True,default='')
 
 
 class Follows(models.Model):
@@ -31,14 +31,23 @@ class Follows(models.Model):
         ordering = ('-follow',)
 
 class VerifyCode(models.Model):
-    """短信验证码"""
+    """邮箱验证码"""
     code = models.CharField(verbose_name='验证码',max_length=10)
-    mobile = models.CharField(blank=True,null=True,verbose_name='电话',max_length=11)
-    add_time = models.DateTimeField(default=datetime.now,verbose_name='添加时间')
+    # mobile = models.CharField(blank=True,null=True,verbose_name='电话',max_length=11)
+    # add_time = models.DateTimeField(default=datetime.now,verbose_name='添加时间')
+    email = models.EmailField(verbose_name='邮箱',default='')
+    send_choices = (
+        ('register', '注册'),
+        ('forget', '找回密码'),
+        ('update_email', '修改邮箱')
+    )
+    send_type = models.CharField(verbose_name='验证码类型', max_length=30, choices=send_choices, default='register')
+
+    send_time = models.DateTimeField(default=datetime.now, verbose_name='发送时间')
 
     def __str__(self):
         return self.code
 
     class Meta:
-        verbose_name='短信验证码'
+        verbose_name='邮箱验证码'
         verbose_name_plural=verbose_name

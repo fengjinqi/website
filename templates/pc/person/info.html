@@ -7,6 +7,8 @@
             <div class="fl left_nav">
                 <ul id="info">
                     <li data-type="" class="active"><a href="javascript:;">个人资料</a></li>
+                    <li data-type="" ><a href="javascript:;">重置</a></li>
+                    <li data-type=""><a href="javascript:;">邮箱更换</a></li>
                 </ul>
             </div>
             <article class="fr">
@@ -24,7 +26,7 @@
                          </div>
                           <div class="info_item clearfix">
                              <label for="name">邮箱</label>
-                             <input type="text" name="email"class="val" value="{{ user.email }}" disabled>
+                             <input type="text" class="val" value="{{ user.email }}" disabled>
                          </div>
                          <div class="info_item clearfix">
                              <label for="name">手机号</label>
@@ -39,6 +41,26 @@
                                  <input type="text" name="info" class="val" value="{{ user.info }}"disabled>100字
                              </div>
                          <button type="button" id="btn">提交</button>
+                     </div>
+                      <div class="follow_main" style="display: none">
+                         <div class="info_item clearfix">
+                             <label for="name">请输入密码:</label>
+                             <input type="text" name="password" placeholder="密码">
+                             <input type="text" name="password1" placeholder="密码">
+                         </div>
+
+                         <button type="button" onclick="modify(this)">提交</button>
+                     </div>
+                      <div class="follow_main" style="display: none">
+
+                         <div class="info_item clearfix">
+                             <label for="name">邮箱</label>
+                             <input type="email" name="email"placeholder="新邮箱地址">
+                             <input type="text" name="code" placeholder="请输入验证码">
+                             <p onclick="Verification()">获取验证码</p>
+                         </div>
+
+                         <button type="button" onclick="emailSubmit()">提交</button>
                      </div>
                  </div>
             </article>
@@ -95,9 +117,117 @@
             </div>
         </div>
     </aside>{% endcomment %}
+
 {% endblock %}
 {% block js %}
+        <script src="{% static 'js/promise.min.js' %}"></script>
+    <script src="{% static 'js/sweetalert.min.js' %}"></script>
     <script>
+
+
+    $("#info li").on('click',function () {
+        var index = $(this).index()
+        $(this).addClass('active').siblings().removeClass('active')
+        $('.follow_main').eq(index).show().siblings('.follow_main').hide()
+    })
+//修改密码
+    function modify(obj) {
+        var data={}
+        data.email = '{{ request.user.email }}'
+        data.password = $("input[name='password']").val()
+        data.password1 = $("input[name='password1']").val()
+         $.ajax({
+                url:'/person/modify/',
+                type:'post',
+                data:data,
+                headers:{'X-CSRFToken':$.cookie('csrftoken')},
+                success:function (data) {
+                    console.log(data)
+                     if(data.status==200){
+                     swal({
+                          text: data.message,
+                          icon: "success",
+                        }).then(function () {
+                           window.location.href='/login'
+                       })
+                }else {
+                     swal({
+                      text: data.message,
+                      icon: "error",
+                    })
+                }
+                }
+
+            })
+    }
+
+//更换邮箱获取验证码
+    function Verification() {
+        var email = $("input[name='email']").val()
+        $.ajax({
+            url:'/person/sing_email/',
+            type:'post',
+              headers:{'X-CSRFToken':$.cookie('csrftoken')},
+            data:{email:email,username:'{{ request.user.id }}'},
+            success:function (data) {
+                 if(data.status==200){
+                     swal({
+                          text: data.message,
+                          icon: "success",
+                        })
+                }else {
+                     swal({
+                      text: data.message,
+                      icon: "error",
+                    })
+                }
+            }
+        })
+    }
+
+
+//跟换邮箱
+    function  emailSubmit() {
+               var email = $("input[name='email']").val()
+        var code =$("input[name='code']").val()
+        $.ajax({
+            url:'/person/email_update/',
+            type:'post',
+              headers:{'X-CSRFToken':$.cookie('csrftoken')},
+            data:{email:email,username:'{{ request.user.id }}',code:code},
+            success:function (data) {
+                if(data.status==200){
+                     swal({
+                          text: data.message,
+                          icon: "success",
+                        }).then(function () {
+                           window.location.href='/login'
+                       })
+                }else {
+                     swal({
+                      text: data.message,
+                      icon: "error",
+                    })
+                }
+            }
+        })
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*================资料*/
         var form = new FormData()
         $('#file').on('change',function () {
             form.set('file',$(this)[0].files)

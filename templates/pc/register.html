@@ -8,6 +8,7 @@
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
 	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrapValidator.min.css' %}">
     <style>
         body{
             width: 100%;
@@ -62,12 +63,12 @@
         .login-button:hover{
             color: white;
         }
-        p{
-           width: 370px;
-    padding: 20px 40px;
-    display: flex;
-    justify-content: space-between;
-        }
+    {#    p{#}
+    {#       width: 370px;#}
+    {#padding: 20px 40px;#}
+    {#display: flex;#}
+    {#justify-content: space-between;#}
+    {#    }#}
         a{
             text-decoration: none;
             color: #333;
@@ -86,7 +87,7 @@
 
 <body>
 <div id="main">
-     <form class="form-inline" action="{% url 'register' %}" method="post">
+     <form class="form-inline" id="defaultForm">
          {% csrf_token %}
          <div class="login-top">
 				注册
@@ -109,7 +110,7 @@
 
         <div class="input-group">
           <div class="input-group-addon"style="width: 48px"><i class="glyphicon glyphicon-phone"></i></div>
-          <input type="text" class="form-control " name="captcha" placeholder="请输入验证码"style="width: 50%">
+          <input type="text" class="form-control "required name="captcha" placeholder="请输入验证码"style="width: 50%">
             <img src="" alt=""style="display: inline;padding:4px 5px;float: right">
 
         </div>
@@ -139,20 +140,99 @@
       </div>
          <div class="form-group login-center">
 
-        <div class="input-group">
-          <div class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></div>
-          <input type="text" class="form-control verification" name="password1" minlength="6"required placeholder="请确认密码">
-        </div>
+            <div class="input-group ">
+              <div class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></div>
+              <input type="text" class="form-control verification" name="password1" minlength="6"required placeholder="请确认密码">
+            </div>
       </div>
-         <span class="error">手机号码错误</span>
-  <button type="submit" class="btn login-button " id="submit">注册</button>
+        <p class="errors"></p>
+
+  <button type="button" class="btn login-button " id="submit">注册</button>
 </form>
     <p><a href="/login">已有账号?立即登录</a><a href="/index">首页</a></p>
 </div>
 
 	<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'js/bootstrapValidator.min.js' %}"></script>
+	<script src="{% static 'js/language/zh_CN.js' %}"></script>
 <script src="{% static 'js/jquery.cookie.min.js' %}"></script>
+ <script src="{% static 'js/promise.min.js' %}"></script>
+    <script src="{% static 'js/sweetalert.min.js' %}"></script>
 <script>
+       $('#defaultForm')
+        .bootstrapValidator({
+            message: 'This value is not valid',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                username: {
+                    validators: {
+                        notEmpty: {
+                            message: '不能为空'
+                        },
+                    {% comment %}    regexp: {
+                            regexp: /^[a-zA-Z0-9_\.]+$/,
+                            message: 'The username can only consist of alphabetical, number, dot and underscore'
+                        }{% endcomment %}
+                    }
+                },
+                email: {
+                    validators: {
+                        notEmpty: {
+                            message: '不能为空'
+                        },
+                        emailAddress: {
+                            message: '请输入正确邮箱'
+                        }
+                    }
+                },
+                password: {
+                    validators: {
+                        notEmpty: {
+                            message: '不能为空'
+                        }
+                    }
+                },
+                password1: {
+                    validators: {
+                        notEmpty: {
+                            message: '不能为空'
+                        }
+                    }
+                },
+                captcha: {
+                    validators: {
+                        notEmpty: {
+                            message: '不能为空'
+                        },
+                        stringLength: {
+                            min: 4,
+                            max: 4,
+                            message: '请输入四位验证码'
+                        },
+                        remote: {
+                            threshold:4,
+                            type: 'POST',
+                            url: '/yan/',
+
+                            data:{response:function() {
+                              return $("input[name='captcha']").val() },
+                                hashkey:function() {
+                              return $("#hidden").val() },
+                                csrfmiddlewaretoken:function() {
+                              return $('input[name="csrfmiddlewaretoken"]').val() },
+                          },
+                        },
+                    }
+                },
+            }
+        })
+
+
     function Verification (){
         $.ajax({
              type: "GET",
@@ -172,7 +252,7 @@
     $('img').on('click',function () {
         Verification()
     })
-     $("input[name='captcha']").on('focus',function () {
+   {% comment %}  $("input[name='captcha']").on('focus',function () {
          var self = $(this)
          self.css('border-color','#ccc')
      })
@@ -185,21 +265,46 @@
             data:{"response":self.val(),"hashkey":$("#hidden").val()},
             headers:{'X-CSRFToken':$.cookie('csrftoken')},
              success: function(data){
-                       console.log(data)
-                 if(data.status!=200){
-                    self.css('border-color','red')
-                 }
+
+
               },
              error:function (xht) {
                  console.log(xht)
              }
          });
     })
-    var obj={}
+{% endcomment %}
     $('#submit').on('click',function () {
-        $(".verification").each(function (i,item) {
-            obj[$(item).attr('name')]=$(item).val()
-        })
+
+        $("form").bootstrapValidator('validate');//提交验证
+                if ($("form").data('bootstrapValidator').isValid()) {//获取验证结果，如果成功，执行下面代码
+                    var obj={}
+                    $(".verification").each(function (i,item) {
+                        obj[$(item).attr('name')]=$(item).val()
+                    })
+                    $.ajax({
+                        url:'/register/',
+                        type:'POST',
+                        data:obj,
+                        headers:{'X-CSRFToken':$.cookie('csrftoken')},
+                        success:function (data) {
+                            if(data.status==200){
+                                  swal({
+                                  text: data.message,
+                                  icon: "success",
+                                })
+                            }else{
+                                data.data.email?$('.errors').append("<span class='error'>"+data.data.email[0]+"</span>"):''
+                                data.data.username?$('.errors').append("<span class='error'>"+data.data.username[0]+"</span>"):''
+                                data.data.password?$('.errors').append("<span class='error'>"+data.data.password+"</span>"):''
+                            }
+
+                        }
+
+                    })
+
+                }
+
         console.log(obj)
     })
 </script>
