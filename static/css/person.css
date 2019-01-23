@@ -179,8 +179,9 @@ aside{
 
 /*人脉*/
 .follow_main{
-    padding:15px;
+    padding:40px;
     background: #fff;
+    text-align: center;
 }
 .follow_main .follow_item_img{
     -webkit-border-radius: 50%;
@@ -227,12 +228,57 @@ aside{
     float: none;
     width: 30%;
     padding:0 12px;
-    margin:0
 }
 .info_img{
-    width:120px;
-    height:120px;
+    width:60px;
+    height:60px;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
+    display: inline-block;
+    border: 1px solid #ddd;
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-position: 50%;
+}
+#me{
+    width:30%;
+    height: 100px;
+    padding: 0 12px;
+    border: 1px solid #dcdcdc;
+    vertical-align: top;
+}
+#editbtn{
+    float: right;
+    line-height: 45px;
+    color: #356dd0;
+    cursor: pointer;
+}
+.origin{
+    border: none!important;
+    background: none;
+}
+.editshow{
+    display: none;
+    height: 32px;
+    line-height: 32px;
+    color: #fff;
+    background: #356dd0;
+    margin-left: 12px;
+    padding: 0px 25px;
+}
+input ,textarea{
+    outline: none;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+.filepath{
+    display: none;
+}
+.imgbox{
+    width: 30%;
+    padding: 0 12px;    margin-left: 8px;
+    text-align: left;
+    vertical-align: middle;
 }

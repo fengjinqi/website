@@ -7,40 +7,56 @@
             <div class="fl left_nav">
                 <ul id="info">
                     <li data-type="" class="active"><a href="javascript:;">个人资料</a></li>
-                    <li data-type="" ><a href="javascript:;">重置</a></li>
+                    <li data-type="" ><a href="javascript:;">修改密码</a></li>
                     <li data-type=""><a href="javascript:;">邮箱更换</a></li>
                 </ul>
             </div>
             <article class="fr">
                  <div class="blogs">
-                     <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">个人资料</div>
+                     <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">
+                         <span>个人资料</span>
+                         <span id="editbtn" onclick="editInfo()">编辑</span>
+                     </div>
                      <div class="follow_main">
                          <div class="info_item clearfix">
-                             <label for="name">头像:</label>
-                             <img class="info_img" src="{{ MEDIA_URL }}{{ request.user.user_imag }}" alt="">
-                             <input type="file" id="file">
+                             <label for="name">头像</label>
+{#                             <img class="info_img" src="{{ MEDIA_URL }}{{ request.user.user_imag }}" alt="">#}
+{#                             <input type="file" id="file">#}
+
+
+                              <!--规定上传的文件只能是图片-->
+                             <input type="file" id="file" class="filepath"   onchange="changepic(this)" accept="image/jpg,image/jpeg,image/png,image/PNG">
+
+                             <a class="imgbox">
+                                 <span id="img3" class="info_img" style="background-image:url({{ MEDIA_URL }}{{ request.user.user_imag }});" onclick="fileCliick()"></span>
+                             </a>
+
+
+
                          </div>
                          <div class="info_item clearfix">
-                             <label for="name">用户名：</label>
-                             <input type="text" name="username"class="val" value="{{ user.username }}" disabled>
+                             <label for="name">用户名</label>
+                             <input type="text" name="username"class="val origin" value="{{ user.username }}" disabled>
                          </div>
-                          <div class="info_item clearfix">
-                             <label for="name">邮箱</label>
-                             <input type="text" class="val" value="{{ user.email }}" disabled>
-                         </div>
+{#                          <div class="info_item clearfix">#}
+{#                             <label for="name">邮箱</label>#}
+{#                             <input type="text" class="val" value="{{ user.email }}" disabled>#}
+{#                         </div>#}
                          <div class="info_item clearfix">
                              <label for="name">手机号</label>
-                             <input type="text" name="mobile"class="val" value="{{ user.mobile }}" disabled>
+                             <input type="text" name="mobile"class="val origin" value="{{ user.mobile }}" disabled>
                          </div>
                          <div class="info_item clearfix">
                              <label for="name">职位</label>
-                                 <input type="text" name="position"class="val" value="{{ user.position }}"disabled>
+                                 <input type="text" name="position"class="val origin" value="{{ user.position }}"disabled>
                              </div>
                          <div class="info_item clearfix">
-                             <label for="name">个人介绍</label>
-                                 <input type="text" name="info" class="val" value="{{ user.info }}"disabled>100字
+                             <label for="name" style="left:-7px;position: relative;">个人介绍 </label>
+{#                                 <input type="text" name="info" class="val" value="{{ user.info }}"disabled>100字#}
+                             <textarea name="info" id="me" class="val origin" value="{{ user.info }}"disabled></textarea>
                              </div>
-                         <button type="button" id="btn">提交</button>
+                         <a class="editshow" id="btn">提交</a>
+                         <a class="editshow"  id="cancel">取消</a>
                      </div>
                       <div class="follow_main" style="display: none">
                          <div class="info_item clearfix">
@@ -160,7 +176,28 @@
 
             })
     }
-
+//修改信息
+    function editInfo() {
+        $('.info_item textarea').removeClass('origin');
+        $('.info_item textarea').attr('disabled',false);
+        $('.info_item input').removeClass('origin');
+        $('.info_item input').attr('disabled',false);
+        $('.editshow').fadeIn();
+    }
+    //上传预览图片
+    function fileCliick() {
+        $('#file').click();
+    }
+   function changepic() {
+         var reads = new FileReader();
+         f = document.getElementById('file').files[0];
+         reads.readAsDataURL(f);
+         reads.onload = function(e) {
+             $('#img3').css({
+                 "background-image":'url('+this.result+')'
+             });
+         };
+    }
 //更换邮箱获取验证码
     function Verification() {
         var email = $("input[name='email']").val()
