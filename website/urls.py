@@ -46,11 +46,11 @@ router.register('PersonOthers', PersonOthers)
 urlpatterns = [
 
     path('admin/', admin.site.urls),
-    path('',test), # 这是生成验证码的图片
+    #path('',test), # 这是生成验证码的图片
     url(r'^captcha/', include('captcha.urls')),
     path('refresh/',captcha_refresh), # 这是生成验证码的图片
     path('yan/',yan), # 这是生成验证码的图片
-    path('index/',views.Article_list,name='home'),
+    path('',views.Article_list,name='home'),
     path('login/',login_view,name='index'),
     path('person/',include('apps.user.urls')),
     path('logou/',logout_view,name='logou'),

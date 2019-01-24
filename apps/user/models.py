@@ -13,7 +13,7 @@ class User(AbstractUser):
     mobile = models.CharField(max_length=11, verbose_name='手机号码',default='')
     position = models.CharField(max_length=30,verbose_name='职位',default='',null=True,blank=True)
     info = models.CharField(max_length=100,verbose_name='个人介绍',default='',null=True,blank=True)
-    user_imag = models.ImageField(upload_to='user/%Y/%m/%d',blank=True,default='',verbose_name='用户头像')
+    user_imag = models.ImageField(upload_to='user/%Y%m%d',blank=True,default='',verbose_name='用户头像')
     email = models.EmailField(unique=True,default='')
 
 

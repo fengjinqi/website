@@ -4,12 +4,13 @@
 {{ user }}
 {% endblock %}
 {% block css %}
-        <link rel="stylesheet" href="{% static 'css/pagination.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/pagination.css' %}" />
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <link rel="stylesheet" href="{% static 'css/person.css' %}" />
 
 {% endblock %}
 {% block content %}
+
     <div class="person_banner">
         <div class="person_bannerbgd img_cover">
             <div></div>
@@ -17,16 +18,16 @@
         <div class="person_nav main">
             <ul class="clearfix">
                 <li class="fl">
-                    <a href="">发布</a>
+                    <a href="{% url 'user:author_detaile' user.id %}" class="person_nav {% if request.path|slice:'8' == '/person/' and request.path|slice:'22' != '/person/ProfileOthers/' and  request.path|slice:'13' != '/person/info/' %} active
+                    {% endif %}">文章</a>
                 </li>
                 <li class="fl">
-                    <a href="">关注</a>
+                    <a href="{% url 'user:ProfileOthers' user.id %}"class="person_nav {% if request.path|slice:'22' == '/person/ProfileOthers/' %} active
+                    {% endif %}">人脉</a>
                 </li>
                 <li class="fl">
-                    <a href="">人脉</a>
-                </li>
-                <li class="fl">
-                    <a href="">资料</a>
+                    <a href="{% url 'user:info' user.id %}"class="person_nav {% if request.path|slice:'13' == '/person/info/' %} active
+                    {% endif %}">资料</a>
                 </li>
             </ul>
         </div>
@@ -34,26 +35,26 @@
         <div class="aside_my">
             <div class="aside_my_info">
                 <div style="text-align: center;">
-
                     <div class="my_head"style="
-
-                            {% if user.user_imag  %}
-
-                        background: url('{{ MEDIA_URL }}{{ user.user_imag  }}')no-repeat;background-size: cover;
+                            {% if user.user_imag  %}background: url('{{ MEDIA_URL }}{{ user.user_imag  }}')no-repeat;background-size: cover;
                         {% else %}
                         background: #000;
                     {% endif %}"></div>
-                    <p style="margin:16px 0 4px 0">{{ user.username }}</p>
-                    <p style="font-size: 12px;color: #999;">前端开发 | 3年</p>
+                    <p style="margin:8px 0 4px 0">{{ user.username }}</p>
+                    <span onclick="flollw('{{ user.id }}')">{% if is_active %}
+                        已关注
+                        {% else %}
+                        关注
+                    {% endif %}</span>
                 </div>
             </div>
             <div class="aside_my_num flex_justify">
                <div class="aside_my_div">
-                   <p>{{ count}}</p>
+                   <p>{{ count.count}}</p>
                    <p>关注</p>
                </div>
                 <div class="aside_my_div">
-                    <p>{{ floow }}</p>
+                    <p>{{ floow.count }}</p>
                     <p>粉丝</p>
                 </div>
             </div>
@@ -62,8 +63,8 @@
     </aside>
     </div>
 <section class="main clearfix">
-    <div class="person fl">
-
+{% block end %}
+ <div class="person fl">
         <div class="clearfix">
             <div class="fl left_nav">
                 <ul id="category">
@@ -79,16 +80,19 @@
                      <div id="mains">
 
                      </div>
-                     <div class="M-box pagination"></div>
+                      <div class="M-box pagination m-style"></div>
                  </div>
             </article>
         </div>
     </div>
+    {% endblock %}
+    </section>
 
-</section>
 {% endblock %}
 {% block js %}
     <script src="{% static 'js/jquery.pagination.js' %}"></script>
+    <script src="{% static 'js/promise.min.js' %}"></script>
+    <script src="{% static 'js/sweetalert.min.js' %}"></script>
     <script>
         $(function () {
             $.ajax({
@@ -101,6 +105,9 @@
                     $('.loading').remove()
                     var html =''
                     n=[]
+                     if(data.results.length==0){
+                             $("#mains").append("<p class=' blogs_item' style='text-align:center;padding:50px 0;'>这个人很懒...</p>")
+                        }
                     for(var i=0;i<data.results.length;i++){
                         var currentItem = data.results[i];
                         currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:'/static/img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'
@@ -110,8 +117,6 @@
                             var currentChildItem = currentItem.article_comment_set[j];
                             n[i] += currentChildItem.articlecommentreply_set.length;
                         }
-
-
                         html+=" <div class=\"blogs_item\">\n" +
                             "                             <div class=\"blogs_cont blogs_cont1\">\n" +
                             "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+data.results[i].title+"</a></h3>\n" +
@@ -166,14 +171,11 @@
                                     for(var i=0;i<data.results.length;i++){
                                         var currentItem = data.results[i];
                                         currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:'/static/img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'
-
                                         b.push(currentItem.article_comment_set.length);
                                         for(var j=0,len=currentItem.article_comment_set.length;j<len;j++){
                                             var currentChildItem = currentItem.article_comment_set[j];
                                             b[i] += currentChildItem.articlecommentreply_set.length;
                                         }
-
-
                                         html+=" <div class=\"blogs_item\">\n" +
                                             "                             <div class=\"blogs_cont blogs_cont1\">\n" +
                                             "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+data.results[i].title+"</a></h3>\n" +
@@ -206,13 +208,8 @@
                                     $("#mains").html(html)
                                 }
                             })
-
-
                         }
                     });
-
-
-
                 },
                 error:function () {
                     alert('加载失败')
@@ -244,8 +241,6 @@
                                 var currentChildItem = currentItem.article_comment_set[j];
                                 n[i] += currentChildItem.articlecommentreply_set.length;
                             }
-
-
                             html+=" <div class=\"blogs_item\">\n" +
                                 "                             <div class=\"blogs_cont blogs_cont1\">\n" +
                                 "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+data.results[i].title+"</a></h3>\n" +
@@ -276,7 +271,6 @@
                                 "                         </div>"
                         }
                         $("#mains").html(html)
-                        console.log(data)
                          if(data.results.length==0){
                              $("#mains").append("<p class=' blogs_item' style='text-align:center;padding:50px 0;'>暂无数据...</p>")
                         }
@@ -356,5 +350,25 @@
                     }
             })
         }
+       function flollw (obj){
+          $.ajax({
+                url:'/person/author/',
+                type:'post',
+                data:{follow:obj,'username':'{{ request.user.id }}'},
+                  headers:{'X-CSRFToken':$.cookie('csrftoken')},
+                success:function (data) {
+                    swal({
+                          text: data.message,
+                          icon: "success",
+                        }).then(function () {
+                                   window.location.reload()
+                               })
+                    console.log(data)
+                },
+                error:function (xhr) {
+                    console.log(xhr)
+                }
+            })
+    }
     </script>
 {% endblock %}

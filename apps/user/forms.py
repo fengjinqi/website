@@ -58,6 +58,14 @@ class EmailForm(forms.Form):
     email = forms.EmailField(required=True)
     code = forms.CharField(required=True,max_length=4,min_length=4)
 
+
+class InfoForm(forms.Form):
+    username = forms.CharField(required=True)
+    file = forms.ImageField(required=False)
+    info = forms.CharField(required=False)
+    position = forms.CharField(required=False)
+
+
 class Follow_Forms(forms.ModelForm):
 
     class Meta:

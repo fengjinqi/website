@@ -1,4 +1,4 @@
-{% extends 'pc/person/index.html' %}
+{% extends 'pc/person/indexOthers.html' %}
 {% load static %}
 {% block end %}
     <div class="person fl">
@@ -13,7 +13,7 @@
             </div>
             <article class="fr">
                  <div class="blogs">
-                     <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">我的关注</div>
+                     <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">他的关注</div>
                      <div class="follow_main">
                          <ul class="clearfix">
 
@@ -37,21 +37,7 @@
                                             <span>{{ foo.position }}</span>
                                          </div>
                                      </dd>
-{#                                     <dd class="fl follow_num">#}
-{#                                         <div class="">#}
-{#                                             <div>关注</div>#}
-{#                                             <div>{{ floow.count }}</div>#}
-{#                                         </div>#}
-{#                                     </dd>#}
-{#                                     <dd class="fl fans_num">#}
-{#                                         <div class="">#}
-{#                                             <div>粉丝</div>#}
-{#                                             <div>{{ floow.count }}</div>#}
-{#                                         </div>#}
-{#                                     </dd>#}
-                                     <dd class="fr follow_btn">
-                                         <a href="javascript:;" type_id="{{ foo.id }}" class="guan">取消关注</a>
-                                     </dd>
+
                                  </dl>
                              </li>
                              {% endfor %}
@@ -89,92 +75,35 @@
             </article>
         </div>
     </div>
-{% comment %} <aside class="fr">
 
-
-        <div class="aside_pubnum">
-            <div class="flex_justify">
-               <div class="aside_my_div">
-                   <p><img src="img/public.png" alt=""></p>
-                   <p>写文章</p>
-               </div>
-                <div class="aside_my_div">
-                    <p><img src="img/public.png" alt=""></p>
-                    <p>提问</p>
-                </div>
-            </div>
-        </div>
-        <div class="aside_visit">
-            <div>
-                <div class="blogs_head" style="background: url(img/recommend.png)no-repeat 0 50%;">访客</div>
-                <div>
-                    <div class="visit_item">
-                         <div class="visit_head img_cover"></div>
-                        <div class="visit_info_text">
-                            <p>狙击手</p>
-                            <p class="vi_co">48分钟前</p>
-                        </div>
-                    </div>
-                     <div class="visit_item">
-                         <div class="visit_head img_cover"></div>
-                        <div class="visit_info_text">
-                            <p>狙击手</p>
-                            <p class="vi_co">48分钟前</p>
-                        </div>
-                    </div>
-                     <div class="visit_item">
-                         <div class="visit_head img_cover"></div>
-                        <div class="visit_info_text">
-                            <p>狙击手</p>
-                            <p class="vi_co">48分钟前</p>
-                        </div>
-                    </div>
-                     <div class="visit_item">
-                         <div class="visit_head img_cover"></div>
-                        <div class="visit_info_text">
-                            <p>狙击手</p>
-                            <p class="vi_co">48分钟前</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </aside>{% endcomment %}
 {% endblock %}
 {% block js %}
     <script src="{% static 'js/promise.min.js' %}"></script>
     <script src="{% static 'js/sweetalert.min.js' %}"></script>
     <script>
-    $(function () {
-        $('.guan').on('click',function () {
-            var n = $(this).attr('type_id')
-            var self = $(this)
-             $.ajax({
-                url:"/person/Guan/",
-                type:'POST',
-                data:{follow:n,user:'{{ request.user.id }}'},
+    function flollw (obj){
+          $.ajax({
+                url:'/person/author/',
+                type:'post',
+                data:{follow:obj,'username':'{{ request.user.id }}'},
+                  headers:{'X-CSRFToken':$.cookie('csrftoken')},
                 success:function (data) {
-                    if(data.data==200){
-                          swal({
-                              text: "已取消!",
-                              icon: "success",
-                            }).then(function () {
-                               self.parents('li').remove()
-                           })
-                    }else {
-                          swal({
-                              text: "取消失败,稍后重试!",
-                              icon: "error",
-                            })
-                    }
-
-
-
+                    swal({
+                          text: data.message,
+                          icon: "success",
+                        }).then(function () {
+                                   window.location.reload()
+                               })
+                },
+                error:function (xhr) {
+                    console.log(xhr)
                 }
             })
-        })
+    }
+    $(function () {
+
         $('#follow li').on('click',function () {
-               $('.follow_main').siblings('.blogs_head').text('我的'+$(this).text())
+             $('.follow_main').siblings('.blogs_head').text('他的'+$(this).text())
             $(this).addClass('active').siblings().removeClass('active')
             var index= $(this).index()
             $('.follow_main').eq(index).show().siblings('.follow_main').hide()

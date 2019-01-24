@@ -6,11 +6,14 @@ from django.conf.urls import url
 from django.urls import path, include
 app_name='user'
 from . import views
+from django.views.generic import TemplateView
 urlpatterns = [
   #path('',views.login_view,name='index'),
   path('',views.Person.as_view(),name='person'),
   path('author/',views.Author.as_view(),name='author'),
   path('<uuid:article_id>/',views.PersonDetaile.as_view(),name='author_detaile'),
+  path('info/<uuid:article_id>/',views.InfoOthers.as_view(),name='info'),
+  path('ProfileOthers/<uuid:article_id>/',views.ProfileOthers,name='ProfileOthers'),
   path('profile/', views.Profile,name='profile'),
   path('info/', views.Info, name='info'),
   path('modify/', views.Modify.as_view(), name='modify'),

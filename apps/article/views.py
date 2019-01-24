@@ -62,7 +62,6 @@ def ArticleList(request):
     :return:
     """
     article = Article.objects.all()
-
     category = Category_Article.objects.all()
     type = request.GET.get('type', '')
     try:
@@ -94,12 +93,11 @@ def ArticleMe(request):
     try:
         page = request.GET.get('page', 1)
         if type:
-            article =Article.objects.filter(category_id=type)
+            article =Article.objects.filter(authors__follow__fan_id=request.user.id,category_id=type)
         if page == '':
             page = 1
     except PageNotAnInteger:
         page = 1
-    # Provide Paginator with the request object for complete querystring generation
     p = Paginator(article,2,request=request)
     people = p.page(page)
     return render(request, 'pc/article_me.html', {'article': people,'category':category})
@@ -187,6 +185,19 @@ def ArticleUpdate(request,article_id):
             except Exception:
                 return JsonResponse({"code": 400, "data": "发布失败"})
         return JsonResponse({"code": 400, "data": "验证失败"})
+
+
+@login_required(login_url='/login')
+@require_POST
+def ArticleDelete(request):
+    if request.method == 'POST':
+        id = request.POST.get('id','')
+        user = request.POST.get('username','')
+        if id and user:
+            Article.objects.filter(id=id, authors_id=user).update(is_show=False)
+
+            return JsonResponse({'status':200,'message':'删除成功'})
+        return JsonResponse({'status':400,'message':'删除失败'})
 
 
 @login_required(login_url='/login')

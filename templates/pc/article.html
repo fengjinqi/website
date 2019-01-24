@@ -21,7 +21,6 @@
         </div>
         <div class="banner" style="background: url({% static 'img/banner.png' %})no-repeat 0 50%;"></div>
          <div class="blogs">
-         {{  request.path|slice:'12' }}
              <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">
                  <a href="{% url 'article:index' %}" class="{% if request.path|slice:'9' == '/article/' and request.path|slice:'12' != '/article/me/' %}
                  active

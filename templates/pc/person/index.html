@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="{% static 'css/pagination.css' %}" />
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <link rel="stylesheet" href="{% static 'css/person.css' %}" />
-    <input type="text" value="{{ request.user.id }}">
 {% endblock %}
 {% block content %}
     <div class="person_banner">
@@ -17,13 +16,17 @@
         <div class="person_nav main">
             <ul class="clearfix">
                 <li class="fl">
-                    <a href="{% url 'user:person' %}">个人中心</a>
+
+                    <a class="person_nav{% if request.path|slice:'8' == '/person/' and request.path|slice:'16' != '/person/profile/' and   request.path|slice:'13' != '/person/info/'%} active
+                    {% endif %}" href="{% url 'user:person' %}">个人中心</a>
                 </li>
                 <li class="fl">
-                    <a href="{% url 'user:profile' %}">人脉</a>
+                    <a   class="person_nav {% if request.path|slice:'16' == '/person/profile/' %} active
+                    {% endif %}"href="{% url 'user:profile' %}">人脉</a>
                 </li>
                 <li class="fl">
-                    <a href="{% url 'user:info' %}">资料</a>
+                    <a class="person_nav {% if request.path|slice:'13' == '/person/info/' %} active
+                    {% endif %}" href="{% url 'user:info' %}">资料</a>
                 </li>
             </ul>
         </div>
@@ -40,7 +43,7 @@
                         background: #000;
                     {% endif %}"></div>
                     <p style="margin:16px 0 4px 0">{{ request.user.username }}</p>
-                    <p style="font-size: 12px;">前端开发 | 3年</p>
+                    <p style="font-size: 12px;">{{ request.user.position }}</p>
                 </div>
             </div>
             <div class="aside_my_num flex_justify">
@@ -190,6 +193,8 @@
 {% endblock %}
 {% block js %}
     <script src="{% static 'js/jquery.pagination.js' %}"></script>
+    <script src="{% static 'js/promise.min.js' %}"></script>
+    <script src="{% static 'js/sweetalert.min.js' %}"></script>
     <script>
         $(function () {
             //监听滚动条事件
@@ -202,6 +207,7 @@
                     $('.left_nav').removeClass('fix');
                 }
             });
+
             $.ajax({
                 url:'/api/PersonApi/',
                 type:'get',
@@ -210,6 +216,9 @@
                 },
                 success:function (data) {
                     $('.loading').remove()
+                    if(data.results.length==0){
+                         $("#mains").append("<p class=' blogs_item' style='text-align:center;padding:50px 0;'>暂无数据...</p>")
+                    }
                     var html =''
                     n=[]
                     for(var i=0;i<data.results.length;i++){
@@ -244,6 +253,7 @@
                             "                                        <li class=\"fl blogs_time\">发布于:"+data.results[i].add_time+"</li>\n" +
                             "                                        <li class=\"fl blogs_view\" style=\"background: url(/static/img/eye.png)no-repeat 0 50%;\">"+data.results[i].click_nums+"</li>\n" +
                             "                                        <li class=\"fl blogs_comment\" style=\"background: url(/static/img/comment.png)no-repeat 0 50%;\">"+n[i]+"</li>\n" +
+                            "                                        <li class=\"fr blogs_edit\" onclick=\"deleteArticle('"+data.results[i].id+"')\">删除</li>\n" +
                             "                                        <li class=\"fr blogs_edit\"><a href=\"/article/update/"+data.results[i].id+"\" >编辑</a></li>\n" +
                             "                                    </ul>\n" +
                             "                                </div>\n" +
@@ -254,7 +264,6 @@
                             "                         </div>"
                     }
                     $("#mains").append(html)
-                    console.log(data)
                     $('.M-box').pagination({
                         pageCount:Math.ceil(data.count/1),   //总页码
                         coping:true,                 //是否开启首页和末页
@@ -279,14 +288,11 @@
                                     for(var i=0;i<data.results.length;i++){
                                         var currentItem = data.results[i];
                                         currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:'/static/img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'
-
                                         b.push(currentItem.article_comment_set.length);
                                         for(var j=0,len=currentItem.article_comment_set.length;j<len;j++){
                                             var currentChildItem = currentItem.article_comment_set[j];
                                             b[i] += currentChildItem.articlecommentreply_set.length;
                                         }
-
-
                                         html+=" <div class=\"blogs_item\">\n" +
                                             "                             <div class=\"blogs_cont blogs_cont1\">\n" +
                                             "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+data.results[i].title+"</a></h3>\n" +
@@ -308,6 +314,7 @@
                                             "                                        <li class=\"fl blogs_time\">发布于:"+data.results[i].add_time+"</li>\n" +
                                             "                                        <li class=\"fl blogs_view\" style=\"background: url(/static/img/eye.png)no-repeat 0 50%;\">"+data.results[i].click_nums+"</li>\n" +
                                             "                                        <li class=\"fl blogs_comment\" style=\"background: url(/static/img/comment.png)no-repeat 0 50%;\">"+b[i]+"</li>\n" +
+                                            "                                        <li class=\"fr blogs_edit\" onclick=\"deleteArticle('"+data.results[i].id+"')\">删除</li>\n" +
                                             "                                        <li class=\"fr blogs_edit\"><a href=\"/article/update/"+data.results[i].id+"\" >编辑</a></li>\n" +
                                             "                                    </ul>\n" +
                                             "                                </div>\n" +
@@ -320,12 +327,8 @@
                                     $("#mains").html(html)
                                 }
                             })
-
-
                         }
                     });
-
-
 
                 },
                 error:function () {
@@ -337,6 +340,12 @@
                 filter(self)
             })
         })
+
+
+        /**
+         * 搜索
+         * @param self
+         */
         function filter(self) {
             self.addClass('active').siblings().removeClass('active')
             $.ajax({
@@ -378,6 +387,7 @@
                                 "                                        <li class=\"fl blogs_time\">发布于:"+data.results[i].add_time+"</li>\n" +
                                 "                                        <li class=\"fl blogs_view\" style=\"background: url(/static/img/eye.png)no-repeat 0 50%;\">"+data.results[i].click_nums+"</li>\n" +
                                 "                                        <li class=\"fl blogs_comment\" style=\"background: url(/static/img/comment.png)no-repeat 0 50%;\">"+n[i]+"</li>\n" +
+                                "                                        <li class=\"fr blogs_edit\" onclick=\"deleteArticle('"+data.results[i].id+"')\">删除</li>\n" +
                                 "                                        <li class=\"fr blogs_edit\"><a href=\"/article/update/"+data.results[i].id+"\" >编辑</a></li>\n" +
                                 "                                    </ul>\n" +
                                 "                                </div>\n" +
@@ -388,7 +398,6 @@
                                 "                         </div>"
                         }
                         $("#mains").html(html)
-                        console.log(data)
                          if(data.results.length==0){
                              $("#mains").append("<p class=' blogs_item' style='text-align:center;padding:50px 0;'>暂无数据...</p>")
                         }
@@ -409,7 +418,6 @@
                                         page:api.getCurrent()    //这个方法就是用来获取点击了哪一页的，因为我  //的接口文档中页数是从0开始的，所以减1，当我点击第一页的时候去获取第0页的数据
                                     },
                                     success:function (data) {
-                                        console.log(data);             //返回那一页的数据
                                         var html =''
                                         b=[]
                                         for(var i=0;i<data.results.length;i++){
@@ -441,6 +449,7 @@
                                                 "                                        <li class=\"fl blogs_time\">发布于:"+data.results[i].add_time+"</li>\n" +
                                                 "                                        <li class=\"fl blogs_view\" style=\"background: url(/static/img/eye.png)no-repeat 0 50%;\">"+data.results[i].click_nums+"</li>\n" +
                                                 "                                        <li class=\"fl blogs_comment\" style=\"background: url(/static/img/comment.png)no-repeat 0 50%;\">"+b[i]+"</li>\n" +
+                                                "                                        <li class=\"fr blogs_edit\" onclick=\"deleteArticle('"+data.results[i].id+"')\">删除</li>\n" +
                                                 "                                        <li class=\"fr blogs_edit\"><a href=\"/article/update/"+data.results[i].id+"\" >编辑</a></li>\n" +
                                                 "                                    </ul>\n" +
                                                 "                                </div>\n" +
@@ -460,6 +469,49 @@
                         alert('加载失败')
                     }
             })
+        }
+
+        /**
+         * 删除文章
+         * @param id
+         */
+        function deleteArticle(id) {
+
+            swal({
+              title: "删除文章",
+              text: "是否删除文章?",
+              icon: "warning",
+              buttons: ['取消','确认删除'],
+              dangerMode: true,
+            })
+            .then((willDelete) => {
+              if (willDelete) {
+                  $.ajax({
+                      url:'/article/delete/',
+                      type:'post',
+                      headers:{'X-CSRFToken':$.cookie('csrftoken')},
+                      data:{id:id,username:'{{ request.user.id }}'},
+                      success:function (data) {
+                          if(data.status==200){
+                             swal({
+                                  text: data.message,
+                                  icon: "success",
+                                }).then(function () {
+                                   window.location.reload()
+                               })
+                        }else {
+                             swal({
+                              text: data.message,
+                              icon: "error",
+                            })
+                        }
+                      }
+                  })
+
+              } else {
+                swal("已取消!");
+              }
+            });
         }
     </script>
 {% endblock %}

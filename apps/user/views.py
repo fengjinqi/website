@@ -36,7 +36,7 @@ from apps.user.filter import CategoryFilter, UserFilter
 from apps.user.models import User, Follows, VerifyCode
 from apps.user.serializers import UserSerializer
 from website import settings
-from .forms import CaptchaTestForm, LoginForms, Follow_Forms, RegisterForm, ModifyForm, EmailForm
+from .forms import CaptchaTestForm, LoginForms, Follow_Forms, RegisterForm, ModifyForm, EmailForm, InfoForm
 from rest_framework import viewsets, mixins, status, permissions
 from rest_framework.pagination import PageNumberPagination
 
@@ -119,6 +119,9 @@ def logout_view(request):
 
 
 class Register(View):
+    """
+    注册
+    """
     def get(self,request):
         return render(request,'pc/register.html')
     def post(self, request):
@@ -171,7 +174,7 @@ class ResetUserView(View):
     def post(self,request):
         email = request.POST.get('email')
         username = request.POST.get('username')
-        if email is not None and username is not None:
+        if email and username is not None:
             if User.objects.filter(email=email):
                 return JsonResponse({'status':400,'message':'邮箱已经存在'})
             send_register_email(email=email, username=username,send_type='update_email')
@@ -224,28 +227,26 @@ class Modify(View):
 
 
 class Author(View):
-    def get(self,request):
-        return
     @method_decorator(login_required(login_url='/login'))
     def post(self,request):
-        if request.user is not None and  request.user.is_authenticated:
-            froms = Follow_Forms(request.POST)
-            if froms.is_valid():
-                follow = Follows()
-                if request.POST.get('follow') == str(request.user.id):
-                    return JsonResponse({'status': 201, 'message': '不能自己关注自己'})
-                else:
-                    cun = Follows.objects.filter(follow=froms.cleaned_data.get('follow'),fan=request.user.id)
-                    if cun:
-                        cun.delete()
-                        return JsonResponse({'status': 200, 'message': '已取消关注'})
-                    follow.follow = froms.cleaned_data.get('follow')
-                    follow.fan_id = request.user.id
-                    follow.save()
-                    return JsonResponse({'status':200,'message':'成功关注'})
+        froms = Follow_Forms(request.POST)
+        username = request.POST.get('username')
+        if froms.is_valid():
+            follow = Follows()
+            if request.POST.get('follow') == str(username):
+                return JsonResponse({'status': 201, 'message': '不能自己关注自己'})
             else:
-                return JsonResponse({'status':400,'message':'失败'})
-        return JsonResponse({"status":302,"message":"未登录"})
+                cun = Follows.objects.filter(follow=froms.cleaned_data.get('follow'),fan=username)
+                if cun:
+                    cun.delete()
+                    return JsonResponse({'status': 200, 'message': '已取消关注'})
+                follow.follow = froms.cleaned_data.get('follow')
+                follow.fan_id = request.user.id
+                follow.save()
+                return JsonResponse({'status':200,'message':'成功关注'})
+        else:
+            return JsonResponse({'status':400,'message':'失败'})
+
 
 
 """个人中心"""
@@ -266,13 +267,15 @@ class PersonDetaile(View):
     """个人中心（他人）"""
     def get(self,request,article_id):
         category = Category_Article.objects.all()
-        count = User.objects.filter(follow__fan__id=article_id).count()
-        floow = User.objects.filter(fan__follow_id=article_id).count()
+        count = User.objects.filter(follow__fan__id=article_id)
+        floow = User.objects.filter(fan__follow_id=article_id)
         user = User.objects.get(id=article_id)
 
+        is_active = Follows.objects.filter(follow=article_id, fan=request.user.id).exists()
         if article_id ==request.user.id:
             return redirect(reverse('user:person'))
-        return render(request,'pc/person/index1.html',{'category':category,'count':count,'floow':floow,'user':user})
+
+        return render(request, 'pc/person/indexOthers.html', {'category':category, 'count':count, 'floow':floow, 'user':user,'is_active':is_active})
 
 @login_required(login_url='/login')
 def Profile(request):
@@ -284,7 +287,23 @@ def Profile(request):
     count = User.objects.filter(follow__fan__id=request.user.id)
     floow = User.objects.filter(fan__follow_id=request.user.id)
     user = User.objects.get(id=request.user.id)
+
     return render(request, 'pc/person/profile.html',{'count':count,'floow':floow,'user':user})
+
+
+def ProfileOthers(request,article_id):
+    """
+    人脉
+    :param request:
+    :return:
+    """
+    category = Category_Article.objects.all()
+    count = User.objects.filter(follow__fan__id=article_id)
+    floow = User.objects.filter(fan__follow_id=article_id)
+    user = User.objects.get(id=article_id)
+    is_active = Follows.objects.filter(follow=article_id, fan=request.user.id).exists()
+    return render(request, 'pc/person/profileOthers.html',{'category':category, 'count':count, 'floow':floow, 'user':user,'is_active':is_active})
+
 
 
 @csrf_exempt
@@ -316,9 +335,35 @@ def Info(request):
 
     if request.method == 'POST':
 
-        return JsonResponse({'data':200})
+        print( request.POST.get('username'))
+        forms = InfoForm(request.POST)
+        if forms.is_valid():
+            username = forms.cleaned_data.get('username')
+            info = request.POST.get('info')
+            position = request.POST.get('position')
+            file = request.FILES.get('file')
+            user = request.user
+            user.username=username
+            user.info=info
+            user.position=position
+            if file:
+                user.user_imag=file
+            user.save()
+            return JsonResponse({'status':200,'message':'修改成功'})
+        return JsonResponse({'status':400,'message':'提交失败'})
     return render(request,'pc/person/info.html',{'count':count,'floow':floow,'user':user})
 
+
+class InfoOthers(View):
+    def get(self,request,article_id):
+        category = Category_Article.objects.all()
+        count = User.objects.filter(follow__fan__id=article_id)
+        floow = User.objects.filter(fan__follow_id=article_id)
+        user = User.objects.get(id=article_id)
+        is_active = Follows.objects.filter(follow=article_id, fan=request.user.id).exists()
+        return render(request,'pc/person/infoOthers.html',{'category':category, 'count':count, 'floow':floow, 'user':user,'is_active':is_active})
+
+"""drf"""
 class PersonApiabstohr(viewsets.ReadOnlyModelViewSet):
     queryset = Article.objects.filter(is_show=True)
     serializer_class = ArticleSerializer
@@ -363,7 +408,7 @@ class PersonApi(PersonApiabstohr):
 
 class PersonOthers(PersonApiabstohr):
     """
-    他个人中心 (未用)
+    他个人中心
     """
     def get_queryset(self):
         """
