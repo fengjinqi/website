@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'haystack',
     'apps.user.apps.UserConfig',
     'apps.article.apps.ArticleConfig',
     'apps.course.apps.CourseConfig',
@@ -53,6 +54,7 @@ AUTHENTICATION_BACKENDS=(
     'apps.user.views.CustomBackend',
 )
 
+#分页配置
 PAGINATION_SETTINGS = {
     'PAGE_RANGE_DISPLAYED': 1,
     'MARGIN_PAGES_DISPLAYED': 2,
@@ -115,7 +117,7 @@ WSGI_APPLICATION = 'website.wsgi.application'
 DATABASES = {
         'default': {
                 'ENGINE': 'django.db.backends.sqlite3',
-                'NAME':os.path.join(BASE_DIR,'db1.sqlite3')
+                'NAME':os.path.join(BASE_DIR,'db.sqlite3')
         }
     #    'default': {
     #     'ENGINE': 'django.db.backends.mysql',
@@ -202,3 +204,13 @@ EMAIL_HOST_PASSWORD = 'Feng19961024yao.'
 
 EMAIL_USE_TLS = True   #是否使用TLS安全传输协议
 EMAIL_FROM = 'fengjinqi.com'
+
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'apps.article.whoosh_cn_backend.WhooshEngine',
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+    },
+}
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'

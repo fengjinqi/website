@@ -9,7 +9,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, mixins, status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
-
+import requests
 from apps.article.filter import GoodsFilter
 from apps.article.forms import Article_form
 from apps.article.serializers import ArticleSerializer, Article_CommentSerializer, ArticleCommentReply, \
@@ -75,7 +75,14 @@ def ArticleList(request):
     # Provide Paginator with the request object for complete querystring generation
     p = Paginator(article,2,request=request)
     people = p.page(page)
-    return render(request, 'pc/article.html', {'article': people,'category':category})
+    url = 'http://api01.idataapi.cn:8000/article/idataapi?KwPosition=3&sourceRegion=中国&catLabel1=科技&publishDateRange=&apikey=Xtv7doa2SrBskcf0X7fLwfKaLEyvXycJ2RRKGPvhLisMIASRtFtmGzzIvef2QSFs'
+    headers = {
+        "Accept-Encoding": "gzip",
+        "Connection": "close"
+    }
+    r = requests.get(url, headers=headers)
+
+    return render(request, 'pc/article.html', {'article': people,'category':category,'Headlines':r.json()})
 
 
 @login_required(login_url='/login')

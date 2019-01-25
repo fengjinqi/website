@@ -1,0 +1,55 @@
+{% extends 'pc/base.html' %}
+{% load staticfiles %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+{% load highlight %}
+
+{% block content %}
+     <section class="main clearfix">
+     <article>
+    {% if query %}
+        {% for result in page.object_list %}
+
+
+                   <div class="blogs">
+
+                <div class="blogs_cont">
+                    <h3><span class="blogs_type">{{ result.object.category.name }}</span><a href="">{{ result.object.title }}</a></h3>
+                    <div class="blogs_foot">
+                        <ul class="clearfix">
+                            <li class="fl">
+                                 <a href="" class="clearfix">
+                                     <span class="fl img_cover blogs_avatar" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></span>
+                                     <span class="fl blogs_name">{{ result.object.authors.username }}</span>
+                                 </a>
+                             </li>
+                            <li class="fl blogs_time">发布于:{{ result.object.add_time }}</li>
+                            <li class="fl blogs_view" style="background: url({% static 'img/eye.png' %})no-repeat 0 50%;">{{ result.object.click_nums }}</li>
+                            <li class="fl blogs_comment" style="background: url({% static 'img/comment.png' %})no-repeat 0 50%;">{{ result.object.get_number }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+
+        {% empty %}
+            <div class="no-post">没有搜索到你想要的结果！</div>
+        {% endfor %}
+        {% if page.has_previous or page.has_next %}
+            <div>
+                {% if page.has_previous %}
+                    <a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous
+                {% if page.has_previous %}</a>{% endif %}
+                |
+                {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next
+                &raquo;{% if page.has_next %}</a>{% endif %}
+            </div>
+        {% endif %}
+    {% else %}
+        请输入搜索关键词，例如 django
+    {% endif %}
+           </article>
+       </section>
+{% endblock content %}

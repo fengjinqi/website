@@ -14,6 +14,9 @@ class Category_Article(models.Model):
     """
     name = models.CharField(max_length=100)
     add_time = models.DateTimeField(default=datetime.now)
+    class Meta:
+        verbose_name = '分类'
+        verbose_name_plural = verbose_name
 
 
 class Article(models.Model):

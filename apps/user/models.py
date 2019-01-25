@@ -15,6 +15,9 @@ class User(AbstractUser):
     info = models.CharField(max_length=100,verbose_name='个人介绍',default='',null=True,blank=True)
     user_imag = models.ImageField(upload_to='user/%Y%m%d',blank=True,default='',verbose_name='用户头像')
     email = models.EmailField(unique=True,default='')
+    class Meta:
+        verbose_name='用户'
+        verbose_name_plural=verbose_name
 
 
 class Follows(models.Model):
@@ -23,12 +26,12 @@ class Follows(models.Model):
     fan = models.ForeignKey(User,on_delete=models.CASCADE,related_name='fan',verbose_name='粉丝')
     add_time = models.DateTimeField(auto_now_add=True, verbose_name='添加时间')
 
-
     def __str__(self):
         return str(self.follow.id)
 
     class Meta:
         ordering = ('-follow',)
+
 
 class VerifyCode(models.Model):
     """邮箱验证码"""

@@ -59,7 +59,7 @@ urlpatterns = [
     path('course/',include('apps.course.urls')),
     path('support/',include('apps.support.urls')),
     url(r'^activate/(?P<token>\w+.[-_\w]*\w+.[-_\w]*\w+)/$',active_user,name='active_user'),
-
+    url(r'^search/', include('haystack.urls'),name='haystack_search'),
 
 
     re_path(r'^upload/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),

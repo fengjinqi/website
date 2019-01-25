@@ -16,20 +16,22 @@
         <div class="blogs">
             <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">今日推荐</div>
             <div class="blogs_cont">
-                <h3><span class="blogs_type">前端</span><a href="">Nginx 动静分离与负载均衡的实现</a></h3>
+<h3><span class="blogs_type">{{ recommend.first.recommends.category.name }}</span><a  href="{% url 'article:detail' recommend.first.recommends.id %}">{{ recommend.first.recommends.title }}</a></h3>
                 <div class="blogs_foot">
                     <ul class="clearfix">
                         <li class="fl">
-                             <a href="" class="clearfix">
-                                 <span class="fl img_cover blogs_avatar" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></span>
-                                 <span class="fl blogs_name">管理员</span>
+                             <a href="{% url 'user:author_detaile' recommend.first.recommends.authors.id  %}" class="clearfix">
+                                 <span class="fl img_cover blogs_avatar" style="background: url({{MEDIA_URL }}{{ recommend.first.recommends.authors.user_imag }})no-repeat; background-position: 50%!important"></span>
+                                 <span class="fl blogs_name">{{ recommend.first.recommends.authors.username }}</span>
                              </a>
                          </li>
-                        <li class="fl blogs_time">发布于：2018-12-23 12:30:45</li>
-                        <li class="fl blogs_view" style="background: url(img/public.png)no-repeat 0 50%;">9</li>
-                        <li class="fl blogs_comment" style="background: url(img/public.png)no-repeat 0 50%;">2</li>
+                        <li class="fl blogs_time">发布于:{{ recommend.first.recommends.add_time }}</li>
+                      <li class="fl blogs_view" style="background: url({% static 'img/eye.png' %})no-repeat 0 50%;">{{ recommend.first.recommends.click_nums }}</li>
+                            <li class="fl blogs_comment" style="background: url({% static 'img/comment.png' %})no-repeat 0 50%;">{{ recommend.first.recommends.get_number }}</li>
                     </ul>
                 </div>
+
+
             </div>
         </div>
         <div class="banner" style="background: url({% static 'img/banner.png' %})no-repeat 0 50%;"></div>

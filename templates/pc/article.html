@@ -122,7 +122,19 @@
 {#            </div>#}
 {#        </div>#}
             {% include 'pc/base_aside.html' %}
-        <div class="aside_goodperson">
+        <div class="sidebar">
+              <div class="tuijian">
+                <h2 class="hometitle">今日头条</h2>
+                <ul class="sidenews zhan">
+                     {% for foo in Headlines.data %}
+                            <li><a href="{{ foo.url }}">{{ foo.title }}</a></li>
+                        {% endfor %}
+                </ul>
+              </div>
+
+            </div>
+
+        {% comment %}<div class="aside_goodperson">
             <div class="blogs_head" style="background: url(img/public.png)no-repeat 0 50%;">本周牛人<a class="fr change">更多</a></div>
             <div>
                 <div class="aside_goodperson_item clearfix">
@@ -179,7 +191,7 @@
                     <p>更博：34</p>
                 </div>
             </div>
-        </div>
+        </div>{% endcomment %}
     </aside>
 </section>
 {% endblock %}
