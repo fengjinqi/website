@@ -21,7 +21,7 @@ from django.views.static import serve
 from rest_framework_jwt.views import obtain_jwt_token
 
 from apps.user.views import test, captcha_refresh, yan, login_view, UserGetInfo, UserGetAllInfo, UserDisbale, \
-    PersonOthers, Register, active_user
+    PersonOthers, Register, active_user, get_message
 from django.views.generic import TemplateView
 
 from website import settings
@@ -52,6 +52,7 @@ urlpatterns = [
     path('yan/',yan), # 这是生成验证码的图片
     path('',views.Article_list,name='home'),
     path('login/',login_view,name='index'),
+    path('info/',get_message,name='info'),
     path('person/',include('apps.user.urls')),
     path('logou/',logout_view,name='logou'),
     path('register/',Register.as_view(),name='register'),

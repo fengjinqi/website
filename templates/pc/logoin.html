@@ -122,7 +122,7 @@
          <span class="error"></span>
   <button type="button" class="btn login-button" id="login">登录</button>
 </form>
-    <p class="clearfix"><a class="fl" href="">忘记密码?</a><a class="fr" href="{% url 'register' %}">注册</a></p>
+    <p class="clearfix"><a class="fl" href="{% url 'user:retrieve ' %}">忘记密码?</a><a class="fr" href="{% url 'register' %}">注册</a></p>
 </div>
 
 	<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>  <script src="{% static 'js/jquery.cookie.min.js' %}"></script>
@@ -140,7 +140,7 @@
                 console.log(data)
                 if (data.code==200){
 
-                    window.location.href=''
+                    window.location.href='/'
                 }else {
                     $('.error').text('登录失败,请检查后再登录')
                 }

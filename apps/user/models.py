@@ -54,3 +54,18 @@ class VerifyCode(models.Model):
     class Meta:
         verbose_name='邮箱验证码'
         verbose_name_plural=verbose_name
+
+
+class UserMessage(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='user',verbose_name='收消息用户')
+    to_user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='to_user',verbose_name='发消息用户')
+    message = models.CharField(max_length=500, verbose_name='消息内容')
+    has_read = models.BooleanField(default=False, verbose_name='是否已读')
+    add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
+
+    def __str__(self):
+        return self.message
+
+    class Meta:
+        verbose_name ='用户消息'
+        verbose_name_plural=verbose_name

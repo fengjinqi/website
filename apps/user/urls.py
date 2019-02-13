@@ -17,7 +17,9 @@ urlpatterns = [
   path('profile/', views.Profile,name='profile'),
   path('info/', views.Info, name='info'),
   path('modify/', views.Modify.as_view(), name='modify'),
+  path('retrieve/', views.Retrieve.as_view(), name='retrieve '),
   path('sing_email/', views.ResetUserView.as_view(), name='sing_email'),
   path('email_update/', views.EmailView.as_view(), name='email_update'),
   path('Guan/', views.Guan, name='Guan'),
+  path('retrieveEmail/', views.RetrieveEmail.as_view(), name='retrieveEmail'),
 ]

@@ -51,6 +51,7 @@ def Article_list(request):
     # Provide Paginator with the request object for complete querystring generation
     p = Paginator(article,2,request=request)
     people = p.page(page)
+
     return render(request, 'pc/index.html', {'article':people,'popular':popular,'count':item,'recommend':recommend})
 
 

@@ -8,6 +8,7 @@ import random
 
 from apps.user.models import VerifyCode
 from website import settings
+from celery import task
 
 
 def random_str(randomlength=8):
@@ -19,6 +20,7 @@ def random_str(randomlength=8):
     print(str)
     return str
 
+@task
 def send_register_email(email,username=None,token=None,send_type='register'):
     code = random_str(4)
 
@@ -34,8 +36,8 @@ def send_register_email(email,username=None,token=None,send_type='register'):
             pass
     elif send_type == 'forget':
         VerifyCode.objects.create(code=code, email=email, send_type=send_type)
-        email_title = '会飞的鱼晓晓密码重置链接'
-        email_body = "请点击下面的链接重置密码:http://127.0.0.1:8000/reset/{0}".format(code)
+        email_title = '密码重置链接'
+        email_body = "你的密码重置验证码为:{0}。如非本人操作请忽略,此验证码30分钟后失效。".format(code)
         send_stutas = send_mail(email_title, email_body, settings.EMAIL_HOST_USER, [email])
         if send_stutas:
             pass

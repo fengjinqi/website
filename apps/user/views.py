@@ -33,7 +33,7 @@ from apps.uitls.EmailToken import token_confirm
 from apps.uitls.email_send import send_register_email
 from apps.uitls.permissions import IsOwnerOrReadOnly
 from apps.user.filter import CategoryFilter, UserFilter
-from apps.user.models import User, Follows, VerifyCode
+from apps.user.models import User, Follows, VerifyCode, UserMessage
 from apps.user.serializers import UserSerializer
 from website import settings
 from .forms import CaptchaTestForm, LoginForms, Follow_Forms, RegisterForm, ModifyForm, EmailForm, InfoForm
@@ -115,7 +115,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('/index')
+    return redirect('home')
 
 
 class Register(View):
@@ -164,7 +164,15 @@ def active_user(request, token):
         return render(request, 'pc/message.html', {'message': u"对不起，您所验证的用户不存在，请重新注册"})
     user.is_active = True
     user.save()
+    msg = UserMessage()
+
+    msg.user=user
+    msg.to_user =User.objects.get(is_superuser=True)
+    msg.message = '欢迎加入本站,在使用过程中有什么疑问,请联系管理员'
+    msg.has_read = False
+    msg.save()
     message = u'验证成功，请进行<a href=\"' + unicode(settings.DOMAIN) + u'/login\">登录</a>操作'
+
     return render(request, 'pc/message.html', {'message':message})
 
 
@@ -217,13 +225,69 @@ class Modify(View):
              pwd1 = forms.cleaned_data.get('password')
              pwd2 = forms.cleaned_data.get('password1')
              email = forms.cleaned_data.get('email')
+
              if pwd1!=pwd2:
                  return JsonResponse({'status':400,"email":email,"message":"密码不一致"})
-             User.objects.filter(email=email).update(password=make_password(pwd2))
-             return JsonResponse({'status':200,"email":email,"message":"密码修改成功"})
+             is_user = User.objects.filter(email=email)
+             if is_user:
+                User.objects.filter(email=email).update(password=make_password(pwd2))
+                return JsonResponse({'status':200,"email":email,"message":"密码修改成功"})
+             return JsonResponse({'status': 400, "email": email, "message": '邮箱不存在'})
          else:
             email = request.POST.get('email')
             return JsonResponse({'status':400,"email":email, "message":'验证失败请检查后提交'})
+
+
+class Retrieve(View):
+    """忘记密码"""
+    def get(self,request):
+        return render(request,'pc/retrieve.html')
+    def post(self,request):
+         forms = ModifyForm(request.POST)
+         if forms.is_valid():
+
+             pwd1 = forms.cleaned_data.get('password')
+             pwd2 = forms.cleaned_data.get('password1')
+             email = forms.cleaned_data.get('email')
+             captcha = request.POST.get('captcha','')
+             if captcha:
+                 end_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time() - 1800))
+                 if VerifyCode.objects.filter(email=email,code__icontains=captcha):
+                     items = VerifyCode.objects.filter(email=email,code__icontains=captcha,send_time__lt=end_time)
+                     for item in items:
+                         item.delete()
+                     exitsed = VerifyCode.objects.filter(code__icontains=captcha, email=email, send_type='forget')
+                     if exitsed:
+                         if pwd1 != pwd2:
+                             return JsonResponse({'status': 400, "email": email, "message": "密码不一致"})
+                         is_user = User.objects.filter(email=email)
+                         if is_user:
+                             User.objects.filter(email=email).update(password=make_password(pwd2))
+                             # for item in exitsed: 修改成功后是否删除该验证码保证30分钟内唯一性
+                             #   item.delete()
+                             return JsonResponse({'status': 200, "email": email, "message": "密码修改成功"})
+                     else:
+                         return JsonResponse({'status': 400, "email": email, "message": "验证码已过期"})
+                 else:
+                    return JsonResponse({'status': 400, "email": email, "message": "验证码错误"})
+
+             return JsonResponse({'status': 400, "email": email, "message": '邮箱不存在'})
+         else:
+            email = request.POST.get('email')
+            return JsonResponse({'status':400,"email":email, "message":'验证失败请检查后提交'})
+
+
+class RetrieveEmail(View):
+    """更换邮箱发送验证码"""
+    def post(self,request):
+        email = request.POST.get('email')
+        if email:
+            if User.objects.filter(email=email):
+                send_register_email(email=email, send_type='forget')
+                return JsonResponse({'status': 200, 'message': u"验证码发送成功，有效期为30分钟"})
+            return JsonResponse({'status': 400, 'message': u"邮箱不存在"})
+        return JsonResponse({'status':400,'message':'邮箱不能为空'})
+
 
 
 class Author(View):
@@ -246,7 +310,6 @@ class Author(View):
                 return JsonResponse({'status':200,'message':'成功关注'})
         else:
             return JsonResponse({'status':400,'message':'失败'})
-
 
 
 """个人中心"""
@@ -276,6 +339,7 @@ class PersonDetaile(View):
             return redirect(reverse('user:person'))
 
         return render(request, 'pc/person/indexOthers.html', {'category':category, 'count':count, 'floow':floow, 'user':user,'is_active':is_active})
+
 
 @login_required(login_url='/login')
 def Profile(request):
@@ -363,6 +427,16 @@ class InfoOthers(View):
         is_active = Follows.objects.filter(follow=article_id, fan=request.user.id).exists()
         return render(request,'pc/person/infoOthers.html',{'category':category, 'count':count, 'floow':floow, 'user':user,'is_active':is_active})
 
+@login_required(login_url='login/')
+def get_message(request):
+    """
+    获取未读信息
+    :param request:
+    :return:
+    """
+    count = UserMessage.objects.filter(user=request.user,has_read=False).count()
+    return JsonResponse({"status":200,'count':count})
+
 """drf"""
 class PersonApiabstohr(viewsets.ReadOnlyModelViewSet):
     queryset = Article.objects.filter(is_show=True)
@@ -418,6 +492,8 @@ class PersonOthers(PersonApiabstohr):
         user_id = self.request.query_params.get('pk')
         if user_id:
             return Article.objects.filter(authors_id=user_id).filter(is_show=True).order_by('-add_time')
+
+
 
 
 class UserGetAllInfo(mixins.ListModelMixin,mixins.UpdateModelMixin,viewsets.GenericViewSet):
