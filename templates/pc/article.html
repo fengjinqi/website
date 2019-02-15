@@ -127,7 +127,7 @@
                 <h2 class="hometitle">今日头条</h2>
                 <ul class="sidenews zhan">
                      {% for foo in Headlines.data %}
-                            <li><a href="{{ foo.url }}">{{ foo.title }}</a></li>
+                            <li><a href="{{ foo.url }}" title="{{ foo.title }}">{{ foo.title }}</a></li>
                         {% endfor %}
                 </ul>
               </div>

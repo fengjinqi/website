@@ -29,7 +29,7 @@
         <div class="fl logo"style="height: 60px"><img style="width: 40px;padding-top: 10px;" src="{% static 'img/logo.png' %}" alt=""></div>
         <nav class="fl">
             <ul class="clearfix headers_nav">
-                <li class="fl"><a class="{% if request.path|slice:'7' == '/index/' %}
+                <li class="fl"><a class="{% if request.path == '/' %}
                 active
                 {% endif %}" href="{% url 'home' %}">首页</a></li>
                 <li class="fl"><a class=" {% if request.path|slice:'9' == '/article/' %}
@@ -45,12 +45,12 @@
             </ul>
         </nav>
         <div class="fr user">
-            <ul class="clearfix">
+            <ul class="clearfix"style="display:flex;display: -webkit-flex;">
             <li>
                 <form role="search" method="get" id="searchform" action="{% url 'haystack_search' %}">
-  <input type="search" name="q" placeholder="搜索" required>
-  <button type="submit"><span class="ion-ios-search-strong"></span></button>
-</form>
+                  <input type="search" name="q" placeholder="搜索" required>
+                  <button type="submit"><span class="ion-ios-search-strong"></span></button>
+                </form>
             </li>
                 <li class="fl style" style="background: url({% static 'img/public.png' %})no-repeat 0 50%;"><a href="{% url 'article:created' %}">写文章</a></li>
                 <li class="fl style" style="background: url({% static 'img/phone.png' %})no-repeat 0 50%;"><a href="">手机阅读</a></li>

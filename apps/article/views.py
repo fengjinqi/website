@@ -1,4 +1,7 @@
+
 from django.db.models import Q, Count
+from django.dispatch import receiver
+from django.db.models.signals import pre_save, post_save
 from django.shortcuts import render, redirect,reverse,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
@@ -14,7 +17,7 @@ from apps.article.filter import GoodsFilter
 from apps.article.forms import Article_form
 from apps.article.serializers import ArticleSerializer, Article_CommentSerializer, ArticleCommentReply, \
     Article_CommentSerializerAdd, ArticleCommentReplySerializer, Category_ArticleSerializer
-from apps.user.models import User, Follows
+from apps.user.models import User, Follows, UserMessage
 from website import settings
 import os
 import random
@@ -198,6 +201,11 @@ def ArticleUpdate(request,article_id):
 @login_required(login_url='/login')
 @require_POST
 def ArticleDelete(request):
+    """
+    删除文章
+    :param request:
+    :return:
+    """
     if request.method == 'POST':
         id = request.POST.get('id','')
         user = request.POST.get('username','')
@@ -328,16 +336,52 @@ class FollowListView(viewsets.ReadOnlyModelViewSet):
         return Response(serializer.data)
 
 
+
+
 class ArticleCommintView(mixins.CreateModelMixin,viewsets.GenericViewSet):
     """TODO 評論"""
     serializer_class = Article_CommentSerializerAdd
     queryset = Article_Comment.objects.all()
 
 
+@receiver(post_save, sender=Article_Comment)
+def my_callback(sender, **kwargs):
+    """
+    评论通知
+    :param sender:
+    :param kwargs:
+    :return:
+    """
+    message = UserMessage()
+    message.user=kwargs['instance'].article.authors
+    message.ids = kwargs['instance'].article.id
+    message.to_user_id = kwargs['instance'].user_id
+    message.has_read = False
+    message.message="有人给你文章评论了,快去看看吧!"
+    message.save()
+
+
+
 class ArticleCommentReplyView(mixins.CreateModelMixin,viewsets.GenericViewSet):
     """TODO 回復評論"""
     serializer_class = ArticleCommentReplySerializer
     queryset = ArticleCommentReply.objects.all()
+
+@receiver(post_save, sender=ArticleCommentReply)
+def my_callback_reply(sender, **kwargs):
+    """
+    评论通知
+    :param sender:
+    :param kwargs:
+    :return:
+    """
+    message = UserMessage()
+    message.user = kwargs['instance'].to_uids
+    message.ids = kwargs['instance'].aomments_id.article.id
+    message.to_user = kwargs['instance'].user
+    message.has_read = False
+    message.message = "你的评论有人回复了,快去看看吧!"
+    message.save()
 
 
 class CategoryView(viewsets.ReadOnlyModelViewSet):
