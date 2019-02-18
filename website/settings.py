@@ -200,7 +200,7 @@ DOMAIN = 'http://127.0.0.1:8000'
 EMAIL_HOST = "smtp.exmail.qq.com"
 EMAIL_PORT = 25
 EMAIL_HOST_USER = 'fengjinqi@fengjinqi.com'
-EMAIL_HOST_PASSWORD = 'Feng19961024yao.'
+EMAIL_HOST_PASSWORD = '*****'
 
 EMAIL_USE_TLS = True   #是否使用TLS安全传输协议
 EMAIL_FROM = 'fengjinqi.com'
