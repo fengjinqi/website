@@ -8,6 +8,7 @@
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
 	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="shortcut icon" href="{% static 'img/logo.png' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrapValidator.min.css' %}">
     <style>
         body{
@@ -146,14 +147,14 @@
 
         <div class="input-group">
           <div class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></div>
-          <input type="text" class="form-control verification" name="password" minlength="6"required placeholder="请输入密码">
+          <input type="password" class="form-control verification" name="password" minlength="6"required placeholder="请输入密码">
         </div>
       </div>
          <div class="form-group login-center">
 
             <div class="input-group ">
               <div class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></div>
-              <input type="text" class="form-control verification" name="password1" minlength="6"required placeholder="请确认密码">
+              <input type="password" class="form-control verification" name="password1" minlength="6"required placeholder="请确认密码">
             </div>
       </div>
         <p class="errors"></p>

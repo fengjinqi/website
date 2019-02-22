@@ -7,6 +7,7 @@ from captcha.models import CaptchaStore
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth.hashers import make_password
+from django.core import serializers
 from django.core.mail import send_mail
 from django.db.models import Q
 from django.http import Http404, HttpResponse,JsonResponse
@@ -31,10 +32,11 @@ from apps.article.serializers import ArticleSerializer
 from apps.article.views import StandardResultsSetPagination
 from apps.uitls.EmailToken import token_confirm
 from apps.uitls.email_send import send_register_email
+from apps.uitls.jsonserializable import DateEncoder
 from apps.uitls.permissions import IsOwnerOrReadOnly
 from apps.user.filter import CategoryFilter, UserFilter
 from apps.user.models import User, Follows, VerifyCode, UserMessage
-from apps.user.serializers import UserSerializer
+from apps.user.serializers import UserSerializer, UserMessageSerializer
 from website import settings
 from .forms import CaptchaTestForm, LoginForms, Follow_Forms, RegisterForm, ModifyForm, EmailForm, InfoForm
 from rest_framework import viewsets, mixins, status, permissions
@@ -230,6 +232,7 @@ class Modify(View):
                  return JsonResponse({'status':400,"email":email,"message":"密码不一致"})
              is_user = User.objects.filter(email=email)
              if is_user:
+
                 User.objects.filter(email=email).update(password=make_password(pwd2))
                 return JsonResponse({'status':200,"email":email,"message":"密码修改成功"})
              return JsonResponse({'status': 400, "email": email, "message": '邮箱不存在'})
@@ -398,8 +401,6 @@ def Info(request):
     user = User.objects.get(id=request.user.id)
 
     if request.method == 'POST':
-
-        print( request.POST.get('username'))
         forms = InfoForm(request.POST)
         if forms.is_valid():
             username = forms.cleaned_data.get('username')
@@ -436,6 +437,46 @@ def get_message(request):
     """
     count = UserMessage.objects.filter(user=request.user,has_read=False).count()
     return JsonResponse({"status":200,'count':count})
+
+@login_required(login_url='login/')
+def message(request):
+    """
+    消息
+    :param request:
+    :return:
+    """
+    data = []
+    if request.method=='POST':
+        type = request.POST.get('id','')
+        if type:
+            UserMessage.objects.filter(id=type).update(has_read=True)
+            return JsonResponse({'status': 200, 'message': 'ok'})
+    #     type = request.POST.get('type','')
+    #     if type == 'unread':
+    #         mssage = UserMessage.objects.filter(user_id=request.user.id,has_read=False)
+    #         for i in mssage:
+    #             json_list = {}
+    #             json_list['id'] = i.id
+    #             json_list['message'] = i.message
+    #             json_list['has_read'] = i.has_read
+    #             json_list['is_supper'] = i.is_supper
+    #             json_list['ids'] = i.ids
+    #             json_list['add_time'] = i.add_time
+    #             data.append(json_list)
+    #         return HttpResponse(json.dumps({'status':200,'message':data},cls=DateEncoder))
+    #     elif type == 'read':
+    #         mssage = UserMessage.objects.filter(user_id=request.user.id, has_read=True)
+    #         for i in mssage:
+    #             json_list = {}
+    #             json_list['id'] = i.id
+    #             json_list['message'] = i.message
+    #             json_list['has_read'] = i.has_read
+    #             json_list['is_supper'] = i.is_supper
+    #             json_list['ids'] = i.ids
+    #             json_list['add_time'] = i.add_time
+    #             data.append(json_list)
+    #         return HttpResponse(json.dumps({'status': 200, 'message': data}, cls=DateEncoder))
+    return render(request,'pc/person/message.html')
 
 """drf"""
 class PersonApiabstohr(viewsets.ReadOnlyModelViewSet):
@@ -490,6 +531,7 @@ class PersonOthers(PersonApiabstohr):
         for the currently authenticated user.
         """
         user_id = self.request.query_params.get('pk')
+        print('000')
         if user_id:
             return Article.objects.filter(authors_id=user_id).filter(is_show=True).order_by('-add_time')
 
@@ -506,6 +548,35 @@ class UserGetAllInfo(mixins.ListModelMixin,mixins.UpdateModelMixin,viewsets.Gene
 class UserGetInfo(UserGetAllInfo):
     def get_queryset(self):
         return User.objects.filter(pk=self.request.user.id)
+
+
+class UserMessages(mixins.ListModelMixin,mixins.DestroyModelMixin,viewsets.GenericViewSet):
+    queryset = UserMessage.objects.all()
+    serializer_class = UserMessageSerializer
+    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
+    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    pagination_class = StandardResultsSetPagination
+    def list(self, request, *args, **kwargs):
+        if self.request.query_params.get('type'):
+            type = self.request.query_params.get('type')
+            if type == 'unread':
+                queryset = UserMessage.objects.filter(user=self.request.user,has_read=False)
+                page = self.paginate_queryset(queryset)
+                if page is not None:
+                    serializer = self.get_serializer(page, many=True)
+                    return self.get_paginated_response(serializer.data)
+                serializer = self.get_serializer(queryset, many=True)
+                return Response(serializer.data)
+            elif type == 'read':
+                queryset = UserMessage.objects.filter(user=self.request.user, has_read=True)
+                page = self.paginate_queryset(queryset)
+                if page is not None:
+                    serializer = self.get_serializer(page, many=True)
+                    return self.get_paginated_response(serializer.data)
+                serializer = self.get_serializer(queryset, many=True)
+                return Response(serializer.data)
+
+
 
 
 class UserDisbale(mixins.ListModelMixin,mixins.UpdateModelMixin,viewsets.GenericViewSet):

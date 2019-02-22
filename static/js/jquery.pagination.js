@@ -216,13 +216,13 @@
                 if (parseInt(val) === 0) $this.val(1); //最小值为1
             });
             //回车跳转指定页码
-            $document.keydown(function (e) {
+            /*$document.keydown(function (e) {
                 if (e.keyCode == 13 && $obj.find('.' + opts.jumpIptCls).val()) {
                     var index = parseInt($obj.find('.' + opts.jumpIptCls).val());
                     that.filling(index);
                     typeof opts.callback === 'function' && opts.callback(that);
                 }
-            });
+            });*/
         };
 
         //初始化

@@ -61,7 +61,8 @@
                      </div>
                  </div>
                  {% endfor %}
-             <div class="pageturn">
+                    {% if article.object_list.count >= 10 %}
+                         <div class="pageturn" >
 
            <ul class="pagination">
 
@@ -94,6 +95,8 @@
 {#            当前{{ article.number }}/总共{{ article.paginator.num_pages }}页#}
        </div>
              </div>
+                {% endif %}
+
                 {% endblock %}
 
 

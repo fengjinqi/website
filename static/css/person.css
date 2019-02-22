@@ -305,3 +305,63 @@ input ,textarea{
 .person_nav.active{
     color: #356dd0
 }
+
+/**
+message
+ */
+#menu{
+    display: -webkit-flex;
+    display: flex;
+    height: calc(100% - 80px);
+    background: #fff;
+    -webkit-box-flex: 1;
+    -ms-flex: auto;
+    flex: auto;
+    margin-top: 20px;
+    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+}
+.meun{
+    width: 200px;
+    height: 100%;
+     border-right:1px solid #e6e6e6;
+}
+.meun ul li{
+    padding: 14px 24px;
+    cursor: pointer;
+
+}
+.meun ul li.active{
+    color: #2d8cf0;
+    background: #f0faff;
+    border-right: 2px solid #2d8cf0;
+}
+.meun-main{
+    width: 84%;
+}
+.meun-main ul li{
+    padding: 14px 24px;
+
+}
+.meun-main ul li div{
+    display: -webkit-flex;
+    display: flex;
+    justify-content: space-between;
+    -webkit-justify-content: space-between;
+    cursor: pointer;
+}
+.meun-main-text{
+    overflow: hidden;
+    width: 800px;
+    white-space: nowrap;
+    text-overflow: ellipsis
+}
+.meun-main ul li div p span{
+    margin: 0 10px;
+}
+.meun-main_info{
+    width: 700px;
+    height: 40px;
+    overflow: hidden;
+}

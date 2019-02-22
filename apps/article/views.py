@@ -52,14 +52,13 @@ def Article_list(request):
     except PageNotAnInteger:
         page = 1
     # Provide Paginator with the request object for complete querystring generation
-    p = Paginator(article,2,request=request)
+    p = Paginator(article,10,request=request)
     people = p.page(page)
 
     return render(request, 'pc/index.html', {'article':people,'popular':popular,'count':item,'recommend':recommend})
 
 
 def ArticleList(request):
-
     """
     文章list
     :param request:
@@ -77,9 +76,9 @@ def ArticleList(request):
     except PageNotAnInteger:
         page = 1
     # Provide Paginator with the request object for complete querystring generation
-    p = Paginator(article,2,request=request)
+    p = Paginator(article,10,request=request)
     people = p.page(page)
-    url = 'http://api01.idataapi.cn:8000/article/idataapi?KwPosition=3&sourceRegion=中国&catLabel1=科技&publishDateRange=&apikey=Xtv7doa2SrBskcf0X7fLwfKaLEyvXycJ2RRKGPvhLisMIASRtFtmGzzIvef2QSFs'
+    url = 'http://api01.idataapi.cn:8000/article/idataapi?KwPosition=3&catLabel1=科技&publishDateRange=1548115200,1550707200&apikey=Xtv7doa2SrBskcf0X7fLwfKaLEyvXycJ2RRKGPvhLisMIASRtFtmGzzIvef2QSFs'
     headers = {
         "Accept-Encoding": "gzip",
         "Connection": "close"
@@ -109,9 +108,15 @@ def ArticleMe(request):
             page = 1
     except PageNotAnInteger:
         page = 1
-    p = Paginator(article,2,request=request)
+    p = Paginator(article,10,request=request)
     people = p.page(page)
-    return render(request, 'pc/article_me.html', {'article': people,'category':category})
+    url = 'http://api01.idataapi.cn:8000/article/idataapi?KwPosition=3&catLabel1=科技&publishDateRange=1548115200,1550707200&apikey=Xtv7doa2SrBskcf0X7fLwfKaLEyvXycJ2RRKGPvhLisMIASRtFtmGzzIvef2QSFs'
+    headers = {
+        "Accept-Encoding": "gzip",
+        "Connection": "close"
+    }
+    r = requests.get(url, headers=headers)
+    return render(request, 'pc/article_me.html', {'article': people,'category':category,'Headlines':r.json()})
 
 
 # Create your views here.
@@ -302,7 +307,7 @@ def blog_img_upload(request):
 """==========================================api"""
 
 class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 1
+    page_size = 10
     # page_size_query_param = 'page_size'#每页设置展示多少条
     # page_query_param = 'page'
     # max_page_size = 100

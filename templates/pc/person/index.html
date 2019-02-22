@@ -3,6 +3,12 @@
 {% block title %}
 {{ request.user }}
 {% endblock %}
+{% block keywords %}
+{{ request.user.info }}
+{% endblock %}
+{% block desc %}
+{{ request.user.info }}
+{% endblock %}
 {% block css %}
     <link rel="stylesheet" href="{% static 'css/pagination.css' %}" />
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
@@ -75,61 +81,6 @@
                  <div class="blogs">
                      <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">最新文章</div>
                      <div id="mains">
-
-                      {% comment %}   <div class="blogs_item">
-                             <div class="blogs_cont blogs_cont1">
-                                 <h3><span class="blogs_type">前端</span><a href="">Nginx 动静分离与负载均衡的实现</a></h3>
-                                     <div class="blogs_info clearfix">
-                                          <div class="img_animate fl ">
-                                              <div class="blogs_pic img_cover" style="background: url(img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg)no-repeat;"></div>
-                                          </div>
-                                          <div class="fl blogs_describe">
-                                              <p>不管是在学习中还是在工作中，都会使用到PDF文件，在很多的时候，大家都会使用到PDF文件，对于PDF文件的修改，
-            则是需要使用到PDF编辑软件的，那么，如何用PDF编辑工具拆分PDF文件呢，是不是有很多的小伙伴都想知道应该</p>
-                                          </div>
-                                          <div class="blogs_foot blogs_foot1">
-                                    <ul class="clearfix">
-                                        <li class="fl">
-                                             <a href="" class="clearfix">
-                                                 <span class="fl img_cover blogs_avatar" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></span>
-                                                 <span class="fl blogs_name">管理员</span>
-                                             </a>
-                                         </li>
-                                        <li class="fl blogs_time">发布于：2018-12-23 12:30:45</li>
-                                        <li class="fl blogs_view" style="background: url(img/public.png)no-repeat 0 50%;">9</li>
-                                        <li class="fl blogs_comment" style="background: url(img/public.png)no-repeat 0 50%;">2</li>
-                                    </ul>
-                                </div>
-                                     </div>
-                             </div>
-                         </div>
-                         <div class="blogs_item">
-                             <div class="blogs_cont blogs_cont1">
-                                 <h3><span class="blogs_type">前端</span><a href="">Nginx 动静分离与负载均衡的实现</a></h3>
-                                     <div class="blogs_info clearfix">
-                                          <div class="img_animate fl ">
-                                              <div class="blogs_pic img_cover" style="background: url(img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg)no-repeat;"></div>
-                                          </div>
-                                          <div class="fl blogs_describe">
-                                              <p>不管是在学习中还是在工作中，都会使用到PDF文件，在很多的时候，大家都会使用到PDF文件，对于PDF文件的修改，
-            则是需要使用到PDF编辑软件的，那么，如何用PDF编辑工具拆分PDF文件呢，是不是有很多的小伙伴都想知道应该</p>
-                                          </div>
-                                          <div class="blogs_foot blogs_foot1">
-                                    <ul class="clearfix">
-                                        <li class="fl">
-                                             <a href="" class="clearfix">
-                                                 <span class="fl img_cover blogs_avatar" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></span>
-                                                 <span class="fl blogs_name">管理员</span>
-                                             </a>
-                                         </li>
-                                        <li class="fl blogs_time">发布于：2018-12-23 12:30:45</li>
-                                        <li class="fl blogs_view" style="background: url(img/public.png)no-repeat 0 50%;">9</li>
-                                        <li class="fl blogs_comment" style="background: url(img/public.png)no-repeat 0 50%;">2</li>
-                                    </ul>
-                                </div>
-                                     </div>
-                             </div>
-                         </div>{% endcomment %}
                      </div>
                      <div class="M-box pagination m-style"></div>
                  </div>
@@ -265,7 +216,7 @@
                     }
                     $("#mains").append(html)
                     $('.M-box').pagination({
-                        pageCount:Math.ceil(data.count/1),   //总页码
+                        pageCount:Math.ceil(data.count/10),   //总页码
                         coping:true,                 //是否开启首页和末页
                         {#homePage:'首页',#}
                         {#endPage:'末页',#}
@@ -402,7 +353,7 @@
                              $("#mains").append("<p class=' blogs_item' style='text-align:center;padding:50px 0;'>暂无数据...</p>")
                         }
                         $('.M-box').pagination({
-                            pageCount:Math.ceil(data.count/1),   //总页码
+                            pageCount:Math.ceil(data.count/10),   //总页码
                             coping:true,                 //是否开启首页和末页
                             {#homePage:'首页',#}
                             {#endPage:'末页',#}

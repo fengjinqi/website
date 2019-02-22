@@ -1,0 +1,240 @@
+{% extends 'pc/base.html' %}
+{% load static %}
+{% block title %}
+消息
+{% endblock %}
+{% block css %}
+     <link rel="stylesheet" href="{% static 'css/pagination.css' %}" />
+     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/person.css' %}">
+    <style>
+    .i{display: none!important;}
+    body{background: #f7f7f7;}
+    a{text-decoration: none;color: #666;}
+    a:hover{text-decoration: none;color: #356dd0;}
+    input{margin: 0 5px;height: 35px;}
+    </style>
+{% endblock %}
+{% block content %}
+
+<div class="main" id="menu">
+    <div class="meun">
+        <ul>
+            <li onclick="unread(this)"class="active">未读信息 <span class="badge" style="background-color: red">0</span></li>
+            <li onclick="read(this)">已读信息</li>
+        </ul>
+    </div>
+<div class="meun-main">
+    <ul>
+    </ul>
+    <div id="page" style="display: none" >
+        <div class="M-box pagination m-style"style="padding-left: 24px;"></div>
+    </div>
+
+</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">消息</h4>
+      </div>
+      <div class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+{% block js %}
+    <script src="{% static 'js/jquery.pagination.js' %}"></script>
+    <script src="{% static 'js/jquery.cookie.min.js' %}"></script>
+    <script src="{% static 'js/promise.min.js' %}"></script>
+    <script src="{% static 'js/sweetalert.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+    <script>
+        $(function () {
+            $("#menu").css('height',$(window).height()-160+'px');
+            unread();
+        });
+
+        /**
+         * 未读
+         * @param obj
+         */
+        function unread(obj) {
+            $(obj).addClass('active').siblings().removeClass('active')
+                $.ajax({
+                url:'/api/UserMessages/?type=unread',
+                type:'get',
+                data:{'type':'unread'},
+                success:function (msg) {
+                    var data = msg.results;
+                   // if (data.status==200){
+                        $('.meun .badge').text(data.count);
+                        msg.count>=10?$('#page').show():$("#page").hide()
+                        var html = '';
+                        for (var i=0;i<data.length;i++){
+                            html+="<li><div><p class='meun-main-text'>"+data[i].add_time+" "+ data[i].message+"</p><p><span onclick=see(this,"+data[i].is_supper+",'"+data[i].ids+"')>查看</span><span onclick=Already(this,"+data[i].id+")>设置已读</span></p></div></li>"
+                        }
+                       $('.meun-main ul').html(html)
+                   // }
+                    $('.M-box').pagination({
+                        pageCount:Math.ceil(msg.count/10),   //总页码
+                        coping:true,                 //是否开启首页和末页
+                        {#homePage:'首页',#}
+                        {#endPage:'末页',#}
+                        {#showData: 5,#}
+                        prevContent:'上一页',
+                        nextContent:'下一页',
+                         jump:true,
+                        current:1,                    //当前页码
+                        callback:function (api) {
+                            $.ajax({
+                                url:'/api/UserMessages/?type=unread',
+                                type:'get',
+                                data:{
+                                    page:api.getCurrent()    //这个方法就是用来获取点击了哪一页的，因为我  //的接口文档中页数是从0开始的，所以减1，当我点击第一页的时候去获取第0页的数据
+                                },
+                                success:function (msg) {
+                                    var data = msg.results;
+                                    var html = '';
+                                    for (var i=0;i<data.length;i++){
+                                        html+="<li><div><p class='meun-main-text'>"+data[i].add_time+" "+ data[i].message+"</p><p><span onclick=see(this,"+data[i].is_supper+",'"+data[i].ids+"')>查看</span><span onclick=Already(this,"+data[i].id+")>设置已读</span></p></div></li>"
+                                    }
+                                   $('.meun-main ul').html(html)
+                                }
+                            })
+                        }
+                    });
+                }
+            })
+        }
+
+
+        /**
+         * 已读
+         * @param obj
+         */
+        function read(obj) {
+            $(obj).addClass('active').siblings().removeClass('active')
+            $.ajax({
+                url:'/api/UserMessages/?type=read',
+                type:'get',
+                success:function (msg) {
+                    var data = msg.results;
+                    msg.count>=10?$('#page').show():$("#page").hide()
+                    var html = '';
+                    for (var i=0;i<data.length;i++){
+                        html+="<li><div><p class='meun-main-text'>"+data[i].add_time+" "+ data[i].message+"</p><p><span onclick=see(this,"+data[i].is_supper+",'"+data[i].ids+"')>查看</span><span onclick=remove(this,"+data[i].id+")>删除</span></p></div></li>"
+                    }
+                    $('.meun-main ul').html(html)
+                    $('.M-box').pagination({
+                        pageCount:Math.ceil(msg.count/10),   //总页码
+                        coping:true,                 //是否开启首页和末页
+                        {#homePage:'首页',#}
+                        {#endPage:'末页',#}
+                        {#showData: 5,#}
+                        prevContent:'上一页',
+                        nextContent:'下一页',
+                         jump:true,
+                        current:1,                    //当前页码
+                        callback:function (api) {
+                            $.ajax({
+                                url:'/api/UserMessages/?type=read',
+                                type:'get',
+                                data:{
+                                    page:api.getCurrent()    //这个方法就是用来获取点击了哪一页的，因为我  //的接口文档中页数是从0开始的，所以减1，当我点击第一页的时候去获取第0页的数据
+                                },
+                                success:function (msg) {
+                                    var data = msg.results;
+                                    var html = '';
+                                    for (var i=0;i<data.length;i++){
+                                        html+="<li><div><p class='meun-main-text'>"+data[i].add_time+" "+ data[i].message+"</p><p><span onclick=see(this,"+data[i].is_supper+",'"+data[i].ids+"')>查看</span><span onclick=remove(this,"+data[i].id+")>删除</span></p></div></li>"
+                                    }
+                                   $('.meun-main ul').html(html)
+                                }
+                            })
+                        }
+                    });
+                }
+            })
+        }
+
+
+
+        /**
+         * 查看消息跳转详情页
+         * @param obj
+         * @param active
+         * @param id
+         */
+        function see(obj,active,id) {
+            if(active){
+                console.log()
+                $('#myModal').modal('show')
+                $('.modal-body').html($(obj).parent().siblings().text())
+            }else {
+                if(id!=='null'){
+                    window.location.href='/article/detail/'+id;
+                }
+            }
+    }
+
+        /**
+         * 删除信息
+         * @param obj
+         * @param id
+         */
+        function remove(obj,id) {
+         swal({
+              title: "删除消息",
+              text: "是否删除消息?",
+              icon: "warning",
+              buttons: ['取消','确认删除'],
+              dangerMode: true,
+            })
+            .then((willDelete) => {
+              if (willDelete) {
+                  $.ajax({
+                    url:"/api/UserMessages/"+id+"?type=read",
+                    type:'delete',
+                    headers:{'X-CSRFToken':$.cookie('csrftoken')},
+                    success:function (msg) {
+                        swal({
+                          text: '删除成功',
+                          icon: "success",
+                        })
+                        $(obj).parents('li').remove()
+                    }
+                })
+              } else {
+                swal("已取消!");
+              }
+            });
+
+    }
+    
+    
+    function Already (obj,id) {
+        $.ajax({
+            url:"/person/message/",
+            type:'post',
+            data:{id:id},
+            headers:{'X-CSRFToken':$.cookie('csrftoken')},
+            success:function (msg) {
+                $('.meun .badge').text($('.meun .badge').text()-1);
+                $(obj).parents('li').remove()
+            }
+        })
+    }
+    </script>
+{% endblock %}

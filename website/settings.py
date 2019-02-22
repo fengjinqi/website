@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 import datetime
 import os
-
+from configparser import ConfigParser
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -56,7 +56,7 @@ AUTHENTICATION_BACKENDS=(
 
 #分页配置
 PAGINATION_SETTINGS = {
-    'PAGE_RANGE_DISPLAYED': 1,
+    'PAGE_RANGE_DISPLAYED': 10,
     'MARGIN_PAGES_DISPLAYED': 2,
 
     'SHOW_FIRST_PAGE_WHEN_INVALID': True,
@@ -194,16 +194,21 @@ MEDIA_URL = "/upload/"   # 媒体文件别名(相对路径) 和 绝对路径
 MEDIA_ROOT = (
     os.path.join(BASE_DIR, 'upload')
 )
+conf = ConfigParser()
+#conf.read(os.path.dirname(os.path.dirname('config.ini')))
+conf.read('config.ini')
+# conf.add_section('email')
+# conf.set('email','password','Feng19961024yao.')
+# conf.write(open('config.ini','w'))
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 DOMAIN = 'http://127.0.0.1:8000'
 EMAIL_HOST = "smtp.exmail.qq.com"
 EMAIL_PORT = 25
 EMAIL_HOST_USER = 'fengjinqi@fengjinqi.com'
-EMAIL_HOST_PASSWORD = 'Feng19961024yao.'
+EMAIL_HOST_PASSWORD = conf.get('email','password')
 
-EMAIL_USE_TLS = True   #是否使用TLS安全传输协议
-EMAIL_FROM = 'fengjinqi.com'
+EMAIL_USE_TLS = False   #是否使用TLS安全传输协议
+EMAIL_FROM = 'fengjinqi@fengjinqi.com'
 
 
 HAYSTACK_CONNECTIONS = {
@@ -214,3 +219,6 @@ HAYSTACK_CONNECTIONS = {
 }
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+
+print('000')

@@ -13,7 +13,9 @@ class Courses(models.Model):
     title = models.CharField(max_length=100,verbose_name='课程名字')
     info = models.TextField(verbose_name='介绍')
     image = models.ImageField(upload_to="course/%Y%m%d")
+    offline = models.BooleanField(default=True,verbose_name='是否下线')
     is_active = models.BooleanField(default=False,verbose_name='状态')#默认False更新中
+    is_delete = models.BooleanField(default=False,verbose_name='是否删除')
     add_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

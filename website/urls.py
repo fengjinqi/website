@@ -21,7 +21,7 @@ from django.views.static import serve
 from rest_framework_jwt.views import obtain_jwt_token
 
 from apps.user.views import test, captcha_refresh, yan, login_view, UserGetInfo, UserGetAllInfo, UserDisbale, \
-    PersonOthers, Register, active_user, get_message
+    PersonOthers, Register, active_user, get_message, UserMessages
 from django.views.generic import TemplateView
 
 from website import settings
@@ -40,6 +40,7 @@ router.register('info', UserGetInfo)
 router.register('all_info', UserGetAllInfo)
 router.register('user_disbale', UserDisbale)
 router.register('PersonOthers', PersonOthers)
+router.register('UserMessages', UserMessages,base_name='UserMessages')
 
 
 

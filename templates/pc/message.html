@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+     <link rel="shortcut icon" href="{% static 'img/logo.png' %}">
 </head>
 <body>
 <p>{{ message|safe }}</p>

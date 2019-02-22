@@ -48,8 +48,8 @@
             <ul class="clearfix"style="display:flex;display: -webkit-flex;">
             <li>
                 <form role="search" method="get" id="searchform" action="{% url 'haystack_search' %}">
-                  <input type="search" name="q" placeholder="搜索" required>
-                  <button type="submit"><span class="ion-ios-search-strong"></span></button>
+                  <input type="text" name="q" placeholder="搜索" required class="form_control">
+                  <button type="submit"><span class="form_search"></span></button>
                 </form>
             </li>
                 <li class="fl style" style="background: url({% static 'img/public.png' %})no-repeat 0 50%;"><a href="{% url 'article:created' %}">写文章</a></li>
@@ -63,7 +63,7 @@
                         {% endif %})no-repeat"></a>
                         <ul class="meau meau_hide">
                             <li><a href="{% url 'user:person' %}">个人中心</a></li>
-                         <li><a href="{% url 'user:person' %}">消息<span class="badge"></span></a></li>
+                         <li><a href="{% url 'user:message' %}">消息<span class="badge"></span></a></li>
                             {% if user.is_staff  %}
                                 <li><a href="">系统管理</a></li>
                             {% endif %}

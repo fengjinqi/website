@@ -60,7 +60,8 @@ class UserMessage(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='user',verbose_name='收消息用户')
     to_user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='to_user',verbose_name='发消息用户',blank=True,null=True)
     message = models.CharField(max_length=500, verbose_name='消息内容')
-    ids = models.UUIDField(blank=True,null=True)
+    ids = models.UUIDField(blank=True,null=True,verbose_name='评论文章id',)
+    is_supper = models.BooleanField(default=False,verbose_name='是系统消息')
     has_read = models.BooleanField(default=False, verbose_name='是否已读')
     add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
 

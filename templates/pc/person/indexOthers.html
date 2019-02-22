@@ -149,7 +149,7 @@
                     $("#mains").append(html)
                     console.log(data)
                     $('.M-box').pagination({
-                        pageCount:Math.ceil(data.count/1),   //总页码
+                        pageCount:Math.ceil(data.count/10),   //总页码
                         coping:true,                 //是否开启首页和末页
                         homePage:'首页',
                         endPage:'末页',
@@ -275,7 +275,7 @@
                              $("#mains").append("<p class=' blogs_item' style='text-align:center;padding:50px 0;'>暂无数据...</p>")
                         }
                         $('.M-box').pagination({
-                            pageCount:Math.ceil(data.count/1),   //总页码
+                            pageCount:Math.ceil(data.count/10),   //总页码
                             coping:true,                 //是否开启首页和末页
                             homePage:'首页',
                             endPage:'末页',

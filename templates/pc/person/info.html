@@ -151,7 +151,7 @@
     }
 //更换邮箱获取验证码
     function Verification() {
-        var email = $("input[name='email']").val()
+        var email = $("input[name='email']").val();
         $.ajax({
             url:'/person/sing_email/',
             type:'post',
