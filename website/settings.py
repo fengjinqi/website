@@ -205,7 +205,9 @@ DOMAIN = 'http://127.0.0.1:8000'
 EMAIL_HOST = "smtp.exmail.qq.com"
 EMAIL_PORT = 25
 EMAIL_HOST_USER = 'fengjinqi@fengjinqi.com'
+
 EMAIL_HOST_PASSWORD = conf.get('email','password')
+
 
 EMAIL_USE_TLS = False   #是否使用TLS安全传输协议
 EMAIL_FROM = 'fengjinqi@fengjinqi.com'
@@ -219,6 +221,3 @@ HAYSTACK_CONNECTIONS = {
 }
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
-
-
-print('000')
