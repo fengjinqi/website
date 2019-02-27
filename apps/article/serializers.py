@@ -1,6 +1,8 @@
 #!/usr/bin/python  
 # -*- coding:utf-8 -*-  
-from rest_framework import serializers
+from rest_framework import serializers, status
+from rest_framework.response import Response
+
 from .models import Article, Category_Article,Article_Comment,ArticleCommentReply
 from apps.user.models import User
 
@@ -69,10 +71,16 @@ class ArticleSerializer(serializers.ModelSerializer):
     #文章
     authors = UserSerializer()
     category = Category_ArticleSerializer()
-    article_comment_set = Article_CommentSerializer(many=True)
+    article_comment_set = Article_CommentSerializer(many=True,required=False,read_only=True)
     add_time = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+
     class Meta:
         model = Article
         fields = '__all__'
 
 
+class ArticleCreatedSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Article
+        fields = '__all__'

@@ -437,11 +437,15 @@
             })
             .then((willDelete) => {
               if (willDelete) {
+                  var obj = {}
+                  obj.id = id
+                  obj.username = '{{ request.user.id }}'
                   $.ajax({
                       url:'/article/delete/',
                       type:'post',
-                      headers:{'X-CSRFToken':$.cookie('csrftoken')},
-                      data:{id:id,username:'{{ request.user.id }}'},
+                      dataType:'json',
+                      headers:{'X-CSRFToken':$.cookie('csrftoken'),'Content-Type':'application/json;charset=UTF-8'},
+                      data:JSON.stringify(obj),
                       success:function (data) {
                           if(data.status==200){
                              swal({

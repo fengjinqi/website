@@ -1,3 +1,4 @@
+import json
 
 from django.db.models import Q, Count
 from django.dispatch import receiver
@@ -13,10 +14,10 @@ from rest_framework import viewsets, mixins, status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 import requests
-from apps.article.filter import GoodsFilter
+from apps.article.filter import  ArticleFilter
 from apps.article.forms import Article_form
 from apps.article.serializers import ArticleSerializer, Article_CommentSerializer, ArticleCommentReply, \
-    Article_CommentSerializerAdd, ArticleCommentReplySerializer, Category_ArticleSerializer
+    Article_CommentSerializerAdd, ArticleCommentReplySerializer, Category_ArticleSerializer, ArticleCreatedSerializer
 from apps.user.models import User, Follows, UserMessage
 from website import settings
 import os
@@ -78,13 +79,13 @@ def ArticleList(request):
     # Provide Paginator with the request object for complete querystring generation
     p = Paginator(article,10,request=request)
     people = p.page(page)
-    url = 'http://api01.idataapi.cn:8000/article/idataapi?KwPosition=3&catLabel1=科技&publishDateRange=1548115200,1550707200&apikey=Xtv7doa2SrBskcf0X7fLwfKaLEyvXycJ2RRKGPvhLisMIASRtFtmGzzIvef2QSFs'
+    url = 'http://api01.idataapi.cn:8000/article/idataapi?KwPosition=3&catLabel1=科技&apikey=Xtv7doa2SrBskcf0X7fLwfKaLEyvXycJ2RRKGPvhLisMIASRtFtmGzzIvef2QSFs'
     headers = {
         "Accept-Encoding": "gzip",
         "Connection": "close"
     }
     r = requests.get(url, headers=headers)
-
+    print(r.json())
     return render(request, 'pc/article.html', {'article': people,'category':category,'Headlines':r.json()})
 
 
@@ -110,12 +111,13 @@ def ArticleMe(request):
         page = 1
     p = Paginator(article,10,request=request)
     people = p.page(page)
-    url = 'http://api01.idataapi.cn:8000/article/idataapi?KwPosition=3&catLabel1=科技&publishDateRange=1548115200,1550707200&apikey=Xtv7doa2SrBskcf0X7fLwfKaLEyvXycJ2RRKGPvhLisMIASRtFtmGzzIvef2QSFs'
+    url = 'http://api01.idataapi.cn:8000/article/idataapi?KwPosition=3&catLabel1=科技&apikey=Xtv7doa2SrBskcf0X7fLwfKaLEyvXycJ2RRKGPvhLisMIASRtFtmGzzIvef2QSFs'
     headers = {
         "Accept-Encoding": "gzip",
         "Connection": "close"
     }
     r = requests.get(url, headers=headers)
+
     return render(request, 'pc/article_me.html', {'article': people,'category':category,'Headlines':r.json()})
 
 
@@ -203,8 +205,9 @@ def ArticleUpdate(request,article_id):
         return JsonResponse({"code": 400, "data": "验证失败"})
 
 
-@login_required(login_url='/login')
+#@login_required(login_url='/login')
 @require_POST
+@csrf_exempt
 def ArticleDelete(request):
     """
     删除文章
@@ -212,11 +215,11 @@ def ArticleDelete(request):
     :return:
     """
     if request.method == 'POST':
-        id = request.POST.get('id','')
-        user = request.POST.get('username','')
+        id = json.loads(request.body)['id']
+        user = json.loads(request.body)['username']
         if id and user:
+            print(id,user)
             Article.objects.filter(id=id, authors_id=user).update(is_show=False)
-
             return JsonResponse({'status':200,'message':'删除成功'})
         return JsonResponse({'status':400,'message':'删除失败'})
 
@@ -261,7 +264,7 @@ def Article_detail(request,article_id):
 
 
 # 写博客上传图片
-@login_required(login_url='/login')
+# @login_required(login_url='/login')
 @csrf_exempt
 def blog_img_upload(request):
     if request.method == "POST":
@@ -320,7 +323,8 @@ class ArticleListView(viewsets.ReadOnlyModelViewSet):
     queryset = Article.objects.filter(is_show=True).order_by('-add_time')
     serializer_class = ArticleSerializer
     pagination_class = StandardResultsSetPagination
-
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = ArticleFilter
 
 class FollowListView(viewsets.ReadOnlyModelViewSet):
     """
@@ -341,6 +345,12 @@ class FollowListView(viewsets.ReadOnlyModelViewSet):
         return Response(serializer.data)
 
 
+class ArticleCreated(mixins.CreateModelMixin,mixins.UpdateModelMixin,viewsets.GenericViewSet):
+    """
+    创建文章
+    """
+    queryset = Article.objects.filter(is_show=True)
+    serializer_class = ArticleCreatedSerializer
 
 
 class ArticleCommintView(mixins.CreateModelMixin,viewsets.GenericViewSet):
@@ -366,7 +376,6 @@ def my_callback(sender, **kwargs):
     message.save()
 
 
-
 class ArticleCommentReplyView(mixins.CreateModelMixin,viewsets.GenericViewSet):
     """TODO 回復評論"""
     serializer_class = ArticleCommentReplySerializer
@@ -389,7 +398,7 @@ def my_callback_reply(sender, **kwargs):
     message.save()
 
 
-class CategoryView(viewsets.ReadOnlyModelViewSet):
+class CategoryView(mixins.UpdateModelMixin,mixins.CreateModelMixin,viewsets.ReadOnlyModelViewSet):
     """TODO 分類"""
     queryset = Category_Article.objects.all()
     serializer_class = Category_ArticleSerializer

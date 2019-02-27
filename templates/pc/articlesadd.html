@@ -86,10 +86,6 @@
                  return true
              }
         }
-
-        /**
-         * {authors:'{ request.user.id}}',title:title,desc:desc,keywords:keywords,list_pic:list_pic,content:testEditor.getMarkdown(),csrfmiddlewaretoken: '{ csrf_token '},
-         */
         $("#btn").on('click',function () {
     if(validate($('.validate').val(),$('.validate')) && validate($('select').val(),$('select')) && validate(testEditor.getMarkdown(),$('#test-editormd'))){
         var title = $("input[name='title']").val();
@@ -128,7 +124,7 @@
 })
     $('#file').on('change',function () {
          var read=new FileReader() // 创建FileReader对像;
-           read.readAsDataURL(this.files[0])  // 调用readAsDataURL方法读取文件;
+          read.readAsDataURL(this.files[0])  // 调用readAsDataURL方法读取文件;
        read.onload=function(){
             url=read.result  // 拿到读取结果;
             var img=new Image();

@@ -17,8 +17,6 @@ class Category_Article(models.Model):
     class Meta:
         verbose_name = '分类'
         verbose_name_plural = verbose_name
-
-
 class Article(models.Model):
     """文章"""
     id = models.UUIDField(default=uuid.uuid4,primary_key=True)
