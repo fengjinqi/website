@@ -11,13 +11,18 @@ from django.views.decorators.csrf import csrf_exempt
 from PIL import Image
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, mixins, status
+from rest_framework.authentication import SessionAuthentication
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 import requests
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+
 from apps.article.filter import  ArticleFilter
 from apps.article.forms import Article_form
 from apps.article.serializers import ArticleSerializer, Article_CommentSerializer, ArticleCommentReply, \
     Article_CommentSerializerAdd, ArticleCommentReplySerializer, Category_ArticleSerializer, ArticleCreatedSerializer
+from apps.uitls.permissions import IsOwnerOrReadOnly
 from apps.user.models import User, Follows, UserMessage
 from website import settings
 import os
@@ -240,9 +245,6 @@ def RemoveImage(request,article_id):
         return JsonResponse({'data':200})
 
 
-
-
-
 def Article_detail(request,article_id):
     """
     文章详情页
@@ -351,13 +353,16 @@ class ArticleCreated(mixins.CreateModelMixin,mixins.UpdateModelMixin,viewsets.Ge
     """
     queryset = Article.objects.filter(is_show=True)
     serializer_class = ArticleCreatedSerializer
+    permission_classes = (IsAuthenticated,)  # 未登录禁止访问
+    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
 
 
 class ArticleCommintView(mixins.CreateModelMixin,viewsets.GenericViewSet):
     """TODO 評論"""
     serializer_class = Article_CommentSerializerAdd
     queryset = Article_Comment.objects.all()
-
+    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
+    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
 
 @receiver(post_save, sender=Article_Comment)
 def my_callback(sender, **kwargs):
@@ -380,6 +385,8 @@ class ArticleCommentReplyView(mixins.CreateModelMixin,viewsets.GenericViewSet):
     """TODO 回復評論"""
     serializer_class = ArticleCommentReplySerializer
     queryset = ArticleCommentReply.objects.all()
+    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
+    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
 
 @receiver(post_save, sender=ArticleCommentReply)
 def my_callback_reply(sender, **kwargs):
@@ -402,3 +409,5 @@ class CategoryView(mixins.UpdateModelMixin,mixins.CreateModelMixin,viewsets.Read
     """TODO 分類"""
     queryset = Category_Article.objects.all()
     serializer_class = Category_ArticleSerializer
+    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
+    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]

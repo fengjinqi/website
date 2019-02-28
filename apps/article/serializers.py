@@ -41,7 +41,7 @@ class ArticleCommentReplySerializer(serializers.ModelSerializer):
 class ArticleCommentReplySerializer1(serializers.ModelSerializer):
     """回复"""
     user = UserSerializer()
-    to_uids = UserSerializer()
+    to_uids = UsersSerializer()
     class Meta:
         model = ArticleCommentReply
         fields = '__all__'
@@ -80,7 +80,6 @@ class ArticleSerializer(serializers.ModelSerializer):
 
 
 class ArticleCreatedSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Article
         fields = '__all__'

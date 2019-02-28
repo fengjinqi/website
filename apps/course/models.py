@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 
 # Create your models here.
@@ -8,13 +10,13 @@ class Courses(models.Model):
     """
     课程
     """
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
-    id = models.UUIDField(primary_key=True)
+    id = models.UUIDField(default=uuid.uuid4,primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100,verbose_name='课程名字')
     info = models.TextField(verbose_name='介绍')
-    image = models.ImageField(upload_to="course/%Y%m%d")
-    offline = models.BooleanField(default=True,verbose_name='是否下线')
-    is_active = models.BooleanField(default=False,verbose_name='状态')#默认False更新中
+    image = models.ImageField(upload_to="course/%Y%m%d",blank=True,null=True)
+    offline = models.BooleanField(default=True,verbose_name='是否上线')#true上线
+    is_active = models.BooleanField(default=True,verbose_name='状态')#默认True更新中
     is_delete = models.BooleanField(default=False,verbose_name='是否删除')
     add_time = models.DateTimeField(auto_now_add=True)
 
