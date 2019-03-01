@@ -21,7 +21,7 @@ from django.views.static import serve
 from rest_framework_jwt.views import obtain_jwt_token
 
 from apps.article.views import ArticleCreated
-from apps.course.views import CourseList, CourseCreatedList
+from apps.course.views import CoursesList, CourseCreatedList, CourseListCreated
 from apps.user.views import test, captcha_refresh, yan, login_view, UserGetInfo, UserGetAllInfo, UserDisbale, \
     PersonOthers, Register, active_user, get_message, UserMessages
 from django.views.generic import TemplateView
@@ -44,8 +44,9 @@ router.register('user_disbale', UserDisbale)
 router.register('PersonOthers', PersonOthers)
 router.register('UserMessages', UserMessages,base_name='UserMessages')
 router.register('article', ArticleCreated)
-router.register('courseList', CourseList)
+router.register('courseList', CoursesList)
 router.register('course', CourseCreatedList)
+router.register('Addtutorial', CourseListCreated)
 
 
 

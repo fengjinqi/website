@@ -8,8 +8,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from apps.article.views import StandardResultsSetPagination
-from apps.course.models import Courses
-from apps.course.serializers import CourseSerializers, CreatedCourseSerializers
+from apps.course.models import Courses, CourseList
+from apps.course.serializers import CourseSerializers, CreatedCourseSerializers, AddtutorialSerializers
 from apps.uitls.permissions import IsOwnerOrReadOnly
 
 
@@ -23,7 +23,7 @@ def Detail(request,course_id):
 
 
 
-class CourseList(viewsets.ReadOnlyModelViewSet):
+class CoursesList(viewsets.ReadOnlyModelViewSet):
     queryset = Courses.objects.filter(is_delete=False)
     serializer_class = CourseSerializers
     pagination_class = StandardResultsSetPagination
@@ -34,3 +34,12 @@ class CourseCreatedList(mixins.CreateModelMixin,mixins.UpdateModelMixin,viewsets
     serializer_class = CreatedCourseSerializers
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
     authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+
+
+class CourseListCreated(mixins.CreateModelMixin,mixins.UpdateModelMixin,viewsets.ReadOnlyModelViewSet):
+    queryset = CourseList.objects.all()
+    serializer_class = AddtutorialSerializers
+    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
+    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+
+
