@@ -178,7 +178,6 @@ def ArticleUpdate(request,article_id):
             article = Article.objects.get(id=article_id)
         except Exception:
             return Http404
-        print(article)
         return render(request, 'pc/article_update.html', {'article': article, 'category': category})
     if request.method == 'POST':
         forms = Article_form(request.POST)

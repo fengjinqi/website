@@ -31,12 +31,12 @@ class Courses(models.Model):
 
 class CourseList(models.Model):
     course = models.ForeignKey(Courses,on_delete=models.CASCADE)
-    title = models.CharField(max_length=100,verbose_name='标题')
+    titles = models.CharField(max_length=100,verbose_name='标题')
     conent = models.TextField(verbose_name='内容')
     add_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.title
+        return self.titles
 
     class Meta:
         verbose_name = '课程列表'
