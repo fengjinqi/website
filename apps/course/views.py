@@ -18,7 +18,7 @@ from apps.course.filter import CoursesFilter
 from apps.course.models import Courses, CourseList
 from apps.course.serializers import CourseSerializers, CreatedCourseSerializers, AddtutorialSerializers
 from apps.uitls.jsonserializable import DateEncoder
-from apps.uitls.permissions import IsOwnerOrReadOnly
+from apps.uitls.permissions import IsOwnerOrReadOnly, IsOwnerOrRead
 
 
 def List(request):
@@ -49,6 +49,8 @@ def courseViewApi(request,courses_id):
 class CoursesList(viewsets.ReadOnlyModelViewSet):
     queryset = Courses.objects.filter(is_delete=False)
     serializer_class = CourseSerializers
+    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
+    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
     pagination_class = StandardResultsSetPagination
 
 
@@ -65,5 +67,6 @@ class CourseCreatedList(mixins.CreateModelMixin,mixins.UpdateModelMixin,viewsets
 class CourseListCreated(mixins.CreateModelMixin,mixins.UpdateModelMixin,viewsets.ReadOnlyModelViewSet):
     queryset = CourseList.objects.all()
     serializer_class = AddtutorialSerializers
-    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
+    permission_classes = (IsAuthenticated, IsOwnerOrRead)  # 未登录禁止访问
     authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+
