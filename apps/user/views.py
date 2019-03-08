@@ -392,7 +392,7 @@ def Guan(request):
 @login_required(login_url='/login')
 def Info(request):
     """
-    资料
+    资料修改
     :param request:
     :return:
     """
@@ -531,21 +531,44 @@ class PersonOthers(PersonApiabstohr):
         for the currently authenticated user.
         """
         user_id = self.request.query_params.get('pk')
-        print('000')
         if user_id:
             return Article.objects.filter(authors_id=user_id).filter(is_show=True).order_by('-add_time')
 
 
-
-
-class UserGetAllInfo(mixins.ListModelMixin,mixins.UpdateModelMixin,viewsets.GenericViewSet):
+class UserGetAllInfo(mixins.ListModelMixin,mixins.UpdateModelMixin,mixins.RetrieveModelMixin,viewsets.GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
     authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    pagination_class = StandardResultsSetPagination
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        type = request.data['type']
+        if type:
+            users = instance
+            users.is_active=request.data['is_active']
+            users.save()
+            return Response({'id': users.id,'is_active':users.is_active})
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
 
 
-class UserGetInfo(UserGetAllInfo):
+
+class UserGetInfo(viewsets.ReadOnlyModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
+    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
     def get_queryset(self):
         return User.objects.filter(pk=self.request.user.id)
 
@@ -579,10 +602,10 @@ class UserMessages(mixins.ListModelMixin,mixins.DestroyModelMixin,viewsets.Gener
 
 
 
-class UserDisbale(mixins.ListModelMixin,mixins.UpdateModelMixin,viewsets.GenericViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
-    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
-
-    pass
+# class UserDisbale(mixins.ListModelMixin,mixins.UpdateModelMixin,viewsets.GenericViewSet):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+#     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
+#     authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+#
+#     pass
