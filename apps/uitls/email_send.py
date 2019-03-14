@@ -8,7 +8,7 @@ import random
 
 from apps.user.models import VerifyCode
 from website import settings
-from celery import task
+from website.celery import app
 
 
 def random_str(randomlength=8):
@@ -20,7 +20,6 @@ def random_str(randomlength=8):
     print(str)
     return str
 
-@task
 def send_register_email(email,username=None,token=None,send_type='register'):
     code = random_str(4)
 

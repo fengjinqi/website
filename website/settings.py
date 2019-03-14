@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import datetime
 import os
 from configparser import ConfigParser
+from celery.schedules import crontab
+from celery.schedules import timedelta
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -46,7 +48,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'pure_pagination',
     'django_filters',
-    'captcha'
+    'captcha',
+    'djcelery'
 ]
 
 #邮箱登录配置
@@ -221,3 +224,41 @@ HAYSTACK_CONNECTIONS = {
 }
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+
+
+
+
+
+import djcelery
+djcelery.setup_loader()
+BROKER_URL = 'redis://127.0.0.1:6379/6'
+CELERY_IMPORTS = ('apps.article.tasks', )
+CELERY_TIMEZONE = TIME_ZONE
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+CELERYD_MAX_TASKS_PER_CHILD = 5
+
+CELERY_ENABLE_UTC=False
+# 下面是定时任务的设置，我一共配置了三个定时任务.
+from celery.schedules import crontab
+CELERYBEAT_SCHEDULE = {
+    #定时任务一：　每30分钟获取数据执行任务(del_redis_data)
+    u'每30分钟获取数据': {
+        "task": "apps.article.tasks.getApi",
+        "schedule": crontab(minute=30),
+        "args": (),
+    },
+
+    #定时任务二:　每天的凌晨12:30分，执行任务(back_up1)
+    u'每周一进行数据库清理': {
+        'task': 'apps.tasks.removeApi',
+        'schedule': crontab(hour=4, minute=30, day_of_week=1),
+        "args": ()
+    },
+    # #定时任务三:每个月的１号的6:00启动，执行任务(back_up2)
+    # u'生成统计报表': {
+    #         'task': 'app.tasks.back_up2',
+    #         'schedule': crontab(hour=6, minute=0,   day_of_month='1'),
+    #         "args": ()
+    # },
+}

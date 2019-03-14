@@ -15,4 +15,7 @@ urlpatterns = [
   path('update/<uuid:article_id>',views.ArticleUpdate,name='update'),
   path('update_image/<uuid:article_id>',views.RemoveImage,name='update_image'),
   path('delete/',views.ArticleDelete,name='delete'),
+  path('api/',views.api,name='api'),
+  path('apis/',views.addModel),
+
 ]

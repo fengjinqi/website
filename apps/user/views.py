@@ -29,18 +29,18 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from apps.article.models import Article, Category_Article
 from apps.article.serializers import ArticleSerializer
+from apps.article.tasks import send_register_email
 from apps.article.views import StandardResultsSetPagination
 from apps.uitls.EmailToken import token_confirm
-from apps.uitls.email_send import send_register_email
+
 from apps.uitls.jsonserializable import DateEncoder
 from apps.uitls.permissions import IsOwnerOrReadOnly
-from apps.user.filter import CategoryFilter, UserFilter
+from apps.user.filter import CategoryFilter
 from apps.user.models import User, Follows, VerifyCode, UserMessage
 from apps.user.serializers import UserSerializer, UserMessageSerializer
 from website import settings
 from .forms import CaptchaTestForm, LoginForms, Follow_Forms, RegisterForm, ModifyForm, EmailForm, InfoForm
 from rest_framework import viewsets, mixins, status, permissions
-from rest_framework.pagination import PageNumberPagination
 
 def test(request):
     form = CaptchaTestForm()
@@ -142,7 +142,7 @@ class Register(View):
             # message = "\n".join([u'{0},欢迎加入我的博客'.format(username), u'请访问该链接，完成用户验证,该链接1个小时内有效',
             #                      '/'.join([settings.DOMAIN, 'activate', token])])
             # send_mail(u'注册用户验证信息', message, settings.EMAIL_HOST_USER, [email], fail_silently=False)
-            send_register_email(email=email,username=username,token=token,send_type="register")
+            send_register_email.delay(email=email,username=username,token=token,send_type="register")
             return JsonResponse({'valid':True,'status':200, 'message': u"请登录到注册邮箱中验证用户，有效期为1个小时"})
         return JsonResponse({'status':400,'data':form.errors,'valid':False})
 
@@ -172,6 +172,7 @@ def active_user(request, token):
     msg.to_user =User.objects.get(is_superuser=True)
     msg.message = '欢迎加入本站,在使用过程中有什么疑问,请联系管理员'
     msg.has_read = False
+    msg.is_supper = True
     msg.save()
     message = u'验证成功，请进行<a href=\"' + unicode(settings.DOMAIN) + u'/login\">登录</a>操作'
 
@@ -187,7 +188,7 @@ class ResetUserView(View):
         if email and username is not None:
             if User.objects.filter(email=email):
                 return JsonResponse({'status':400,'message':'邮箱已经存在'})
-            send_register_email(email=email, username=username,send_type='update_email')
+            send_register_email.delay(email=email, username=username,send_type='update_email')
             return JsonResponse({'status': 200, 'message': u"验证码发送成功，有效期为30分钟"})
         return JsonResponse({'status':400,'message':'用户名与邮箱不能为空'})
 
@@ -286,7 +287,7 @@ class RetrieveEmail(View):
         email = request.POST.get('email')
         if email:
             if User.objects.filter(email=email):
-                send_register_email(email=email, send_type='forget')
+                send_register_email.delay(email=email, send_type='forget')
                 return JsonResponse({'status': 200, 'message': u"验证码发送成功，有效期为30分钟"})
             return JsonResponse({'status': 400, 'message': u"邮箱不存在"})
         return JsonResponse({'status':400,'message':'邮箱不能为空'})
@@ -563,17 +564,34 @@ class UserGetAllInfo(mixins.ListModelMixin,mixins.UpdateModelMixin,mixins.Retrie
         return Response(serializer.data)
 
 
-
-class UserGetInfo(viewsets.ReadOnlyModelViewSet):
+class UserGetInfo(mixins.UpdateModelMixin,viewsets.ReadOnlyModelViewSet):
+    """
+    list:获取当前用户个人信息
+    """
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
     authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+
     def get_queryset(self):
         return User.objects.filter(pk=self.request.user.id)
 
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        users = instance
+        users.username = request.data['username']
+        users.info = request.data['info']
+        users.position = request.data['position']
+        if request.data['list_pic']:
 
-class UserMessages(mixins.ListModelMixin,mixins.DestroyModelMixin,viewsets.GenericViewSet):
+            users.user_imag = request.data['list_pic']
+            users.save()
+            return Response({'success': 'ok'})
+        users.save()
+        return Response({'success': 'ok'})
+
+
+class UserMessages(mixins.ListModelMixin,mixins.DestroyModelMixin,mixins.UpdateModelMixin,viewsets.GenericViewSet):
     queryset = UserMessage.objects.all()
     serializer_class = UserMessageSerializer
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
@@ -599,13 +617,26 @@ class UserMessages(mixins.ListModelMixin,mixins.DestroyModelMixin,viewsets.Gener
                 serializer = self.get_serializer(queryset, many=True)
                 return Response(serializer.data)
 
+    def update(self, request, *args, **kwargs):
+        if self.request.query_params.get('type'):
+            type = self.request.query_params.get('type')
+            if type == 'unread':
+                partial = kwargs.pop('partial', False)
+                instance = self.get_object()
+                types = request.data['active']
+                if types:
+                    users = instance
+                    users.has_read = request.data['active']
+                    users.save()
+                    return Response({'id': users.id,'has_read':users.has_read})
+                serializer = self.get_serializer(instance, data=request.data, partial=partial)
+                serializer.is_valid(raise_exception=True)
+                self.perform_update(serializer)
 
+                if getattr(instance, '_prefetched_objects_cache', None):
+                    # If 'prefetch_related' has been applied to a queryset, we need to
+                    # forcibly invalidate the prefetch cache on the instance.
+                    instance._prefetched_objects_cache = {}
 
+                return Response(serializer.data)
 
-# class UserDisbale(mixins.ListModelMixin,mixins.UpdateModelMixin,viewsets.GenericViewSet):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
-#     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
-#     authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
-#
-#     pass

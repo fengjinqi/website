@@ -12,7 +12,7 @@
 {% block content %}
     <section class="main clearfix">
     <article class="fl">
-        <div class="blogs">
+     {% comment %}   <div class="blogs">
             <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">今日推荐</div>
             <div class="blogs_cont">
 <h3><span class="blogs_type">{{ recommend.first.recommends.category.name }}</span><a  href="{% url 'article:detail' recommend.first.recommends.id %}">{{ recommend.first.recommends.title }}</a></h3>
@@ -32,7 +32,7 @@
 
 
             </div>
-        </div>
+        </div>{% endcomment %}
         <div class="banner" style="background: url({% static 'img/banner.png' %})no-repeat 0 50%;"></div>
          <div class="blogs">
              <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">
@@ -86,7 +86,7 @@
                  {% endfor %}
              </div>
          </div>
-    {% if article.object_list.count >= 10 %}
+    {% if article.object_list.count >= 1 %}
         <div class="pageturn">
            <ul class="pagination">
 {#               <li><a href="/index">首页</a></li>#}
@@ -122,7 +122,7 @@
 
     <aside class="fr">
         {% include 'pc/base_aside.html' %}
-        <div class="sidebar">
+       {% comment %} <div class="sidebar">
       <div class="tuijian">
         <h2 class="hometitle">站长推荐</h2>
         <ul class="sidenews zhan">
@@ -132,7 +132,20 @@
         </ul>
     </div>
 
+    </div>{% endcomment %}
+        {% if links.count > 0 %}
+             <div class="sidebar">
+      <div class="tuijian">
+        <h2 class="hometitle">友情链接</h2>
+        <ul class="sidenews zhan">
+             {% for foo in links %}
+                    <li><a href="{{ foo.url }}">{{ foo.title }}</a></li>
+                {% endfor %}
+        </ul>
     </div>
+
+    </div>
+        {% endif %}
         <div class="sidebar">
             <div class="tuijian">
         <h2 class="hometitle">交流群</h2>

@@ -1,3 +1,4 @@
+import datetime
 import json
 
 from django.db.models import Q, Count
@@ -6,7 +7,7 @@ from django.db.models.signals import pre_save, post_save
 from django.shortcuts import render, redirect,reverse,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
-from django.http import JsonResponse,Http404
+from django.http import JsonResponse,Http404,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from PIL import Image
 from django_filters.rest_framework import DjangoFilterBackend
@@ -16,18 +17,21 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 import requests
+import urllib3
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from apps.article.filter import  ArticleFilter
 from apps.article.forms import Article_form
 from apps.article.serializers import ArticleSerializer, Article_CommentSerializer, ArticleCommentReply, \
-    Article_CommentSerializerAdd, ArticleCommentReplySerializer, Category_ArticleSerializer, ArticleCreatedSerializer
-from apps.uitls.permissions import IsOwnerOrReadOnly
+    Article_CommentSerializerAdd, ArticleCommentReplySerializer, Category_ArticleSerializer, ArticleCreatedSerializer, \
+    ArticleCommitSerializer
+from apps.support.models import link
+from apps.uitls.permissions import IsOwnerOrReadOnly, IsOwnerOr
 from apps.user.models import User, Follows, UserMessage
 from website import settings
 import os
 import random
-from .models import Article, Category_Article, Article_Comment, Recommend
+from .models import Article, Category_Article, Article_Comment, Recommend, Headlines
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
 
@@ -40,7 +44,7 @@ def Article_list(request):
     article=Article.objects.filter(is_show=True)
     popular = Article.objects.filter(is_show=True).order_by('click_nums')[:5]
     recommend = Recommend.objects.filter(is_recommend=True)[:10]
-
+    links = link.objects.all()
     #user = Follow.objects.values('follow_id').distinct().order_by('-follow_id')
     user = Follows.objects.values('follow_id').distinct().order_by('-follow_id')
     item=[]
@@ -61,7 +65,7 @@ def Article_list(request):
     p = Paginator(article,10,request=request)
     people = p.page(page)
 
-    return render(request, 'pc/index.html', {'article':people,'popular':popular,'count':item,'recommend':recommend})
+    return render(request, 'pc/index.html', {'article':people,'popular':popular,'count':item,'recommend':recommend,'links':links})
 
 
 def ArticleList(request):
@@ -70,13 +74,13 @@ def ArticleList(request):
     :param request:
     :return:
     """
-    article = Article.objects.all()
+    article = Article.objects.filter(is_show=True)
     category = Category_Article.objects.all()
     type = request.GET.get('type', '')
     try:
         page = request.GET.get('page', 1)
         if type:
-            article =Article.objects.filter(category_id=type)
+            article =Article.objects.filter(category_id=type,is_show=True)
         if page == '':
             page = 1
     except PageNotAnInteger:
@@ -84,14 +88,80 @@ def ArticleList(request):
     # Provide Paginator with the request object for complete querystring generation
     p = Paginator(article,10,request=request)
     people = p.page(page)
-    url = 'http://api01.idataapi.cn:8000/article/idataapi?KwPosition=3&catLabel1=科技&apikey=Xtv7doa2SrBskcf0X7fLwfKaLEyvXycJ2RRKGPvhLisMIASRtFtmGzzIvef2QSFs'
-    headers = {
-        "Accept-Encoding": "gzip",
-        "Connection": "close"
-    }
-    r = requests.get(url, headers=headers)
-    print(r.json())
-    return render(request, 'pc/article.html', {'article': people,'category':category,'Headlines':r.json()})
+
+    headlines = Headlines.objects.all()[:20]
+
+
+
+    return render(request, 'pc/article.html', {'article': people,'category':category,'Headlines':headlines})
+
+
+def api(request):
+
+    # url = 'http://api01.idataapi.cn:8000/article/idataapi?KwPosition=3&catLabel1=科技&apikey=Xtv7doa2SrBskcf0X7fLwfKaLEyvXycJ2RRKGPvhLisMIASRtFtmGzzIvef2QSFs'
+    # headers = {
+    #     "Accept-Encoding": "gzip",
+    #     "Connection": "close"
+    # }
+    #
+    # r = requests.get(url, headers=headers)
+    # if r.status_code == requests.codes.ok:
+    #
+    #     dict_json = r.json()
+    #     print(dict_json['data'])
+    #     main = Headlines()
+    #     list_dict = []
+    #     for item in dict_json['data']:
+    #         obj = Headlines(
+    #         url = item['url'],
+    #         title = item['title'],
+    #         category = item['catLabel1'],
+    #         conent = item['content'],
+    #         author_name = item['sourceType'],
+    #         )
+    #         list_dict.append(obj)
+    #     Headlines.objects.bulk_create(list_dict)
+    #     error_email.delay('fengjinqi@fengjinqi.com', '抓取数据错误', '抓取数据错误，请尽快查看')
+    # http = urllib3.PoolManager()
+    # fields = {
+    #     'KwPosition':'3',
+    #     'catLabel1':'科技',
+    #     'apikey':'Xtv7doa2SrBskcf0X7fLwfKaLEyvXycJ2RRKGPvhLisMIASRtFtmGzzIvef2QSFs'
+    # }
+    # r = http.request('GET',url='http://api01.idataapi.cn:8000/article/idataapi',fields=fields,headers=headers)
+    # print(r.data.decode('utf-8'))
+    # r = requests.get('http://v.juhe.cn/toutiao/index?type=keji&key=06207ed4627997cd7ec09c6d5eb95a61')
+    # print(r.status_code)
+    # for i in r.json():
+    #     print(i)
+    cur_date = datetime.datetime.now().date()
+
+    # 前四天
+    day = cur_date - datetime.timedelta(days=4)
+
+    # 查询前一周数据,也可以用range,我用的是glt,lte大于等于
+    Headlines.objects.filter(add_time__lte=day).delete()
+
+
+    return HttpResponse({'ee':'43'})
+
+
+
+
+
+from apps.article.tasks import add, error_email
+
+
+def addModel(request):
+    add.delay()
+    print('定时任务')
+
+    return HttpResponse('ok')
+
+
+
+
+
 
 
 @login_required(login_url='/login')
@@ -102,28 +172,28 @@ def ArticleMe(request):
     :param request:
     :return:
     """
-    article = Article.objects.filter(authors__follow__fan_id=request.user.id)
+    article = Article.objects.filter(authors__follow__fan_id=request.user.id,is_show=True)
 
     category = Category_Article.objects.all()
     type = request.GET.get('type', '')
     try:
         page = request.GET.get('page', 1)
         if type:
-            article =Article.objects.filter(authors__follow__fan_id=request.user.id,category_id=type)
+            article =Article.objects.filter(authors__follow__fan_id=request.user.id,category_id=type,is_show=True)
         if page == '':
             page = 1
     except PageNotAnInteger:
         page = 1
     p = Paginator(article,10,request=request)
     people = p.page(page)
-    url = 'http://api01.idataapi.cn:8000/article/idataapi?KwPosition=3&catLabel1=科技&apikey=Xtv7doa2SrBskcf0X7fLwfKaLEyvXycJ2RRKGPvhLisMIASRtFtmGzzIvef2QSFs'
-    headers = {
-        "Accept-Encoding": "gzip",
-        "Connection": "close"
-    }
-    r = requests.get(url, headers=headers)
-
-    return render(request, 'pc/article_me.html', {'article': people,'category':category,'Headlines':r.json()})
+    # url = 'http://api01.idataapi.cn:8000/article/idataapi?KwPosition=3&catLabel1=科技&apikey=Xtv7doa2SrBskcf0X7fLwfKaLEyvXycJ2RRKGPvhLisMIASRtFtmGzzIvef2QSFs'
+    # headers = {
+    #     "Accept-Encoding": "gzip",
+    #     "Connection": "close"
+    # }
+    # r = requests.get(url, headers=headers)
+    headlines = Headlines.objects.all()[:20]
+    return render(request, 'pc/article_me.html', {'article': people,'category':category,'Headlines':headlines})
 
 
 # Create your views here.
@@ -222,7 +292,6 @@ def ArticleDelete(request):
         id = json.loads(request.body)['id']
         user = json.loads(request.body)['username']
         if id and user:
-            print(id,user)
             Article.objects.filter(id=id, authors_id=user).update(is_show=False)
             return JsonResponse({'status':200,'message':'删除成功'})
         return JsonResponse({'status':400,'message':'删除失败'})
@@ -326,6 +395,26 @@ class ArticleListView(viewsets.ReadOnlyModelViewSet):
     pagination_class = StandardResultsSetPagination
     filter_backends = (DjangoFilterBackend,)
     filter_class = ArticleFilter
+    permission_classes = (IsAuthenticated, IsOwnerOr)  # 未登录禁止访问
+    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+
+class MeArticleListView(viewsets.ReadOnlyModelViewSet):
+    """
+     TODO 我的的文章 详情页
+    """
+    queryset = Article.objects.filter(is_show=True).order_by('-add_time')
+    serializer_class = ArticleSerializer
+    pagination_class = StandardResultsSetPagination
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = ArticleFilter
+    permission_classes = (IsAuthenticated, IsOwnerOr)  # 未登录禁止访问
+    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+
+    def get_queryset(self):
+        return Article.objects.filter(authors_id=self.request.user.id).filter(is_show=True).order_by(
+            '-add_time')
+
+
 
 class FollowListView(viewsets.ReadOnlyModelViewSet):
     """
@@ -334,7 +423,8 @@ class FollowListView(viewsets.ReadOnlyModelViewSet):
     queryset = Article.objects.filter(is_show=True).order_by('-add_time')
     serializer_class = ArticleSerializer
     pagination_class = StandardResultsSetPagination
-
+    permission_classes = (IsAuthenticated, IsOwnerOr)  # 未登录禁止访问
+    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
     def list(self, request, *args, **kwargs):
 
         queryset = Article.objects.filter(authors__follow__fan_id=self.request.user.id).filter(is_show=True).order_by('-add_time')
@@ -352,11 +442,11 @@ class ArticleCreated(mixins.CreateModelMixin,mixins.UpdateModelMixin,viewsets.Ge
     """
     queryset = Article.objects.filter(is_show=True)
     serializer_class = ArticleCreatedSerializer
-    permission_classes = (IsAuthenticated,)  # 未登录禁止访问
+    permission_classes = (IsAuthenticated,IsOwnerOr)  # 未登录禁止访问
     authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
 
 
-class ArticleCommintView(mixins.CreateModelMixin,viewsets.GenericViewSet):
+class ArticleCommintView(mixins.CreateModelMixin,viewsets.ReadOnlyModelViewSet):
     """TODO 評論"""
     serializer_class = Article_CommentSerializerAdd
     queryset = Article_Comment.objects.all()
@@ -409,4 +499,13 @@ class CategoryView(mixins.UpdateModelMixin,mixins.CreateModelMixin,viewsets.Read
     queryset = Category_Article.objects.all()
     serializer_class = Category_ArticleSerializer
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
+    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+
+
+
+class ArticleCommit(viewsets.ModelViewSet):
+    """文章推荐"""
+    queryset = Recommend.objects.filter(is_recommend=True)
+    serializer_class = ArticleCommitSerializer
+    permission_classes = (IsAuthenticated,)  # 未登录禁止访问
     authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]

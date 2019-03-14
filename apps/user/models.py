@@ -71,3 +71,4 @@ class UserMessage(models.Model):
     class Meta:
         verbose_name ='用户消息'
         verbose_name_plural=verbose_name
+        ordering = ('-add_time',)

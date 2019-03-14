@@ -22,6 +22,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 
 from apps.article.views import ArticleCreated
 from apps.course.views import CoursesList, CourseCreatedList, CourseListCreated
+from apps.support.views import LinkList, EmailsList, BannerList
 from apps.user.views import test, captcha_refresh, yan, login_view, UserGetInfo, UserGetAllInfo, \
     PersonOthers, Register, active_user, get_message, UserMessages
 from django.views.generic import TemplateView
@@ -33,6 +34,8 @@ from rest_framework import routers
 
 router = routers.DefaultRouter()
 router.register('article_list', views.ArticleListView)
+router.register('me_article_list', views.MeArticleListView)
+router.register('ArticleCommit', views.ArticleCommit)
 router.register('follow_list', views.FollowListView)
 router.register('category', views.CategoryView)
 router.register('article_Comment', views.ArticleCommintView)
@@ -47,6 +50,9 @@ router.register('article', ArticleCreated)
 router.register('courseList', CoursesList)
 router.register('course', CourseCreatedList)
 router.register('Addtutorial', CourseListCreated)
+router.register('BannerList', BannerList)
+router.register('EmailsList', EmailsList)
+router.register('LinkList', LinkList)
 
 
 

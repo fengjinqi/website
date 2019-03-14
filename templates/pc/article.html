@@ -61,8 +61,8 @@
                      </div>
                  </div>
                  {% endfor %}
-                    {% if article.object_list.count >= 10 %}
-                         <div class="pageturn" >
+                    {% if article.object_list.count >= 1 %}
+             <div class="pageturn" >
 
            <ul class="pagination">
 
@@ -129,72 +129,12 @@
               <div class="tuijian">
                 <h2 class="hometitle">今日头条</h2>
                 <ul class="sidenews zhan">
-                     {% for foo in Headlines.data %}
-                            <li><a href="{{ foo.url }}" title="{{ foo.title }}">{{ foo.title }}</a></li>
+                     {% for foo in Headlines %}
+                            <li><a href="{{ foo.url }}" target="_blank" title="{{ foo.title }}">{{ foo.title }}</a></li>
                         {% endfor %}
                 </ul>
               </div>
-
             </div>
-
-        {% comment %}<div class="aside_goodperson">
-            <div class="blogs_head" style="background: url(img/public.png)no-repeat 0 50%;">本周牛人<a class="fr change">更多</a></div>
-            <div>
-                <div class="aside_goodperson_item clearfix">
-                    <div class="fl aside_goodperson_item_num">1</div>
-                    <div class="fl aside_goodperson_item_user">
-                        <div class="aside_goodperson_item_user_avatar img_cover" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></div>
-                        <div class="aside_goodperson_item_user_info">
-                            <p>-狙击手-</p>
-                            <p>更博：34</p>
-                        </div>
-                    </div>
-                    <div class="fr aside_goodperson_item_num"data-actions-icnt="">关注</div>
-                </div>
-                <div class="aside_goodperson_item clearfix">
-                    <div class="fl aside_goodperson_item_num">1</div>
-                    <div class="fl aside_goodperson_item_user">
-                        <div class="aside_goodperson_item_user_avatar img_cover" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></div>
-                        <div class="aside_goodperson_item_user_info">
-                            <p>-狙击手-</p>
-                            <p>更博：34</p>
-                        </div>
-                    </div>
-                    <div class="fr aside_goodperson_item_num">关注</div>
-                </div>
-                <div class="aside_goodperson_item clearfix">
-                    <div class="fl aside_goodperson_item_num">1</div>
-                    <div class="fl aside_goodperson_item_user">
-                        <div class="aside_goodperson_item_user_avatar img_cover" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></div>
-                        <div class="aside_goodperson_item_user_info">
-                            <p>-狙击手-</p>
-                            <p>更博：34</p>
-                        </div>
-                    </div>
-                    <div class="fr aside_goodperson_item_num">关注</div>
-                </div>
-            </div>
-        </div>
-        <div class="aside_autor">
-            <div class="blogs_head" style="background: url(img/public.png)no-repeat 0 50%;">推荐作者 <a class="fr change">换一组</a></div>
-            <div class="flex_justify">
-                <div class="aside_autor_item">
-                    <p class="aside_goodperson_item_user_avatar1 img_cover" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></p>
-                    <p>-狙击手-</p>
-                    <p>更博：34</p>
-                </div>
-                <div class="aside_autor_item">
-                    <p class="aside_goodperson_item_user_avatar1 img_cover" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></p>
-                    <p>-狙击手-</p>
-                    <p>更博：34</p>
-                </div>
-                <div class="aside_autor_item">
-                    <p class="aside_goodperson_item_user_avatar1 img_cover" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></p>
-                    <p>-狙击手-</p>
-                    <p>更博：34</p>
-                </div>
-            </div>
-        </div>{% endcomment %}
     </aside>
 </section>
 {% endblock %}

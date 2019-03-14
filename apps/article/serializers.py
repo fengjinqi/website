@@ -3,7 +3,7 @@
 from rest_framework import serializers, status
 from rest_framework.response import Response
 
-from .models import Article, Category_Article,Article_Comment,ArticleCommentReply
+from .models import Article, Category_Article, Article_Comment, ArticleCommentReply, Recommend
 from apps.user.models import User
 
 
@@ -82,4 +82,12 @@ class ArticleSerializer(serializers.ModelSerializer):
 class ArticleCreatedSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
+        fields = '__all__'
+
+
+class ArticleCommitSerializer(serializers.ModelSerializer):
+
+    add_time = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+    class Meta:
+        model = Recommend
         fields = '__all__'

@@ -86,3 +86,16 @@ class ArticleCommentReply(models.Model):
     address = models.CharField(max_length=50, verbose_name='地址',blank=True,null=True)
     add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
 
+
+class Headlines(models.Model):
+    """头条"""
+    id = models.UUIDField(default=uuid.uuid4,primary_key=True)
+    title = models.CharField(max_length=200,verbose_name='标题')
+    category = models.CharField(max_length=20,verbose_name='分类')
+    conent = models.TextField(verbose_name='内容',default='')
+    author_name = models.CharField(max_length=100,verbose_name='来源')
+    url = models.URLField(verbose_name='地址')
+    add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
+
+    class Meta:
+        ordering = ('-add_time',)
