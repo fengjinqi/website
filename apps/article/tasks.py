@@ -123,7 +123,9 @@ def getApi():
             Headlines.objects.bulk_create(list_dict)
             print('数据添加成功')
     except Exception:
+        print('数据添加失败===正在发生邮件通知管理员')
         error_email.delay('fengjinqi@fengjinqi.com','抓取数据错误','抓取数据错误，请尽快查看')
+        print('邮件发送成功')
 
 
 @app.task()
@@ -133,8 +135,8 @@ def removeApi():
     # 前一天日期
     yester_day = cur_date - datetime.timedelta(days=1)
     # 前一周日期
-    day = cur_date - datetime.timedelta(days=4)
-    print("=======正在删除4天前数据======")
+    day = cur_date - datetime.timedelta(days=7)
+    print("=======正在删除7天前数据======")
     # 查询前一周数据,也可以用range,我用的是glt,lte大于等于
     Headlines.objects.filter(add_time__lte=day).delete()
     print('======已删除=========')

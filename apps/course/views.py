@@ -22,11 +22,22 @@ from apps.uitls.permissions import IsOwnerOrReadOnly, IsOwnerOrRead
 
 
 def List(request):
-    return render(request,'pc/course/index.html')
+    """TODO 教程列表  a标签根据uuid进 Detail视图渲染对应的所有文章"""
+    course = Courses.objects.all()
+    return render(request,'pc/course/index.html',{'course':course})
 
 
-def Detail(request,course_id):
-    return render(request,'pc/course/detail.html')
+def Detail(request,course_id,list_id):
+    """TODO 文章视图 根据uuid来查询对应所有文章
+        页面左侧要渲染所有的title标题
+        右侧对应当前标题内容
+        我的文章目录就是所有的文章 ，但是我只渲染了title标题，右侧就渲染对应标题的内容
+        现在问题是我懵逼了，貌似这个视图不能同时拿到uuid和id 只能二选一
+    """
+    print(list_id)
+    course_list = CourseList.objects.filter(course=course_id)#根据文章列表uuid查询对应的文章
+    #course_list.filter(id='')#根据对应文章id 来获取对应的数据
+    return render(request,'pc/course/detail.html',{'course':course_list,'uuid':course_id})
 
 
 def courseViewApi(request,courses_id):

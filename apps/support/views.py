@@ -13,7 +13,8 @@ from apps.support.serializers import BannersSerializer, EmailsSerializer, LinkSe
 
 
 def index(request):
-    return render(request,'pc/support.html')
+    email = Emails.objects.first()
+    return render(request,'pc/support.html',{'email':email})
 
 
 

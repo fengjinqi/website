@@ -98,13 +98,14 @@ def ArticleList(request):
 
 def api(request):
 
-    # url = 'http://api01.idataapi.cn:8000/article/idataapi?KwPosition=3&catLabel1=科技&apikey=Xtv7doa2SrBskcf0X7fLwfKaLEyvXycJ2RRKGPvhLisMIASRtFtmGzzIvef2QSFs'
-    # headers = {
-    #     "Accept-Encoding": "gzip",
-    #     "Connection": "close"
-    # }
-    #
-    # r = requests.get(url, headers=headers)
+    url = 'http://api01.idataapi.cn:8000/article/idataapi?KwPosition=3&catLabel1=科技&apikey=Xtv7doa2SrBskcf0X7fLwfKaLEyvXycJ2RRKGPvhLisMIASRtFtmGzzIvef2QSFs'
+    headers = {
+        "Accept-Encoding": "gzip",
+        "Connection": "close"
+    }
+
+    r = requests.get(url, headers=headers)
+    print(r.json())
     # if r.status_code == requests.codes.ok:
     #
     #     dict_json = r.json()
@@ -137,8 +138,8 @@ def api(request):
     cur_date = datetime.datetime.now().date()
 
     # 前四天
-    day = cur_date - datetime.timedelta(days=4)
-
+    day = cur_date - datetime.timedelta(days=7)
+    print(day)
     # 查询前一周数据,也可以用range,我用的是glt,lte大于等于
     Headlines.objects.filter(add_time__lte=day).delete()
 

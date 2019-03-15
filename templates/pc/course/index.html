@@ -6,187 +6,36 @@
 {% endblock %}
 {% block content %}
     <div class="container">
-        <div id="main"class="clearfix">
-            <div class="course">
-                <a href="">
-                     <img src="{% static 'img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'%}" alt="">
+        <div id="main" class="clearfix">
+
+            {% for foo in course %}
+                {{ foo.courselist_set.first.id }}
+                  <div class="course">
+                       <a href="/course/{{ foo.id }}/{{ foo.courselist_set.first.id }}">
+                     <img src="{% if foo.image %}
+                     {{ MEDIA_URL }}{{ foo.image }}
+                     {% else %}
+                     {% static 'img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg' %}
+                     {% endif %}" alt="">
                 <div class="desc">
-                    <p>ajax跨域完全讲解</p>
-                    <span>完全讲解Ajax跨域产生的原因和解决思路，掌握跨域的各种解决方案</span>
+                    <p>{{ foo.title }}</p>
+                    <span>{{ foo.info }}</span>
                     <div class="article__footer clearfix">
-                        <span class="fl type">前端</span>
-                        <span class="fr time">2018-10-12</span>
+                        <span class="fl type">{% if foo.is_active %}
+                        更新中...
+                            {% else %}
+                            已完结
+                        {% endif %}</span>
+                        <span class="fr time">{{ foo.add_time }}</span>
                     </div>
                 </div>
                 </a>
 
 
             </div>
-            <div class="course">
-                <a href="">
-                     <img src="{% static 'img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'%}" alt="">
-                <div class="desc">
-                    <p>ajax跨域完全讲解</p>
-                    <span>完全讲解Ajax跨域产生的原因和解决思路，掌握跨域的各种解决方案</span>
-                    <div class="article__footer clearfix">
-                        <span class="fl type">前端</span>
-                        <span class="fr time">2018-10-12</span>
-                    </div>
-                </div>
-                </a>
+            {% endfor %}
 
 
-            </div>
-            <div class="course">
-                <a href="">
-                     <img src="{% static 'img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'%}" alt="">
-                <div class="desc">
-                    <p>ajax跨域完全讲解</p>
-                    <span>完全讲解Ajax跨域产生的原因和解决思路，掌握跨域的各种解决方案</span>
-                    <div class="article__footer clearfix">
-                        <span class="fl type">前端</span>
-                        <span class="fr time">2018-10-12</span>
-                    </div>
-                </div>
-                </a>
-
-
-            </div>
-            <div class="course">
-                <a href="">
-                     <img src="{% static 'img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'%}" alt="">
-                <div class="desc">
-                    <p>ajax跨域完全讲解</p>
-                    <span>完全讲解Ajax跨域产生的原因和解决思路，掌握跨域的各种解决方案</span>
-                    <div class="article__footer clearfix">
-                        <span class="fl type">前端</span>
-                        <span class="fr time">2018-10-12</span>
-                    </div>
-                </div>
-                </a>
-
-
-            </div>
-            <div class="course">
-                <a href="">
-                     <img src="{% static 'img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'%}" alt="">
-                <div class="desc">
-                    <p>ajax跨域完全讲解</p>
-                    <span>完全讲解Ajax跨域产生的原因和解决思路，掌握跨域的各种解决方案</span>
-                    <div class="article__footer clearfix">
-                        <span class="fl type">前端</span>
-                        <span class="fr time">2018-10-12</span>
-                    </div>
-                </div>
-                </a>
-
-
-            </div>
-            <div class="course">
-                <a href="">
-                     <img src="{% static 'img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'%}" alt="">
-                <div class="desc">
-                    <p>ajax跨域完全讲解</p>
-                    <span>完全讲解Ajax跨域产生的原因和解决思路，掌握跨域的各种解决方案</span>
-                    <div class="article__footer clearfix">
-                        <span class="fl type">前端</span>
-                        <span class="fr time">2018-10-12</span>
-                    </div>
-                </div>
-                </a>
-
-
-            </div>
-            <div class="course">
-                <a href="">
-                     <img src="{% static 'img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'%}" alt="">
-                <div class="desc">
-                    <p>ajax跨域完全讲解</p>
-                    <span>完全讲解Ajax跨域产生的原因和解决思路，掌握跨域的各种解决方案</span>
-                    <div class="article__footer clearfix">
-                        <span class="fl type">前端</span>
-                        <span class="fr time">2018-10-12</span>
-                    </div>
-                </div>
-                </a>
-
-
-            </div>
-            <div class="course">
-                <a href="">
-                     <img src="{% static 'img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'%}" alt="">
-                <div class="desc">
-                    <p>ajax跨域完全讲解</p>
-                    <span>完全讲解Ajax跨域产生的原因和解决思路，掌握跨域的各种解决方案</span>
-                    <div class="article__footer clearfix">
-                        <span class="fl type">前端</span>
-                        <span class="fr time">2018-10-12</span>
-                    </div>
-                </div>
-                </a>
-
-
-            </div>
-            <div class="course">
-                <a href="">
-                     <img src="{% static 'img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'%}" alt="">
-                <div class="desc">
-                    <p>ajax跨域完全讲解</p>
-                    <span>完全讲解Ajax跨域产生的原因和解决思路，掌握跨域的各种解决方案</span>
-                    <div class="article__footer clearfix">
-                        <span class="fl type">前端</span>
-                        <span class="fr time">2018-10-12</span>
-                    </div>
-                </div>
-                </a>
-
-
-            </div>
-            <div class="course">
-                <a href="">
-                     <img src="{% static 'img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'%}" alt="">
-                <div class="desc">
-                    <p>ajax跨域完全讲解</p>
-                    <span>完全讲解Ajax跨域产生的原因和解决思路，掌握跨域的各种解决方案</span>
-                    <div class="article__footer clearfix">
-                        <span class="fl type">前端</span>
-                        <span class="fr time">2018-10-12</span>
-                    </div>
-                </div>
-                </a>
-
-
-            </div>
-            <div class="course">
-                <a href="">
-                     <img src="{% static 'img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'%}" alt="">
-                <div class="desc">
-                    <p>ajax跨域完全讲解</p>
-                    <span>完全讲解Ajax跨域产生的原因和解决思路，掌握跨域的各种解决方案</span>
-                    <div class="article__footer clearfix">
-                        <span class="fl type">前端</span>
-                        <span class="fr time">2018-10-12</span>
-                    </div>
-                </div>
-                </a>
-
-
-            </div>
-            <div class="course">
-                <a href="">
-                     <img src="{% static 'img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'%}" alt="">
-                <div class="desc">
-                    <p>ajax跨域完全讲解</p>
-                    <span>完全讲解Ajax跨域产生的原因和解决思路，掌握跨域的各种解决方案</span>
-                    <div class="article__footer clearfix">
-                        <span class="fl type">前端</span>
-                        <span class="fr time">2018-10-12</span>
-                    </div>
-                </div>
-                </a>
-
-
-            </div>
         </div>
     </div>
 {% endblock %}

@@ -14,6 +14,12 @@ app.config_from_object('django.conf:settings')
 #celery会自动在你注册的app中寻找tasks.py，所以你的tasks.py必须放在各个app的目录下并且不能随意命名
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
+
+
+
+
+
+
 #这步暂时还不懂在做什么
 @app.task(bind=True)
 def debug_task(self):

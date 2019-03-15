@@ -7,7 +7,10 @@ from . import views
 urlpatterns = [
 
   path('',views.List,name='index'),
-  path('<uuid:course_id>/',views.Detail,name='detail'),
+
+  path('<uuid:course_id>/<str:list_id>/',views.Detail,name='detail'),
+
+
   path('api/<uuid:courses_id>/',views.courseViewApi,name='courseViewApi'),
 
 ]
