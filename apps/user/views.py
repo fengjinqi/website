@@ -10,7 +10,7 @@ from django.contrib.auth.hashers import make_password
 from django.core import serializers
 from django.core.mail import send_mail
 from django.db.models import Q
-from django.http import Http404, HttpResponse,JsonResponse
+from django.http import Http404, HttpResponse, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect,reverse
 
 # Create your views here.
@@ -86,10 +86,16 @@ class CustomBackend(ModelBackend):
 
 
 def login_view(request):
+
     if request.method == 'GET':
-        return render(request,'pc/logoin.html')
+        next = request.GET.get('next')
+        if next:
+            return render(request,'pc/logoin.html',{'next':next})
+        else:
+            return render(request, 'pc/logoin.html')
     if request.method == 'POST':
         form = LoginForms(request.POST)
+        next = request.GET.get('next')
         if form.is_valid():
             telephone = form.cleaned_data.get('telephone')
             password = form.cleaned_data.get('password')
@@ -102,17 +108,24 @@ def login_view(request):
                         request.session.set_expiry(None)
                     else:
                         request.session.set_expiry(0)
-                    return JsonResponse({"code":200,"message":"","data":{}})
+                    if next:
+                        return HttpResponseRedirect(next)
+                        #return JsonResponse({"code": 200, "message": "", "data": {''}})
                     #return restful.result()
+                    else:
+                        return redirect(reverse('home'))
                 else:
-                    return JsonResponse({"code": 401, "message": "此账号暂未激活，请联系管理员", "data": {}})
+                    return render(request, 'pc/logoin.html', {'next': next,'error':'此账号暂未激活，请联系管理员'})
+                    #return JsonResponse({"code": 401, "message": "此账号暂未激活，请联系管理员", "data": {}})
                     #return restful.unauth(message='此账号暂无权限，请联系管理员')
             else:
-                return JsonResponse({"code": 400, "message": "账号或者密码错误", "data": {}})
+                return render(request, 'pc/logoin.html', {'next': next, 'error': '账号或者密码错误'})
+                #return JsonResponse({"code": 400, "message": "账号或者密码错误", "data": {}})
                 #return restful.params_error(message="手机号码或者密码错误")
         else:
             errors = form.get_errors()
-            return JsonResponse({"code":400,"message":"","data":errors})
+            return render(request, 'pc/logoin.html', {'next': next, 'error': errors})
+           # return JsonResponse({"code":400,"message":"","data":errors})
             #return restful.params_error(message=errors)
 
 def logout_view(request):

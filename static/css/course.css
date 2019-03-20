@@ -20,13 +20,14 @@ h1{
 }
 #main>.course>a>img{
     width: 100%;
-     -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    border-radius: 6px;
+     /*-webkit-border-radius: 6px;*/
+    /*-moz-border-radius: 6px;*/
+    /*border-radius: 6px;*/
+    vertical-align: middle;
 }
 .desc{
     padding: 15px;
-
+    background: #fff;
 }
 .desc p{
     font-weight: bold;
@@ -69,17 +70,17 @@ a:hover{
     border-radius: 3px;
 }
 .Catalog>ul>li{
-    height: 48px;
-    line-height: 48px;
+    height: 40px;
+    line-height: 40px;
     cursor: pointer;
-    padding:0 15px;
+    /*padding:0 15px;*/
 }
 .Catalog>ul>li:hover{
     color:#356dd0;
 }
 .content{
     width: 978px;
-    height: 500px;
+    /*height: 500px;*/
     background: #fff;
     border: 1px solid #ddd;
     -webkit-border-radius: 3px;

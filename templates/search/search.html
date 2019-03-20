@@ -15,11 +15,12 @@
                    <div class="blogs">
 
                 <div class="blogs_cont">
-                    <h3><span class="blogs_type">{{ result.object.category.name }}</span><a href="">{{ result.object.title }}</a></h3>
+
+                    <h3><span class="blogs_type">{{ result.object.category.name }}</span>    <a href="{% url 'article:detail' result.object.id %}">{{ result.object.title }}</a></h3>
                     <div class="blogs_foot">
                         <ul class="clearfix">
                             <li class="fl">
-                                 <a href="" class="clearfix">
+                                 <a href="{% url 'article:detail' result.object.id %}" class="clearfix">
                                      <span class="fl img_cover blogs_avatar" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></span>
                                      <span class="fl blogs_name">{{ result.object.authors.username }}</span>
                                  </a>
@@ -29,6 +30,7 @@
                             <li class="fl blogs_comment" style="background: url({% static 'img/comment.png' %})no-repeat 0 50%;">{{ result.object.get_number }}</li>
                         </ul>
                     </div>
+
                 </div>
             </div>
 
@@ -38,14 +40,24 @@
             <div class="no-post" style="margin-top: 15px;">没有搜索到你想要的结果！</div>
         {% endfor %}
         {% if page.has_previous or page.has_next %}
-            <div>
+             <div class="pageturn">
+           <ul class="pagination">
                 {% if page.has_previous %}
-                    <a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous
-                {% if page.has_previous %}</a>{% endif %}
-                |
-                {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next
-                &raquo;{% if page.has_next %}</a>{% endif %}
-            </div>
+                   <li> <a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">上一页</a></li>
+                {% else %}
+                      <li><span class="disabled next btn" disabled=""> 上一页</span></li>
+              {% endif %}
+
+
+                {% if page.has_next %}
+                    <li><a href="?q={{ query }}&amp;page={{ page.next_page_number }}">下一页</a></li>
+
+                {% else %}
+                     <li><span class="disabled next btn" disabled=""> 下一页</span></li>
+              {% endif %}
+           </ul>
+             </div>
+
         {% endif %}
     {% else %}
         请输入搜索关键词，例如 django

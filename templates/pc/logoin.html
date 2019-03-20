@@ -97,7 +97,7 @@
 
 <body>
 <div id="main">
-     <form class="form-inline">
+     <form class="form-inline" action="{% url 'index' %}?next={{ next }}" method="post">
          <div class="login-top">
 				登录
 			</div>
@@ -106,29 +106,30 @@
         <div class="input-group">
           <div class="input-group-addon"><i class="glyphicon glyphicon-user"></i></div>
             {% csrf_token %}
-          <input type="text" class="form-control" name="telephone" placeholder="请输入邮箱">
+          <input type="text" required class="form-control" name="telephone" placeholder="请输入邮箱">
         </div>
       </div>
        <div class="form-group login-center">
 
         <div class="input-group">
           <div class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></div>
-          <input type="password" class="form-control" name="password" placeholder="请输入密码">
+          <input type="password"required class="form-control" name="password" placeholder="请输入密码">
         </div>
             <div style="margin-top:20px;">
                 <input type="checkbox" name="remember" >记住我
            </div>
       </div>
 
-         <span class="error"></span>
-  <button type="button" class="btn login-button" id="login">登录</button>
+         <span class="error">{{ error }}</span>
+  <button type="submit" class="btn login-button" id="login">登录</button>
 </form>
     <p class="clearfix"><a class="fl" href="{% url 'user:retrieve ' %}">忘记密码?</a><a class="fr" href="{% url 'register' %}">注册</a></p>
 </div>
 
-	<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>  <script src="{% static 'js/jquery.cookie.min.js' %}"></script>
+	<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/jquery.cookie.min.js' %}"></script>
 <script>
-    $(function () {
+   /* $(function () {
     $("#login").on('click',function () {
         var tel = $("input[name='telephone']").val()
         var pass = $("input[name='password']").val()
@@ -140,8 +141,8 @@
             success:function (data) {
                 console.log(data)
                 if (data.code==200){
-
-                    window.location.href='/'
+console.log(data)
+                    //window.location.href='/'
                 }else {
                     $('.error').text('登录失败,请检查后再登录')
                 }
@@ -151,7 +152,7 @@
             }
         })
     })
-})
+})*/
 </script>
 </body>
 

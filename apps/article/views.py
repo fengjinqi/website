@@ -52,7 +52,6 @@ def Article_list(request):
         data={}
         #print(User.objects.filter(follow__follow__id=i['follow_id']))
         data['data']=User.objects.filter(follow__follow__id=i['follow_id']).distinct()
-        print(data)
         item.append(data)
     #print(item)
     try:
@@ -139,7 +138,7 @@ def api(request):
 
     # 前四天
     day = cur_date - datetime.timedelta(days=7)
-    print(day)
+
     # 查询前一周数据,也可以用range,我用的是glt,lte大于等于
     Headlines.objects.filter(add_time__lte=day).delete()
 
@@ -328,9 +327,9 @@ def Article_detail(request,article_id):
         article.save()
     except Exception:
         return Http404
-    print(id)
+
     content = Article.objects.filter(category_id=id).exclude(id=article_id).order_by('-click_nums')[:10]
-    print(content.annotate())
+    #print(content.annotate())
     return render(request,'pc/article_detail.html',{'article':article,'id':article_id,'content':content})
 
 

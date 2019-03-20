@@ -1,4 +1,6 @@
 {{ object.title }}
-{{ object.category }}
+{{ object.category.name }}
 {{ object.authors }}
 {{ object.keywords }}
+{{ object.desc }}
+{{ object.content }}

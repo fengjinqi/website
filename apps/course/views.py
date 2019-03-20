@@ -1,7 +1,7 @@
 import json
 
 from django.core.paginator import PageNotAnInteger
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse,HttpResponse
 # Create your views here.
 from django.views.generic.base import View
@@ -34,10 +34,12 @@ def Detail(request,course_id,list_id):
         我的文章目录就是所有的文章 ，但是我只渲染了title标题，右侧就渲染对应标题的内容
         现在问题是我懵逼了，貌似这个视图不能同时拿到uuid和id 只能二选一
     """
-    print(list_id)
     course_list = CourseList.objects.filter(course=course_id)#根据文章列表uuid查询对应的文章
     #course_list.filter(id='')#根据对应文章id 来获取对应的数据
-    return render(request,'pc/course/detail.html',{'course':course_list,'uuid':course_id})
+    content = get_object_or_404(course_list, pk=list_id)
+    previous_blog = course_list.filter(id__gt=list_id).first()
+    netx_blog = course_list.filter(id__lt=list_id).last()
+    return render(request,'pc/course/detail.html',{'course':course_list,'uuid':course_id,'content':content,'previous_blog':previous_blog,'netx_blog':netx_blog})
 
 
 def courseViewApi(request,courses_id):

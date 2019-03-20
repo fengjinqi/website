@@ -3,7 +3,12 @@
 {% block css %}
          <link rel="stylesheet" href="{% static 'markdown/css/editormd.css' %}" />
     <link rel="stylesheet" href="{% static 'css/course.css' %}">
-    <input type="text" value="{{uuid }}">
+    <input type="hidden" value="{{uuid }}">
+    <style>
+    .is_active{
+        background: red;
+    }
+    </style>
 {% endblock %}
 {% block link_js %}
 
@@ -22,9 +27,9 @@
 {% block content %}
     <div class="container clearfix">
         <div class="Catalog fl">
-            <ul>
+            <ul id="menu">
                 {% for foo in course %}
-                    <li><a href="{{ foo.id }}">{{ foo.titles }}</a></li>
+                    <li data-key="{{ foo.id }}"><a style="display: block;padding: 0 15px" href="/course/{{uuid }}/{{ foo.id }}.html">{{ foo.titles }}</a></li>
                 {% endfor %}
 
             </ul>
@@ -32,22 +37,39 @@
         <div class="content fr">
             <div class="pageNav clearfix">
                 <div class="fl">
-                    < 前一页
+                    {% if netx_blog %}
+                    <a style="display: block" href="/course/{{uuid }}/{{ netx_blog.id }}.html">< 前一页</a>
+                    {% else %}
+                    没有了
+                    {% endif %}
                 </div>
                 <div class="fr">
-                    后一页 >
+                    {% if previous_blog %}
+                    <a style="display: block" href="/course/{{uuid }}/{{ previous_blog.id }}.html">后一页 ></a>
+                        {% else %}
+                        没有了
+                    {% endif %}
+                </div>
 
-                </div>
-                 <div id="test-editormd-view2"style="padding: 20px 0">
-                <textarea id="append-test" name="test-editormd-markdown-doc" style="display:none;">{{ course.first.conent }}</textarea>
-                </div>
             </div>
+         <div id="test-editormd-view2"style="box-sizing: border-box;">
+                <textarea id="append-test" name="test-editormd-markdown-doc" style="display:none;">{{ content.conent}}</textarea>
+                </div>
         </div>
     </div>
 {% endblock %}
 {% block js %}
     <script>
+    var url = window.location.pathname.split('/');
+    var path = url[url.length-2];
+    var ias= path.replace(/[^0-9]/ig,"");
+        $('#menu li').each(function (index,item) {
+            if ($(item).attr('data-key') == ias){
+                $(item).addClass('is_active')
+            }
+        });
             $(function() {
+                //$('.content').css('height',$(document).body.height()+'px')
             var testEditormdView, testEditormdView2;
             testEditormdView2 = editormd.markdownToHTML("test-editormd-view2", {
                 htmlDecode      : "style,script,iframe",  // you can filter tags decode

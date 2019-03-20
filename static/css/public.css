@@ -49,7 +49,7 @@
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
-  background-color: #777;
+  background-color: red !important;
   border-radius: 10px;
 }
 #searchform{
@@ -190,12 +190,12 @@ nav>ul>li{
     height: 60px;
 }
 .avatar>a{
-    width: 32px;
-    height: 32px;
+    width: 48px;
+    height: 48px;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
-    margin-top:14px;
+    margin-top:6px;
 }
 .avatar{
     position: relative;

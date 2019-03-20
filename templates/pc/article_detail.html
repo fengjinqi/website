@@ -49,10 +49,10 @@
             <div class="comment">
                 <div class="comment-main clearfix">
                     <textarea  class="form-control" name="" id=""  rows="5"placeholder="来说点什么吧..."></textarea>
-                    <button class="btn btn-primary fr "onclick="mask(this)">评论</button>
+                    <button class="btn btn-primary fr " onclick="mask(this)">评论</button>
                     {% if request.user.is_authenticated  %}
                         {% else %}
-                         <div class="mask"><a href="{% url 'index' %}">未登录</a></div>
+                         <div class="mask"><a href="{% url 'index' %}?next={{ request.path }}">未登录</a></div>
                     {% endif %}
 
                 </div>
@@ -203,7 +203,7 @@
             var is_user = '{{ request.user.id }}';
 
             if(is_user==="None"){
-                window.location.href='/login'
+                window.location.href='/login?next='+'{{ request.path }}'
                 return false
             }else {
                 $(obj).after(html);
