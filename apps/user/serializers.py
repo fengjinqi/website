@@ -19,7 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id','username','mobile','user_imag','email','is_active','is_staff','is_superuser','info','position')
+        fields = ('id','username','mobile','user_imag','user_image','email','is_active','is_staff','is_superuser','info','position')
 
 
 class UserMessageSerializer(serializers.ModelSerializer):
