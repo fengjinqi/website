@@ -24,12 +24,12 @@ from apps.article.views import ArticleCreated
 from apps.course.views import CoursesList, CourseCreatedList, CourseListCreated
 from apps.support.views import LinkList, EmailsList, BannerList
 from apps.user.views import test, captcha_refresh, yan, login_view, UserGetInfo, UserGetAllInfo, \
-    PersonOthers, Register, active_user, get_message, UserMessages
+    PersonOthers, Register, active_user, get_message, UserMessages, qq, getClback, getClbackQQ
 from django.views.generic import TemplateView
 
 from website import settings
 from apps.article import views
-from apps.user.views import logout_view,Person,PersonApi
+from apps.user.views import logout_view, Person, PersonApi,to_login
 from rest_framework import routers
 
 router = routers.DefaultRouter()
@@ -43,9 +43,9 @@ router.register('comment_reply', views.ArticleCommentReplyView)
 router.register('PersonApi', PersonApi)
 router.register('info', UserGetInfo)
 router.register('all_info', UserGetAllInfo)
-#router.register('user_disbale', UserDisbale)
+# router.register('user_disbale', UserDisbale)
 router.register('PersonOthers', PersonOthers)
-router.register('UserMessages', UserMessages,base_name='UserMessages')
+router.register('UserMessages', UserMessages, base_name='UserMessages')
 router.register('article', ArticleCreated)
 router.register('courseList', CoursesList)
 router.register('course', CourseCreatedList)
@@ -54,31 +54,32 @@ router.register('BannerList', BannerList)
 router.register('EmailsList', EmailsList)
 router.register('LinkList', LinkList)
 
-
-
 urlpatterns = [
 
     path('admin/', admin.site.urls),
-    #path('',test), # 这是生成验证码的图片
+    # path('',test), # 这是生成验证码的图片
     url(r'^captcha/', include('captcha.urls')),
-    path('refresh/',captcha_refresh), # 这是生成验证码的图片
-    path('yan/',yan), # 这是生成验证码的图片
-    path('',views.Article_list,name='home'),
-    path('login/',login_view,name='index'),
-    path('info/',get_message,name='info'),
-    path('person/',include('apps.user.urls')),
-    path('logou/',logout_view,name='logou'),
-    path('register/',Register.as_view(),name='register'),
-    path('article/',include('apps.article.urls')),
-    path('course/',include('apps.course.urls')),
-    path('support/',include('apps.support.urls')),
-    url(r'^activate/(?P<token>\w+.[-_\w]*\w+.[-_\w]*\w+)/$',active_user,name='active_user'),
-    url(r'^search/', include('haystack.urls'),name='haystack_search'),
-
+    path('refresh/', captcha_refresh),  # 这是生成验证码的图片
+    path('yan/', yan),  # 这是生成验证码的图片
+    path('', views.Article_list, name='home'),
+    path('login/', login_view, name='index'),
+    path('info/', get_message, name='info'),
+    path('person/', include('apps.user.urls')),
+    path('logou/', logout_view, name='logou'),
+    path('register/', Register.as_view(), name='register'),
+    path('article/', include('apps.article.urls')),
+    path('course/', include('apps.course.urls')),
+    path('support/', include('apps.support.urls')),
+    url(r'^activate/(?P<token>\w+.[-_\w]*\w+.[-_\w]*\w+)/$', active_user, name='active_user'),
+    url(r'^search/', include('haystack.urls'), name='haystack_search'),
 
     re_path(r'^upload/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     url(r'api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    re_path(r'api/login/$', obtain_jwt_token),#jwt认证
-    #re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATI_ROOT})  # 配置文件上传html显示
+    re_path(r'api/login/$', obtain_jwt_token),  # jwt认证
+    url('auth-qq', to_login, name='qq-login'),
+    url('qq', qq, name='qq'),
+    url('callbackget', getClback, name='callbackget'),
+    url('getClbackQQ', getClbackQQ, name='getClbackQQ')
+    # re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATI_ROOT})  # 配置文件上传html显示
 ]

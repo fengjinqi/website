@@ -19,7 +19,11 @@
                          <div class="info_item clearfix"style="position: relative">
                              <label for="name">头像</label>
                              <a class="imgbox">
-                                 <span id="img3" class="info_img" style="background-image:url({{ MEDIA_URL }}{{user.user_imag }});"></span>
+                                 <span id="img3" class="info_img" style="background-image:url({% if user.user_imag  %}
+                                 {{ MEDIA_URL }}{{user.user_imag }}
+                                     {% else %}
+                                     {{user.user_image }}
+                                 {% endif %});"></span>
                               </a>
                          </div>
                          <div class="info_item clearfix">

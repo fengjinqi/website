@@ -65,7 +65,7 @@
     var ias= path.replace(/[^0-9]/ig,"");
         $('#menu li').each(function (index,item) {
             if ($(item).attr('data-key') == ias){
-                $(item).addClass('is_active')
+                $(item).find('a').addClass('is_active')
             }
         });
             $(function() {

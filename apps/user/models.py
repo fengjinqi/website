@@ -14,11 +14,28 @@ class User(AbstractUser):
     position = models.CharField(max_length=30,verbose_name='职位',default='',null=True,blank=True)
     info = models.CharField(max_length=100,verbose_name='个人介绍',default='',null=True,blank=True)
     user_imag = models.ImageField(upload_to='user/%Y%m%d',blank=True,null=True,default='',verbose_name='用户头像')
+    user_image = models.URLField(default='',null=True,blank=True)
     email = models.EmailField(unique=True,default='')
+
+    def get_qq(self):
+        if self.oauthqq_set.get(user=self):
+            return True
+        else:
+            return False
+
     class Meta:
         verbose_name='用户'
         verbose_name_plural=verbose_name
 
+
+class OAuthQQ(models.Model):
+    """QQ"""
+    id = models.UUIDField(primary_key=True,default=uuid.uuid4)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    #75247383A814E74901A95AA7D387142C
+    nickname = models.CharField(max_length=100)
+    qq_openid = models.CharField(max_length=100)
+    figureurl_qq = models.URLField()
 
 class Follows(models.Model):
     """关注表"""

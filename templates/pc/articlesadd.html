@@ -102,7 +102,6 @@
         form.append('content',testEditor.getMarkdown())
         form.append('csrfmiddlewaretoken','{{ csrf_token }}')
         form.append('category',category)
-        console.log(list_pic)
         $.ajax({
             url:'/article/created/',
             type:'post',
@@ -111,7 +110,7 @@
             processData:false,
             success:function (data) {
                 if(data.code==200){
-                    window.location.href=''
+                    window.location.href='{% url 'home' %}'
                 }
             },
         error:function (xhr) {

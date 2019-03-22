@@ -36,10 +36,13 @@
             <div class="aside_my_info">
                 <div style="text-align: center;">
                     <div class="my_head"style="
-                            {% if user.user_imag  %}background: url('{{ MEDIA_URL }}{{ user.user_imag  }}')no-repeat;background-size: cover;
+                    background: url({% if user.user_imag  %}{{ MEDIA_URL }}{{ user.user_imag  }}
                         {% else %}
-                        background: #000;
-                    {% endif %}"></div>
+                       {{ user.user_image }}
+                             {% endif %}
+                            )no-repeat;background-size: cover;background-color: #ccc;
+
+                   "></div>
                     <p style="margin:8px 0 4px 0">{{ user.username }}</p>
                     <span onclick="flollw('{{ user.id }}')">{% if is_active %}
                         已关注
@@ -111,7 +114,7 @@
                     for(var i=0;i<data.results.length;i++){
                         var currentItem = data.results[i];
                         currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:'/static/img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'
-
+                        currentItem.authors.user_imag= currentItem.authors.user_imag? currentItem.authors.user_imag: currentItem.authors.user_image
                         n.push(currentItem.article_comment_set.length);
                         for(var j=0,len=currentItem.article_comment_set.length;j<len;j++){
                             var currentChildItem = currentItem.article_comment_set[j];
@@ -131,8 +134,9 @@
                             "                                    <ul class=\"clearfix \">\n" +
                             "                                        <li class=\"fl\">\n" +
                             "                                             <a href=\"\" class=\"clearfix\">\n" +
-                            "                                                 <span class=\"fl img_cover blogs_avatar\" style=\"background: url('"+data.results[i].authors.user_imag+"')no-repeat\"></span>\n" +
-                            "                                                 <span class=\"fl blogs_name\">"+data.results[i].authors.username+"</span>\n" +
+                            "                                                 <span class=\"fl img_cover blogs_avatar\" style=\"background: url('"+data.results[i].authors.user_imag+"')no-repeat;background-color: #ccc;\"></span>\n" +
+                            "                                                 <span class=\"fl blogs_name\"style=\"white-space: nowrap;\n" +
+                            "    text-overflow: ellipsis;width: 108px;overflow: hidden;\">"+data.results[i].authors.username+"</span>\n" +
                             "                                             </a>\n" +
                             "                                         </li>\n" +
                             "                                        <li class=\"fl blogs_time\">发布于:"+data.results[i].add_time+"</li>\n" +
@@ -171,6 +175,7 @@
                                     for(var i=0;i<data.results.length;i++){
                                         var currentItem = data.results[i];
                                         currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:'/static/img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'
+                                         currentItem.authors.user_imag= currentItem.authors.user_imag? currentItem.authors.user_imag: currentItem.authors.user_image
                                         b.push(currentItem.article_comment_set.length);
                                         for(var j=0,len=currentItem.article_comment_set.length;j<len;j++){
                                             var currentChildItem = currentItem.article_comment_set[j];
@@ -190,8 +195,9 @@
                                             "                                    <ul class=\"clearfix \">\n" +
                                             "                                        <li class=\"fl\">\n" +
                                             "                                             <a href=\"\" class=\"clearfix\">\n" +
-                                            "                                                 <span class=\"fl img_cover blogs_avatar\" style=\"background: url('"+data.results[i].authors.user_imag+"')no-repeat\"></span>\n" +
-                                            "                                                 <span class=\"fl blogs_name\">"+data.results[i].authors.username+"</span>\n" +
+                                            "                                                 <span class=\"fl img_cover blogs_avatar\" style=\"background: url('"+data.results[i].authors.user_imag+"')no-repeat;background-color: #ccc;\"></span>\n" +
+                                            "                                                 <span class=\"fl blogs_name\"  style=\"white-space: nowrap;\n" +
+                                            "    text-overflow: ellipsis;width: 108px;overflow: hidden;\">"+data.results[i].authors.username+"</span>\n" +
                                             "                                             </a>\n" +
                                             "                                         </li>\n" +
                                             "                                        <li class=\"fl blogs_time\">发布于:"+data.results[i].add_time+"</li>\n" +
@@ -235,7 +241,7 @@
                         for(var i=0;i<data.results.length;i++){
                             var currentItem = data.results[i];
                             currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:'/static/img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'
-
+                            currentItem.authors.user_imag= currentItem.authors.user_imag? currentItem.authors.user_imag: currentItem.authors.user_image
                             n.push(currentItem.article_comment_set.length);
                             for(var j=0,len=currentItem.article_comment_set.length;j<len;j++){
                                 var currentChildItem = currentItem.article_comment_set[j];
@@ -255,8 +261,10 @@
                                 "                                    <ul class=\"clearfix \">\n" +
                                 "                                        <li class=\"fl\">\n" +
                                 "                                             <a href=\"\" class=\"clearfix\">\n" +
-                                "                                                 <span class=\"fl img_cover blogs_avatar\" style=\"background: url('"+data.results[i].authors.user_imag+"')no-repeat\"></span>\n" +
-                                "                                                 <span class=\"fl blogs_name\">"+data.results[i].authors.username+"</span>\n" +
+                                "                                                 <span class=\"fl img_cover blogs_avatar\" style=\"background: url('"+data.results[i].authors.user_imag+"')no-repeat;background-color: #ccc;\"></span>\n" +
+                                "                                                 <span class=\"fl blogs_name\" style=\"white-space: nowrap;\n" +
+                                "    text-overflow: ellipsis;width: 108px;overflow: hidden;\"style=\"white-space: nowrap;\n" +
+                                "    text-overflow: ellipsis;width: 108px;overflow: hidden;\">"+data.results[i].authors.username+"</span>\n" +
                                 "                                             </a>\n" +
                                 "                                         </li>\n" +
                                 "                                        <li class=\"fl blogs_time\">发布于:"+data.results[i].add_time+"</li>\n" +
@@ -297,7 +305,7 @@
                                         for(var i=0;i<data.results.length;i++){
                                             var currentItem = data.results[i];
                                             currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:'/static/img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'
-
+                                            currentItem.authors.user_imag= currentItem.authors.user_imag? currentItem.authors.user_imag: currentItem.authors.user_image
                                             b.push(currentItem.article_comment_set.length);
                                             for(var j=0,len=currentItem.article_comment_set.length;j<len;j++){
                                                 var currentChildItem = currentItem.article_comment_set[j];
@@ -319,8 +327,9 @@
                                                 "                                    <ul class=\"clearfix \">\n" +
                                                 "                                        <li class=\"fl\">\n" +
                                                 "                                             <a href=\"\" class=\"clearfix\">\n" +
-                                                "                                                 <span class=\"fl img_cover blogs_avatar\" style=\"background: url('"+data.results[i].authors.user_imag+"')no-repeat\"></span>\n" +
-                                                "                                                 <span class=\"fl blogs_name\">"+data.results[i].authors.username+"</span>\n" +
+                                                "                                                 <span class=\"fl img_cover blogs_avatar\" style=\"background: url('"+data.results[i].authors.user_imag+"')no-repeat;background-color: #ccc;\"></span>\n" +
+                                                "                                                 <span class=\"fl blogs_name\"style=\"white-space: nowrap;\n" +
+                                                "    text-overflow: ellipsis;width: 108px;overflow: hidden;\">"+data.results[i].authors.username+"</span>\n" +
                                                 "                                             </a>\n" +
                                                 "                                         </li>\n" +
                                                 "                                        <li class=\"fl blogs_time\">发布于:"+data.results[i].add_time+"</li>\n" +

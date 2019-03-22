@@ -48,8 +48,12 @@
             <div class="social-share"></div>
             <div class="comment">
                 <div class="comment-main clearfix">
-                    <textarea  class="form-control" name="" id=""  rows="5"placeholder="来说点什么吧..."></textarea>
-                    <button class="btn btn-primary fr " onclick="mask(this)">评论</button>
+                    <textarea  class="form-control" name="" id=""{% if request.user.is_authenticated  %}{% else %}disabled{% endif %}  rows="5" placeholder="来说点什么吧..."> </textarea>
+                    <button class="btn btn-primary fr "{% if request.user.is_authenticated %}
+                    onclick="mask(this)"
+                            {% else %}
+                            disabled
+                    {% endif %} >评论</button>
                     {% if request.user.is_authenticated  %}
                         {% else %}
                          <div class="mask"><a href="{% url 'index' %}?next={{ request.path }}">未登录</a></div>
@@ -77,7 +81,7 @@
                             <div class="img-corner"><img src="{% if foo.user.user_imag %}
                                 {{ MEDIA_URL }}{{  foo.user.user_imag}}
                                 {% else %}
-                                http://0d077ef9e74d8.cdn.sohucs.com/c_zoom,w_200/fac494264beff70ed91fedf32783552b_default_1449555978993_jpg
+                                {{ foo.user.user_image }}
                             {% endif %}" alt=""></div>
                             <div class="list-text">
                                 <div class="list-person clearfix"><div class="fl" data-id="{{ foo.user.id }}"><a href="{% url 'user:ProfileOthers' foo.user.id%}">{{ foo.user.username }}</a> {{ foo.address }}</div> <p class="fr">{{ foo.add_time }}</p></div>
@@ -89,7 +93,7 @@
                                     {% if childr.user.user_imag %}
                                         {{ MEDIA_URL }}{{ childr.user.user_imag }}
                                         {% else %}
-                                                            http://0d077ef9e74d8.cdn.sohucs.com/c_zoom,w_200/fac494264beff70ed91fedf32783552b_default_1449555978993_jpg
+                                                  {{ foo.user.user_image }}
                                     {% endif %}
 
                             " alt="" ></div>
@@ -108,54 +112,6 @@
                         暂无评论。。
                     {% endfor %}
 
-
-
-{#                        <div class="list-main">#}
-{#                            <div class="img-corner">#}
-{#                                <img src="http://0d077ef9e74d8.cdn.sohucs.com/c_zoom,w_200/fac494264beff70ed91fedf32783552b_default_1449555978993_jpg" alt="">#}
-{#                            </div>#}
-{#                            <div class="list-text">#}
-{#                                <div class="list-person clearfix">#}
-{#                                    <div class="fl"><a href="">瓜婆娘1</a> 四川省成都市</div> <p class="fr">2018:12:12</p>#}
-{#                                </div>#}
-{#                                <p class="text-con">SystemError: error return without exception set#}
-{#[27/Dec/2018 13:50:50] "GET /static/css/article_detail.css HTTP/1.1" 200 2798#}
-{#[27/Dec/2018 13:50:50] "GET /static/js/swiper.min.js.map HTTP/1.1" 404 1684#}
-{#Exception ignored in: < generator object get_finders at 0x00000225996E6A98></p>#}
-{#                                <p class="fr"onclick="establish(this)">回复 </p>#}
-{#                                <div class="reply-list">#}
-{#                                    <div class="img-corner"><img src="http://0d077ef9e74d8.cdn.sohucs.com/c_zoom,w_200/fac494264beff70ed91fedf32783552b_default_1449555978993_jpg" alt=""></div>#}
-{#                                    <div class="list-text">#}
-{#                                        <div class="list-person clearfix">#}
-{#                                            <div class="fl"><a href="">二老婆</a>回复<a href="">瓜婆娘</a> 四川省成都市</div> <p class="fr">2018:12:12</p>#}
-{#                                        </div>#}
-{#                                        <p class="text-con">SystemError: error return without exception set#}
-{#        [27/Dec/2018 13:50:50] "GET /static/css/article_detail.css HTTP/1.1" 200 2798#}
-{#        [27/Dec/2018 13:50:50] "GET /static/js/swiper.min.js.map HTTP/1.1" 404 1684#}
-{#        Exception ignored in: &lt; generator object get_finders at 0x00000225996E6A98&gt;</p>#}
-{#                                        <p class="fr"onclick="establish(this)">回复 </p>#}
-{##}
-{#                                </div>#}
-{##}
-{#                            </div>#}
-{#                                 <div class="reply-list">#}
-{#                                    <div class="img-corner"><img src="http://0d077ef9e74d8.cdn.sohucs.com/c_zoom,w_200/fac494264beff70ed91fedf32783552b_default_1449555978993_jpg" alt=""></div>#}
-{#                                    <div class="list-text">#}
-{#                                        <div class="list-person clearfix">#}
-{#                                            <div class="fl"><a href="">三老婆</a>回复<a href="">二老婆</a> 四川省成都市</div> <p class="fr">2018:12:12</p>#}
-{#                                        </div>#}
-{#                                        <p class="text-con">SystemError: error return without exception set#}
-{#        [27/Dec/2018 13:50:50] "GET /static/css/article_detail.css HTTP/1.1" 200 2798#}
-{#        [27/Dec/2018 13:50:50] "GET /static/js/swiper.min.js.map HTTP/1.1" 404 1684#}
-{#        Exception ignored in: &lt; generator object get_finders at 0x00000225996E6A98&gt;</p>#}
-{#                                        <p class="fr"onclick="establish(this)">回复 </p>#}
-{##}
-{##}
-{#                                </div>#}
-{##}
-{#                            </div>#}
-{#                        </div>#}
-{#                        </div>#}
                     </div>
 
 
@@ -190,7 +146,6 @@
     <script src="{% static 'js/index.js' %}"></script>
     <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 
-
     <script>
 
     html="<div class='clearfix text'><textarea name=''class='form-control' rows='5'></textarea><button class='btn btn-primary fr 'onclick=\"masks(this)\">评论</button></div>";
@@ -201,14 +156,12 @@
             catch (e) {
             }
             var is_user = '{{ request.user.id }}';
-
             if(is_user==="None"){
                 window.location.href='/login?next='+'{{ request.path }}'
                 return false
             }else {
                 $(obj).after(html);
             }
-            console.log(is_user!=='None')
 
         }
 
@@ -218,22 +171,12 @@
                 alert('你没有填写')
                 return false
             }
-            var data = new  Object()
+            var data = new Object()
             data.article = $("input[name='hidden']").val()
             data.comments = $(obj).prev().val()
             data.user = '{{ request.user.id }}'
             data.cip = returnCitySN['cip']
             data.address = returnCitySN['cname']
-             var html=`
-     <div class="list-main">
-                    <div class="img-corner"><img src="http://0d077ef9e74d8.cdn.sohucs.com/c_zoom,w_200/fac494264beff70ed91fedf32783552b_default_1449555978993_jpg" alt=""></div>
-                    <div class="list-text">
-                        <div class="list-person clearfix"><div class="fl"><a href="">${data.user}</a> ${data.cname}</div> <p class="fr"></p></div>
-                        <p class="text-con">${data.comments}</p>
-                        <p class="fr"onclick="establish(this)">回复 </p>
-                    </div>
-                </div>
-            `
             $.ajax({
                 url:'/api/article_Comment/',
                 type:'post',
@@ -257,8 +200,7 @@
                 alert('你没有填写')
                 return false
             }
-            console.log(returnCitySN)
-            var data = new  Object()
+            var data = new Object()
 
             data.comments = $(obj).prev().val()
             data.user = '{{ request.user.id }}'
@@ -267,20 +209,6 @@
             data.to_uids =$(obj).parent().parent().find('div.fl').attr('data-id')
             data.aomments_id =$(obj).parent().parent().find('.to').attr('data-id')
             console.log(data)
-            var html=`
-              <div class="reply-list">
-                                    <div class="img-corner"><img src="http://0d077ef9e74d8.cdn.sohucs.com/c_zoom,w_200/fac494264beff70ed91fedf32783552b_default_1449555978993_jpg" alt=""></div>
-                                    <div class="list-text">
-                                        <div class="list-person clearfix">
-                                            <div class="fl"><a href="">${data.user}</a>回复<a href="">瓜婆娘</a> ${data.cname}</div> <p class="fr"></p>
-                                        </div>
-                                        <p class="text-con">${data.conent}</p>
-                                        <p class="fr"onclick="establish(this)">回复 </p>
-
-                                </div>
-
-                            </div>
-            `
              $.ajax({
                 url:'/api/comment_reply/',
                 type:'post',

@@ -23,4 +23,5 @@ urlpatterns = [
   path('Guan/', views.Guan, name='Guan'),
   path('retrieveEmail/', views.RetrieveEmail.as_view(), name='retrieveEmail'),
   path('message/', views.message, name='message'),
+  path('bindingQQ/', views.bindingQQ, name='bindingQQ'),
 ]

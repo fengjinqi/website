@@ -230,6 +230,7 @@
             data:{id:id},
             headers:{'X-CSRFToken':$.cookie('csrftoken')},
             success:function (msg) {
+                $('span.badge').first().text($('span.badge').first().text()-1)
                 $('.meun .badge').text($('.meun .badge').text()-1);
                 $(obj).parents('li').remove()
             }

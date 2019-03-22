@@ -1,5 +1,6 @@
 import json
 import time
+from configparser import ConfigParser
 from datetime import datetime
 
 from captcha.helpers import captcha_image_url
@@ -11,7 +12,7 @@ from django.core import serializers
 from django.core.mail import send_mail
 from django.db.models import Q
 from django.http import Http404, HttpResponse, JsonResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect,reverse
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 
 # Create your views here.
 
@@ -36,7 +37,7 @@ from apps.uitls.EmailToken import token_confirm
 from apps.uitls.jsonserializable import DateEncoder
 from apps.uitls.permissions import IsOwnerOrReadOnly
 from apps.user.filter import CategoryFilter
-from apps.user.models import User, Follows, VerifyCode, UserMessage
+from apps.user.models import User, Follows, VerifyCode, UserMessage, OAuthQQ
 from apps.user.serializers import UserSerializer, UserMessageSerializer
 from website import settings
 from .forms import CaptchaTestForm, LoginForms, Follow_Forms, RegisterForm, ModifyForm, EmailForm, InfoForm
@@ -86,7 +87,6 @@ class CustomBackend(ModelBackend):
 
 
 def login_view(request):
-
     if request.method == 'GET':
         next = request.GET.get('next')
         if next:
@@ -502,6 +502,7 @@ class PersonApiabstohr(viewsets.ReadOnlyModelViewSet):
     pagination_class = StandardResultsSetPagination
 
 
+
 class PersonApi(PersonApiabstohr):
     """
     个人中心
@@ -653,3 +654,191 @@ class UserMessages(mixins.ListModelMixin,mixins.DestroyModelMixin,mixins.UpdateM
 
                 return Response(serializer.data)
 
+
+
+
+
+
+
+
+
+import random
+from django.shortcuts import HttpResponseRedirect
+from urllib import parse
+from urllib import request as req
+import re
+def to_login(request):
+    """
+    获取授权回调地址
+    :param request:
+    :return:
+    """
+    state = str(random.randrange(100000, 999999))  # 定义一个随机状态码，防止跨域伪造攻击。
+    request.session['state'] = state  # 将随机状态码存入Session，用于授权信息返回时验证。
+    client_id = '101532677'  # QQ互联中网站应用的APP ID。
+    callback = parse.urlencode({'redirect_uri': 'http://www.fengjinqi.com:8000/qq'})
+    # 对回调地址进行编码，用户同意授权后将调用此链接。
+    login_url = 'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=%s&%s&state=%s' % (
+        client_id, callback, state)  # 组织QQ第三方登录链接
+    return HttpResponseRedirect(login_url)  # 重定向到QQ第三方登录授权页面
+
+
+
+
+
+def parse_jsonp(jsonp_str):
+    """
+    解析返回数据
+    :param jsonp_str:
+    :return:
+    """
+    try:
+        return re.search('^[^(]*?\((.*)\)[^)]*$', jsonp_str).group(1)
+    except:
+        raise ValueError('无效数据！')
+
+conf = ConfigParser()
+conf.read('config.ini')
+
+
+
+
+def qq(request):
+    """
+    快捷qq登录获取token
+    :param request:
+    :return:
+    """
+    if request.session['state'] == request.GET['state']:  # 验证状态码，防止跨域伪造攻击。
+        code = request.GET['code']  # 获取用户授权码
+        client_id = conf.get('QQ','client_id')  # QQ互联中网站应用的APP ID。
+        client_secret = conf.get('QQ','key')  # QQ互联中网站应用的APP Key。
+        callback = parse.urlencode({'redirect_uri': 'http://www.fengjinqi.com:8000/qq'})
+        # 对回调地址进行编码，用户同意授权后将调用此链接。
+        login_url = 'https://graph.qq.com/oauth2.0/token?grant_type=authorization_code&code=%s&client_id=%s&client_secret=%s&%s' % (
+            code, client_id, client_secret, callback)  # 组织获取访问令牌的链接
+        response = req.urlopen(login_url).read().decode()  # 打开获取访问令牌的链接
+        try:
+            #TODO 通过访问令牌获取QQ用户的openid
+            access_token = re.split('&', response)[0]  # 获取访问令牌
+            res = req.urlopen('https://graph.qq.com/oauth2.0/me?' + access_token).read().decode()  # 打开获取openid的链接
+            openid = json.loads(parse_jsonp(res))['openid']  # 从返回数据中获取openid
+            userinfo = req.urlopen('https://graph.qq.com/user/get_user_info?oauth_consumer_key=%s&openid=%s&%s' % (
+                client_id, openid, access_token)).read().decode()  # 打开获取用户信息的链接
+            userinfo = json.loads(userinfo)  # 将返回的用户信息数据（JSON格式）读取为字典。
+            figureurl_qq_1 = userinfo['figureurl_qq_1']#新用户头像
+            nickname = userinfo['nickname']
+            authqq = OAuthQQ.objects.filter(qq_openid=openid)
+            if not authqq:
+                return render(request,'pc/qqregister.html',{'openid':openid,'figureurl_qq_1':figureurl_qq_1,'nickname':nickname})
+            else:
+                user = authqq[0].user
+                login(request, user)
+                return HttpResponseRedirect(reverse('home'))
+        except Exception :
+             raise ValueError('user不存在请联系管理员')
+    else:
+        raise ValueError('授权失败,请稍后重试')
+
+
+
+def getClbackQQ(request):
+    """
+    获取授权回调地址
+    :param request:
+    :return:
+    """
+    state = str(random.randrange(100000, 999999))  # 定义一个随机状态码，防止跨域伪造攻击。
+    request.session['state'] = state  # 将随机状态码存入Session，用于授权信息返回时验证。
+    client_id = '101532677'  # QQ互联中网站应用的APP ID。
+    callback = parse.urlencode({'redirect_uri': 'http://www.fengjinqi.com:8000/callbackget'})
+    # 对回调地址进行编码，用户同意授权后将调用此链接。
+    login_url = 'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=%s&%s&state=%s' % (
+        client_id, callback, state)  # 组织QQ第三方登录链接
+    return HttpResponseRedirect(login_url)  # 重定向到QQ第三方登录授权页面
+
+
+
+def getClback(request):
+    """
+    获取token
+    :param request:
+    :return:
+    """
+    if request.session['state'] == request.GET['state']:  # 验证状态码，防止跨域伪造攻击。
+        code = request.GET['code']  # 获取用户授权码
+        client_id = conf.get('QQ','client_id')  # QQ互联中网站应用的APP ID。
+        client_secret = conf.get('QQ','key')  # QQ互联中网站应用的APP Key。
+        callback = parse.urlencode({'redirect_uri': 'http://www.fengjinqi.com:8000/callbackget'})
+        # 对回调地址进行编码，用户同意授权后将调用此链接。
+        login_url = 'https://graph.qq.com/oauth2.0/token?grant_type=authorization_code&code=%s&client_id=%s&client_secret=%s&%s' % (
+            code, client_id, client_secret, callback)  # 组织获取访问令牌的链接
+        response = req.urlopen(login_url).read().decode()  # 打开获取访问令牌的链接
+        try:
+            #TODO 通过访问令牌获取QQ用户的openid
+            access_token = re.split('&', response)[0]  # 获取访问令牌
+            res = req.urlopen('https://graph.qq.com/oauth2.0/me?' + access_token).read().decode()  # 打开获取openid的链接
+            openid = json.loads(parse_jsonp(res))['openid']  # 从返回数据中获取openid
+            userinfo = req.urlopen('https://graph.qq.com/user/get_user_info?oauth_consumer_key=%s&openid=%s&%s' % (
+                client_id, openid, access_token)).read().decode()  # 打开获取用户信息的链接
+            userinfo = json.loads(userinfo)  # 将返回的用户信息数据（JSON格式）读取为字典。
+            figureurl_qq_1 = userinfo['figureurl_qq_1']#新用户头像
+            nickname = userinfo['nickname']
+            print(userinfo)
+            authqq = OAuthQQ.objects.filter(qq_openid=openid)
+
+            if authqq.exists():
+                raise ValueError('qq已绑定')
+            else:
+                OAuthQQ.objects.create(qq_openid=openid,nickname=nickname,user_id=request.user.id)
+                return HttpResponseRedirect(reverse('home'))
+        except Exception :
+             raise ValueError('user不存在请联系管理员')
+    else:
+        raise ValueError('授权失败,请稍后重试')
+
+
+def bindingQQ(request):
+    """
+    QQ 注册账号
+    :param request:
+    :return:
+    """
+    if request.method == 'POST':
+        openid = request.POST.get('openid')
+        figureurl_qq_1 = request.POST.get('figureurl_qq_1')
+        nickname = request.POST.get('nickname')
+        password = request.POST.get('password')
+        password1 = request.POST.get('password1')
+        email = request.POST.get('email')
+        if password!=password1:
+            return render(request, 'pc/qqregister.html',
+                          {'openid': openid, 'figureurl_qq_1': figureurl_qq_1, 'nickname': nickname, 'error': '两次密码不一致'})
+        else:
+            User.objects.filter(email=email).exists()
+            if User.objects.filter(email=email).exists():
+                return render(request,'pc/qqregister.html',{'openid':openid,'figureurl_qq_1':figureurl_qq_1,'nickname':nickname,'error':'邮箱已存在'})
+            else:
+                user = User()
+                user.username = nickname
+                user.email = email
+                user.user_image = figureurl_qq_1
+                user.password = make_password(password1)
+                user.save()
+                qq = OAuthQQ()
+                user_id =  get_object_or_404(User,email=email).id
+                qq.user_id = user_id
+                msg = UserMessage()
+                msg.user_id = user_id
+                msg.to_user = User.objects.get(username='admin')
+                msg.message = '欢迎加入本站,在使用过程中有什么疑问,请联系管理员'
+                msg.has_read = False
+                msg.is_supper = True
+                msg.save()
+                qq.qq_openid = openid
+                qq.nickname = nickname
+                qq.figureurl_qq=figureurl_qq_1
+                qq.save()
+                user = authenticate(request,username=email,password=password)
+                login(request,user)
+                return HttpResponseRedirect(reverse('home'))

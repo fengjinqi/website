@@ -11,6 +11,12 @@ body{
 article{
     margin: 15px 0;
 }
+a:hover{
+    color: #356dd0!important;
+}
+a{
+    text-decoration: none!important;
+}
 .swiper-slide h4 a{
     color: #666;
 }
@@ -56,14 +62,15 @@ button.fr{
 .mask{
     position: absolute;
     top: 0;
-    left: 0;
+    left: 50%;
     bottom: 0;
+    margin-left: -50px;
     right: 0;
     color: #333;
     text-align: center;
-    width: 100%;
-    height: 100%;
-    background: rgba(9,9,9,.1);;
+    width: 100px;
+    height: 114px;
+    /*background: rgba(9,9,9,.1);;*/
 }
 .mask a{
     line-height: 114px;
@@ -159,7 +166,7 @@ button.fr{
     display: flex;
     border-top: 1px dashed #ccc;
     width: 100%;
-    border-left: 2px solid #ccc;
+    border-left: 1px solid #ccc;
     padding: 15px 0;
 }
 .text-con{

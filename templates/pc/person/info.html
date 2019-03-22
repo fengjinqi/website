@@ -24,7 +24,10 @@
 {#                             <input type="file" id="file">#}
                               <!--规定上传的文件只能是图片-->
                              <a class="imgbox">
-                                 <span id="img3" class="info_img" style="background-image:url({{ MEDIA_URL }}{{ request.user.user_imag }});" onclick="fileCliick()"></span>
+                                 <span id="img3" class="info_img" style="background-image:url({% if request.user.user_imag  %}
+                                 {{ MEDIA_URL }}{{ request.user.user_imag }}
+                                     {% else %}{{ request.user.user_image }}
+                                 {% endif %});background-color: #ccc;" onclick="fileCliick()"></span>
                                   <input type="file" id="file" class="filepath"   onchange="changepic(this)" accept="image/jpg,image/jpeg,image/png,image/PNG">
                              </a>
                          </div>
@@ -36,6 +39,17 @@
 {#                             <label for="name">手机号</label>#}
 {#                             <input type="text" name="mobile"class="val origin" value="{{ user.mobile }}" disabled>#}
 {#                         </div>#}
+                      <div class="info_item clearfix">
+                             <label for="name">QQ</label>
+                                {% if user.get_qq %}
+                                <p>已绑定</p>
+                                    {% else %}
+                                    <a href="{% url 'getClbackQQ' %}" style="text-align: left;
+    float: none;
+    width: 30%;
+    padding: 0 12px;margin: 5px;color: #356dd0;">未绑定(绑定后可QQ便捷登录)</a>
+                                {% endif %}
+                             </div>
                          <div class="info_item clearfix">
                              <label for="name">职位</label>
                                  <input type="text" name="position"class="val origin" value="{{ user.position }}"disabled>

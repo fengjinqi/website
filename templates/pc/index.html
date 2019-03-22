@@ -60,13 +60,13 @@
                             <ul class="clearfix">
                                 <li class="fl">
                                      <a href="{% url 'user:author_detaile' articles.authors.id %}" class="clearfix">
-                                         <span class="fl img_cover blogs_avatar" style="background: url(
-                                         {% if articles.authors.user_imag%}
+                                         <span class="fl img_cover blogs_avatar" style="background: url({% if articles.authors.user_imag%}
                             {{ MEDIA_URL }}{{ articles.authors.user_imag }}
                             {% else %}
-                            http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg
-                        {% endif %})no-repeat"></span>
-                                         <span class="fl blogs_name">{{ articles.authors.username }}</span>
+                            {{ articles.authors.user_image }}
+                        {% endif %})no-repeat;background-color: #ccc;"></span>
+                                         <span class="fl blogs_name" style="white-space: nowrap;
+    text-overflow: ellipsis;width: 108px;overflow: hidden;">{{ articles.authors.username }}</span>
                                      </a>
                                  </li>
                                 <li class="fl blogs_time">发布于：{{ articles.add_time }}</li>

@@ -22,10 +22,10 @@
                                  <dl class="clearfix">
                                      <dt class="fl">
                                          <a target="_blank" title="" href="{% url 'user:author_detaile' foo.id %}">
-                                            <img class="follow_item_img" width="50" height="50" alt="" src="{% if foo.user_imag %}
+                                            <img class="follow_item_img" style="background-color: #ccc;" width="50" height="50" alt="" src="{% if foo.user_imag %}
                                             {{ MEDIA_URL }}{{ foo.user_imag }}
                                             {% else %}
-                                            {% static 'img/logo.png' %}
+                                            {{ foo.user_image }}
                                             {% endif %}">
                                          </a>
                                      </dt>
@@ -50,10 +50,10 @@
                                  <dl class="clearfix">
                                      <dt class="fl">
                                          <a target="_blank" title="" href="{% url 'user:author_detaile' foo.id %}">
-                                            <img class="follow_item_img" width="50" height="50" alt="" src="{% if foo.user_imag %}
+                                            <img class="follow_item_img" width="50" height="50" style="background-color: #ccc;" alt="" src="{% if foo.user_imag %}
                                             {{ MEDIA_URL }}{{ foo.user_imag }}
                                             {% else %}
-                                            {% static 'img/logo.png' %}
+                                            {{ foo.user_image }}
                                             {% endif %}">
                                          </a>
                                      </dt>

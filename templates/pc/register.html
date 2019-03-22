@@ -209,14 +209,22 @@
                     validators: {
                         notEmpty: {
                             message: '不能为空'
-                        }
+                        },
+                         identical: {//相同
+                         field: 'password', //需要进行比较的input name值
+                         message: '两次密码不一致'
+                     },
                     }
                 },
                 password1: {
                     validators: {
                         notEmpty: {
                             message: '不能为空'
-                        }
+                        },
+                         identical: {//相同
+                         field: 'password', //需要进行比较的input name值
+                         message: '两次密码不一致'
+                     },
                     }
                 },
                 captcha: {

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+{% load static %}
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>绑定邮箱</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="shortcut icon" href="{% static 'img/logo.png' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrapValidator.min.css' %}">
+    <style>
+        body{
+            width: 100%;
+            height: calc(100vh - 100px);
+            background: url("{% static 'img/bg-01.jpg' %}")no-repeat;
+            background-size: cover;
+        }
+        #main{
+            position: fixed;
+            width: 395px;
+            background: #fff;
+            border: 1px solid #ccc;
+            top: 50%;
+            left: 50%;
+            margin-top: -240px;
+            margin-left: -197.5px;
+            box-shadow: 0px 0px 5px #333333;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+        }
+        .has-feedback .form-control {
+            padding-right: 12px;
+        }
+        .input-group{
+            width: 100%;
+        }
+.login-top {
+    font-size: 24px;
+    margin-top: 30px;
+    padding-left: 40px;
+    box-sizing: border-box;
+    color: #333333;
+    margin-bottom: 20px;
+}
+.login-center {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 40px;
+    margin-bottom: 20px!important;
+}
+.login-button {
+    cursor: pointer;
+    width: 313px;
+    text-align: center;
+    height: 40px;
+    background-color: dodgerblue;
+    border-radius: 5px;
+    margin: 0 40px;
+    color: white;
+}
+        .login-button:hover{
+            color: white;
+        }
+    {#    p{#}
+    {#       width: 370px;#}
+    {#padding: 20px 40px;#}
+    {#display: flex;#}
+    {#justify-content: space-between;#}
+    {#    }#}
+        a{
+            text-decoration: none;
+            color: #333;
+        }
+        a:hover{
+            text-decoration: none;
+            color: #333;
+        }
+        .error{
+            font-size: 14px;
+            color: red;
+           position: relative;
+            left: 40px;
+            top: -10px;
+        }
+        #main>p{
+            margin: 20px 40px;
+        }
+        #main>p>.fl{
+            float: left;
+        }
+        #main>p>.fr{
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+<div id="main">
+     <form class="form-inline" id="defaultForm" action="{% url 'user:bindingQQ' %}" method="post">
+         {% csrf_token %}
+         <div class="login-top">
+				绑定邮箱
+			</div>
+
+         <div class="form-group login-center">
+ <input type="hidden" name="openid" value="{{ openid }}">
+            <input type="hidden" name="figureurl_qq_1" value="{{ figureurl_qq_1 }}">
+          <input type="hidden" name="nickname" value="{{ nickname }}">
+        <div class="input-group">
+          <div class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></div>
+          <input type="email" class="form-control verification" name="email" placeholder="请输入邮箱" required >
+        </div>
+      </div>
+
+
+         <input type="hidden" id="hidden">
+       <div class="form-group login-center">
+
+        <div class="input-group">
+          <div class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></div>
+          <input type="password" class="form-control verification" name="password" minlength="6" required placeholder="请输入密码">
+        </div>
+      </div>
+         <div class="form-group login-center">
+
+            <div class="input-group ">
+              <div class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></div>
+              <input type="password" class="form-control verification" name="password1" minlength="6" required placeholder="请确认密码">
+            </div>
+      </div>
+        <p class="errors"><span class="error">{{ error }}</span></p>
+         <input type="submit" value="注册" class="btn login-button ">
+
+</form>
+    <p class="clearfix">
+        <a class="fl" href="/login">已有账号?立即登录</a>
+        <a class="fr" href="{% url 'home' %}">首页</a>
+    </p>
+</div>
+
+	<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'js/bootstrapValidator.min.js' %}"></script>
+	<script src="{% static 'js/language/zh_CN.js' %}"></script>
+<script src="{% static 'js/jquery.cookie.min.js' %}"></script>
+ <script src="{% static 'js/promise.min.js' %}"></script>
+    <script src="{% static 'js/sweetalert.min.js' %}"></script>
+<script>
+       $('#defaultForm')
+        .bootstrapValidator({
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                email: {
+                    validators: {
+                        notEmpty: {
+                            message: '不能为空'
+                        },
+                        emailAddress: {
+                            message: '请输入正确邮箱'
+                        }
+                    }
+                },
+                password: {
+                    validators: {
+                        notEmpty: {
+                            message: '不能为空'
+                        },
+                        identical: {//相同
+                         field: 'password', //需要进行比较的input name值
+                         message: '两次密码不一致'
+                     },
+                    }
+                },
+                password1: {
+                    validators: {
+                        notEmpty: {
+                            message: '不能为空'
+                        },
+                        identical: {//相同
+                         field: 'password', //需要进行比较的input name值
+                         message: '两次密码不一致'
+                     },
+                    }
+                },
+            }
+        });
+</script>
+</body>
+
+</html>

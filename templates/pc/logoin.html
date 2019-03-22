@@ -8,6 +8,7 @@
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
 	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="shortcut icon" href="{% static 'img/logo.png' %}">
     <style>
         body{
@@ -122,6 +123,10 @@
 
          <span class="error">{{ error }}</span>
   <button type="submit" class="btn login-button" id="login">登录</button>
+         <div class="qq" style="padding-left: 40px;padding-top: 10px;">
+             其他登录: <a href="{% url 'qq-login' %}"><img style="width: 25px;" src="{% static 'img/qq2.png' %}" alt="QQ登录"></a>
+         </div>
+
 </form>
     <p class="clearfix"><a class="fl" href="{% url 'user:retrieve ' %}">忘记密码?</a><a class="fr" href="{% url 'register' %}">注册</a></p>
 </div>

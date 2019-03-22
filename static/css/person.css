@@ -197,7 +197,7 @@ aside{
     margin-right: 15px;
 }
 .follow_item_name{
-    min-width: 460px;
+    /*min-width: 460px;*/
 }
 .follow_item_name>a{
    font-weight: 700;
