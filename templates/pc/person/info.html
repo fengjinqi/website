@@ -42,7 +42,10 @@
                       <div class="info_item clearfix">
                              <label for="name">QQ</label>
                                 {% if user.get_qq %}
-                                <p>已绑定</p>
+                                <span style="text-align: left;
+    float: none;
+    width: 30%;
+    padding: 0 12px;margin: 5px;">已绑定</span>
                                     {% else %}
                                     <a href="{% url 'getClbackQQ' %}" style="text-align: left;
     float: none;

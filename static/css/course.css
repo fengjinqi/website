@@ -3,7 +3,7 @@
     margin: 20px auto 0;
 }
 body{
-    /*background: #fff;*/
+    background: #f7f7f7;
 }
 h1{
     text-align: center;
@@ -20,10 +20,14 @@ h1{
 }
 #main>.course>a>img{
     width: 100%;
-     /*-webkit-border-radius: 6px;*/
-    /*-moz-border-radius: 6px;*/
-    /*border-radius: 6px;*/
+     -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
     vertical-align: middle;
+}
+.desc>span{
+    display: inline-block;
+    height: 40px;
 }
 .desc{
     padding: 15px;
@@ -68,6 +72,8 @@ a:hover{
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
+
+
 }
 .Catalog>ul>li{
     height: 40px;
@@ -82,15 +88,24 @@ a:hover{
     width: 978px;
     /*height: 500px;*/
     background: #fff;
-    border: 1px solid #ddd;
+    /*border: 1px solid #ddd;*/
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
+    /*-webkit-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); -moz-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);*/
 }
 .content .pageNav{
     height:48px;
     line-height: 48px;
     background: #f7f7f7;
-    border-bottom: 1px solid #ddd;
+    /*border-bottom: 1px solid #ddd;*/
     padding:0 15px;
+}
+.titlename{
+    margin-top: 24px;
+    color: #0d1a26;
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 38px;
+    padding-left: 20px;
 }

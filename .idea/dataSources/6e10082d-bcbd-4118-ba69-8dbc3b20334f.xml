@@ -1461,234 +1461,238 @@ model</ColNames>
       <Position>14</Position>
       <DataType>varchar(100)|0s</DataType>
     </column>
-    <column id="329" parent="37" name="email">
+    <column id="329" parent="37" name="user_imag">
       <Position>15</Position>
+      <DataType>varchar(100)|0s</DataType>
+    </column>
+    <column id="330" parent="37" name="email">
+      <Position>16</Position>
       <DataType>varchar(254)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="330" parent="37" name="user_imag">
-      <Position>16</Position>
-      <DataType>varchar(100)|0s</DataType>
+    <column id="331" parent="37" name="user_image">
+      <Position>17</Position>
+      <DataType>varchar(200)|0s</DataType>
     </column>
-    <index id="331" parent="37" name="sqlite_autoindex_user_user_1">
+    <index id="332" parent="37" name="sqlite_autoindex_user_user_1">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>username</ColNames>
       <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
-    <index id="332" parent="37" name="sqlite_autoindex_user_user_2">
+    <index id="333" parent="37" name="sqlite_autoindex_user_user_2">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
-    <index id="333" parent="37" name="sqlite_autoindex_user_user_3">
+    <index id="334" parent="37" name="sqlite_autoindex_user_user_3">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>email</ColNames>
       <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
-    <key id="334" parent="37">
+    <key id="335" parent="37">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>sqlite_autoindex_user_user_2</UnderlyingIndexName>
     </key>
-    <key id="335" parent="37">
+    <key id="336" parent="37">
       <ColNames>username</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_user_user_1</UnderlyingIndexName>
     </key>
-    <key id="336" parent="37">
+    <key id="337" parent="37">
       <ColNames>email</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_user_user_3</UnderlyingIndexName>
     </key>
-    <column id="337" parent="38" name="id">
+    <column id="338" parent="38" name="id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="338" parent="38" name="user_id">
+    <column id="339" parent="38" name="user_id">
       <Position>2</Position>
       <DataType>char(32)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="339" parent="38" name="group_id">
+    <column id="340" parent="38" name="group_id">
       <Position>3</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="340" parent="38" name="user_user_groups_user_id_group_id_bb60391f_uniq">
+    <index id="341" parent="38" name="user_user_groups_user_id_group_id_bb60391f_uniq">
       <ColNames>user_id
 group_id</ColNames>
       <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
-    <index id="341" parent="38" name="user_user_groups_user_id_13f9a20d">
+    <index id="342" parent="38" name="user_user_groups_user_id_13f9a20d">
       <ColNames>user_id</ColNames>
       <ColumnCollations></ColumnCollations>
     </index>
-    <index id="342" parent="38" name="user_user_groups_group_id_c57f13c0">
+    <index id="343" parent="38" name="user_user_groups_group_id_c57f13c0">
       <ColNames>group_id</ColNames>
       <ColumnCollations></ColumnCollations>
     </index>
-    <key id="343" parent="38">
+    <key id="344" parent="38">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="344" parent="38">
+    <foreign-key id="345" parent="38">
       <ColNames>user_id</ColNames>
       <RefTableName>user_user</RefTableName>
       <RefColNames>id</RefColNames>
       <Deferrable>1</Deferrable>
       <InitiallyDeferred>1</InitiallyDeferred>
     </foreign-key>
-    <foreign-key id="345" parent="38">
+    <foreign-key id="346" parent="38">
       <ColNames>group_id</ColNames>
       <RefTableName>auth_group</RefTableName>
       <RefColNames>id</RefColNames>
       <Deferrable>1</Deferrable>
       <InitiallyDeferred>1</InitiallyDeferred>
     </foreign-key>
-    <column id="346" parent="39" name="id">
+    <column id="347" parent="39" name="id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="347" parent="39" name="user_id">
+    <column id="348" parent="39" name="user_id">
       <Position>2</Position>
       <DataType>char(32)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="348" parent="39" name="permission_id">
+    <column id="349" parent="39" name="permission_id">
       <Position>3</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="349" parent="39" name="user_user_user_permissions_user_id_permission_id_64f4d5b8_uniq">
+    <index id="350" parent="39" name="user_user_user_permissions_user_id_permission_id_64f4d5b8_uniq">
       <ColNames>user_id
 permission_id</ColNames>
       <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
-    <index id="350" parent="39" name="user_user_user_permissions_user_id_31782f58">
+    <index id="351" parent="39" name="user_user_user_permissions_user_id_31782f58">
       <ColNames>user_id</ColNames>
       <ColumnCollations></ColumnCollations>
     </index>
-    <index id="351" parent="39" name="user_user_user_permissions_permission_id_ce49d4de">
+    <index id="352" parent="39" name="user_user_user_permissions_permission_id_ce49d4de">
       <ColNames>permission_id</ColNames>
       <ColumnCollations></ColumnCollations>
     </index>
-    <key id="352" parent="39">
+    <key id="353" parent="39">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="353" parent="39">
+    <foreign-key id="354" parent="39">
       <ColNames>user_id</ColNames>
       <RefTableName>user_user</RefTableName>
       <RefColNames>id</RefColNames>
       <Deferrable>1</Deferrable>
       <InitiallyDeferred>1</InitiallyDeferred>
     </foreign-key>
-    <foreign-key id="354" parent="39">
+    <foreign-key id="355" parent="39">
       <ColNames>permission_id</ColNames>
       <RefTableName>auth_permission</RefTableName>
       <RefColNames>id</RefColNames>
       <Deferrable>1</Deferrable>
       <InitiallyDeferred>1</InitiallyDeferred>
     </foreign-key>
-    <column id="355" parent="40" name="id">
+    <column id="356" parent="40" name="id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="356" parent="40" name="message">
-      <Position>2</Position>
-      <DataType>varchar(500)|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
     <column id="357" parent="40" name="has_read">
-      <Position>3</Position>
+      <Position>2</Position>
       <DataType>bool|0s</DataType>
       <NotNull>1</NotNull>
     </column>
     <column id="358" parent="40" name="add_time">
-      <Position>4</Position>
+      <Position>3</Position>
       <DataType>datetime|0s</DataType>
       <NotNull>1</NotNull>
     </column>
     <column id="359" parent="40" name="to_user_id">
-      <Position>5</Position>
+      <Position>4</Position>
       <DataType>char(32)|0s</DataType>
     </column>
     <column id="360" parent="40" name="user_id">
-      <Position>6</Position>
+      <Position>5</Position>
       <DataType>char(32)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="361" parent="40" name="is_supper">
+    <column id="361" parent="40" name="ids">
+      <Position>6</Position>
+      <DataType>char(32)|0s</DataType>
+    </column>
+    <column id="362" parent="40" name="is_supper">
       <Position>7</Position>
       <DataType>bool|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="362" parent="40" name="ids">
+    <column id="363" parent="40" name="message">
       <Position>8</Position>
-      <DataType>char(32)|0s</DataType>
+      <DataType>text|0s</DataType>
+      <NotNull>1</NotNull>
     </column>
-    <index id="363" parent="40" name="user_usermessage_to_user_id_4325f920">
+    <index id="364" parent="40" name="user_usermessage_to_user_id_4325f920">
       <ColNames>to_user_id</ColNames>
       <ColumnCollations></ColumnCollations>
     </index>
-    <index id="364" parent="40" name="user_usermessage_user_id_72ab0fb0">
+    <index id="365" parent="40" name="user_usermessage_user_id_72ab0fb0">
       <ColNames>user_id</ColNames>
       <ColumnCollations></ColumnCollations>
     </index>
-    <key id="365" parent="40">
+    <key id="366" parent="40">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="366" parent="40">
+    <foreign-key id="367" parent="40">
       <ColNames>to_user_id</ColNames>
       <RefTableName>user_user</RefTableName>
       <RefColNames>id</RefColNames>
       <Deferrable>1</Deferrable>
       <InitiallyDeferred>1</InitiallyDeferred>
     </foreign-key>
-    <foreign-key id="367" parent="40">
+    <foreign-key id="368" parent="40">
       <ColNames>user_id</ColNames>
       <RefTableName>user_user</RefTableName>
       <RefColNames>id</RefColNames>
       <Deferrable>1</Deferrable>
       <InitiallyDeferred>1</InitiallyDeferred>
     </foreign-key>
-    <column id="368" parent="41" name="id">
+    <column id="369" parent="41" name="id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="369" parent="41" name="code">
+    <column id="370" parent="41" name="code">
       <Position>2</Position>
       <DataType>varchar(10)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="370" parent="41" name="email">
+    <column id="371" parent="41" name="email">
       <Position>3</Position>
       <DataType>varchar(254)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="371" parent="41" name="send_type">
+    <column id="372" parent="41" name="send_type">
       <Position>4</Position>
       <DataType>varchar(30)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="372" parent="41" name="send_time">
+    <column id="373" parent="41" name="send_time">
       <Position>5</Position>
       <DataType>datetime|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="373" parent="41">
+    <key id="374" parent="41">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>

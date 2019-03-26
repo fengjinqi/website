@@ -67,6 +67,18 @@ class CoursesList(viewsets.ReadOnlyModelViewSet):
     pagination_class = StandardResultsSetPagination
 
 
+
+
+class MeCoursesList(viewsets.ReadOnlyModelViewSet):
+    queryset = Courses.objects.filter(is_delete=False)
+    serializer_class = CourseSerializers
+    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
+    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    pagination_class = StandardResultsSetPagination
+
+    def get_queryset(self):
+        return Courses.objects.filter(user=self.request.user)
+
 class CourseCreatedList(mixins.CreateModelMixin,mixins.UpdateModelMixin,viewsets.ReadOnlyModelViewSet):
     queryset = Courses.objects.filter(is_delete=False)
     serializer_class = CreatedCourseSerializers

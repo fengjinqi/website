@@ -5,8 +5,15 @@
     <link rel="stylesheet" href="{% static 'css/course.css' %}">
     <input type="hidden" value="{{uuid }}">
     <style>
+    body{
+        background: #f7f7f7;
+    }
     .is_active{
-        background: red;
+        {#background: red;#}
+        border-right: 3px solid #356dd0;
+        background: #f7f7f7;
+
+        color: #356dd0;
     }
     </style>
 {% endblock %}
@@ -35,26 +42,31 @@
             </ul>
         </div>
         <div class="content fr">
-            <div class="pageNav clearfix">
-                <div class="fl">
-                    {% if netx_blog %}
-                    <a style="display: block" href="/course/{{uuid }}/{{ netx_blog.id }}.html">< 前一页</a>
-                    {% else %}
-                    没有了
-                    {% endif %}
-                </div>
-                <div class="fr">
-                    {% if previous_blog %}
-                    <a style="display: block" href="/course/{{uuid }}/{{ previous_blog.id }}.html">后一页 ></a>
+            <div>
+                <div class="pageNav clearfix">
+                    <div class="fl">
+                        {% if netx_blog %}
+                        <a style="display: block" href="/course/{{uuid }}/{{ netx_blog.id }}.html">< 前一页</a>
                         {% else %}
                         没有了
-                    {% endif %}
+                        {% endif %}
+                    </div>
+                    <div class="fr">
+                        {% if previous_blog %}
+                        <a style="display: block" href="/course/{{uuid }}/{{ previous_blog.id }}.html">后一页 ></a>
+                            {% else %}
+                            没有了
+                        {% endif %}
+                    </div>
                 </div>
+                <div>
+                <h1>{{ content.titles }}</h1>
 
-            </div>
-         <div id="test-editormd-view2"style="box-sizing: border-box;">
-                <textarea id="append-test" name="test-editormd-markdown-doc" style="display:none;">{{ content.conent}}</textarea>
+                <div id="test-editormd-view2"style="box-sizing: border-box;">
+                    <textarea id="append-test" name="test-editormd-markdown-doc" style="display:none;">{{ content.conent}}</textarea>
                 </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
@@ -70,8 +82,8 @@
         });
             $(function() {
                 //$('.content').css('height',$(document).body.height()+'px')
-            var testEditormdView, testEditormdView2;
-            testEditormdView2 = editormd.markdownToHTML("test-editormd-view2", {
+            var testEditormdView;
+            testEditormdView = editormd.markdownToHTML("test-editormd-view2", {
                 htmlDecode      : "style,script,iframe",  // you can filter tags decode
                 emoji           : true,
                 taskList        : true,

@@ -661,7 +661,8 @@ class UserMessages(mixins.ListModelMixin,mixins.DestroyModelMixin,mixins.UpdateM
 
 
 
-
+conf = ConfigParser()
+conf.read('config.ini')
 import random
 from django.shortcuts import HttpResponseRedirect
 from urllib import parse
@@ -675,15 +676,13 @@ def to_login(request):
     """
     state = str(random.randrange(100000, 999999))  # 定义一个随机状态码，防止跨域伪造攻击。
     request.session['state'] = state  # 将随机状态码存入Session，用于授权信息返回时验证。
-    client_id = '101532677'  # QQ互联中网站应用的APP ID。
+    client_id = conf.get('QQ','client_id')  # QQ互联中网站应用的APP ID。
     callback = parse.urlencode({'redirect_uri': 'http://www.fengjinqi.com:8000/qq'})
     # 对回调地址进行编码，用户同意授权后将调用此链接。
     login_url = 'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=%s&%s&state=%s' % (
         client_id, callback, state)  # 组织QQ第三方登录链接
+    print(request.session['state'])
     return HttpResponseRedirect(login_url)  # 重定向到QQ第三方登录授权页面
-
-
-
 
 
 def parse_jsonp(jsonp_str):
@@ -696,10 +695,6 @@ def parse_jsonp(jsonp_str):
         return re.search('^[^(]*?\((.*)\)[^)]*$', jsonp_str).group(1)
     except:
         raise ValueError('无效数据！')
-
-conf = ConfigParser()
-conf.read('config.ini')
-
 
 
 

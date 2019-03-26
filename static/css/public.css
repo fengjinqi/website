@@ -55,6 +55,7 @@
 #searchform{
     display: flex;
     display: -webkit-flex;
+    position: relative;
 }
 .form_control {
     display: block;
@@ -67,7 +68,7 @@
     color: #555;
     background-color: #fff;
     background-image: none;
-    border: 1px solid #ccc;
+    border: 1px solid #eee;
     border-radius: 4px;
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
     box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
@@ -75,20 +76,24 @@
     -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
     outline:none;
+    padding-left: 12px;
 }
 
 #searchform button{
-background: #fff;
+background: transparent;
     border: none;
     outline:none;
     height: 32px;
-    margin-top: 14px;
+    position: absolute;
+    right: 8px;
+    top: 16px;
 }
 .form_search{
     background: url("../img/search.png")no-repeat;
     background-size: contain;
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
 }
 .badge:empty {
   display: none;

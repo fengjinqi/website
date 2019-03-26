@@ -42,6 +42,14 @@
     <div class="container clearfix">
         <input type="hidden" name="hidden" value="{{ id }}">
         <article class="fl">
+        <h1>{{ article.title }}</h1>
+        <div>
+            {{ article.authors.username }}
+            {{ article.add_time }}
+            {{ article.category.name }}
+            {{ article.click_nums }}
+            {{ article.get_number }}
+        </div>
             <div id="test-editormd-view2">
                 <textarea id="append-test" name="test-editormd-markdown-doc" style="display:none;">{{ article.content }}</textarea>
             </div>

@@ -76,7 +76,7 @@ class VerifyCode(models.Model):
 class UserMessage(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='user',verbose_name='收消息用户')
     to_user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='to_user',verbose_name='发消息用户',blank=True,null=True)
-    message = models.CharField(max_length=500, verbose_name='消息内容')
+    message = models.TextField(verbose_name='消息内容')
     ids = models.UUIDField(blank=True,null=True,verbose_name='评论文章id',)
     is_supper = models.BooleanField(default=False,verbose_name='是系统消息')
     has_read = models.BooleanField(default=False, verbose_name='是否已读')
@@ -89,3 +89,4 @@ class UserMessage(models.Model):
         verbose_name ='用户消息'
         verbose_name_plural=verbose_name
         ordering = ('-add_time',)
+

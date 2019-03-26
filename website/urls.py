@@ -21,7 +21,7 @@ from django.views.static import serve
 from rest_framework_jwt.views import obtain_jwt_token
 
 from apps.article.views import ArticleCreated
-from apps.course.views import CoursesList, CourseCreatedList, CourseListCreated
+from apps.course.views import CoursesList, CourseCreatedList, CourseListCreated, MeCoursesList
 from apps.support.views import LinkList, EmailsList, BannerList
 from apps.user.views import test, captcha_refresh, yan, login_view, UserGetInfo, UserGetAllInfo, \
     PersonOthers, Register, active_user, get_message, UserMessages, qq, getClback, getClbackQQ
@@ -48,6 +48,7 @@ router.register('PersonOthers', PersonOthers)
 router.register('UserMessages', UserMessages, base_name='UserMessages')
 router.register('article', ArticleCreated)
 router.register('courseList', CoursesList)
+router.register('mecourseList', MeCoursesList)
 router.register('course', CourseCreatedList)
 router.register('Addtutorial', CourseListCreated)
 router.register('BannerList', BannerList)
@@ -80,6 +81,6 @@ urlpatterns = [
     url('auth-qq', to_login, name='qq-login'),
     url('qq', qq, name='qq'),
     url('callbackget', getClback, name='callbackget'),
-    url('getClbackQQ', getClbackQQ, name='getClbackQQ')
+    url('getClbackQQ', getClbackQQ, name='getClbackQQ'),
     # re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATI_ROOT})  # 配置文件上传html显示
 ]

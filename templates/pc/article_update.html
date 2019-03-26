@@ -138,7 +138,7 @@
                     processData:false,
                     success:function (data) {
                         if(data.code==200){
-                           window.location.href='/index'
+                           window.location.href='{% url 'home' %}'
                         }
                     },
                 error:function (xhr) {

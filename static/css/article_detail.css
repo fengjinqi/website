@@ -11,7 +11,7 @@ body{
 article{
     margin: 15px 0;
 }
-a:hover{
+li a:hover{
     color: #356dd0!important;
 }
 a{
@@ -110,7 +110,7 @@ button.fr{
     line-height: 30px;
 }
  .cmt-list-type .type-lists li.active {
-    background-image: url(https://changyan.itc.cn/mdevp/extensions/cy-skin/028/skin-red/images/cmtlist-bg-active.png);
+    /*background-image: url(https://changyan.itc.cn/mdevp/extensions/cy-skin/028/skin-red/images/cmtlist-bg-active.png);*/
 }
  .clear-g:after {
     content: ".";
@@ -126,7 +126,7 @@ button.fr{
     box-sizing: border-box;
 }
 .cmt-list-type div.cmt-list-border {
-    background-color: #e74851;
+    background-color: #d9eafb;
 }
  .cmt-list-type .cmt-list-border {
     position: relative;
@@ -142,13 +142,14 @@ button.fr{
 }
 
 .list-block-gw .newest{
-    margin: 18px 0 0;
-    border-bottom: 1px solid #ccc;
+       line-height: 48px;
+    font-weight: bold;
+    border-bottom: 1px solid #eee;
 }
 .list-main{
     display: flex;
     padding: 15px;
-    border-bottom: 1px dashed #ccc
+    border-bottom: 1px dashed #eee
 }
 .img-corner{
     width: 42px;
@@ -164,9 +165,9 @@ button.fr{
 }
 .reply-list{
     display: flex;
-    border-top: 1px dashed #ccc;
+    border-top: 1px dashed #eee;
     width: 100%;
-    border-left: 1px solid #ccc;
+    border-left: 1px solid #eee;
     padding: 15px 0;
 }
 .text-con{
@@ -174,4 +175,7 @@ button.fr{
 }
 p.fr{
     color: #999;
+}
+#searchform button{
+    top:8px;
 }

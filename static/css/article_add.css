@@ -3,9 +3,9 @@ section{
     padding: 15px;
     background: #fff;
     margin: 15px auto!important;
-    -webkit-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);
-    -moz-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);
-    box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);
+    /*-webkit-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);*/
+    /*-moz-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);*/
+    /*box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);*/
 }
 a{
     color: #666;
@@ -47,4 +47,7 @@ img {
 }
 .img img{
     width: 100%;
+}
+#searchform button{
+    top: 8px;
 }

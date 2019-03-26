@@ -1,9 +1,12 @@
 {% extends 'pc/base.html' %}
+{% load highlight %}
 {% load staticfiles %}
 {% block css %}
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
+<style>
+    span.highlighted { color: red; }
+</style>
 {% endblock %}
-{% load highlight %}
 
 {% block content %}
      <section class="main clearfix">
@@ -11,17 +14,27 @@
     {% if query %}
         {% for result in page.object_list %}
 
-
                    <div class="blogs">
 
                 <div class="blogs_cont">
 
-                    <h3><span class="blogs_type">{{ result.object.category.name }}</span>    <a href="{% url 'article:detail' result.object.id %}">{{ result.object.title }}</a></h3>
-                    <div class="blogs_foot">
+                    <h3><span class="blogs_type">{{ result.object.category.name }} </span>    <a href="{% url 'article:detail' result.object.id %}">{% highlight result.object.title with query %}</a></h3>
+                    <div class="blogs_foot clearfix">
                         <ul class="clearfix">
+
+                        <li style="margin-bottom: 10px; max-height: 60px;height: auto;
+"><a style="overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;" href="{% url 'article:detail' result.object.id %}" > {% highlight result.object.desc with query %}</a></li>
                             <li class="fl">
                                  <a href="{% url 'article:detail' result.object.id %}" class="clearfix">
-                                     <span class="fl img_cover blogs_avatar" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></span>
+                                     <span class="fl img_cover blogs_avatar" style="background: url({% if result.object.authors.user_imag %}
+                                     {{ MEDIA_URL }}{{ result.object.authors.user_imag }}
+                                         {% else %}
+                                         {{ result.object.authors.user_image }}
+                                     {% endif %})no-repeat;background-color: #ccc;"></span>
                                      <span class="fl blogs_name">{{ result.object.authors.username }}</span>
                                  </a>
                              </li>

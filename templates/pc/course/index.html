@@ -11,7 +11,7 @@
             {% for foo in course %}
                   <div class="course">
                        <a href="/course/{{ foo.id }}/{{ foo.courselist_set.first.id }}.html">
-                     <img src="{% if foo.image %}
+                     <img class="corseimg" src="{% if foo.image %}
                      {{ MEDIA_URL }}{{ foo.image }}
                      {% else %}
                      {% static 'img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg' %}

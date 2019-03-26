@@ -1,8 +1,8 @@
 {% extends 'pc/base.html' %}
 {% load static %}
-<title>{% block title %}
+{% block title %}
     文章
-{% endblock %}</title>
+{% endblock %}
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">
 <link rel="stylesheet" href="{% static 'css/index.css' %}">
@@ -55,7 +55,7 @@
                             {{ articles.authors.user_image }}
                         {% endif %})no-repeat;background-color: #ccc;"></span>
                                          <span class="fl blogs_name" style="white-space: nowrap;
-    text-overflow: ellipsis;width: 108px;overflow: hidden;">{{ articles.authors.username }}</span>
+    text-overflow: ellipsis;max-width: 120px;overflow: hidden;">{{ articles.authors.username }}</span>
                                      </a>
                                  </li>
                                 <li class="fl blogs_time">发布于：{{ articles.add_time }}</li>

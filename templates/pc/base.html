@@ -13,7 +13,9 @@
     <meta name="description" content="{% block desc %}
     {% endblock %}">
     <!-- 定义网页作者 author -->
-    <meta name="author" content="author,email address">
+    <meta name="author" content="{% block authors %}
+
+    {% endblock %}">
     <title>{% block title %}{% endblock %}</title>
     <link rel="shortcut icon" href="{% static 'img/logo.png' %}">
     <link rel="stylesheet" href="{% static 'css/public.css' %}">
@@ -26,7 +28,7 @@
 <body>
 <header>
     <div class="main clearfix">
-        <div class="fl logo"style="height: 60px"><img style="width: 40px;padding-top: 10px;" src="{% static 'img/logo.png' %}" alt=""></div>
+        <div class="fl logo"style="height: 60px"><img style="width: 40px;margin-top: 18px;height: 25px;" src="{% static 'img/logo.png' %}" alt=""></div>
         <nav class="fl">
             <ul class="clearfix headers_nav">
                 <li class="fl"><a class="{% if request.path == '/' %}

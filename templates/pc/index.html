@@ -1,9 +1,12 @@
 {% extends 'pc/base.html' %}
 {% load static %}
 {% load i18n %}
-<title>{% block title %}
-    首页
-{% endblock %}</title>
+{% block title %}
+首页
+{% endblock %}
+{% block authors %}
+冯金琪
+{% endblock %}
 {% block css %}
 {#    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">#}
 <link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">
@@ -66,7 +69,7 @@
                             {{ articles.authors.user_image }}
                         {% endif %})no-repeat;background-color: #ccc;"></span>
                                          <span class="fl blogs_name" style="white-space: nowrap;
-    text-overflow: ellipsis;width: 108px;overflow: hidden;">{{ articles.authors.username }}</span>
+    text-overflow: ellipsis;max-width: 120px;overflow: hidden;">{{ articles.authors.username }}</span>
                                      </a>
                                  </li>
                                 <li class="fl blogs_time">发布于：{{ articles.add_time }}</li>
@@ -85,8 +88,8 @@
                  </div>
                  {% endfor %}
              </div>
-         </div>
-    {% if article.object_list.count >= 1 %}
+
+           {% if article.object_list.count >= 1 %}
         <div class="pageturn">
            <ul class="pagination">
 {#               <li><a href="/index">首页</a></li>#}
@@ -117,6 +120,9 @@
             当前{{ article.number }}/总共{{ article.paginator.num_pages }}页
        </div>
     {% endif %}
+
+         </div>
+
 
     </article>
 
