@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'apps.article.apps.ArticleConfig',
     'apps.course.apps.CourseConfig',
     'apps.support.apps.SupportConfig',
+    'apps.forum.apps.ForumConfig',
     'apps.article.templatetags',
     'rest_framework',
     'pure_pagination',

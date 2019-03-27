@@ -187,14 +187,14 @@
 
                         html+=" <div class=\"blogs_item\">\n" +
                             "                             <div class=\"blogs_cont blogs_cont1\">\n" +
-                            "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+data.results[i].title+"</a></h3>\n" +
+                            "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+filterXSS(data.results[i].title)+"</a></h3>\n" +
                             "                                     <div class=\"blogs_info clearfix\">\n" +
                             "                                          <div class=\"img_animate  \">\n" +
-                            "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+data.results[i].list_pic+"')no-repeat;\"></div>\n" +
+                            "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+filterXSS(data.results[i].list_pic)+"')no-repeat;\"></div>\n" +
                             "                                          </div>\n" +
                             "                                          <div class=\" blogs_describe\">\n" +
                             "                                     <div class=\" divp\">\n" +
-                            "                                              <p>"+data.results[i].keywords+"</p>\n" +
+                            "                                              <p>"+filterXSS(data.results[i].keywords)+"</p>\n" +
                             "                                          <div class=\"blogs_foot blogs_foot1 ulw\">\n" +
                             "                                    <ul class=\"clearfix \">\n" +
                             "                                        <li class=\"fl\">\n" +
@@ -250,14 +250,14 @@
                                         }
                                         html+=" <div class=\"blogs_item\">\n" +
                                             "                             <div class=\"blogs_cont blogs_cont1\">\n" +
-                                            "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+data.results[i].title+"</a></h3>\n" +
+                                            "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+filterXSS(data.results[i].title)+"</a></h3>\n" +
                                             "                                     <div class=\"blogs_info clearfix\">\n" +
                                             "                                          <div class=\"img_animate  \">\n" +
                                             "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+data.results[i].list_pic+"')no-repeat;\"></div>\n" +
                                             "                                          </div>\n" +
                                             "                                          <div class=\" blogs_describe\">\n" +
                                             "                                     <div class=\" divp\">\n" +
-                                            "                                              <p>"+data.results[i].keywords+"</p>\n" +
+                                            "                                              <p>"+filterXSS(data.results[i].keywords)+"</p>\n" +
                                             "                                          <div class=\"blogs_foot blogs_foot1 ulw\">\n" +
                                             "                                    <ul class=\"clearfix \">\n" +
                                             "                                        <li class=\"fl\">\n" +
@@ -326,14 +326,14 @@
                             }
                             html+=" <div class=\"blogs_item\">\n" +
                                 "                             <div class=\"blogs_cont blogs_cont1\">\n" +
-                                "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+data.results[i].title+"</a></h3>\n" +
+                                "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+filterXSS(data.results[i].title)+"</a></h3>\n" +
                                 "                                     <div class=\"blogs_info clearfix\">\n" +
                                 "                                          <div class=\"img_animate  \">\n" +
                                 "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+data.results[i].list_pic+"')no-repeat;\"></div>\n" +
                                 "                                          </div>\n" +
                                 "                                          <div class=\" blogs_describe\">\n" +
                                 "                                     <div class=\" divp\">\n" +
-                                "                                              <p>"+data.results[i].keywords+"</p>\n" +
+                                "                                              <p>"+filterXSS(data.results[i].keywords)+"</p>\n" +
                                 "                                          <div class=\"blogs_foot blogs_foot1 ulw\">\n" +
                                 "                                    <ul class=\"clearfix \">\n" +
                                 "                                        <li class=\"fl\">\n" +
@@ -390,14 +390,14 @@
                                             }
                                             html+=" <div class=\"blogs_item\">\n" +
                                                 "                             <div class=\"blogs_cont blogs_cont1\">\n" +
-                                                "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+data.results[i].title+"</a></h3>\n" +
+                                                "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+filterXSS(data.results[i].title)+"</a></h3>\n" +
                                                 "                                     <div class=\"blogs_info clearfix\">\n" +
                                                 "                                          <div class=\"img_animate  \">\n" +
                                                 "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+data.results[i].list_pic+"')no-repeat;\"></div>\n" +
                                                 "                                          </div>\n" +
                                                 "                                          <div class=\" blogs_describe\">\n" +
                                                 "                                     <div class=\" divp\">\n" +
-                                                "                                              <p>"+data.results[i].keywords+"</p>\n" +
+                                                "                                              <p>"+filterXSS(data.results[i].keywords)+"</p>\n" +
                                                 "                                          <div class=\"blogs_foot blogs_foot1 ulw\">\n" +
                                                 "                                    <ul class=\"clearfix \">\n" +
                                                 "                                        <li class=\"fl\">\n" +

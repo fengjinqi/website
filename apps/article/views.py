@@ -1,6 +1,5 @@
 import datetime
 import json
-
 from django.db.models import Q, Count
 from django.dispatch import receiver
 from django.db.models.signals import pre_save, post_save
@@ -11,7 +10,7 @@ from django.http import JsonResponse,Http404,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from PIL import Image
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, mixins, status
+from rest_framework import viewsets, mixins
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
@@ -461,12 +460,14 @@ def my_callback(sender, **kwargs):
     :param kwargs:
     :return:
     """
+
     message = UserMessage()
     message.user=kwargs['instance'].article.authors
     message.ids = kwargs['instance'].article.id
     message.to_user_id = kwargs['instance'].user_id
     message.has_read = False
-    message.message="有人给你文章评论了,快去看看吧!"
+    message.url ='Article'
+    message.message="你的%s文章被人评论了,快去看看吧!"%kwargs['instance'].article.title
     message.save()
 
 

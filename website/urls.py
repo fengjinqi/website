@@ -22,6 +22,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 
 from apps.article.views import ArticleCreated
 from apps.course.views import CoursesList, CourseCreatedList, CourseListCreated, MeCoursesList
+from apps.forum.views import Forum_plateView
 from apps.support.views import LinkList, EmailsList, BannerList
 from apps.user.views import test, captcha_refresh, yan, login_view, UserGetInfo, UserGetAllInfo, \
     PersonOthers, Register, active_user, get_message, UserMessages, qq, getClback, getClbackQQ
@@ -54,6 +55,7 @@ router.register('Addtutorial', CourseListCreated)
 router.register('BannerList', BannerList)
 router.register('EmailsList', EmailsList)
 router.register('LinkList', LinkList)
+router.register('forum/category', Forum_plateView)
 
 urlpatterns = [
 
@@ -71,6 +73,7 @@ urlpatterns = [
     path('article/', include('apps.article.urls')),
     path('course/', include('apps.course.urls')),
     path('support/', include('apps.support.urls')),
+    path('forum/', include('apps.forum.urls')),
     url(r'^activate/(?P<token>\w+.[-_\w]*\w+.[-_\w]*\w+)/$', active_user, name='active_user'),
     url(r'^search/', include('haystack.urls'), name='haystack_search'),
 

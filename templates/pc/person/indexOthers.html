@@ -122,14 +122,14 @@
                         }
                         html+=" <div class=\"blogs_item\">\n" +
                             "                             <div class=\"blogs_cont blogs_cont1\">\n" +
-                            "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+data.results[i].title+"</a></h3>\n" +
+                            "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+filterXSS(data.results[i].title)+"</a></h3>\n" +
                             "                                     <div class=\"blogs_info clearfix\">\n" +
                             "                                          <div class=\"img_animate  \">\n" +
                             "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+data.results[i].list_pic+"')no-repeat;\"></div>\n" +
                             "                                          </div>\n" +
                             "                                          <div class=\" blogs_describe\">\n" +
                             "                                     <div class=\" divp\">\n" +
-                            "                                              <p>"+data.results[i].keywords+"</p>\n" +
+                            "                                              <p>"+filterXSS(data.results[i].keywords)+"</p>\n" +
                             "                                          <div class=\"blogs_foot blogs_foot1 ulw\">\n" +
                             "                                    <ul class=\"clearfix \">\n" +
                             "                                        <li class=\"fl\">\n" +
@@ -183,14 +183,14 @@
                                         }
                                         html+=" <div class=\"blogs_item\">\n" +
                                             "                             <div class=\"blogs_cont blogs_cont1\">\n" +
-                                            "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+data.results[i].title+"</a></h3>\n" +
+                                            "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+filterXSS(data.results[i].title)+"</a></h3>\n" +
                                             "                                     <div class=\"blogs_info clearfix\">\n" +
                                             "                                          <div class=\"img_animate  \">\n" +
                                             "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+data.results[i].list_pic+"')no-repeat;\"></div>\n" +
                                             "                                          </div>\n" +
                                             "                                          <div class=\" blogs_describe\">\n" +
                                             "                                     <div class=\" divp\">\n" +
-                                            "                                              <p>"+data.results[i].keywords+"</p>\n" +
+                                            "                                              <p>"+filterXSS(data.results[i].keywords)+"</p>\n" +
                                             "                                          <div class=\"blogs_foot blogs_foot1 ulw\">\n" +
                                             "                                    <ul class=\"clearfix \">\n" +
                                             "                                        <li class=\"fl\">\n" +
@@ -249,14 +249,14 @@
                             }
                             html+=" <div class=\"blogs_item\">\n" +
                                 "                             <div class=\"blogs_cont blogs_cont1\">\n" +
-                                "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+data.results[i].title+"</a></h3>\n" +
+                                "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+filterXSS(data.results[i].title)+"</a></h3>\n" +
                                 "                                     <div class=\"blogs_info clearfix\">\n" +
                                 "                                          <div class=\"img_animate  \">\n" +
                                 "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+data.results[i].list_pic+"')no-repeat;\"></div>\n" +
                                 "                                          </div>\n" +
                                 "                                          <div class=\" blogs_describe\">\n" +
                                 "                                     <div class=\" divp\">\n" +
-                                "                                              <p>"+data.results[i].keywords+"</p>\n" +
+                                "                                              <p>"+filterXSS(data.results[i].keywords)+"</p>\n" +
                                 "                                          <div class=\"blogs_foot blogs_foot1 ulw\">\n" +
                                 "                                    <ul class=\"clearfix \">\n" +
                                 "                                        <li class=\"fl\">\n" +
@@ -299,7 +299,6 @@
                                         page:api.getCurrent()    //这个方法就是用来获取点击了哪一页的，因为我  //的接口文档中页数是从0开始的，所以减1，当我点击第一页的时候去获取第0页的数据
                                     },
                                     success:function (data) {
-                                        console.log(data);             //返回那一页的数据
                                         var html =''
                                         b=[]
                                         for(var i=0;i<data.results.length;i++){
@@ -315,14 +314,14 @@
 
                                             html+=" <div class=\"blogs_item\">\n" +
                                                 "                             <div class=\"blogs_cont blogs_cont1\">\n" +
-                                                "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+data.results[i].title+"</a></h3>\n" +
+                                                "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+filterXSS(data.results[i].title)+"</a></h3>\n" +
                                                 "                                     <div class=\"blogs_info clearfix\">\n" +
                                                 "                                          <div class=\"img_animate  \">\n" +
                                                 "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+data.results[i].list_pic+"')no-repeat;\"></div>\n" +
                                                 "                                          </div>\n" +
                                                 "                                          <div class=\" blogs_describe\">\n" +
                                                 "                                     <div class=\" divp\">\n" +
-                                                "                                              <p>"+data.results[i].keywords+"</p>\n" +
+                                                "                                              <p>"+filterXSS(data.results[i].keywords)+"</p>\n" +
                                                 "                                          <div class=\"blogs_foot blogs_foot1 ulw\">\n" +
                                                 "                                    <ul class=\"clearfix \">\n" +
                                                 "                                        <li class=\"fl\">\n" +
@@ -346,13 +345,8 @@
                                         $("#mains").html(html)
                                     }
                                 })
-
-
                             }
                         });
-
-
-
                     },
                     error:function () {
                         alert('加载失败')

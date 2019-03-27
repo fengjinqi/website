@@ -42,14 +42,15 @@
     <div class="container clearfix">
         <input type="hidden" name="hidden" value="{{ id }}">
         <article class="fl">
-        <h1>{{ article.title }}</h1>
-        <div>
+        <h3 style="padding: 0 20px">{{ article.title }}</h3>
+        <div style="padding: 0 20px">
             {{ article.authors.username }}
             {{ article.add_time }}
             {{ article.category.name }}
             {{ article.click_nums }}
             {{ article.get_number }}
         </div>
+
             <div id="test-editormd-view2">
                 <textarea id="append-test" name="test-editormd-markdown-doc" style="display:none;">{{ article.content }}</textarea>
             </div>
@@ -183,6 +184,7 @@
             data.article = $("input[name='hidden']").val()
             data.comments = $(obj).prev().val()
             data.user = '{{ request.user.id }}'
+            data.url = '{{ request.path }}'
             data.cip = returnCitySN['cip']
             data.address = returnCitySN['cname']
             $.ajax({
@@ -213,6 +215,7 @@
             data.comments = $(obj).prev().val()
             data.user = '{{ request.user.id }}'
             data.cip = returnCitySN['cip']
+            data.url = '{{ request.path }}'
             data.address = returnCitySN['cname']
             data.to_uids =$(obj).parent().parent().find('div.fl').attr('data-id')
             data.aomments_id =$(obj).parent().parent().find('.to').attr('data-id')
@@ -237,6 +240,7 @@
         $(function() {
             var testEditormdView, testEditormdView2;
             testEditormdView2 = editormd.markdownToHTML("test-editormd-view2", {
+                markdown:'{{ article.content }}',
                 htmlDecode      : "style,script,iframe",  // you can filter tags decode
                 emoji           : true,
                 taskList        : true,

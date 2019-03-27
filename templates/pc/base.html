@@ -22,6 +22,9 @@
     {% block css %}{% endblock %}
     <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'js/jquery.cookie.min.js' %}"></script>
+    <script src="{% static 'js/public.js' %}"></script>
+    <script src="{% static 'js/xss.js' %}"></script>
+
     {% block link_js %}
     {% endblock %}
 </head>
@@ -37,10 +40,13 @@
                 <li class="fl"><a class=" {% if request.path|slice:'9' == '/article/' %}
                 active
                 {% endif %}"href="{% url 'article:index' %}">文章</a></li>
-                <li class="fl"><a href="">社区</a></li>
+
                 <li class="fl"><a class=" {% if request.path|slice:'8' == '/course/' %}
                 active
                 {% endif %} "href="{% url 'course:index' %}">教程</a></li>
+             <li class="fl"><a class=" {% if request.path|slice:'7' == '/forum/' %}
+                active
+                {% endif %}" href="{% url 'forum:forum' %}">社区论坛</a></li>
                 <li class="fl"><a class=" {% if request.path|slice:'9' == '/support/' %}
                 active
                 {% endif %}" href="{% url 'support:support' %}">支持与赞助</a></li>
@@ -111,7 +117,6 @@
                 if(data.count>0){
                     $("#yuan").show()
                 }
-                console.log(data.count)
             }
         })
         {% endif %}
