@@ -1,0 +1,24 @@
+.forum{
+    margin-top: 20px;
+    background: #fff;
+}
+#plate li{
+    width: 50%;
+    float: left;
+
+}
+.list li{
+    margin: 15px 0;
+    padding: 15px;
+    border-bottom: 1px  solid #ccc;
+}
+img.user{
+    width: 48px;
+    height: 48px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+.list-text{
+    padding-left: 15px;
+}

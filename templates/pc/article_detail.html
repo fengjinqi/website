@@ -33,12 +33,8 @@
         <script src="{% static 'markdown/lib/jquery.flowchart.min.js' %}"></script>
         <script src="{% static 'markdown/editormd.js' %}"></script>
         <script src="{% static 'js/jquery.share.min.js' %}"></script>
-
-
-
 {% endblock %}
 {% block content %}
-
     <div class="container clearfix">
         <input type="hidden" name="hidden" value="{{ id }}">
         <article class="fl">
@@ -50,7 +46,6 @@
             {{ article.click_nums }}
             {{ article.get_number }}
         </div>
-
             <div id="test-editormd-view2">
                 <textarea id="append-test" name="test-editormd-markdown-doc" style="display:none;">{{ article.content }}</textarea>
             </div>
@@ -67,9 +62,7 @@
                         {% else %}
                          <div class="mask"><a href="{% url 'index' %}?next={{ request.path }}">未登录</a></div>
                     {% endif %}
-
                 </div>
-
                 <div class="comment-fask">
                     <div class="cmt-list-type">
                         <ul class="clear-g type-lists">
@@ -83,9 +76,7 @@
                     </div>
                     <div class="list-block-gw">
                         <p class="newest">最新评论</p>
-
                     {% for foo in article.article_comment_set.all %}
-
                         <div class="list-main">
                             <div class="img-corner"><img src="{% if foo.user.user_imag %}
                                 {{ MEDIA_URL }}{{  foo.user.user_imag}}
@@ -104,7 +95,6 @@
                                         {% else %}
                                                   {{ foo.user.user_image }}
                                     {% endif %}
-
                             " alt="" ></div>
                                     <div class="list-text">
                                         <div class="list-person clearfix">
@@ -120,16 +110,9 @@
                         {% empty %}
                         暂无评论。。
                     {% endfor %}
-
                     </div>
-
-
                 </div>
-
             </div>
-
-
-
         </article>
     <aside class="fr">
         {% include 'pc/base_aside.html' %}
@@ -142,10 +125,7 @@
                         {% endfor %}
                 </ul>
               </div>
-
             </div>
-
-
     </aside>
     </div>
 
@@ -211,7 +191,6 @@
                 return false
             }
             var data = new Object()
-
             data.comments = $(obj).prev().val()
             data.user = '{{ request.user.id }}'
             data.cip = returnCitySN['cip']
@@ -219,7 +198,6 @@
             data.address = returnCitySN['cname']
             data.to_uids =$(obj).parent().parent().find('div.fl').attr('data-id')
             data.aomments_id =$(obj).parent().parent().find('.to').attr('data-id')
-            console.log(data)
              $.ajax({
                 url:'/api/comment_reply/',
                 type:'post',
@@ -240,7 +218,6 @@
         $(function() {
             var testEditormdView, testEditormdView2;
             testEditormdView2 = editormd.markdownToHTML("test-editormd-view2", {
-                markdown:'{{ article.content }}',
                 htmlDecode      : "style,script,iframe",  // you can filter tags decode
                 emoji           : true,
                 taskList        : true,

@@ -28,6 +28,7 @@ class Forum_plate(models.Model):
     class Meta:
         verbose_name = '论坛版块'
         verbose_name_plural = verbose_name
+        ordering = ('-add_time',)
 
 
 class Forum(models.Model):
@@ -51,6 +52,7 @@ class Forum(models.Model):
     class Meta:
         verbose_name = '帖子表'
         verbose_name_plural = verbose_name
+        ordering = ('-add_time',)
 
 
 class Priority(models.Model):
