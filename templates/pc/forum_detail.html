@@ -2,13 +2,10 @@
 {% load static %}
 {% load staticfiles %}
 {% block title %}
-    {{ article.title }}
+    {{ dicts.title }}
 {% endblock %}
 {% block keywords %}
-    {{ article.keywords }}
-{% endblock %}
-{% block desc %}
-    {{ article.desc }}
+    {{ dicts.keywords }}
 {% endblock %}
 
 {% block css %}
@@ -36,31 +33,30 @@
 {% endblock %}
 {% block content %}
     <div class="container clearfix">
-        <input type="hidden" name="hidden" value="{{ id }}">
+        <input type="hidden" name="hidden" value="{{ forum_id }}">
         <article class="fl">
 
         <div style="padding: 20px" class="flex">
              <div>
                  <span class="fl img_cover blogs_avatar" style="
-                                                 background: url({% if article.authors.user_imag%}
-                            {{ MEDIA_URL }}{{ article.authors.user_imag }}
+                                                 background: url({% if dicts.authors.user_imag%}
+                            {{ MEDIA_URL }}{{ dicts.authors.user_imag }}
                             {% else %}
-                            {{ article.authors.user_image }}
+                            {{ dicts.authors.user_image }}
                         {% endif %})no-repeat;background-color: #ccc;"></span>
              </div>
             <div>
-                <div class="de-username">{{ article.authors.username }}</div>
+                <div class="de-username">{{ dicts.authors.username }}</div>
                 <div class="de-time flex">
-                    <div class="de-margin">{{ article.add_time }}</div>
-                    <div class="de-margin">阅读 {{ article.click_nums }}</div>
+                    <div class="de-margin">{{ dicts.add_time }}</div>
+                    <div class="de-margin">浏览量 {{ dicts.click_nums}}</div>
                     <div class="de-margin">评论 {{ article.get_number }}</div>
                 </div>
             </div>
-            {#{{ article.category.name }}#}
         </div>
-        <h3 style="padding: 0 20px">{{ article.title }}</h3>
+        <h3 style="padding: 0 20px">{{ dicts.title }}</h3>
             <div id="test-editormd-view2">
-                <textarea id="append-test" name="test-editormd-markdown-doc" style="display:none;">{{ article.content }}</textarea>
+                <textarea id="append-test" name="test-editormd-markdown-doc" style="display:none;">{{ dicts.content }}</textarea>
             </div>
             <div class="social-share"></div>
             <div class="comment">
@@ -79,7 +75,7 @@
                 <div class="comment-fask">
                     <div class="cmt-list-type">
                         <ul class="clear-g type-lists">
-                            <li class="type-list active">评论</li>
+                            <li class="type-list active">帖子回复</li>
                         </ul>
                         <div class="cmt-list-border"></div>
                         <div class="cmt-list-number">
@@ -88,7 +84,7 @@
                         </div>
                     </div>
                     <div class="list-block-gw">
-                        <p class="newest">最新评论</p>
+                        <p class="newest">最新回复</p>
                     {% for foo in article.article_comment_set.all %}
                         <div class="list-main">
                             <div class="img-corner"><img src="{% if foo.user.user_imag %}
@@ -121,7 +117,7 @@
                             </div>
                         </div>
                         {% empty %}
-                        暂无评论。。
+                        此帖子暂无回复。。
                     {% endfor %}
                     </div>
                 </div>

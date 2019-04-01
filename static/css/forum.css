@@ -1,24 +1,96 @@
 .forum{
     margin-top: 20px;
-    background: #fff;
-}
-#plate li{
-    width: 50%;
-    float: left;
 
 }
+#plate li{
+    width: 25%;
+    float: left;
+}
+
+.tieImg{
+    width: 56px;
+    height: 56px;
+    background: #eee;
+    margin-right: 12px;
+}
+.tieNUm{
+    font-size: 20px;
+    color: #ff9002;
+}
+.tieNmae{
+    margin:6px 0 15px 0;
+}
 .list li{
-    margin: 15px 0;
     padding: 15px;
-    border-bottom: 1px  solid #ccc;
+    border-bottom: 1px  solid #eee;
+}
+.forun-title{
+    font-size: 16px;
+}
+.forun-info{
+    color: #999;    margin-top: 8px;
+}
+.forun-num{
+    position: relative;
+    top: 26px;
+    color: #999;
+}
+.f-name{
+    font-size: 16px;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+.f-name>.active{
+    font-weight: bold;
+}
+.f-name>span{
+    margin-right: 24px;
+}
+#plate{
+        padding: 15px 15px 0 15px;
+    margin-bottom: 15px;
+    background: #fff;
+}
+.forun-num>div{
+    margin-left:12px
 }
 img.user{
     width: 48px;
     height: 48px;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    border-radius: 50%;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
 }
 .list-text{
     padding-left: 15px;
+}
+
+.sidebar div { padding: 24px 15px; margin-bottom: 20px; background: #fff; box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); -webkit-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); -moz-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);}
+.hometitle { font-size: 18px; color: #282828; font-weight: 600; margin: 0; text-transform: uppercase; padding-bottom: 10px; margin-bottom: 25px; position: relative; }
+.hometitle:after { content: ""; background-color: #282828; left: 0; width: 50px; height: 2px; bottom: 0; position: absolute; -webkit-transition: 0.5s; -moz-transition: 0.5s; -ms-transition: 0.5s; -o-transition: 0.5s; transition: 0.5s; }
+.sidebar div:hover ::after { width: 70px; }
+
+.sidenews li { margin: 0 0 20px 0; overflow: hidden }
+.sidenews li p {
+    line-height: 24px; color: #888; font-size: 15px;
+    overflow: hidden; text-overflow: ellipsis; -webkit-box-orient: vertical; display: -webkit-box; -webkit-line-clamp: 2;
+
+}
+.sidenews li a { color: #48494d; }
+.sidenews li a:hover { color: #00A7EB; }
+.sidenews i { width: 88px;
+    height: 60px;
+    overflow: hidden;
+    display: block;
+    border: #efefef 1px solid;
+    float: right;
+    margin-left: 10px;}
+.sidenews img { height: 100%; max-height: 75px; margin: auto; -moz-transition: all .5s ease; -webkit-transition: all .5s ease; -ms-transition: all .5s ease; -o-transition: all .5s ease; transition: all .5s ease; transition: all 0.5s; }
+.sidenews li:hover i img { transform: scale(1.1) }
+.sidenews span { font-size: 12px; color: #9A9A9A; margin-top: 10px; display: block }
+
+.zhan li {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }

@@ -1,6 +1,6 @@
 /*列表开始*/
 .blogs{
-/*-webkit-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); -moz-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);*/
+-webkit-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); -moz-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
@@ -285,7 +285,7 @@
     color: #356dd0;
 }
 /*padding: 30px 15px; margin-bottom: 20px; background: #FFF;box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);  -webkit-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); -moz-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);*/
-.sidebar div { padding: 24px 15px; margin-bottom: 20px; background: #fff}
+.sidebar div { padding: 24px 15px; margin-bottom: 20px; background: #fff; box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); -webkit-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); -moz-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);}
 .hometitle { font-size: 18px; color: #282828; font-weight: 600; margin: 0; text-transform: uppercase; padding-bottom: 15px; margin-bottom: 25px; position: relative; }
 .hometitle:after { content: ""; background-color: #282828; left: 0; width: 50px; height: 2px; bottom: 0; position: absolute; -webkit-transition: 0.5s; -moz-transition: 0.5s; -ms-transition: 0.5s; -o-transition: 0.5s; transition: 0.5s; }
 .sidebar div:hover ::after { width: 70px; }

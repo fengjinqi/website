@@ -129,7 +129,6 @@
                 form.append('csrfmiddlewaretoken','{{ csrf_token }}')
                 form.append('category',category)
                 form.append('type',type)
-                console.log(list_pic)
                 $.ajax({
                     url:'/article/update/{{ article.id }}',
                     type:'post',
@@ -176,7 +175,6 @@
               type: "POST",
               headers:{'X-CSRFToken':$.cookie('csrftoken')},
               success:function (data) {
-                  console.log(data)
                    $(n).parent().find('img').remove();
                   $(n).hide()
                   $('.file_style').show();

@@ -1,7 +1,7 @@
 {% extends 'pc/base.html' %}
 {% load static %}
 {% block title %}
-    新增文章
+    发布帖子
 {% endblock %}
 {% block css %}
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
@@ -13,34 +13,19 @@
 {% endblock %}
 {% block content %}
     <section class="main">
-        <h4>发布文章</h4>
+        <h4>发布帖子</h4>
         <form>
           <div class="form-group">
             <label >标题</label>
-            <input type="text" class="form-control validate" name="title"  placeholder="请输入文章标题">
+            <input type="text" class="form-control validate" name="title"  placeholder="请输入帖子标题">
           </div>
           <div class="form-group">
             <label >关键字(Keywords)</label>
             <input type="text" class="form-control" name="keywords"  placeholder="请输入关键字，以英文逗号分割，利于搜索引擎收录">
           </div>
-            <div class="form-group">
-            <label >描述(Description)</label>
-            <input type="text" class="form-control" name="desc" placeholder="请输入文章描述">
-          </div>
-            <div class="form-group">
-            <label >列表图(List_pic)</label>
-                <div class="file">
-                    <div class="file_style">
-                        <span></span>
-                        <input type="file" id="file" name="list_pic" accept="image/*">
-                    </div>
-                    <p class="img"><i class="glyphicon glyphicon-remove" style="color: #f5f5f5;"></i></p>
 
-                </div>
-
-          </div>
             <div class="form-group">
-            <label >文章内容</label>
+            <label >帖子内容</label>
             <div id="test-editormd">
                 <textarea name="" class="form-control" ></textarea></div>
             </div>
@@ -89,28 +74,24 @@
         $("#btn").on('click',function () {
     if(validate($('.validate').val(),$('.validate')) && validate($('select').val(),$('select')) && validate(testEditor.getMarkdown(),$('#test-editormd'))){
         var title = $("input[name='title']").val();
-        var desc = $("input[name='desc']").val();
         var keywords =$("input[name='keywords']").val();
-        var list_pic =$("input[name='list_pic']")[0].files[0];
         var category =$("select[name='category']").val();
         var form = new FormData()
         form.append('authors','{{ request.user.id }}')
         form.append('title',title)
-        form.append('desc',desc)
         form.append('keywords',keywords)
-        form.append('list_pic',list_pic)
         form.append('content',testEditor.getMarkdown())
         form.append('csrfmiddlewaretoken','{{ csrf_token }}')
         form.append('category',category)
         $.ajax({
-            url:'/article/created/',
+            url:'{% url 'forum:add' %}',
             type:'post',
             contentType : false,
             data:form,
             processData:false,
             success:function (data) {
                 if(data.code==200){
-                    window.location.href='{% url 'home' %}'
+                    window.location.href='{% url 'forum:forum' %}'
                 }
             },
         error:function (xhr) {
@@ -121,36 +102,5 @@
 
 
 })
-    $('#file').on('change',function () {
-         var read=new FileReader() // 创建FileReader对像;
-          read.readAsDataURL(this.files[0])  // 调用readAsDataURL方法读取文件;
-       read.onload=function(){
-            url=read.result  // 拿到读取结果;
-            var img=new Image();
-            img.src=url;
-                $(".img").show()
-                $(".img").append(img)
-            $('.file_style').hide()
-           }
-
-        /*$.ajax({
-            url:'/cms/uplpad_file/',
-            type:'post',
-            processData:false,
-            contentType:false,
-            data:form,
-            headers:{'X-CSRFToken':$.cookie('csrftoken')},
-            success:function (data) {
-                $("#input_file").val(data.data)
-                console.log(data)
-            }
-        })*/
-    })
-      $('.img i').on('click',function () {
-          $(this).parent().find('img').remove();
-           $('#file').val('');
-          $(this).parent().hide();
-          $('.file_style').show();
-      })
     </script>
 {% endblock %}

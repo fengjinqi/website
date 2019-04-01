@@ -13,23 +13,21 @@
     <style>
         body{
             width: 100%;
-            height: calc(100vh - 100px);
-            background: url("{% static 'img/bg-01.jpg' %}")no-repeat;
-            background-size: cover;
+            height: calc(100vh);
+            {#background: url("{% static 'img/bg-01.jpg' %}")no-repeat;#}
+            {#background-size: cover;#}
+
         }
         #main{
             position: fixed;
             width: 395px;
             background: #fff;
-            border: 1px solid #ccc;
+            /* border: 1px solid #eee; */
             top: 50%;
             left: 50%;
-            margin-top: -240px;
+            margin-top: -207px;
             margin-left: -197.5px;
-            box-shadow: 0px 0px 5px #333333;
-            -webkit-border-radius: 5px;
-            -moz-border-radius: 5px;
-            border-radius: 5px;
+            /* border-radius: 5px; */
         }
         .has-feedback .form-control {
             padding-right: 12px;
@@ -97,7 +95,9 @@
 </head>
 
 <body>
-<div id="main">
+<div style="height: calc(65vh);background:#128ff9;">
+    <h2>  </h2>
+    <div id="main">
      <form class="form-inline" action="{% url 'index' %}?next={{ next }}" method="post">
          <div class="login-top">
 				登录
@@ -130,6 +130,8 @@
 </form>
     <p class="clearfix"><a class="fl" href="{% url 'user:retrieve ' %}">忘记密码?</a><a class="fr" href="{% url 'register' %}">注册</a></p>
 </div>
+</div>
+<div style="height: calc(35vh);background: #fff;"></div>
 
 	<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
 <script src="{% static 'js/jquery.cookie.min.js' %}"></script>

@@ -21,30 +21,80 @@ author 冯金琪
         <div class="forum">
             <ul id="plate" class="clearfix">
                 {% for foo in plate %}
-                    <li>{{ foo.name }}</li>
+                    <li class="flex">
+                        <div class="tieImg"></div>
+                        <div>
+                            <div class="tieNUm">{{ foo.get_count}}</div>
+                            <div class="tieNmae">{{ foo.name }}</div>
+                        </div>
+                    </li>
                 {% endfor %}
             </ul>
-        <div>
-            最新帖子
-            <hr/>
+        <div style="background: #fff;">
+            <div class="f-name">
+                <span class="active">最新帖子</span>
+                <span>推荐帖子</span>
+                <span>热门帖子</span>
+            </div>
+
             <ul class="list">
                 {% for foo in forum %}
                     <li class="clearfix">
-                        <img src="{% if foo.author.user_imag %}
-                    {{ MEDIA_URL }}{{ foo.author.user_imag }}
+                        <img src="{% if foo.authors.user_imag %}
+                    {{ MEDIA_URL }}{{ foo.authors.user_imag }}
                     {% else %}
-                    {{ foo.author.user_image }}
-                    {% endif %}" class="user fl" title="{{ foo.author.username }}"width="40px">
+                    {{ foo.authors.user_image }}
+                    {% endif %}" class="user fl" title="{{ foo.authors.username }}"width="40px">
                     <div class="list-text fl">
-                        <p>{{ foo.title }}</p>
-                        <p>{{ foo.add_time }} 来自于 {{ foo.category.name }}</p>
+                        <p class="forun-title"><a href="{% url 'forum:detail' foo.id %}">{{ foo.title }}</a></p>
+                        <p class="forun-info">来自于 {{ foo.category.name }}  {{ foo.add_time }} </p>
                     </div>
-                        </li>
+                    <div class="fr flex forun-num">
+                        <div>评论6</div>
+                        <div>浏览{{ foo.click_nums }}</div>
+                    </div>
+                    </li>
                 {% endfor %}
             </ul>
         </div>
         </div>
         </article>
-         <aside class="fr"></aside>
+         <aside class="fr">
+             <div class="sidebar">
+                <div class="tuijian">
+                    <a href="{% url 'forum:add' %}">写帖子</a>
+                </div>
+             </div>
+            <div class="sidebar">
+                <div class="tuijian">
+                    <h2 class="hometitle" style="margin-bottom: 0">最新求职</h2>
+                    <ul class="zhan">
+                        <li class="clearfix" style="margin-top: 15px;">
+                            <a href="">
+                                <p class="forun-title">30岁之后程序员该怎么办？</p>
+                                <p class="forun-info" style="font-size: 12px;margin: 0">来自于 问题求助  2019年3月28日 11:17 </p>
+                            </a>
+                    </li>
+                         <li class="clearfix"style="margin-top: 15px;">
+                            <a href="">
+                                <p class="forun-title">30岁之后程序员该怎么办？</p>
+                                <p class="forun-info" style="font-size: 12px;;margin: 0">来自于 问题求助  2019年3月28日 11:17 </p>
+                            </a>
+                    </li>
+                    </ul>
+                </div>
+             </div>
+              <div class="sidebar">
+                <div class="tuijian">
+                    <h2 class="hometitle">交流群</h2>
+                    <ul class="sidenews zhan">
+                        <p>学习讨论:180522631</p>
+                          <br>
+                        <p>前端招聘群:135684334</p>
+
+                    </ul>
+                </div>
+             </div>
+         </aside>
     </section>
 {% endblock %}

@@ -17,6 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.static import serve
+from rest_framework.documentation import include_docs_urls
 
 from rest_framework_jwt.views import obtain_jwt_token
 
@@ -81,6 +82,7 @@ urlpatterns = [
     re_path(r'^upload/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     url(r'api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path("api-docs/", include_docs_urls("API文档")),
     re_path(r'api/login/$', obtain_jwt_token),  # jwt认证
     url('auth-qq', to_login, name='qq-login'),
     url('qq', qq, name='qq'),

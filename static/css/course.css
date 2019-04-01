@@ -13,16 +13,18 @@ h1{
     padding: 15px;
 }
 #main>div{
-    float: left;
-    width: 23%;
-    margin: 15px 1%;
-
-}
-#main>.course>a>img{
-    width: 100%;
      -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
+    overflow: hidden;
+    float: left;
+    width: 23%;
+    margin: 15px 1%;
+  -webkit-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); -moz-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);
+}
+#main>.course>a>img{
+    width: 100%;
+
     vertical-align: middle;
 }
 .desc>span{
@@ -67,39 +69,33 @@ a:hover{
 /*详情*/
 .Catalog{
     width: 198px;
-    border: 1px solid #ddd;
-    background: #fff;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-
-
 }
 .Catalog>ul>li{
-    height: 40px;
-    line-height: 40px;
+    height: 48px;
+    line-height: 48px;
     cursor: pointer;
-    /*padding:0 15px;*/
 }
 .Catalog>ul>li:hover{
     color:#356dd0;
 }
 .content{
     width: 978px;
-    /*height: 500px;*/
     background: #fff;
-    /*border: 1px solid #ddd;*/
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    /*-webkit-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); -moz-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);*/
+    -webkit-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); -moz-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);
 }
 .content .pageNav{
     height:48px;
     line-height: 48px;
-    background: #f7f7f7;
-    /*border-bottom: 1px solid #ddd;*/
+    /*background: #f7f7f7;*/
+    /*border-bottom: 1px solid #eee;*/
     padding:0 15px;
+    background: #fff;
 }
 .titlename{
     margin-top: 24px;
