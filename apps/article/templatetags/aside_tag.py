@@ -8,9 +8,9 @@ from apps.user.models import UserMessage
 register = template.Library()
 @register.inclusion_tag('pc/base_aside.html')
 def get_aside():
-    popular = Article.objects.all().order_by('-click_nums')[:5]
+    popular = Article.objects.filter(is_show=True).order_by('-click_nums')[:5]
     return {'popular':popular}
 
 @register.simple_tag
 def get_categories():
-    return Article.objects.all().order_by('-click_nums')[:5]
+    return Article.objects.filter(is_show=True).order_by('-click_nums')[:5]

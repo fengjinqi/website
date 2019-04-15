@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 import datetime
+from configparser import ConfigParser
 from time import sleep
 
 import requests
@@ -97,11 +98,14 @@ def add():
     print('success')
     return True
 
+conf = ConfigParser()
 
+conf.read('config.ini')
 @app.task()
 def getApi():
     print('正在获取数据...')
-    url = 'http://api01.idataapi.cn:8000/article/idataapi?KwPosition=3&catLabel1=科技&apikey=Xtv7doa2SrBskcf0X7fLwfKaLEyvXycJ2RRKGPvhLisMIASRtFtmGzzIvef2QSFs'
+
+    url = 'http://api01.idataapi.cn:8000/article/idataapi?KwPosition=3&catLabel1=科技&apikey={0}'.format(conf.get('iDataApi','key'))
     headers = {
         "Accept-Encoding": "gzip",
         "Connection": "close"
@@ -124,7 +128,8 @@ def getApi():
             print('数据添加成功')
     except Exception:
         print('数据添加失败===正在发生邮件通知管理员')
-        error_email.delay('抓取数据错误','抓取数据错误，请尽快查看',['fengjinqi@fengjinqi.com'])
+
+        error_email.delay('tarena_feng@126.com','抓取数据错误','抓取数据错误，请尽快查看')
         print('邮件发送成功')
 
 

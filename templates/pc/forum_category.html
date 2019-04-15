@@ -1,0 +1,31 @@
+{% extends 'pc/forum.html' %}
+{% block title %}
+论坛社区-{{type.name }}
+{% endblock %}
+{% block childer %}
+ <div style="background: #fff;">
+            <div class="f-name">
+                <span class="active">最新帖子>>{{type.name  }}</span>
+            </div>
+
+            <ul class="list">
+                {% for foo in cate_list %}
+                    <li class="clearfix">
+                        <img src="{% if foo.authors.user_imag %}
+                    {{ MEDIA_URL }}{{ foo.authors.user_imag }}
+                    {% else %}
+                    {{ foo.authors.user_image }}
+                    {% endif %}" class="user fl" title="{{ foo.authors.username }}"width="40px">
+                    <div class="list-text fl">
+                        <p class="forun-title"><a href="{% url 'forum:detail' foo.id %}">{{ foo.title }}</a></p>
+                        <p class="forun-info">来自于 {{ foo.category.name }}  {{ foo.add_time }} </p>
+                    </div>
+                    <div class="fr flex forun-num">
+                        <div>评论{{ foo.get_number }}</div>
+                        <div>浏览{{ foo.click_nums }}</div>
+                    </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+{% endblock %}

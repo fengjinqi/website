@@ -97,7 +97,7 @@
                                 {{ foo.user.user_image }}
                             {% endif %}" alt=""></div>
                             <div class="list-text">
-                                <div class="list-person clearfix"><div class="fl" data-id="{{ foo.user.id }}"><a href="{% url 'user:ProfileOthers' foo.user.id%}">{{ foo.user.username }}</a> {{ foo.address }}</div> <p class="fr">{{ foo.add_time }}</p></div>
+                                <div class="list-person clearfix"><div class="fl" data-id="{{ foo.user.id }}"><a href="{% url 'user:author_detaile' foo.user.id%}">{{ foo.user.username }}</a> {{ foo.address }}</div> <p class="fr">{{ foo.add_time }}</p></div>
                                 <p class="text-con">{{ foo.comments }}</p>
                                 <p class="fr to" onclick="establish(this)" data-id="{{ foo.id }}">回复 </p>
                                 {% for childr in foo.articlecommentreply_set.all %}
@@ -111,7 +111,7 @@
                             " alt="" ></div>
                                     <div class="list-text">
                                         <div class="list-person clearfix">
-                                            <div class="fl"data-id="{{ childr.user.id }}"><a href="{% url 'user:ProfileOthers' childr.user.id %}">{{ childr.user.username }}</a>回复<a href="{% url 'user:ProfileOthers' childr.to_uids.id %}">{{ childr.to_uids.username }}</a> {{ foo.address }}</div> <p class="fr">{{ childr.add_time }}</p>
+                                            <div class="fl"data-id="{{ childr.user.id }}"><a href="{% url 'user:author_detaile' childr.user.id %}">{{ childr.user.username }}</a>回复<a href="{% url 'user:author_detaile' childr.to_uids.id %}">{{ childr.to_uids.username }}</a> {{ foo.address }}</div> <p class="fr">{{ childr.add_time }}</p>
                                         </div>
                                         <p class="text-con">{{ childr.comments}}</p>
                                         <p class="fr to" onclick="establish(this)" data-id="{{ foo.id }}">回复 </p>

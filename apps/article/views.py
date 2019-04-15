@@ -96,7 +96,7 @@ def ArticleList(request):
 
 def api(request):
 
-    url = 'http://api01.idataapi.cn:8000/article/idataapi?KwPosition=3&catLabel1=科技&apikey=Xtv7doa2SrBskcf0X7fLwfKaLEyvXycJ2RRKGPvhLisMIASRtFtmGzzIvef2QSFs'
+    url = 'http://api01.idataapi.cn:8000/article/idataapi?KwPosition=3&catLabel1=科技&apikey='
     headers = {
         "Accept-Encoding": "gzip",
         "Connection": "close"
@@ -466,7 +466,7 @@ def my_callback(sender, **kwargs):
     message.ids = kwargs['instance'].article.id
     message.to_user_id = kwargs['instance'].user_id
     message.has_read = False
-    message.url ='Article'
+    message.url =kwargs['instance'].url
     message.message="你的%s文章被人评论了,快去看看吧!"%kwargs['instance'].article.title
     message.save()
 
@@ -491,7 +491,8 @@ def my_callback_reply(sender, **kwargs):
     message.ids = kwargs['instance'].aomments_id.article.id
     message.to_user = kwargs['instance'].user
     message.has_read = False
-    message.message = "你的评论有人回复了,快去看看吧!"
+    message.url =kwargs['instance'].url
+    message.message = "你参与的 %s 文章评论有人回复了,快去看看吧!"%kwargs['instance'].aomments_id.article.title
     message.save()
 
 

@@ -83,7 +83,7 @@
                         msg.count>=10?$('#page').show():$("#page").hide()
                         var html = '';
                         for (var i=0;i<data.length;i++){
-                            html+="<li><div><p class='meun-main-text'>"+data[i].add_time+" "+ data[i].message+"</p><p><span onclick=see(this,"+data[i].is_supper+",'"+data[i].ids+"')>查看</span><span onclick=Already(this,"+data[i].id+")>设置已读</span></p></div></li>"
+                            html+="<li><div><p class='meun-main-text'>"+data[i].add_time+" "+ data[i].message+"</p><p><span onclick=see(this,"+data[i].is_supper+",'"+data[i].url+"')>查看</span><span onclick=Already(this,"+data[i].id+")>设置已读</span></p></div></li>"
                         }
                        $('.meun-main ul').html(html)
                    // }
@@ -108,7 +108,7 @@
                                     var data = msg.results;
                                     var html = '';
                                     for (var i=0;i<data.length;i++){
-                                        html+="<li><div><p class='meun-main-text'>"+data[i].add_time+" "+ data[i].message+"</p><p><span onclick=see(this,"+data[i].is_supper+",'"+data[i].ids+"')>查看</span><span onclick=Already(this,"+data[i].id+")>设置已读</span></p></div></li>"
+                                        html+="<li><div><p class='meun-main-text'>"+data[i].add_time+" "+ data[i].message+"</p><p><span onclick=see(this,"+data[i].is_supper+",'"+data[i].url+"')>查看</span><span onclick=Already(this,"+data[i].id+")>设置已读</span></p></div></li>"
                                     }
                                    $('.meun-main ul').html(html)
                                 }
@@ -134,7 +134,7 @@
                     msg.count>=10?$('#page').show():$("#page").hide()
                     var html = '';
                     for (var i=0;i<data.length;i++){
-                        html+="<li><div><p class='meun-main-text'>"+data[i].add_time+" "+ data[i].message+"</p><p><span onclick=see(this,"+data[i].is_supper+",'"+data[i].ids+"')>查看</span><span onclick=remove(this,"+data[i].id+")>删除</span></p></div></li>"
+                        html+="<li><div><p class='meun-main-text'>"+data[i].add_time+" "+ data[i].message+"</p><p><span onclick=see(this,"+data[i].is_supper+",'"+data[i].url+"')>查看</span><span onclick=remove(this,"+data[i].id+")>删除</span></p></div></li>"
                     }
                     $('.meun-main ul').html(html)
                     $('.M-box').pagination({
@@ -158,7 +158,7 @@
                                     var data = msg.results;
                                     var html = '';
                                     for (var i=0;i<data.length;i++){
-                                        html+="<li><div><p class='meun-main-text'>"+data[i].add_time+" "+ data[i].message+"</p><p><span onclick=see(this,"+data[i].is_supper+",'"+data[i].ids+"')>查看</span><span onclick=remove(this,"+data[i].id+")>删除</span></p></div></li>"
+                                        html+="<li><div><p class='meun-main-text'>"+data[i].add_time+" "+ data[i].message+"</p><p><span onclick=see(this,"+data[i].is_supper+",'"+data[i].url+"')>查看</span><span onclick=remove(this,"+data[i].id+")>删除</span></p></div></li>"
                                     }
                                    $('.meun-main ul').html(html)
                                 }
@@ -183,7 +183,7 @@
                 $('.modal-body').html($(obj).parent().siblings().text())
             }else {
                 if(id!=='null'){
-                    window.location.href='/article/detail/'+id;
+                    window.location.href=id;
                 }
             }
     }

@@ -65,6 +65,7 @@ class Article_Comment(models.Model):
     article =models.ForeignKey(Article,verbose_name='文章',on_delete=models.CASCADE)
     comments = models.TextField(verbose_name='评论')
     address = models.CharField(max_length=50,verbose_name='地址',blank=True,null=True)
+    url = models.CharField(max_length=60, blank=True, null=True, default='')
     add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
 
     def __str__(self):
@@ -82,6 +83,7 @@ class ArticleCommentReply(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,verbose_name='当前用户',related_name='form_uid')
     to_uids = models.ForeignKey(User,on_delete=models.CASCADE,verbose_name='目标用户',related_name='to_uids',default='')
     comments = models.TextField(verbose_name='回复内容')
+    url = models.CharField(max_length=60,blank=True,null=True,default='')
     aomments_id = models.ForeignKey(Article_Comment,on_delete=models.CASCADE,verbose_name='回复id')
     address = models.CharField(max_length=50, verbose_name='地址',blank=True,null=True)
     add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')

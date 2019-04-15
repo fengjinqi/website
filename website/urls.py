@@ -23,7 +23,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 
 from apps.article.views import ArticleCreated
 from apps.course.views import CoursesList, CourseCreatedList, CourseListCreated, MeCoursesList
-from apps.forum.views import Forum_plateView, ForumView
+from apps.forum.views import Forum_plateView, ForumView, CommentView, Parent_CommentView
 from apps.support.views import LinkList, EmailsList, BannerList
 from apps.user.views import test, captcha_refresh, yan, login_view, UserGetInfo, UserGetAllInfo, \
     PersonOthers, Register, active_user, get_message, UserMessages, qq, getClback, getClbackQQ
@@ -58,6 +58,8 @@ router.register('EmailsList', EmailsList)
 router.register('LinkList', LinkList)
 router.register('forum/category', Forum_plateView)
 router.register('forum', ForumView)
+router.register('CommentView', CommentView)
+router.register('Parent_CommentView', Parent_CommentView)
 
 urlpatterns = [
 

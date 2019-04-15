@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime
 
 from django.db import models
 
@@ -53,10 +54,53 @@ class Forum(models.Model):
     def __str__(self):
         return self.title
 
+    def get_number(self):
+        n = self.comment_set.all()
+        num = self.comment_set.all().count()
+        for i in n:
+            num += i.parent_comment_set.count()
+        return num
     class Meta:
         verbose_name = '帖子表'
         verbose_name_plural = verbose_name
         ordering = ('-add_time',)
+
+
+class Comment(models.Model):
+    """评论"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='评论人')
+    forums = models.ForeignKey(Forum, verbose_name='帖子', on_delete=models.CASCADE)
+    comments = models.TextField(verbose_name='评论')
+    address = models.CharField(max_length=50, verbose_name='地址', blank=True, null=True)
+    url = models.CharField(max_length=60, blank=True, null=True, default='')
+    add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
+    def __str__(self):
+        return self.comments
+
+    class Meta:
+        verbose_name = '帖子评论表'
+        verbose_name_plural = verbose_name
+        ordering = ('-add_time',)
+
+
+class Parent_Comment(models.Model):
+    """评论回复"""
+    user = models.ForeignKey(User,on_delete=models.CASCADE,verbose_name='当前用户',related_name='form_Parent_Comment')
+    to_Parent_Comments = models.ForeignKey(User,on_delete=models.CASCADE,verbose_name='目标用户',related_name='to_Parent_Commenty',default='')
+    forums = models.ForeignKey(Forum, verbose_name='帖子', on_delete=models.CASCADE)
+    comments = models.TextField(verbose_name='评论')
+    parent_comments = models.ForeignKey(Comment,blank=True,null=True,on_delete=models.CASCADE)
+    address = models.CharField(max_length=50, verbose_name='地址', blank=True, null=True)
+    url = models.CharField(max_length=60, blank=True, null=True, default='')
+    add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
+    def __str__(self):
+        return self.comments
+
+    class Meta:
+        verbose_name = '帖子回复表'
+        verbose_name_plural = verbose_name
+        ordering = ('-add_time',)
+
 
 
 class Priority(models.Model):

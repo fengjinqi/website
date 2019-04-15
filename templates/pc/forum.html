@@ -16,7 +16,7 @@ author 冯金琪
     <link rel="stylesheet" href="{% static 'css/forum.css' %}">
 {% endblock %}
 {% block content %}
-    <section class="main">
+    <section class="main" style="overflow: hidden">
         <article class="fl">
         <div class="forum">
             <ul id="plate" class="clearfix">
@@ -25,16 +25,15 @@ author 冯金琪
                         <div class="tieImg"></div>
                         <div>
                             <div class="tieNUm">{{ foo.get_count}}</div>
-                            <div class="tieNmae">{{ foo.name }}</div>
+                            <div class="tieNmae"><a href="{% url 'forum:id' foo.id%}">{{ foo.name }}</a></div>
                         </div>
                     </li>
                 {% endfor %}
             </ul>
-        <div style="background: #fff;">
+        {% block childer %}
+         <div style="background: #fff;">
             <div class="f-name">
                 <span class="active">最新帖子</span>
-                <span>推荐帖子</span>
-                <span>热门帖子</span>
             </div>
 
             <ul class="list">
@@ -50,13 +49,15 @@ author 冯金琪
                         <p class="forun-info">来自于 {{ foo.category.name }}  {{ foo.add_time }} </p>
                     </div>
                     <div class="fr flex forun-num">
-                        <div>评论6</div>
+                        <div>评论{{ foo.get_number }}</div>
                         <div>浏览{{ foo.click_nums }}</div>
                     </div>
                     </li>
                 {% endfor %}
             </ul>
         </div>
+        {% endblock %}
+
         </div>
         </article>
          <aside class="fr">
@@ -69,18 +70,18 @@ author 冯金琪
                 <div class="tuijian">
                     <h2 class="hometitle" style="margin-bottom: 0">最新求职</h2>
                     <ul class="zhan">
-                        <li class="clearfix" style="margin-top: 15px;">
-                            <a href="">
-                                <p class="forun-title">30岁之后程序员该怎么办？</p>
-                                <p class="forun-info" style="font-size: 12px;margin: 0">来自于 问题求助  2019年3月28日 11:17 </p>
-                            </a>
-                    </li>
-                         <li class="clearfix"style="margin-top: 15px;">
-                            <a href="">
-                                <p class="forun-title">30岁之后程序员该怎么办？</p>
-                                <p class="forun-info" style="font-size: 12px;;margin: 0">来自于 问题求助  2019年3月28日 11:17 </p>
-                            </a>
-                    </li>
+                        {% for foo in job %}
+                            <li class="clearfix" style="margin-top: 15px;">
+                                <a href="{% url 'forum:detail' foo.id %}">
+                                    <p class="forun-title">{{ foo.title }}</p>
+                                    <p class="forun-info" style="font-size: 12px;margin: 0">来自于 {{ foo.category }}  {{ foo.add_time }} </p>
+                                </a>
+                        </li>
+                        {% endfor %}
+                        
+
+                        
+                        
                     </ul>
                 </div>
              </div>

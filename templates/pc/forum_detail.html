@@ -32,6 +32,7 @@
         <script src="{% static 'js/jquery.share.min.js' %}"></script>
 {% endblock %}
 {% block content %}
+
     <div class="container clearfix">
         <input type="hidden" name="hidden" value="{{ forum_id }}">
         <article class="fl">
@@ -50,7 +51,7 @@
                 <div class="de-time flex">
                     <div class="de-margin">{{ dicts.add_time }}</div>
                     <div class="de-margin">浏览量 {{ dicts.click_nums}}</div>
-                    <div class="de-margin">评论 {{ article.get_number }}</div>
+                    <div class="de-margin">评论 {{ dicts.get_number }}</div>
                 </div>
             </div>
         </div>
@@ -61,7 +62,7 @@
             <div class="social-share"></div>
             <div class="comment">
                 <div class="comment-main clearfix">
-                    <textarea  class="form-control" name="" id=""{% if request.user.is_authenticated  %}{% else %}disabled{% endif %}  rows="3" placeholder="来说点什么吧..."> </textarea>
+                    <textarea  class="form-control" name=""{% if request.user.is_authenticated  %}{% else %}disabled{% endif %}  rows="3" placeholder="来说点什么吧..."> </textarea>
                     <button class="btn btn-primary fr "{% if request.user.is_authenticated %}
                     onclick="mask(this)"
                             {% else %}
@@ -79,35 +80,34 @@
                         </ul>
                         <div class="cmt-list-border"></div>
                         <div class="cmt-list-number">
-{#                            <span class="comment-number">#}
-{#                                <span class="cy-number">3</span>人参与,<span class="cy-number">{{ article.article_comment_set.all.count }}</span>条评论</span>#}
+
                         </div>
                     </div>
                     <div class="list-block-gw">
                         <p class="newest">最新回复</p>
-                    {% for foo in article.article_comment_set.all %}
+                    {% for foo in dicts.comment_set.all %}
                         <div class="list-main">
                             <div class="img-corner"><img src="{% if foo.user.user_imag %}
                                 {{ MEDIA_URL }}{{  foo.user.user_imag}}
                                 {% else %}
                                 {{ foo.user.user_image }}
-                            {% endif %}" alt=""></div>
+                            {% endif %}" alt="" style="background-color: #ccc"></div>
                             <div class="list-text">
-                                <div class="list-person clearfix"><div class="fl" data-id="{{ foo.user.id }}"><a href="{% url 'user:ProfileOthers' foo.user.id%}">{{ foo.user.username }}</a> {{ foo.address }}</div> <p class="fr">{{ foo.add_time }}</p></div>
+                                <div class="list-person clearfix"><div class="fl"  data-id="{{ foo.user.id}}"><a href="{% url 'user:author_detaile' foo.user.id%}">{{ foo.user.username }}</a> {{ foo.address }}</div> <p class="fr">{{ foo.add_time }}</p></div>
                                 <p class="text-con">{{ foo.comments }}</p>
                                 <p class="fr to" onclick="establish(this)" data-id="{{ foo.id }}">回复 </p>
-                                {% for childr in foo.articlecommentreply_set.all %}
+                                {% for childr in foo.parent_comment_set.all %}
                                     <div class="reply-list">
                                     <div class="img-corner"><img src="
                                     {% if childr.user.user_imag %}
                                         {{ MEDIA_URL }}{{ childr.user.user_imag }}
                                         {% else %}
-                                                  {{ foo.user.user_image }}
+                                                  {{ childr.user.user_image }}
                                     {% endif %}
                             " alt="" ></div>
                                     <div class="list-text">
                                         <div class="list-person clearfix">
-                                            <div class="fl"data-id="{{ childr.user.id }}"><a href="{% url 'user:ProfileOthers' childr.user.id %}">{{ childr.user.username }}</a>回复<a href="{% url 'user:ProfileOthers' childr.to_uids.id %}">{{ childr.to_uids.username }}</a> {{ foo.address }}</div> <p class="fr">{{ childr.add_time }}</p>
+                                            <div class="fl"data-id="{{ childr.user_id }}"><a href="{% url 'user:author_detaile' childr.user_id %}">{{ childr.user.username }}</a>回复<a href="{% url 'user:author_detaile' childr.to_Parent_Comments.id %}">{{ childr.to_Parent_Comments.username }}</a> {{ foo.address }}</div> <p class="fr">{{ childr.add_time }}</p>
                                         </div>
                                         <p class="text-con">{{ childr.comments}}</p>
                                         <p class="fr to" onclick="establish(this)" data-id="{{ foo.id }}">回复 </p>
@@ -145,7 +145,6 @@
     <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 
     <script>
-
     html="<div class='clearfix text'><textarea name=''class='form-control' rows='5'></textarea><button class='btn btn-primary fr 'onclick=\"masks(this)\">评论</button></div>";
         function establish(obj) {
             try {
@@ -170,20 +169,20 @@
                 return false
             }
             var data = new Object()
-            data.article = $("input[name='hidden']").val()
+            data.forums = '{{ dicts.id }}'
             data.comments = $(obj).prev().val()
             data.user = '{{ request.user.id }}'
             data.url = '{{ request.path }}'
             data.cip = returnCitySN['cip']
             data.address = returnCitySN['cname']
             $.ajax({
-                url:'/api/article_Comment/',
+                url:'/api/CommentView/',
                 type:'post',
                 headers:{'X-CSRFToken':$.cookie('csrftoken')},
                 data:data,
                 success:function (data) {
 
-                  window.location.reload()
+                 window.location.reload()
                      //$('.list-block-gw').append(html)
                 },
                  error:function () {
@@ -205,15 +204,17 @@
             data.cip = returnCitySN['cip']
             data.url = '{{ request.path }}'
             data.address = returnCitySN['cname']
-            data.to_uids =$(obj).parent().parent().find('div.fl').attr('data-id')
-            data.aomments_id =$(obj).parent().parent().find('.to').attr('data-id')
+            data.forums ='{{ dicts.id }}'
+            data.to_Parent_Comments =$(obj).parent().parent().find('div.fl').attr('data-id')
+            data.parent_comments =$(obj).parent().parent().find('.to').attr('data-id')
              $.ajax({
-                url:'/api/comment_reply/',
+                url:'{% url 'forum:detail' dicts.id %}',
                 type:'post',
                 headers:{'X-CSRFToken':$.cookie('csrftoken')},
                 data:data,
                 success:function (data) {
-                    window.location.reload()
+
+                     window.location.reload()
                      //$('.list-block-gw').append(html)
                 },
                  error:function () {
