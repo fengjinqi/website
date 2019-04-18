@@ -1,0 +1,66 @@
+{% load forum %}
+
+<div class="sidebar">
+                <div class="tuijian">
+                    <h2 class="hometitle" style="margin-bottom: 0">最新求职</h2>
+                    <ul class="zhan">
+                        {% for foo in fourm %}
+                            <li class="clearfix" style="margin-top: 15px;">
+                                <a href="{% url 'forum:detail' foo.id %}">
+                                    <p class="forun-title"style="width: 270px;
+      white-space: nowrap;
+            overflow: hidden;
+    text-overflow: ellipsis;">{{ foo.title }}</p>
+                                    <p class="forun-info" style="font-size: 12px;margin: 0;width: 270px;
+      white-space: nowrap;
+            overflow: hidden;
+    text-overflow: ellipsis;">来自于 {{ foo.category }}  {{ foo.add_time }} </p>
+                                </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+             </div>
+<div class="sidebar">
+                <div class="tuijian">
+                    <h2 class="hometitle" style="margin-bottom: 0">最热帖子</h2>
+                    <ul class="zhan">
+                        {% for foo in Hottest %}
+                            <li class="clearfix" style="margin-top: 15px;">
+                                <a href="{% url 'forum:detail' foo.id %}">
+                                    <p class="forun-title" style=" width: 270px;
+      white-space: nowrap;
+      overflow: hidden;
+    text-overflow: ellipsis;">{{ foo.title }}</p>
+                                    <p class="forun-info" style="font-size: 12px;margin: 0; width: 270px;
+      white-space: nowrap;
+            overflow: hidden;
+    text-overflow: ellipsis;">来自于 {{ foo.category }}  {{ foo.add_time }} </p>
+                                </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+             </div>
+<div class="sidebar">
+                <div class="tuijian">
+                    <h2 class="hometitle">交流群</h2>
+                    <ul class="sidenews zhan">
+                    {% for foo in qq %}
+                     <p >{{ foo.title }}:{{ foo.qq }}{% if foo.is_active == True %}
+                            (已满)
+                        {% endif %}</p><br>
+                    {% endfor %}
+
+                    </ul>
+                </div>
+             </div>
+<div class="sidebar">
+                <div class="tuijian tie">
+                    <h2 class="hometitle">帖子统计</h2>
+                    <p>帖子总数:{{ count }}</p>
+                   <p>总人数:{{ user }}</p>
+                    <p>在线人数:{{ sessions }}</p>
+                    <p>今日发布帖数:{{ days }}</p>
+                </div>
+             </div>

@@ -3,6 +3,8 @@
 from apps.article.models import Article
 from django import template
 
+from apps.forum.models import Forum
+from apps.support.models import QQ
 from apps.user.models import UserMessage
 
 register = template.Library()
@@ -10,6 +12,8 @@ register = template.Library()
 def get_aside():
     popular = Article.objects.filter(is_show=True).order_by('-click_nums')[:5]
     return {'popular':popular}
+
+
 
 @register.simple_tag
 def get_categories():

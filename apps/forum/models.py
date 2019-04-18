@@ -60,10 +60,20 @@ class Forum(models.Model):
         for i in n:
             num += i.parent_comment_set.count()
         return num
+
     class Meta:
         verbose_name = '帖子表'
         verbose_name_plural = verbose_name
         ordering = ('-add_time',)
+
+
+class Forum_click(models.Model):
+    forums = models.ForeignKey(Forum, verbose_name='帖子', on_delete=models.CASCADE)
+    thumbs = models.IntegerField(default=0)
+    models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.forums
 
 
 class Comment(models.Model):
@@ -100,7 +110,6 @@ class Parent_Comment(models.Model):
         verbose_name = '帖子回复表'
         verbose_name_plural = verbose_name
         ordering = ('-add_time',)
-
 
 
 class Priority(models.Model):

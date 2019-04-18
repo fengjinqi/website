@@ -38,7 +38,7 @@
     <div class="tuijian">
 
         <h2 class="hometitle">点击排行</h2>
-        <ul class="sidenews">
+        <ul class="sidenews dianj">
              {% get_categories as get_tag %}
         {% for foo in get_tag %}
 
@@ -48,9 +48,7 @@
                           {% static 'img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg' %}{% endif %}" style="width:100%;"></i>
                 <p><a href="{% url 'article:detail' foo.id %}">{{ foo.title }}</a></p>
                 <span>{{ foo.add_time}}</span> </li>
-
         {% endfor %}
-
-                            </ul>
+        </ul>
     </div>
 </div>

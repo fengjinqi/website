@@ -1,4 +1,8 @@
+from datetime import datetime
+
 from django.contrib.auth.decorators import login_required
+from django.contrib.sessions.models import Session
+from django.core.cache import cache
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.http import JsonResponse
@@ -15,7 +19,7 @@ from apps.forum.models import Forum_plate, Forum, Comment, Parent_Comment
 from apps.forum.serializers import Forum_plateSerializers, ForumSerializers, CommentSerializers, \
     Pernents_CommentSerializers
 from apps.uitls.permissions import IsOwnerOr, IsOwnerOrReadOnly
-from apps.user.models import UserMessage
+from apps.user.models import UserMessage, User
 
 
 def index(request):
@@ -86,7 +90,6 @@ def forum_detail(request,forum_id):
     if request.method == 'POST':
         forms = ParentComment(request.POST)
         if forms.is_valid():
-            print(forms.errors)
             try:
                 data = Parent_Comment()
                 data.forums = forms.cleaned_data.get('forums')

@@ -25,7 +25,10 @@
                         <div>浏览{{ foo.click_nums }}</div>
                     </div>
                     </li>
+                    {% empty %}
+                     <li style="margin: 10px 0">...暂无帖子</li>
                 {% endfor %}
             </ul>
+
         </div>
 {% endblock %}

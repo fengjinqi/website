@@ -6,7 +6,12 @@
     width: 25%;
     float: left;
 }
-
+.tie{
+    padding: 15px!important;
+}
+.tie p{
+    line-height: 30px;
+}
 .tieImg{
     width: 56px;
     height: 56px;
@@ -26,9 +31,11 @@
 }
 .forun-title{
     font-size: 16px;
+
 }
 .forun-info{
     color: #999;    margin-top: 8px;
+
 }
 .forun-num{
     position: relative;
@@ -90,7 +97,32 @@ img.user{
 .sidenews span { font-size: 12px; color: #9A9A9A; margin-top: 10px; display: block }
 
 .zhan li {
-    overflow: hidden;
-    white-space: nowrap;
+
+}
+.zhan li a{
+   width: 270px;
+      white-space: nowrap;
     text-overflow: ellipsis;
+      overflow: hidden;
+
+}
+.fa{
+    display: block;
+    background: #fff;
+    width: 100%;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);
+    -webkit-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);
+    -moz-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);
+}
+.meun_fa{
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    color: #fff;
+    text-align: center;
+    background: #ff9002;
+}
+.meun_fa:hover{
+    color: #fff;
 }

@@ -14,6 +14,11 @@ author 冯金琪
 {% endblock %}
 {% block css %}
     <link rel="stylesheet" href="{% static 'css/forum.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+
+{% endblock %}
+{% block js %}
+    <script src="{% static 'js/public.js' %}"></script>
 {% endblock %}
 {% block content %}
     <section class="main" style="overflow: hidden">
@@ -38,6 +43,9 @@ author 冯金琪
 
             <ul class="list">
                 {% for foo in forum %}
+                    {% if forum.count == 0 %}
+                        <li>暂无数据...</li>
+                    {% endif %}
                     <li class="clearfix">
                         <img src="{% if foo.authors.user_imag %}
                     {{ MEDIA_URL }}{{ foo.authors.user_imag }}
@@ -50,7 +58,7 @@ author 冯金琪
                     </div>
                     <div class="fr flex forun-num">
                         <div>评论{{ foo.get_number }}</div>
-                        <div>浏览{{ foo.click_nums }}</div>
+                        <div>浏览 {{ foo.click_nums}}</div>
                     </div>
                     </li>
                 {% endfor %}
@@ -62,40 +70,12 @@ author 冯金琪
         </article>
          <aside class="fr">
              <div class="sidebar">
-                <div class="tuijian">
-                    <a href="{% url 'forum:add' %}">写帖子</a>
-                </div>
+                <p class="fa">
+                    <a class="meun_fa" href="{% url 'forum:add' %}">发布新帖子</a>
+                </p>
              </div>
-            <div class="sidebar">
-                <div class="tuijian">
-                    <h2 class="hometitle" style="margin-bottom: 0">最新求职</h2>
-                    <ul class="zhan">
-                        {% for foo in job %}
-                            <li class="clearfix" style="margin-top: 15px;">
-                                <a href="{% url 'forum:detail' foo.id %}">
-                                    <p class="forun-title">{{ foo.title }}</p>
-                                    <p class="forun-info" style="font-size: 12px;margin: 0">来自于 {{ foo.category }}  {{ foo.add_time }} </p>
-                                </a>
-                        </li>
-                        {% endfor %}
-                        
-
-                        
-                        
-                    </ul>
-                </div>
-             </div>
-              <div class="sidebar">
-                <div class="tuijian">
-                    <h2 class="hometitle">交流群</h2>
-                    <ul class="sidenews zhan">
-                        <p>学习讨论:180522631</p>
-                          <br>
-                        <p>前端招聘群:135684334</p>
-
-                    </ul>
-                </div>
-             </div>
+             {% load forum %}
+             {% get_fourm %}
          </aside>
     </section>
 {% endblock %}

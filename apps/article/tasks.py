@@ -126,10 +126,10 @@ def getApi():
                 list_dict.append(obj)
             Headlines.objects.bulk_create(list_dict)
             print('数据添加成功')
-    except Exception:
+    except Exception as e:
         print('数据添加失败===正在发生邮件通知管理员')
 
-        error_email.delay('tarena_feng@126.com','抓取数据错误','抓取数据错误，请尽快查看')
+        error_email.delay('tarena_feng@126.com','抓取数据错误','{0}'.format(e))
         print('邮件发送成功')
 
 

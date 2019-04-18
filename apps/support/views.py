@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from apps.article.views import StandardResultsSetPagination
-from apps.support.models import Banners, Emails, link
+from apps.support.models import Banners, Emails, link, QQ
 from apps.uitls.permissions import IsOwnerOrReadOnly
 from apps.support.serializers import BannersSerializer, EmailsSerializer, LinkSerializer
 
@@ -15,8 +15,6 @@ from apps.support.serializers import BannersSerializer, EmailsSerializer, LinkSe
 def index(request):
     email = Emails.objects.first()
     return render(request,'pc/support.html',{'email':email})
-
-
 
 
 

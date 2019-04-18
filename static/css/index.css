@@ -23,6 +23,13 @@
 .blogs_cont{
     padding:20px 0;
 }
+.blogs_cont.blogs_cont1 h3>a{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 90%;
+        vertical-align: top;
+}
 .blogs_type{
     font-size: 12px;
     color: #356dd0;
@@ -296,8 +303,17 @@
     overflow: hidden; text-overflow: ellipsis; -webkit-box-orient: vertical; display: -webkit-box; -webkit-line-clamp: 2;
 
 }
-.sidenews li a { color: #48494d; }
-.sidenews li a:hover { color: #00A7EB; }
+.dianj a{
+      overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+}
+.sidenews li a { color: #48494d;
+
+}
+.sidenews li a:hover { color: #356dd0; }
 .sidenews i { width: 88px;
     height: 60px;
     overflow: hidden;

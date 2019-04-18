@@ -5,13 +5,11 @@ from apps.forum.models import Forum_plate, Forum, Comment, Parent_Comment
 
 
 class Forum_plateSerializers(serializers.ModelSerializer):
-
     authors = UserSerializer(read_only=True)
     add_time = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
     class Meta:
         model = Forum_plate
         fields ='__all__'
-
 
 
 class ForumSerializers(serializers.ModelSerializer):

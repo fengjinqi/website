@@ -128,6 +128,7 @@ def login_view(request):
            # return JsonResponse({"code":400,"message":"","data":errors})
             #return restful.params_error(message=errors)
 
+
 def logout_view(request):
     logout(request)
     return redirect('home')
@@ -730,8 +731,8 @@ def qq(request):
                 user = authqq[0].user
                 login(request, user)
                 return HttpResponseRedirect(reverse('home'))
-        except Exception :
-             raise ValueError('user不存在请联系管理员')
+        except Exception as e:
+             raise ValueError(e)
     else:
         raise ValueError('授权失败,请稍后重试')
 
@@ -779,7 +780,6 @@ def getClback(request):
             userinfo = json.loads(userinfo)  # 将返回的用户信息数据（JSON格式）读取为字典。
             figureurl_qq_1 = userinfo['figureurl_qq_1']#新用户头像
             nickname = userinfo['nickname']
-            print(userinfo)
             authqq = OAuthQQ.objects.filter(qq_openid=openid)
 
             if authqq.exists():

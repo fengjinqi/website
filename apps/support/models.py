@@ -24,3 +24,9 @@ class link(models.Model):
     title =  models.CharField(max_length=100)
     url = models.URLField()
     add_time = models.DateTimeField(auto_now_add=True)
+
+
+class QQ(models.Model):
+    title =  models.CharField(max_length=100)
+    qq = models.IntegerField()
+    is_active = models.BooleanField(default=False)

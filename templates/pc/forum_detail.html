@@ -17,7 +17,16 @@
     <link rel="stylesheet" href="{% static 'markdown/css/editormd.css' %}" />
 
     <link rel="stylesheet" href="{% static 'css/share.min.css' %}" />
-
+<style>
+    .sidebar a{
+        color: #666;
+        font-size: 16px;
+    }
+    .forun-info{
+        color: #999;
+        font-size: 12px;
+    }
+    </style>
 {% endblock %}
 {% block link_js %}
         <script src="{% static 'js/swiper.min.js' %}"></script>
@@ -95,7 +104,7 @@
                             <div class="list-text">
                                 <div class="list-person clearfix"><div class="fl"  data-id="{{ foo.user.id}}"><a href="{% url 'user:author_detaile' foo.user.id%}">{{ foo.user.username }}</a> {{ foo.address }}</div> <p class="fr">{{ foo.add_time }}</p></div>
                                 <p class="text-con">{{ foo.comments }}</p>
-                                <p class="fr to" onclick="establish(this)" data-id="{{ foo.id }}">回复 </p>
+                                <p class="fr to" onclick="establish(this)" data-id="{{ foo.id }}" style="cursor: pointer">回复 </p>
                                 {% for childr in foo.parent_comment_set.all %}
                                     <div class="reply-list">
                                     <div class="img-corner"><img src="
@@ -110,7 +119,7 @@
                                             <div class="fl"data-id="{{ childr.user_id }}"><a href="{% url 'user:author_detaile' childr.user_id %}">{{ childr.user.username }}</a>回复<a href="{% url 'user:author_detaile' childr.to_Parent_Comments.id %}">{{ childr.to_Parent_Comments.username }}</a> {{ foo.address }}</div> <p class="fr">{{ childr.add_time }}</p>
                                         </div>
                                         <p class="text-con">{{ childr.comments}}</p>
-                                        <p class="fr to" onclick="establish(this)" data-id="{{ foo.id }}">回复 </p>
+                                        <p class="fr to" onclick="establish(this)" data-id="{{ foo.id }}"style="cursor: pointer">回复 </p>
                                 </div>
                             </div>
                                 {% endfor %}
@@ -124,17 +133,9 @@
             </div>
         </article>
     <aside class="fr">
-        {% include 'pc/base_aside.html' %}
-         <div class="sidebar">
-              <div class="tuijian">
-                <h2 class="hometitle">相关文章推荐</h2>
-                <ul class="sidenews zhan">
-                     {% for foo in content %}
-                            <li><a href="{% url 'article:detail' foo.id %}">{{ foo.title }}</a></li>
-                        {% endfor %}
-                </ul>
-              </div>
-            </div>
+
+            {% load forum %}
+             {% get_fourm %}
     </aside>
     </div>
 

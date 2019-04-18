@@ -58,7 +58,7 @@
             </div>
             {#{{ article.category.name }}#}
         </div>
-        <h3 style="padding: 0 20px">{{ article.title }}</h3>
+        <h3 style="padding: 0 20px;text-align: center">{{ article.title }}</h3>
             <div id="test-editormd-view2">
                 <textarea id="append-test" name="test-editormd-markdown-doc" style="display:none;">{{ article.content }}</textarea>
             </div>
@@ -99,7 +99,7 @@
                             <div class="list-text">
                                 <div class="list-person clearfix"><div class="fl" data-id="{{ foo.user.id }}"><a href="{% url 'user:author_detaile' foo.user.id%}">{{ foo.user.username }}</a> {{ foo.address }}</div> <p class="fr">{{ foo.add_time }}</p></div>
                                 <p class="text-con">{{ foo.comments }}</p>
-                                <p class="fr to" onclick="establish(this)" data-id="{{ foo.id }}">回复 </p>
+                                <p class="fr to" onclick="establish(this)" data-id="{{ foo.id }}"style="cursor: pointer">回复 </p>
                                 {% for childr in foo.articlecommentreply_set.all %}
                                     <div class="reply-list">
                                     <div class="img-corner"><img src="
@@ -114,7 +114,7 @@
                                             <div class="fl"data-id="{{ childr.user.id }}"><a href="{% url 'user:author_detaile' childr.user.id %}">{{ childr.user.username }}</a>回复<a href="{% url 'user:author_detaile' childr.to_uids.id %}">{{ childr.to_uids.username }}</a> {{ foo.address }}</div> <p class="fr">{{ childr.add_time }}</p>
                                         </div>
                                         <p class="text-con">{{ childr.comments}}</p>
-                                        <p class="fr to" onclick="establish(this)" data-id="{{ foo.id }}">回复 </p>
+                                        <p class="fr to" onclick="establish(this)" data-id="{{ foo.id }}"style="cursor: pointer">回复 </p>
                                 </div>
                             </div>
                                 {% endfor %}

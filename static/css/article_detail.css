@@ -74,11 +74,11 @@ button.fr{
     height: 74px;
 }
 textarea.form-control{
-    background-color: #e5e9ef!important;
+    /*background-color: #e5e9ef!important;*/
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    border: 0;
+    /*border: 0;*/
 }
 .mask a{
     line-height: 74px;
