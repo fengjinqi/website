@@ -18,7 +18,7 @@ django 开发的web项目
 7，社区功能(开发中。。。。。。。。。)
 
 # admin
-目前在另外一个项目里，请移步https://github.com/fengjinqi/website-admin后续完成会打包配置到本项目
+目前在另外一个项目里，请移步https://github.com/fengjinqi/website-admin 后续完成会打包配置到本项目
 
 采用 vue iview-admin模板开发 ，接口用drf 作者拥有可以在admin发布文章，当然也可以在前台发布，同时拥有发布教程的功能
 登录采用JWT方式登录
@@ -27,7 +27,8 @@ django 开发的web项目
 # 移动端
 (待续。。。采用React开发)
 
-#使用方法
+# 使用方法
+
 1、下载python3安装
 
 2、在虚拟环境下进入项目根目录 pip3 install requirements
@@ -38,4 +39,4 @@ django 开发的web项目
 
 5、项目根目录下创建 congfig.ini 邮箱等密码配置文件 并填写
 
-#(ps:项目还在开发中，若有更好的建议或者功能请联系我)
+#(ps:项目还在开发中，若有更好的建议或者功能请联系我qq:1218525402,邮箱：fengjinqi@fengjinqi.com)
