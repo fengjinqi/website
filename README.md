@@ -27,7 +27,8 @@ django 开发的web项目
 # 移动端
 (待续。。。采用React开发)
 
-#使用方法
+# 使用方法
+
 1、下载python3安装
 
 2、在虚拟环境下进入项目根目录 pip3 install requirements
