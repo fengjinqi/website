@@ -24,7 +24,8 @@ from apps.article.forms import Article_form
 from apps.article.serializers import ArticleSerializer, Article_CommentSerializer, ArticleCommentReply, \
     Article_CommentSerializerAdd, ArticleCommentReplySerializer, Category_ArticleSerializer, ArticleCreatedSerializer, \
     ArticleCommitSerializer
-from apps.support.models import link
+from apps.support.models import link, QQ
+from apps.uitls.jsonserializable import DateEncoder
 from apps.uitls.permissions import IsOwnerOrReadOnly, IsOwnerOr
 from apps.user.models import User, Follows, UserMessage
 from website import settings
@@ -33,6 +34,12 @@ import random
 from .models import Article, Category_Article, Article_Comment, Recommend, Headlines
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
+def test(request):
+    WorkList = []
+    for i in range(1,100):
+        WorkList.append(Article(title='1',category_id=7,authors_id='2a5ec3edf61c43a6a547851e9ba15071'))
+    Article.objects.bulk_create(WorkList)
+    return HttpResponse('ok')
 
 def Article_list(request):
     """
@@ -40,9 +47,10 @@ def Article_list(request):
     :param request:
     :return:
     """
-    article=Article.objects.filter(is_show=True)
+    article=Article.objects.filter(is_show=True)[:100]
     popular = Article.objects.filter(is_show=True).order_by('click_nums')[:5]
     recommend = Recommend.objects.filter(is_recommend=True)[:10]
+    qq = QQ.objects.all()
     links = link.objects.all()
     #user = Follow.objects.values('follow_id').distinct().order_by('-follow_id')
     user = Follows.objects.values('follow_id').distinct().order_by('-follow_id')
@@ -54,16 +62,42 @@ def Article_list(request):
         item.append(data)
     #print(item)
     try:
-        page = request.GET.get('page', 1)
+        page = request.GET.get('page',1)
         if page == '':
-            page = 1
+                page = 1
     except PageNotAnInteger:
-        page = 1
+        page = request.GET.get('page')
     # Provide Paginator with the request object for complete querystring generation
     p = Paginator(article,10,request=request)
     people = p.page(page)
-
-    return render(request, 'pc/index.html', {'article':people,'popular':popular,'count':item,'recommend':recommend,'links':links})
+    if request.is_ajax():
+        json_dict={}
+        json_dict['data'] = []
+        data = p.page(page).object_list
+        print(people.has_next())
+        json_dict['status'] = people.has_next()
+        json_dict['num_pages'] = p.num_pages
+        json_dict['page'] = page
+        for i in data:
+            list_dict = {}
+            list_dict['title'] = i.title
+            list_dict['id'] = i.id
+            list_dict['username'] = i.authors.username
+            list_dict['userId'] = i.authors.id
+            list_dict['userImag'] = i.authors.user_imag
+            list_dict['userImage'] = i.authors.user_image
+            list_dict['category'] = i.category.name
+            list_dict['click_nums'] = i.click_nums
+            list_dict['desc'] = i.desc
+            list_dict['list_pic'] = i.list_pic
+            list_dict['add_time'] = i.add_time
+            article_comment = i.article_comment_set.all()
+            article_comment_childer = i.article_comment_set.count()
+            for i in article_comment:
+                article_comment_childer += i.articlecommentreply_set.count()
+            json_dict['data'].append(list_dict)
+        return JsonResponse(json_dict,safe=False,encoder=DateEncoder)
+    return render(request, 'pc/index.html', {'article':people,'qq':qq,'popular':popular,'count':item,'recommend':recommend,'links':links})
 
 
 def ArticleList(request):

@@ -9,7 +9,7 @@
             </div>
 
             <ul class="list">
-                {% for foo in cate_list %}
+                {% for foo in people.object_list %}
                     <li class="clearfix">
                         <img src="{% if foo.authors.user_imag %}
                     {{ MEDIA_URL }}{{ foo.authors.user_imag }}
@@ -29,6 +29,39 @@
                      <li style="margin: 10px 0">...暂无帖子</li>
                 {% endfor %}
             </ul>
+
+            {% if people.object_list.count >= 1 %}
+        <div class="pageturn"style="padding: 15px">
+           <ul class="pagination">
+{#               <li><a href="/index">首页</a></li>#}
+               {% if people.has_previous %}
+                   <li class="long"><a href="?{{ people.previous_page_number.querystring }}" class="prev">上一页</a></li>
+               {% else %}
+                   <li class="long"><span class="disabled prev btn"disabled="">上一页</span></li>
+               {% endif %}
+               {% for page in people.pages %}
+                   {% if page %}
+                       {% ifequal page people.number %}
+                           <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                       {% else %}
+                           <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
+                       {% endifequal %}
+                   {% else %}
+                       <li><span class="disabled  btn" disabled="">...</span></li>
+                   {% endif %}
+               {% endfor %}
+               {% if people.has_next %}
+                   <li class="long"><a href="?{{ people.next_page_number.querystring }}" class="next"> 下一页</a></li>
+               {% else %}
+                   <li class="long"><span class="disabled next btn"disabled=""> 下一页</span></li>
+               {% endif %}
+{#               <li><a href="?page={{ article.paginator.num_pages }}">尾页</a></li>#}
+               <li class="hrefto">跳转到<input type="text"class="form-control" name="page"></li>
+           </ul>
+
+            当前{{ people.number }}/总共{{ people.paginator.num_pages }}页
+       </div>
+    {% endif %}
 
         </div>
 {% endblock %}

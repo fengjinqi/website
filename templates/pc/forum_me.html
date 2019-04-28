@@ -1,0 +1,24 @@
+{% extends 'pc/person/index.html' %}
+{% load static %}
+{% block end %}
+    <div class="person fl">
+
+        <div class="clearfix">
+            <div class="fl left_nav">
+                <ul id="info">
+                    <li data-type="" class="active"><a href="javascript:;">全部</a></li>
+                    {% for foo in plate %}
+                        <li data-type="{{ foo.id }}"><a href="javascript:;">{{ foo.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <article class="fr">
+            </article>
+        </div>
+    </div>
+
+{% endblock %}
+{% block js %}
+    <script src="{% static 'js/promise.min.js' %}"></script>
+    <script src="{% static 'js/sweetalert.min.js' %}"></script>
+{% endblock %}

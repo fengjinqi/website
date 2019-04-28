@@ -14,9 +14,10 @@ class Forum_plateSerializers(serializers.ModelSerializer):
 
 class ForumSerializers(serializers.ModelSerializer):
     """帖子"""
-    #authors = UserSerializer(read_only=True)
-    #category = Forum_plateSerializers(read_only=True)
+    authors = UserSerializer(read_only=True)
+    category = Forum_plateSerializers(read_only=True)
     add_time = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+
     class Meta:
         model = Forum
         fields ='__all__'

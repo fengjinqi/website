@@ -7,15 +7,15 @@ from django.utils.timezone import now, timedelta
 
 class Row1(MiddlewareMixin):
     def process_request(self,request):
-        print("中间件1请求")
+        #print("中间件1请求")
         if 'HTTP_X_FORWARDED_FOR' in request.META:
             ip = request.META['HTTP_X_FORWARDED_FOR']
         else:
             ip = request.META['REMOTE_ADDR']
 
-        print(ip)
+        #print(ip)
     def process_response(self,request,response):
-        print("中间件1返回")
+       # print("中间件1返回")
 
         # print(now().date() + timedelta(days=-1))
         # print(datetime.now().date())

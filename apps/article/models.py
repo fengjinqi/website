@@ -26,7 +26,7 @@ class Article(models.Model):
     category = models.ForeignKey(Category_Article,on_delete=models.CASCADE,verbose_name='分类')
     title = models.CharField(max_length=100)
     keywords = models.CharField(max_length=200,blank=True,null=True)
-    desc = models.CharField(max_length=400,blank=True,null=True)
+    desc = models.CharField(max_length=256,blank=True,null=True)
     list_pic = models.ImageField(upload_to='article/%Y%m%d',blank=True,null=True)
     content = models.TextField()
     click_nums = models.IntegerField(default=0,verbose_name='阅读数量')
@@ -35,7 +35,7 @@ class Article(models.Model):
 
     def get_number(self):
         n= self.article_comment_set.all()
-        num = self.article_comment_set.all().count()
+        num = self.article_comment_set.count()
         for i in n:
             num+=i.articlecommentreply_set.count()
         return num

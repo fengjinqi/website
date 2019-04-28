@@ -2,18 +2,22 @@ from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.sessions.models import Session
-from django.core.cache import cache
+from django.core.paginator import PageNotAnInteger
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.http import JsonResponse
 from django.shortcuts import render, reverse, redirect, get_object_or_404
 
 # Create your views here.
+from django_filters.rest_framework import DjangoFilterBackend
+from pure_pagination import Paginator
 from rest_framework import mixins, viewsets
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
+from apps.article.views import StandardResultsSetPagination
+from apps.forum.filter import ForumFilter
 from apps.forum.forms import Forum_form, ParentComment
 from apps.forum.models import Forum_plate, Forum, Comment, Parent_Comment
 from apps.forum.serializers import Forum_plateSerializers, ForumSerializers, CommentSerializers, \
@@ -31,9 +35,38 @@ def index(request):
     plate = Forum_plate.objects.all()
     forum = Forum.objects.all()
     job = Forum.objects.filter(category__name='求职招聘')
-
+    try:
+        page = request.GET.get('page', 1)
+        if page == '':
+            page = 1
+    except PageNotAnInteger:
+        page = 1
+        # Provide Paginator with the request object for complete querystring generation
+    p = Paginator(forum, 20, request=request)
+    people = p.page(page)
     return render(request,'pc/forum.html',locals())
 
+
+
+@login_required(login_url='/login')
+def indexMe(request):
+    """
+    wd帖子首页
+    :param request:
+    :return:
+    """
+    plate = Forum_plate.objects.all()
+    forum = Forum.objects.all()
+    try:
+        page = request.GET.get('page', 1)
+        if page == '':
+            page = 1
+    except PageNotAnInteger:
+        page = 1
+        # Provide Paginator with the request object for complete querystring generation
+    p = Paginator(forum, 20, request=request)
+    people = p.page(page)
+    return render(request,'pc/forum_me.html',locals())
 
 @login_required(login_url='/login')
 def add_forum(request):
@@ -72,7 +105,15 @@ def forum_category(request,category):
 
     job = Forum.objects.filter(category__name='求职招聘')
     type = get_object_or_404(Forum_plate,pk=category)
-    Forum.objects.filter()
+    try:
+        page = request.GET.get('page', 1)
+        if page == '':
+            page = 1
+    except PageNotAnInteger:
+        page = 1
+        # Provide Paginator with the request object for complete querystring generation
+    p = Paginator(cate_list, 20, request=request)
+    people = p.page(page)
 
     return render(request,'pc/forum_category.html',locals())
 
@@ -143,8 +184,18 @@ class ForumView(viewsets.ModelViewSet):
     """TODO 帖子"""
     queryset = Forum.objects.all()
     serializer_class = ForumSerializers
+    pagination_class = StandardResultsSetPagination
     permission_classes = (IsAuthenticated, IsOwnerOr)  # 未登录禁止访问
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = ForumFilter
     authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return Forum.objects.all()
+        else:
+            return Forum.objects.filter(authors=self.request.user)
+
 
 
 class CommentView(viewsets.ModelViewSet):
@@ -163,7 +214,6 @@ def my_callback(sender, **kwargs):
     :param kwargs:
     :return:
     """
-
     message = UserMessage()
     message.user=kwargs['instance'].forums.authors
     message.ids = kwargs['instance'].forums.id

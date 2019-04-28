@@ -1,5 +1,5 @@
 {% load forum %}
-
+{% if fourm.count > 0 %}
 <div class="sidebar">
                 <div class="tuijian">
                     <h2 class="hometitle" style="margin-bottom: 0">最新求职</h2>
@@ -21,6 +21,8 @@
                     </ul>
                 </div>
              </div>
+{% endif %}
+
 <div class="sidebar">
                 <div class="tuijian">
                     <h2 class="hometitle" style="margin-bottom: 0">最热帖子</h2>

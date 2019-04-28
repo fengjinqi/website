@@ -79,6 +79,7 @@
     text-overflow: ellipsis;
     -webkit-box-orient: vertical;
     display: -webkit-box;
+    line-height: 27px;
     -webkit-line-clamp: 3;
 }
 .img_animate{
@@ -113,6 +114,14 @@
 .divp{
         height: 120px;
     position: relative;
+}
+.divp>p{
+  overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-height: 27px;
 }
 .blogs_foot1{
     position: absolute;
@@ -312,6 +321,10 @@
 }
 .sidenews li a { color: #48494d;
 
+}
+.loading{
+        text-align: center;
+    margin-top: 10px;
 }
 .sidenews li a:hover { color: #356dd0; }
 .sidenews i { width: 88px;

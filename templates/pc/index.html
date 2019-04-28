@@ -43,7 +43,7 @@
                      <li>最新文章</li>
                  </ul>
              </div>
-             <div>
+             <div id="article_main">
                  {% for articles in article.object_list %}
                     <div class="blogs_item">
                      <div class="blogs_cont blogs_cont1">
@@ -92,7 +92,7 @@
            {% if article.object_list.count >= 1 %}
         <div class="pageturn">
            <ul class="pagination">
-{#               <li><a href="/index">首页</a></li>#}
+               <li><a href="/">首页</a></li>
                {% if article.has_previous %}
                    <li class="long"><a href="?{{ article.previous_page_number.querystring }}" class="prev">上一页</a></li>
                {% else %}
@@ -114,13 +114,12 @@
                {% else %}
                    <li class="long"><span class="disabled next btn"disabled=""> 下一页</span></li>
                {% endif %}
-{#               <li><a href="?page={{ article.paginator.num_pages }}">尾页</a></li>#}
+               <li><a href="?page={{ article.paginator.num_pages }}">尾页</a></li>
                <li class="hrefto">跳转到<input type="text"class="form-control" name="page"></li>
            </ul>
             当前{{ article.number }}/总共{{ article.paginator.num_pages }}页
        </div>
     {% endif %}
-
          </div>
 
 
@@ -156,10 +155,11 @@
             <div class="tuijian">
         <h2 class="hometitle">交流群</h2>
         <ul class="sidenews zhan">
-            <p>学习讨论:180522631</p>
-              <br>
-            <p>前端招聘群:135684334</p>
-
+           {% for foo in qq %}
+                     <p >{{ foo.title }}:{{ foo.qq }}{% if foo.is_active == True %}
+                            (已满)
+                        {% endif %}</p><br>
+                    {% endfor %}
         </ul>
     </div>
         </div>
@@ -239,23 +239,11 @@
 <script src="{% static 'js/swiper.min.js' %}"></script>
 <script src="{% static 'js/index.js' %}"></script>
     <script>
-    $(function () {
-        $.ajax({
-            url: '/api/article_list/',
-            type: 'get',
-            dataType:'json',
-            success:function (data) {
-                //console.log(data)
-            },
-            error:function (err) {
-            }
-        })
-    })
     $("input[name='page']").blur(function () {
         if($(this).val()==""){
             return false
         }else{
-        window.location.href='/index?page='+$(this).val()}
+        window.location.href='{% url 'home' %}?page='+$(this).val()}
     })
     $("input[name='page']").keydown(function (evt) {
         if (evt.keyCode==13){
@@ -265,24 +253,32 @@
         window.location.href='/?page='+$(this).val()}
         }
 
-    })
-
+    })/*
+ var page = 1;
      $(window).scroll(function(){
-      var page = 1;
       totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());
-       if($(document).height() <= totalheight){
+      console.log(totalheight)
+      console.log($(document).height())
+       if($(document).height() <= totalheight+60){
            page++;
            $.ajax({
-            url:'/api/article_list/?page='+page,
+            url:'/?page='+page,
             type:'get',
             dataType:'json',
+           beforeSend:function(){
+             $("#article_main").append('<p class=\'loading\'><img src="{% static 'img/5-121204193R5-50.gif' %}" ></p>')
+           },
             success:function(result){
-              //console.log(result)
+                $(".loading").remove()
+              console.log(result)
+                if(page>result.num_pages){
+                    alert('没有用更多数据了')
+                }
             }
            });
       //     alert("到底部了");
        }
-  });
+  });*/
 
     function flollw (obj){
         var _self= $(obj)

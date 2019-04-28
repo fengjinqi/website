@@ -33,13 +33,26 @@
     font-size: 16px;
 
 }
+.forun-title a{
+    overflow:hidden;
+
+text-overflow:ellipsis;
+
+display:-webkit-box;
+
+-webkit-box-orient:vertical;
+
+-webkit-line-clamp:2;
+    height: 42px;
+}
 .forun-info{
     color: #999;    margin-top: 8px;
 
 }
 .forun-num{
-    position: relative;
-    top: 26px;
+    position: absolute;
+    right: 15px;
+    bottom: 0;
     color: #999;
 }
 .f-name{
@@ -70,6 +83,8 @@ img.user{
 }
 .list-text{
     padding-left: 15px;
+    width:787px;
+    position: relative;
 }
 
 .sidebar div { padding: 24px 15px; margin-bottom: 20px; background: #fff; box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); -webkit-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); -moz-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);}

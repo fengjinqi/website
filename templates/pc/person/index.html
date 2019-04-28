@@ -23,8 +23,12 @@
             <ul class="clearfix">
                 <li class="fl">
 
-                    <a class="person_nav{% if request.path|slice:'8' == '/person/' and request.path|slice:'16' != '/person/profile/' and   request.path|slice:'13' != '/person/info/'%} active
-                    {% endif %}" href="{% url 'user:person' %}">个人中心</a>
+                    <a class="person_nav{% if request.path|slice:'8' == '/person/' and request.path|slice:'16' != '/person/profile/' and   request.path|slice:'13' != '/person/info/' and   request.path|slice:'14' != '/person/forum/'%} active
+                    {% endif %}" href="{% url 'user:person' %}">我的文章</a>
+                </li>
+            <li class="fl">
+                    <a class="person_nav {% if request.path|slice:'14' == '/person/forum/' %} active
+                    {% endif %}" href="{% url 'user:forum' %}">我的帖子</a>
                 </li>
                 <li class="fl">
                     <a   class="person_nav {% if request.path|slice:'16' == '/person/profile/' %} active
@@ -34,6 +38,7 @@
                     <a class="person_nav {% if request.path|slice:'13' == '/person/info/' %} active
                     {% endif %}" href="{% url 'user:info' %}">资料</a>
                 </li>
+
             </ul>
         </div>
         <div class="aside_my">

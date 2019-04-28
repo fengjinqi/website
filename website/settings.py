@@ -18,6 +18,7 @@ from celery.schedules import timedelta
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
@@ -59,7 +60,7 @@ AUTHENTICATION_BACKENDS=(
 
 #分页配置
 PAGINATION_SETTINGS = {
-    'PAGE_RANGE_DISPLAYED': 10,
+    'PAGE_RANGE_DISPLAYED': 5,
     'MARGIN_PAGES_DISPLAYED': 2,
     'SHOW_FIRST_PAGE_WHEN_INVALID': True,
 }

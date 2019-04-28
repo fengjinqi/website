@@ -39,12 +39,9 @@ class Forum(models.Model):
     id = models.UUIDField(default=uuid.uuid4,primary_key=True)
     title = models.CharField(max_length = 255, unique = True)
     keywords = models.CharField(max_length=200,verbose_name='关键字',default='',blank=True,null=True)
-    # 发布办款-使用外键关联Category
     category = models.ForeignKey(Forum_plate, verbose_name='板块名称',on_delete=models.CASCADE)
-    # 文章内容(文章内容可能有很多,所以我们就不用"CharField"来写了,我们用TextField,不用规定他多长了,为可扩展长度)
     content = models.TextField(u"内容")
     click_nums = models.PositiveIntegerField(default=0,verbose_name='阅读数量')
-    # 文章作者
     authors = models.ForeignKey(User, verbose_name="作者",on_delete=models.CASCADE)
     # 发布日期
     add_time = models.DateTimeField(auto_now=True, verbose_name="发布日期")
