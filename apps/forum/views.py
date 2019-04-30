@@ -57,6 +57,8 @@ def indexMe(request):
     """
     plate = Forum_plate.objects.all()
     forum = Forum.objects.all()
+    count = User.objects.filter(follow__fan__id=request.user.id)
+    floow = User.objects.filter(fan__follow_id=request.user.id)
     try:
         page = request.GET.get('page', 1)
         if page == '':

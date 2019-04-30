@@ -44,8 +44,8 @@ class Forum(models.Model):
     click_nums = models.PositiveIntegerField(default=0,verbose_name='阅读数量')
     authors = models.ForeignKey(User, verbose_name="作者",on_delete=models.CASCADE)
     # 发布日期
-    add_time = models.DateTimeField(auto_now=True, verbose_name="发布日期")
-    # 是否隐藏
+    add_time = models.DateTimeField(auto_now_add=True, verbose_name="发布日期")
+    # 是否关闭
     hidden = models.BooleanField(default=False, verbose_name="是否隐藏")
 
     def __str__(self):
@@ -106,7 +106,7 @@ class Parent_Comment(models.Model):
     class Meta:
         verbose_name = '帖子回复表'
         verbose_name_plural = verbose_name
-        ordering = ('-add_time',)
+
 
 
 class Priority(models.Model):

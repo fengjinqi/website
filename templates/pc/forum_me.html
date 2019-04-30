@@ -1,5 +1,20 @@
 {% extends 'pc/person/index.html' %}
 {% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/pagination.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/person.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/forum.css' %}">
+    <style>
+    .list li{
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .list-text{
+        width: 785px;
+    }
+    </style>
+{% endblock %}
 {% block end %}
     <div class="person fl">
 
@@ -13,6 +28,13 @@
                 </ul>
             </div>
             <article class="fr">
+                   <div class="blogs">
+                     <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">最新帖子</div>
+                     <div class="mains">
+                         <ul id="mains" class="list"></ul>
+                     </div>
+                     <div class="M-box pagination m-style"></div>
+                 </div>
             </article>
         </div>
     </div>
@@ -21,4 +43,48 @@
 {% block js %}
     <script src="{% static 'js/promise.min.js' %}"></script>
     <script src="{% static 'js/sweetalert.min.js' %}"></script>
+    <script>
+     $.ajax({
+         url: '/api/forum/',
+         type: 'get',
+         beforeSend: function () {
+             $("#mains").append("<p class='loading'><img src='/static/img/5-121204193R5-50.gif'></p>")
+         },
+         success:function (data) {
+             console.log(data)
+             $('.loading').remove()
+            if(data.results.length==0){
+                 $("#mains").append("<p class=' blogs_item' style='text-align:center;padding:50px 0;'>暂无数据...</p>")
+            }
+            var html=''
+             var n = []
+             for (var i=0;i<data.results.length;i++){
+                 data.results[i].authors.user_imag= data.results[i].authors.user_imag? data.results[i].authors.user_imag: data.results[i].authors.user_image
+                 n.push(data.results[i].comment_set.length);
+                    for(var j=0,len=data.results[i].comment_set.length;j<len;j++){
+                        var currentChildItem = data.results[i].comment_set[j];
+                        n[i] += currentChildItem.parent_comment_set.length;
+                    }
+
+
+                 html+="<li class=\"clearfix\">\n" +
+                     "                        <img src=\" "+data.results[i].authors.user_imag+"  \" class=\"user fl\" title="+data.results[i].authors.username+" width=\"40px\">\n" +
+                     "                    <div class=\"list-text fl\">\n" +
+                     "                        <div class=\"fl\">\n" +
+                     "                                 <p class=\"forun-title\"><a href=\"/forum/detail/"+data.results[i].id+"\">"+data.results[i].title+"</a></p>\n" +
+                     "                        <p class=\"forun-info\">来自于  "+data.results[i].category.name+"  "+data.results[i].add_time+" </p>\n" +
+                     "                        </div>\n" +
+                     "\n" +
+                     "                           <div class=\"fr flex forun-num\">\n" +
+                     "                        <div>评论"+n[i]+"</div>\n" +
+                     "                        <div>浏览 "+data.results[i].click_nums+"</div>\n" +
+                     "                    </div>\n" +
+                     "                    </div>\n" +
+                     "\n" +
+                     "                    </li>"
+             }
+             $("#mains").append(html)
+         }
+     })
+    </script>
 {% endblock %}
