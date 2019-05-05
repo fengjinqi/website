@@ -13,6 +13,27 @@
     .list-text{
         width: 785px;
     }
+    .forun-title a {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: 42px;
+    display: inline-block;
+    width: 700px;
+}
+    .forun-title {
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+    .forun-title span{
+        padding-right: 15px;
+        color: red;
+        cursor: pointer;
+    }
+
+    .list-text>.fl{width: 100%}
     </style>
 {% endblock %}
 {% block end %}
@@ -41,6 +62,7 @@
 
 {% endblock %}
 {% block js %}
+    <script src="{% static 'js/jquery.pagination.js' %}"></script>
     <script src="{% static 'js/promise.min.js' %}"></script>
     <script src="{% static 'js/sweetalert.min.js' %}"></script>
     <script>
@@ -51,27 +73,22 @@
              $("#mains").append("<p class='loading'><img src='/static/img/5-121204193R5-50.gif'></p>")
          },
          success:function (data) {
-             console.log(data)
              $('.loading').remove()
-            if(data.results.length==0){
-                 $("#mains").append("<p class=' blogs_item' style='text-align:center;padding:50px 0;'>暂无数据...</p>")
-            }
-            var html=''
+
+             var html=''
              var n = []
              for (var i=0;i<data.results.length;i++){
-                 data.results[i].authors.user_imag= data.results[i].authors.user_imag? data.results[i].authors.user_imag: data.results[i].authors.user_image
+                 data.results[i].authors.user_imag= data.results[i].authors.user_imag? data.results[i].authors.user_imag? data.results[i].authors.user_image:data.results[i].authors.user_image:'{% static 'img/pc-icon.png' %}'
                  n.push(data.results[i].comment_set.length);
                     for(var j=0,len=data.results[i].comment_set.length;j<len;j++){
                         var currentChildItem = data.results[i].comment_set[j];
                         n[i] += currentChildItem.parent_comment_set.length;
                     }
-
-
                  html+="<li class=\"clearfix\">\n" +
                      "                        <img src=\" "+data.results[i].authors.user_imag+"  \" class=\"user fl\" title="+data.results[i].authors.username+" width=\"40px\">\n" +
                      "                    <div class=\"list-text fl\">\n" +
                      "                        <div class=\"fl\">\n" +
-                     "                                 <p class=\"forun-title\"><a href=\"/forum/detail/"+data.results[i].id+"\">"+data.results[i].title+"</a></p>\n" +
+                     "                                 <p class=\"forun-title\"><a href=\"/forum/detail/"+data.results[i].id+"\">"+data.results[i].title+"</a><span onclick=\"deleteFroute('"+data.results[i].id+"')\">删除</span></p>\n" +
                      "                        <p class=\"forun-info\">来自于  "+data.results[i].category.name+"  "+data.results[i].add_time+" </p>\n" +
                      "                        </div>\n" +
                      "\n" +
@@ -83,8 +100,201 @@
                      "\n" +
                      "                    </li>"
              }
-             $("#mains").append(html)
+             $("#mains").html(html)
+                 if(data.results.length==0){
+                 $("#mains").append("<p class=' blogs_item' style='text-align:center;padding:50px 0;'>暂无数据...</p>")
+            }
+             $('.M-box').pagination({
+                        pageCount:Math.ceil(data.count/10),   //总页码
+                        coping:true,                 //是否开启首页和末页
+                        {#homePage:'首页',#}
+                        {#endPage:'末页',#}
+                        {#showData: 5,#}
+                        prevContent:'上一页',
+                        nextContent:'下一页',
+                         jump:true,
+                        current:1,                    //当前页码
+                        callback:function (api) {
+                            $.ajax({
+                                url:'/api/forum/',
+                                type:'get',
+                                data:{
+                                    page:api.getCurrent()    //这个方法就是用来获取点击了哪一页的，因为我  //的接口文档中页数是从0开始的，所以减1，当我点击第一页的时候去获取第0页的数据
+                                },
+                                success:function (data) {
+                                       console.log(data)
+
+                                     var html=''
+                                     var n = []
+                                     for (var i=0;i<data.results.length;i++){
+                                                     data.results[i].authors.user_imag= data.results[i].authors.user_imag? data.results[i].authors.user_imag? data.results[i].authors.user_image:data.results[i].authors.user_image:'{% static 'img/pc-icon.png' %}'
+                                         n.push(data.results[i].comment_set.length);
+                                            for(var j=0,len=data.results[i].comment_set.length;j<len;j++){
+                                                var currentChildItem = data.results[i].comment_set[j];
+                                                n[i] += currentChildItem.parent_comment_set.length;
+                                            }
+                                         html+="<li class=\"clearfix\">\n" +
+                                             "                        <img src=\" "+data.results[i].authors.user_imag+"  \" class=\"user fl\" title="+data.results[i].authors.username+" width=\"40px\">\n" +
+                                             "                    <div class=\"list-text fl\">\n" +
+                                             "                        <div class=\"fl\">\n" +
+                                             "                                 <p class=\"forun-title\"><a href=\"/forum/detail/"+data.results[i].id+"\">"+data.results[i].title+"</a><span onclick=\"deleteFroute('\"+data.results[i].id+\"')\">删除</span></p>\n" +
+                                             "                        <p class=\"forun-info\">来自于  "+data.results[i].category.name+"  "+data.results[i].add_time+" </p>\n" +
+                                             "                        </div>\n" +
+                                             "\n" +
+                                             "                           <div class=\"fr flex forun-num\">\n" +
+                                             "                        <div>评论"+n[i]+"</div>\n" +
+                                             "                        <div>浏览 "+data.results[i].click_nums+"</div>\n" +
+                                             "                    </div>\n" +
+                                             "                    </div>\n" +
+                                             "\n" +
+                                             "                    </li>"
+                                     }
+                                     $("#mains").html(html)
+                                }
+                            })
+                        }
+                    });
+
          }
      })
+      $("#info li").on('click',function () {
+            var self = $(this)
+            filter(self)
+      })
+      function filter(self) {
+          self.addClass('active').siblings().removeClass('active')
+          $.ajax({
+         url: '/api/forum/?category='+self.attr('data-type'),
+         type: 'get',
+         beforeSend: function () {
+             $("#mains").append("<p class='loading'><img src='/static/img/5-121204193R5-50.gif'></p>")
+         },
+         success:function (data) {
+             $('.loading').remove()
+
+             var html=''
+             var n = []
+             for (var i=0;i<data.results.length;i++){
+                 data.results[i].authors.user_imag= data.results[i].authors.user_imag? data.results[i].authors.user_imag? data.results[i].authors.user_image:data.results[i].authors.user_image:'{% static 'img/pc-icon.png' %}'
+                 n.push(data.results[i].comment_set.length);
+                    for(var j=0,len=data.results[i].comment_set.length;j<len;j++){
+                        var currentChildItem = data.results[i].comment_set[j];
+                        n[i] += currentChildItem.parent_comment_set.length;
+                    }
+                 html+="<li class=\"clearfix\">\n" +
+                     "                        <img src=\" "+data.results[i].authors.user_imag+"  \" class=\"user fl\" title="+data.results[i].authors.username+" width=\"40px\">\n" +
+                     "                    <div class=\"list-text fl\">\n" +
+                     "                        <div class=\"fl\">\n" +
+                     "                                 <p class=\"forun-title\"><a href=\"/forum/detail/"+data.results[i].id+"\">"+data.results[i].title+"</a><span onclick=\"deleteFroute('\"+data.results[i].id+\"')\">删除</span></p>\n" +
+                     "                        <p class=\"forun-info\">来自于  "+data.results[i].category.name+"  "+data.results[i].add_time+" </p>\n" +
+                     "                        </div>\n" +
+                     "\n" +
+                     "                           <div class=\"fr flex forun-num\">\n" +
+                     "                        <div>评论"+n[i]+"</div>\n" +
+                     "                        <div>浏览 "+data.results[i].click_nums+"</div>\n" +
+                     "                    </div>\n" +
+                     "                    </div>\n" +
+                     "\n" +
+                     "                    </li>"
+             }
+             $("#mains").html(html)
+            if(data.results.length==0){
+                 $("#mains").append("<p class=' blogs_item' style='text-align:center;padding:50px 0;'>暂无数据...</p>")
+            }
+             $('.M-box').pagination({
+                        pageCount:Math.ceil(data.count/10),   //总页码
+                        coping:true,                 //是否开启首页和末页
+                        {#homePage:'首页',#}
+                        {#endPage:'末页',#}
+                        {#showData: 5,#}
+                        prevContent:'上一页',
+                        nextContent:'下一页',
+                         jump:true,
+                        current:1,                    //当前页码
+                        callback:function (api) {
+                            $.ajax({
+                                url: '/api/forum/?category='+self.attr('data-type'),
+                                type:'get',
+                                data:{
+                                    page:api.getCurrent()    //这个方法就是用来获取点击了哪一页的，因为我  //的接口文档中页数是从0开始的，所以减1，当我点击第一页的时候去获取第0页的数据
+                                },
+                                success:function (data) {
+                                       console.log(data)
+
+                                     var html=''
+                                     var n = []
+                                     for (var i=0;i<data.results.length;i++){
+                 data.results[i].authors.user_imag= data.results[i].authors.user_imag? data.results[i].authors.user_imag? data.results[i].authors.user_image:data.results[i].authors.user_image:'{% static 'img/pc-icon.png' %}'
+                                         n.push(data.results[i].comment_set.length);
+                                            for(var j=0,len=data.results[i].comment_set.length;j<len;j++){
+                                                var currentChildItem = data.results[i].comment_set[j];
+                                                n[i] += currentChildItem.parent_comment_set.length;
+                                            }
+                                         html+="<li class=\"clearfix\">\n" +
+                                             "                        <img src=\" "+data.results[i].authors.user_imag+"  \" class=\"user fl\" title="+data.results[i].authors.username+" width=\"40px\">\n" +
+                                             "                    <div class=\"list-text fl\">\n" +
+                                             "                        <div class=\"fl\">\n" +
+                                             "                                 <p class=\"forun-title\"><a href=\"/forum/detail/"+data.results[i].id+"\">"+data.results[i].title+"</a><span onclick=\"deleteFroute('\"+data.results[i].id+\"')\">删除</span></p>\n" +
+                                             "                        <p class=\"forun-info\">来自于  "+data.results[i].category.name+"  "+data.results[i].add_time+" </p>\n" +
+                                             "                        </div>\n" +
+                                             "\n" +
+                                             "                           <div class=\"fr flex forun-num\">\n" +
+                                             "                        <div>评论"+n[i]+"</div>\n" +
+                                             "                        <div>浏览 "+data.results[i].click_nums+"</div>\n" +
+                                             "                    </div>\n" +
+                                             "                    </div>\n" +
+                                             "\n" +
+                                             "                    </li>"
+                                     }
+                                     $("#mains").html(html)
+                                }
+                            })
+                        }
+                    });
+
+         }
+     })
+      }
+        /**
+         * 删除帖子
+         * @param id
+         */
+        function deleteFroute(id) {
+            swal({
+              title: "删除帖子",
+              text: "是否删除帖子?",
+              icon: "warning",
+              buttons: ['取消','确认删除'],
+              dangerMode: true,
+            })
+            .then((willDelete) => {
+              if (willDelete) {
+                  $.ajax({
+                      url:'/forum/del/'+id,
+                      type:'delete',
+                      headers:{'X-CSRFToken':$.cookie('csrftoken'),'Content-Type':'application/json;charset=UTF-8'},
+                      success:function (data) {
+                          console.log(data)
+                          if(data.status==200){
+                             swal({
+                                  text: data.message,
+                                  icon: "success",
+                                }).then(function () {
+                                   window.location.reload()
+                               })
+                        }else {
+                             swal({
+                              text: data.message,
+                              icon: "error",
+                            })
+                        }
+                      }
+                  })
+
+              } else {
+                swal("已取消!");
+              }
+            });
+        }
     </script>
 {% endblock %}

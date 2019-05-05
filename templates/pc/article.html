@@ -37,9 +37,7 @@
                                   <div class="img_animate fl ">
                                       <a href="{% url 'article:detail' articles.id %}"><div class="blogs_pic img_cover" style="background: url({% if articles.list_pic %}
                                       {{ MEDIA_URL }}{{ articles.list_pic }}
-                                          {% else %}
-                                          {% static 'img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg' %}
-                                      {% endif %})no-repeat;"></div></a>
+                                      {% endif %})no-repeat;background-color: #ccc"></div></a>
                                   </div>
                                   <div class="fl blogs_describe">
                                       <p class="blogtext">{{ articles.desc }}</p>
@@ -50,10 +48,12 @@
                                      <a href="{% url 'user:author_detaile' articles.authors.id %}" class="clearfix">
                                          <span class="fl img_cover blogs_avatar" style="
                                                  background: url({% if articles.authors.user_imag%}
-                            {{ MEDIA_URL }}{{ articles.authors.user_imag }}
-                            {% else %}
-                            {{ articles.authors.user_image }}
-                        {% endif %})no-repeat;background-color: #ccc;"></span>
+                                {{ MEDIA_URL }}{{ articles.authors.user_imag }}
+                            {% elif articles.authors.user_image%}
+                                {{ articles.authors.user_image }}
+                             {% else %}
+                                {% static 'img/pc-icon.png' %}
+                        {% endif %})no-repeat;"></span>
                                          <span class="fl blogs_name" style="white-space: nowrap;
     text-overflow: ellipsis;max-width: 120px;overflow: hidden;">{{ articles.authors.username }}</span>
                                      </a>

@@ -24,8 +24,10 @@
                                          <a target="_blank" title="" href="{% url 'user:author_detaile' foo.id %}">
                                             <img class="follow_item_img" width="50" height="50"style="background-color: #ccc;" alt="" src="{% if foo.user_imag %}
                                             {{ MEDIA_URL }}{{ foo.user_imag }}
-                                            {% else %}
+                                            {% elif foo.user_image %}
                                             {{ foo.user_image }}
+                                            {% else %}
+                                            {% static 'img/pc-icon.png' %}
                                             {% endif %}">
                                          </a>
                                      </dt>
@@ -33,8 +35,9 @@
                                          <div class="follow_item_name">
                                             <a target="_blank" title="" alt="" href="{% url 'user:author_detaile' foo.id %}">{{ foo.username }}</a>
                                          </div>
-                                         <div class="follow_item_info">
-                                            <span>{{ foo.position }}</span>
+                                         <div class="follow_item_info"style="text-align: left">
+                                             <p>文章:{{ foo.article_set.count }}</p>
+                                             <p>帖子:{{ foo.forum_set.count }}</p>
                                          </div>
                                      </dd>
 {#                                     <dd class="fl follow_num">#}
@@ -64,10 +67,12 @@
                                  <dl class="clearfix">
                                      <dt class="fl">
                                          <a target="_blank" title="" href="{% url 'user:author_detaile' foo.id %}">
-                                            <img class="follow_item_img" width="50" height="50" alt="" style="background-color: #ccc;" src="{% if foo.user_imag %}
+                                            <img class="follow_item_img" width="50" height="50" alt="" style="" src="{% if foo.user_imag %}
                                             {{ MEDIA_URL }}{{ foo.user_imag }}
-                                            {% else %}
+                                            {% elif foo.user_image %}
                                             {{ foo.user_image}}
+                                            {% else %}
+                                            {% static 'img/pc-icon.png' %}
                                             {% endif %}">
                                          </a>
                                      </dt>
@@ -75,8 +80,9 @@
                                          <div class="follow_item_name">
                                             <a target="_blank" title="" alt="" href="{% url 'user:author_detaile' foo.id %}">{{ foo.username }}</a>
                                          </div>
-                                         <div class="follow_item_info">
-                                            <span>{{ foo.position }}</span>
+                                         <div class="follow_item_info"style="text-align: left">
+                                            <p>文章:{{ foo.article_set.count }}</p>
+                                             <p>帖子:{{ foo.forum_set.count }}</p>
                                          </div>
                                      </dd>
 

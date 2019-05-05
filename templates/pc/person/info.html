@@ -26,8 +26,10 @@
                              <a class="imgbox">
                                  <span id="img3" class="info_img" style="background-image:url({% if request.user.user_imag  %}
                                  {{ MEDIA_URL }}{{ request.user.user_imag }}
-                                     {% else %}{{ request.user.user_image }}
-                                 {% endif %});background-color: #ccc;" onclick="fileCliick()"></span>
+                                     {% elif request.user.user_image %}{{ request.user.user_image }}
+                                     {% else %}
+                                     {% static 'img/pc-icon.png' %}
+                                 {% endif %});" onclick="fileCliick()"></span>
                                   <input type="file" id="file" class="filepath"   onchange="changepic(this)" accept="image/jpg,image/jpeg,image/png,image/PNG">
                              </a>
                          </div>

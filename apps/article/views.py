@@ -24,6 +24,7 @@ from apps.article.forms import Article_form
 from apps.article.serializers import ArticleSerializer, Article_CommentSerializer, ArticleCommentReply, \
     Article_CommentSerializerAdd, ArticleCommentReplySerializer, Category_ArticleSerializer, ArticleCreatedSerializer, \
     ArticleCommitSerializer
+from apps.forum.models import Forum
 from apps.support.models import link, QQ
 from apps.uitls.jsonserializable import DateEncoder
 from apps.uitls.permissions import IsOwnerOrReadOnly, IsOwnerOr
@@ -37,8 +38,8 @@ from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 def test(request):
     WorkList = []
     for i in range(1,100):
-        WorkList.append(Article(title='1',category_id=7,authors_id='2a5ec3edf61c43a6a547851e9ba15071'))
-    Article.objects.bulk_create(WorkList)
+        WorkList.append(Forum(title='```cpp\n下例 中的某些语句读不太明白：\n 1.   DataTable dt=ds.Tables[\"cs\"] 这句最难理解，意思是读取cs表赋给新建的内存表dt（复制表）?还是dt表指向（引用）cs表，修改dt其实就是修改cs?\n 2.   sda.FillSchema(dt,SchemaType.Mapped); 这句应该是将数据库表中的元数据填入到dt中，为何要填入?cs表中没有元数据吗?\n 3.   此例中修改了dt表，执行Update为何更新了数据库?dt、cs与数据库是个怎么个联系?\n\n\n例：\nSqlConnection ds;\nDataSet ds;\nSqlDataAdapter sda;\n...........        \nDataTable dt=ds.Tables[\"cs\"];\nsda.FillSchema(dt,SchemaType.Mapped);\nDataRow dr=dt.Rows.Find(txtNo.text);\ndr[\"姓名\"]=txtName.Text.Trim();\ndr[\"性别\"]=txtSex.Text.Trim();\nSqlCommandBuilder cmdbuilder=new SqlCommandBuilder(sda);\nsda.Update(dt);\n```%s'%(i),category_id=4,authors_id='2a5ec3edf61c43a6a547851e9ba15071'))
+    Forum.objects.bulk_create(WorkList)
     return HttpResponse('ok')
 
 def Article_list(request):
@@ -121,7 +122,7 @@ def ArticleList(request):
     p = Paginator(article,10,request=request)
     people = p.page(page)
 
-    headlines = Headlines.objects.all()[:20]
+    headlines = Headlines.objects.all()[:30]
 
 
 
@@ -130,27 +131,27 @@ def ArticleList(request):
 
 def api(request):
 
-    url = 'http://api01.idataapi.cn:8000/article/idataapi?KwPosition=3&catLabel1=科技&apikey='
+    url =  'http://v.juhe.cn/toutiao/index?type=keji&key={0}'.format(conf.get('AppKey','key'))
     headers = {
         "Accept-Encoding": "gzip",
         "Connection": "close"
     }
 
-    r = requests.get(url, headers=headers)
-    print(r.json())
+    # r = requests.get(url, headers=headers)
+    # print(r.json())
     # if r.status_code == requests.codes.ok:
     #
     #     dict_json = r.json()
-    #     print(dict_json['data'])
+    #     print(dict_json['result']['data'])
     #     main = Headlines()
     #     list_dict = []
-    #     for item in dict_json['data']:
+    #     for item in dict_json['result']['data']:
     #         obj = Headlines(
     #         url = item['url'],
     #         title = item['title'],
-    #         category = item['catLabel1'],
-    #         conent = item['content'],
-    #         author_name = item['sourceType'],
+    #         category = item['category'],
+    #         #conent = item['content'],
+    #         author_name = item['author_name'],
     #         )
     #         list_dict.append(obj)
     #     Headlines.objects.bulk_create(list_dict)
@@ -182,7 +183,7 @@ def api(request):
 
 
 
-from apps.article.tasks import add, error_email
+from apps.article.tasks import add, error_email, conf
 
 
 def addModel(request):

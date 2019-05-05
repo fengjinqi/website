@@ -46,8 +46,10 @@ author 冯金琪
                     <li class="clearfix">
                         <img src="{% if foo.authors.user_imag %}
                     {{ MEDIA_URL }}{{ foo.authors.user_imag }}
-                    {% else %}
-                    {{ foo.authors.user_image }}
+                    {% elif foo.authors.user_image %}
+                        {{ foo.authors.user_image }}
+                        {% else %}
+                        {% static 'img/pc-icon.png' %}
                     {% endif %}" class="user fl" title="{{ foo.authors.username }}"width="40px">
                     <div class="list-text fl">
                         <div class="fl">

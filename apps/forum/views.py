@@ -33,7 +33,7 @@ def index(request):
     :return:
     """
     plate = Forum_plate.objects.all()
-    forum = Forum.objects.all()
+    forum = Forum.objects.filter(hidden=False)
     job = Forum.objects.filter(category__name='求职招聘')
     try:
         page = request.GET.get('page', 1)
@@ -42,7 +42,7 @@ def index(request):
     except PageNotAnInteger:
         page = 1
         # Provide Paginator with the request object for complete querystring generation
-    p = Paginator(forum, 20, request=request)
+    p = Paginator(forum, 10, request=request)
     people = p.page(page)
     return render(request,'pc/forum.html',locals())
 
@@ -56,7 +56,7 @@ def indexMe(request):
     :return:
     """
     plate = Forum_plate.objects.all()
-    forum = Forum.objects.all()
+    forum = Forum.objects.filter(hidden=False)
     count = User.objects.filter(follow__fan__id=request.user.id)
     floow = User.objects.filter(fan__follow_id=request.user.id)
     try:
@@ -66,7 +66,7 @@ def indexMe(request):
     except PageNotAnInteger:
         page = 1
         # Provide Paginator with the request object for complete querystring generation
-    p = Paginator(forum, 20, request=request)
+    p = Paginator(forum, 10, request=request)
     people = p.page(page)
     return render(request,'pc/forum_me.html',locals())
 
@@ -94,6 +94,23 @@ def add_forum(request):
                 return JsonResponse({"code": 400, "data": "发布失败"})
     return render(request,'pc/forum_add.html',locals())
 
+@login_required(login_url='/login')
+def delForum(request,id):
+    """
+    删除帖子
+    :param request:
+    :param id:
+    :return:
+    """
+    if request.is_ajax():
+        try:
+            data = get_object_or_404(Forum,pk=id)
+            data.hidden=True
+            data.save()
+            return JsonResponse({'status':200,'message':'删除成功'})
+        except Exception as e:
+            return JsonResponse({'status': 400, 'message': '删除失败'})
+
 
 def forum_category(request,category):
     """
@@ -102,7 +119,7 @@ def forum_category(request,category):
     :param category:
     :return:
     """
-    cate_list = Forum.objects.filter(category_id=category)
+    cate_list = Forum.objects.filter(category_id=category,hidden=False)
     plate = Forum_plate.objects.all()
 
     job = Forum.objects.filter(category__name='求职招聘')
@@ -184,7 +201,7 @@ class Forum_plateView(mixins.UpdateModelMixin,mixins.CreateModelMixin,viewsets.R
 
 class ForumView(viewsets.ModelViewSet):
     """TODO 帖子"""
-    queryset = Forum.objects.all()
+    queryset = Forum.objects.filter(hidden=False)
     serializer_class = ForumSerializers
     pagination_class = StandardResultsSetPagination
     permission_classes = (IsAuthenticated, IsOwnerOr)  # 未登录禁止访问
@@ -193,8 +210,8 @@ class ForumView(viewsets.ModelViewSet):
     authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Forum.objects.all()
+        if self.request.user.is_superuser and self.request.user:
+            return Forum.objects.filter(hidden=False)
         else:
             return Forum.objects.filter(authors=self.request.user)
 

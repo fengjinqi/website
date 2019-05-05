@@ -44,9 +44,11 @@
                  <span class="fl img_cover blogs_avatar" style="
                                                  background: url({% if article.authors.user_imag%}
                             {{ MEDIA_URL }}{{ article.authors.user_imag }}
-                            {% else %}
+                            {% elif article.authors.user_image%}
                             {{ article.authors.user_image }}
-                        {% endif %})no-repeat;background-color: #ccc;"></span>
+                     {% else %}
+                     {% static 'img/pc-icon.png' %}
+                        {% endif %})no-repeat;"></span>
              </div>
             <div>
                 <div class="de-username">{{ article.authors.username }}</div>
@@ -93,8 +95,10 @@
                         <div class="list-main">
                             <div class="img-corner"><img src="{% if foo.user.user_imag %}
                                 {{ MEDIA_URL }}{{  foo.user.user_imag}}
-                                {% else %}
+                                {% elif foo.user.user_image %}
                                 {{ foo.user.user_image }}
+                                {% else %}
+                                {% static 'img/pc-icon.png' %}
                             {% endif %}" alt=""></div>
                             <div class="list-text">
                                 <div class="list-person clearfix"><div class="fl" data-id="{{ foo.user.id }}"><a href="{% url 'user:author_detaile' foo.user.id%}">{{ foo.user.username }}</a> {{ foo.address }}</div> <p class="fr">{{ foo.add_time }}</p></div>
@@ -105,8 +109,10 @@
                                     <div class="img-corner"><img src="
                                     {% if childr.user.user_imag %}
                                         {{ MEDIA_URL }}{{ childr.user.user_imag }}
-                                        {% else %}
-                                                  {{ foo.user.user_image }}
+                                        {% elif childr.user.user_image %}
+                                                  {{ childr.user.user_image }}
+                                                  {% else %}
+                                                  {% static 'img/pc-icon.png' %}
                                     {% endif %}
                             " alt="" ></div>
                                     <div class="list-text">

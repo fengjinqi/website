@@ -105,7 +105,8 @@ conf.read('config.ini')
 def getApi():
     print('正在获取数据...')
 
-    url = 'http://api01.idataapi.cn:8000/article/idataapi?KwPosition=3&catLabel1=科技&apikey={0}'.format(conf.get('iDataApi','key'))
+    #url = 'http://api01.idataapi.cn:8000/article/idataapi?KwPosition=3&catLabel1=科技&apikey={0}'.format(conf.get('iDataApi','key'))
+    url = 'http://v.juhe.cn/toutiao/index?type=keji&key={0}'.format(conf.get('AppKey','key'))
     headers = {
         "Accept-Encoding": "gzip",
         "Connection": "close"
@@ -115,19 +116,26 @@ def getApi():
         if r.status_code == requests.codes.ok:
             dict_json = r.json()
             list_dict = []
-            for item in dict_json['data']:
+            for item in dict_json['result']['data']:
+                # obj = Headlines(
+                #     url=item['url'],
+                #     title=item['title'],
+                #     category=item['catLabel1'],
+                #     conent=item['content'],
+                #     author_name=item['sourceType'],
+                # )
                 obj = Headlines(
                     url=item['url'],
                     title=item['title'],
-                    category=item['catLabel1'],
-                    conent=item['content'],
-                    author_name=item['sourceType'],
+                    category=item['category'],
+                    conent=item['title'],
+                    author_name=item['author_name'],
                 )
                 list_dict.append(obj)
             Headlines.objects.bulk_create(list_dict)
             print('数据添加成功')
     except Exception as e:
-        print('数据添加失败===正在发生邮件通知管理员')
+        print('数据添加失败===正在发生邮件通知管理员',e)
 
         error_email.delay('tarena_feng@126.com','抓取数据错误','{0}'.format(e))
         print('邮件发送成功')

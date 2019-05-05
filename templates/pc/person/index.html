@@ -50,12 +50,15 @@
                     background: url({% if request.user.user_imag  %}
 
                  {{ MEDIA_URL }}{{ request.user.user_imag }}
-                        {% else %}
+                        {% elif request.user.user_image %}
                         {{ request.user.user_image }}
+                        {% else %}
+                        {% static 'img/pc-icon.png' %}
                             {% endif %}
                             )no-repeat;background-size: cover;"></div>
                     <p style="margin:16px 0 4px 0">{{ request.user.username }}</p>
-                    <p style="font-size: 12px;">{{ request.user.position }}</p>
+                    <div style="font-size: 12px;">           <p>文章:{{ request.user.article_set.count }}</p>
+                                             <p>帖子:{{ request.user.forum_set.count }}</p></div>
                 </div>
             </div>
             <div class="aside_my_num flex_justify">
@@ -173,16 +176,14 @@
                 },
                 success:function (data) {
                     $('.loading').remove()
-                    if(data.results.length==0){
-                         $("#mains").append("<p class=' blogs_item' style='text-align:center;padding:50px 0;'>暂无数据...</p>")
-                    }
+
                     var html =''
                     n=[]
                     for(var i=0;i<data.results.length;i++){
                         var currentItem = data.results[i];
 
                         currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:'/static/img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'
-                        currentItem.authors.user_imag= currentItem.authors.user_imag? currentItem.authors.user_imag: currentItem.authors.user_image
+                        currentItem.authors.user_imag= currentItem.authors.user_imag? currentItem.authors.user_imag?currentItem.authors.user_image:currentItem.authors.user_image:'{% static 'img/pc-icon.png' %}'
                         n.push(currentItem.article_comment_set.length);
                         for(var j=0,len=currentItem.article_comment_set.length;j<len;j++){
                             var currentChildItem = currentItem.article_comment_set[j];
@@ -199,12 +200,12 @@
                             "                                          </div>\n" +
                             "                                          <div class=\" blogs_describe\">\n" +
                             "                                     <div class=\" divp\">\n" +
-                            "                                              <p>"+filterXSS(data.results[i].keywords)+"</p>\n" +
+                            "                                              <p>"+filterXSS(data.results[i].desc)+"</p>\n" +
                             "                                          <div class=\"blogs_foot blogs_foot1 ulw\">\n" +
                             "                                    <ul class=\"clearfix \">\n" +
                             "                                        <li class=\"fl\">\n" +
                             "                                             <a href=\"\" class=\"clearfix\">\n" +
-                            "                                                 <span class=\"fl img_cover blogs_avatar\" style=\"background: url('"+data.results[i].authors.user_imag+"')no-repeat;background-color: #ccc;\"></span>\n" +
+                            "                                                 <span class=\"fl img_cover blogs_avatar\" style=\"background: url('"+data.results[i].authors.user_imag+"')no-repeat;\"></span>\n" +
                             "                                                 <span class=\"fl blogs_name\" style=\"white-space: nowrap;\n" +
                             "    text-overflow: ellipsis;max-width: 120px;overflow: hidden;\">"+data.results[i].authors.username+"</span>\n" +
                             "                                             </a>\n" +
@@ -223,6 +224,9 @@
                             "                         </div>"
                     }
                     $("#mains").append(html)
+                     if(data.results.length==0){
+                         $("#mains").append("<p class=' blogs_item' style='text-align:center;padding:50px 0;'>暂无数据...</p>")
+                    }
                     $('.M-box').pagination({
                         pageCount:Math.ceil(data.count/10),   //总页码
                         coping:true,                 //是否开启首页和末页
@@ -241,13 +245,12 @@
                                     page:api.getCurrent()    //这个方法就是用来获取点击了哪一页的，因为我  //的接口文档中页数是从0开始的，所以减1，当我点击第一页的时候去获取第0页的数据
                                 },
                                 success:function (data) {
-                                    console.log(data);             //返回那一页的数据
                                     var html =''
                                     b=[]
                                     for(var i=0;i<data.results.length;i++){
                                         var currentItem = data.results[i];
                                         currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:'/static/img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'
-                                        currentItem.authors.user_imag= currentItem.authors.user_imag? currentItem.authors.user_imag: currentItem.authors.user_image
+                                        currentItem.authors.user_imag= currentItem.authors.user_imag? currentItem.authors.user_imag?currentItem.authors.user_image:currentItem.authors.user_image:'{% static 'img/pc-icon.png' %}'
                                         b.push(currentItem.article_comment_set.length);
                                         for(var j=0,len=currentItem.article_comment_set.length;j<len;j++){
                                             var currentChildItem = currentItem.article_comment_set[j];
@@ -262,12 +265,12 @@
                                             "                                          </div>\n" +
                                             "                                          <div class=\" blogs_describe\">\n" +
                                             "                                     <div class=\" divp\">\n" +
-                                            "                                              <p>"+filterXSS(data.results[i].keywords)+"</p>\n" +
+                                            "                                              <p>"+filterXSS(data.results[i].desc)+"</p>\n" +
                                             "                                          <div class=\"blogs_foot blogs_foot1 ulw\">\n" +
                                             "                                    <ul class=\"clearfix \">\n" +
                                             "                                        <li class=\"fl\">\n" +
                                             "                                             <a href=\"\" class=\"clearfix\">\n" +
-                                            "                                                 <span class=\"fl img_cover blogs_avatar\" style=\"background: url('"+data.results[i].authors.user_imag+"')no-repeat;background-color: #ccc;\"></span>\n" +
+                                            "                                                 <span class=\"fl img_cover blogs_avatar\" style=\"background: url('"+data.results[i].authors.user_imag+"')no-repeat;\"></span>\n" +
                                             "                                                 <span class=\"fl blogs_name\" style=\"white-space: nowrap;\n" +
                                             "    text-overflow: ellipsis;max-width: 120px;overflow: hidden;\"style=\"white-space: nowrap;\n" +
                                             "    text-overflow: ellipsis;max-width: 120px;overflow: hidden;\">"+data.results[i].authors.username+"</span>\n" +
@@ -323,7 +326,7 @@
                         for(var i=0;i<data.results.length;i++){
                             var currentItem = data.results[i];
                             currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:'/static/img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'
-                            currentItem.authors.user_imag= currentItem.authors.user_imag? currentItem.authors.user_imag: currentItem.authors.user_image
+                            currentItem.authors.user_imag= currentItem.authors.user_imag? currentItem.authors.user_imag?currentItem.authors.user_image:currentItem.authors.user_image:'{% static 'img/pc-icon.png' %}'
                             n.push(currentItem.article_comment_set.length);
                             for(var j=0,len=currentItem.article_comment_set.length;j<len;j++){
                                 var currentChildItem = currentItem.article_comment_set[j];
@@ -338,12 +341,12 @@
                                 "                                          </div>\n" +
                                 "                                          <div class=\" blogs_describe\">\n" +
                                 "                                     <div class=\" divp\">\n" +
-                                "                                              <p>"+filterXSS(data.results[i].keywords)+"</p>\n" +
+                                "                                              <p>"+filterXSS(data.results[i].desc)+"</p>\n" +
                                 "                                          <div class=\"blogs_foot blogs_foot1 ulw\">\n" +
                                 "                                    <ul class=\"clearfix \">\n" +
                                 "                                        <li class=\"fl\">\n" +
                                 "                                             <a href=\"\" class=\"clearfix\">\n" +
-                                "                                                 <span class=\"fl img_cover blogs_avatar\" style=\"background: url('"+data.results[i].authors.user_imag+"')no-repeat;background-color: #ccc;\"></span>\n" +
+                                "                                                 <span class=\"fl img_cover blogs_avatar\" style=\"background: url('"+data.results[i].authors.user_imag+"')no-repeat;\"></span>\n" +
                                 "                                                 <span class=\"fl blogs_name\"style=\"white-space: nowrap;\n" +
                                 "    text-overflow: ellipsis;max-width: 120px;overflow: hidden;\">"+data.results[i].authors.username+"</span>\n" +
                                 "                                             </a>\n" +
@@ -387,7 +390,7 @@
                                         for(var i=0;i<data.results.length;i++){
                                             var currentItem = data.results[i];
                                             currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:'/static/img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'
-                                            currentItem.authors.user_imag= currentItem.authors.user_imag? currentItem.authors.user_imag: currentItem.authors.user_image
+                                              currentItem.authors.user_imag= currentItem.authors.user_imag? currentItem.authors.user_imag?currentItem.authors.user_image:currentItem.authors.user_image:'{% static 'img/pc-icon.png' %}'
                                             b.push(currentItem.article_comment_set.length);
                                             for(var j=0,len=currentItem.article_comment_set.length;j<len;j++){
                                                 var currentChildItem = currentItem.article_comment_set[j];
@@ -402,12 +405,12 @@
                                                 "                                          </div>\n" +
                                                 "                                          <div class=\" blogs_describe\">\n" +
                                                 "                                     <div class=\" divp\">\n" +
-                                                "                                              <p>"+filterXSS(data.results[i].keywords)+"</p>\n" +
+                                                "                                              <p>"+filterXSS(data.results[i].desc)+"</p>\n" +
                                                 "                                          <div class=\"blogs_foot blogs_foot1 ulw\">\n" +
                                                 "                                    <ul class=\"clearfix \">\n" +
                                                 "                                        <li class=\"fl\">\n" +
                                                 "                                             <a href=\"\" class=\"clearfix\">\n" +
-                                                "                                                 <span class=\"fl img_cover blogs_avatar\" style=\"background: url('"+data.results[i].authors.user_imag+"')no-repeat;background-color: #ccc;\"></span>\n" +
+                                                "                                                 <span class=\"fl img_cover blogs_avatar\" style=\"background: url('"+data.results[i].authors.user_imag+"')no-repeat;\"></span>\n" +
                                                 "                                                 <span class=\"fl blogs_name\"style=\"white-space: nowrap;\n" +
                                                 "    text-overflow: ellipsis;max-width: 120px;overflow: hidden;\">"+data.results[i].authors.username+"</span>\n" +
                                                 "                                             </a>\n" +

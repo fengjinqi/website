@@ -66,9 +66,11 @@
                     <li class="fl avatar">
                         <a class="img_cover" style="background: url({% if request.user.user_imag %}
                             {{ MEDIA_URL }}{{ request.user.user_imag  }}
+                            {% elif request.user.user_image %}
+                            {{ MEDIA_URL }}{{ request.user.user_image }}
                             {% else %}
-                            {{ request.user.user_image }}
-                        {% endif %})no-repeat;background-color: #ccc;">
+                            {% static 'img/pc-icon.png' %}
+                        {% endif %})no-repeat;">
                         <b id="yuan" style="width: 10px;height: 10px;
                         position: absolute;
                         display: none;
