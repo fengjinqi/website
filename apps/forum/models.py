@@ -26,7 +26,7 @@ class Forum_plate(models.Model):
     def __str__(self):
         return self.name
     def get_count(self):
-        return self.forum_set.count()
+        return self.forum_set.filter(hidden=False).count()
 
     class Meta:
         verbose_name = '论坛版块'

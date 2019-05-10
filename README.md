@@ -15,7 +15,7 @@ django 开发的web项目
 
 6、拥有定时任务 采用Celery redis用做消息队列进行每30分钟采取一次数据，一周进行数据库处理,若出错会及时给管理员发邮件通知
 
-7，社区功能(开发中。。。。。。。。。)
+7，社区功能
 
 # admin
 目前在另外一个项目里，请移步https://github.com/fengjinqi/website-admin 后续完成会打包配置到本项目
@@ -38,5 +38,22 @@ django 开发的web项目
 4、settings进行数据库等各种配置
 
 5、项目根目录下创建 congfig.ini 邮箱等密码配置文件 并填写
+```cython
+
+[email]
+
+password = xxx
+
+[QQ]
+
+client_id = xxx
+
+key = xxx
+
+[AppKey] #此key是聚合数据的，若想使用其它的需要去apps/article/tasks文件中getApi方法修改地址
+
+key = xxx
+```
+
 
 #(ps:项目还在开发中，若有更好的建议或者功能请联系我qq:1218525402,邮箱：fengjinqi@fengjinqi.com)

@@ -72,6 +72,7 @@ a:hover{
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
+    background: #fff;
 }
 .Catalog>ul>li{
     height: 48px;
@@ -93,7 +94,7 @@ a:hover{
     height:48px;
     line-height: 48px;
     /*background: #f7f7f7;*/
-    /*border-bottom: 1px solid #eee;*/
+    border-bottom: 1px solid #eee;
     padding:0 15px;
     background: #fff;
 }

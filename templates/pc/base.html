@@ -67,7 +67,7 @@
                         <a class="img_cover" style="background: url({% if request.user.user_imag %}
                             {{ MEDIA_URL }}{{ request.user.user_imag  }}
                             {% elif request.user.user_image %}
-                            {{ MEDIA_URL }}{{ request.user.user_image }}
+                            {{ request.user.user_image }}
                             {% else %}
                             {% static 'img/pc-icon.png' %}
                         {% endif %})no-repeat;">
