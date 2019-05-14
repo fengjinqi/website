@@ -49,7 +49,7 @@
     width: 30%;
     padding: 0 12px;margin: 5px;">已绑定</span>
                                     {% else %}
-                                    <a href="{% url 'getClbackQQ' %}" style="text-align: left;
+                                    <a href="{% url 'getClbackQQ' %}?next={{ request.path }}" style="text-align: left;
     float: none;
     width: 30%;
     padding: 0 12px;margin: 5px;color: #356dd0;">未绑定(绑定后可QQ便捷登录)</a>

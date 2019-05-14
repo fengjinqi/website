@@ -94,6 +94,9 @@
         #main>p>.fr{
             float: right;
         }
+        .error{
+            display: block;
+        }
     </style>
 </head>
 
@@ -123,7 +126,7 @@
         <div class="input-group">
           <div class="input-group-addon"style="width: 48px"><i class="glyphicon glyphicon-phone"></i></div>
           <input type="text" class="form-control "required name="captcha" placeholder="请输入验证码"style="width: 50%">
-            <img src="" alt=""style="display: inline;padding:4px 5px;float: right">
+            <img src="" alt="" id="img" style="display: inline;padding:4px 5px;float: right">
 
         </div>
       </div>
@@ -160,6 +163,9 @@
         <p class="errors"></p>
 
   <button type="button" class="btn login-button " id="submit">注册</button>
+            <div class="qq" style="padding-left: 40px;padding-top: 10px;">
+             其他方式注册: <a href="{% url 'qq-login' %}?next={{ next }}"><img style="width: 25px;" src="{% static 'img/qq2.png' %}" alt="QQ登录"></a>
+         </div>
 </form>
     <p class="clearfix">
         <a class="fl" href="/login">已有账号?立即登录</a>
@@ -262,7 +268,7 @@
              url: "/refresh/",
              dataType: "json",
              success: function(data){
-                 $('img').attr('src',data.image_url)
+                 $('#img').attr('src',data.image_url)
                  $('#hidden').val(data.key)
                        console.log(data)
                       },

@@ -130,7 +130,7 @@ a{
     color: #666;
 }
 a:hover,.change:hover{
-    color:#356dd0
+    /*color:#356dd0*/
 }
 span{
     display: inline-block;

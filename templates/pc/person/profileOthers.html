@@ -24,8 +24,10 @@
                                          <a target="_blank" title="" href="{% url 'user:author_detaile' foo.id %}">
                                             <img class="follow_item_img" style="background-color: #ccc;" width="50" height="50" alt="" src="{% if foo.user_imag %}
                                             {{ MEDIA_URL }}{{ foo.user_imag }}
-                                            {% else %}
+                                            {% elif  foo.user_image  %}
                                             {{ foo.user_image }}
+                                            {% else %}
+                                            {% static 'img/pc-icon.png' %}
                                             {% endif %}">
                                          </a>
                                      </dt>
@@ -53,8 +55,10 @@
                                          <a target="_blank" title="" href="{% url 'user:author_detaile' foo.id %}">
                                             <img class="follow_item_img" width="50" height="50" style="background-color: #ccc;" alt="" src="{% if foo.user_imag %}
                                             {{ MEDIA_URL }}{{ foo.user_imag }}
-                                            {% else %}
+                                            {% elif foo.user_image  %}
                                             {{ foo.user_image }}
+                                            {% else %}
+                                            {% static 'img/pc-icon.png' %}
                                             {% endif %}">
                                          </a>
                                      </dt>
@@ -90,12 +94,21 @@
                 data:{follow:obj,'username':'{{ request.user.id }}'},
                   headers:{'X-CSRFToken':$.cookie('csrftoken')},
                 success:function (data) {
+                       if(data.status==403){
+                       swal({
+                          text: data.message,
+                          icon: "error",
+                        }).then(function () {
+                           window.location.href = "{% url 'index' %}?next={{ request.path }}"
+                       })
+                    }else{
                     swal({
                           text: data.message,
                           icon: "success",
                         }).then(function () {
-                                   window.location.reload()
-                               })
+                            window.location.reload()
+                        })
+                     }
                 },
                 error:function (xhr) {
                     console.log(xhr)

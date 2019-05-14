@@ -99,7 +99,7 @@
 
 <body>
 <div id="main">
-     <form class="form-inline" id="defaultForm" action="{% url 'user:bindingQQ' %}" method="post">
+     <form class="form-inline" id="defaultForm" action="{% url 'user:bindingQQ' %}?next={{ next }}" method="post">
          {% csrf_token %}
          <div class="login-top">
 				绑定邮箱

@@ -32,7 +32,9 @@
 {% block content %}
     <div class="container clearfix">
         <div class="Catalog fl">
+            <h3 style="height:48px;line-height: 48px;text-align: center;border-bottom: 1px solid #eee;">目录</h3>
             <ul id="menu">
+
                 {% for foo in course %}
                     <li data-key="{{ foo.id }}"><a style="display: block;padding: 0 15px" href="/course/{{uuid }}/{{ foo.id }}.html">{{ foo.titles }}</a></li>
                 {% endfor %}

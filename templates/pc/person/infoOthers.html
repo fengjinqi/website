@@ -21,8 +21,10 @@
                              <a class="imgbox">
                                  <span id="img3" class="info_img" style="background-image:url({% if user.user_imag  %}
                                  {{ MEDIA_URL }}{{user.user_imag }}
-                                     {% else %}
+                                     {% elif user.user_image%}
                                      {{user.user_image }}
+                                     {% else %}
+                                     {% static 'img/pc-icon.png' %}
                                  {% endif %});"></span>
                               </a>
                          </div>
@@ -57,12 +59,21 @@
                 data:{follow:obj,'username':'{{ request.user.id }}'},
                   headers:{'X-CSRFToken':$.cookie('csrftoken')},
                 success:function (data) {
+                        if(data.status==403){
+                       swal({
+                          text: data.message,
+                          icon: "error",
+                        }).then(function () {
+                           window.location.href = "{% url 'index' %}?next={{ request.path }}"
+                       })
+                    }else{
                     swal({
                           text: data.message,
                           icon: "success",
                         }).then(function () {
-                                   window.location.reload()
-                               })
+                            window.location.reload()
+                        })
+                     }
                 },
                 error:function (xhr) {
                     console.log(xhr)

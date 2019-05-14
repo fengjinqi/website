@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.sessions.models import Session
+from django.core.cache import cache
 from django.core.paginator import PageNotAnInteger
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -24,6 +25,15 @@ from apps.forum.serializers import Forum_plateSerializers, ForumSerializers, Com
     Pernents_CommentSerializers
 from apps.uitls.permissions import IsOwnerOr, IsOwnerOrReadOnly
 from apps.user.models import UserMessage, User
+
+
+# def get_online_count():
+#     online_ips = cache.get("online_ips", [])
+#     print(online_ips)
+#     if online_ips:
+#         #online_ips = cache.get_many(online_ips).keys()
+#         return len(online_ips)
+#     return 0
 
 
 def index(request):

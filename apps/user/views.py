@@ -172,13 +172,13 @@ def active_user(request, token):
         for user in users:
             if user.is_active==False:
                 user.delete()
-                return render(request, 'pc/message.html', {'message': u'对不起，验证链接已经过期，请重新<a href=\"' + unicode(settings.DOMAIN) + u'/signup\">注册</a>'})
+                return render(request, 'pc/message.html', {'message': u'对不起，验证链接已经过期，请重新<a href=\"' + unicode(settings.DOMAIN) + u'/register\">注册</a>'})
             else:
-                return render(request, 'pc/message.html', {'message': u'此账号已经验证过，请重新<a href=\"' + unicode(settings.DOMAIN) + u'/signup\">注册</a>'})
+                return render(request, 'pc/message.html', {'message': u'此账号已经验证过，请重新<a href=\"' + unicode(settings.DOMAIN) + u'/register\">注册</a>'})
     try:
         user = User.objects.get(username=username)
     except User.DoesNotExist:
-        return render(request, 'pc/message.html', {'message': u"对不起，您所验证的用户不存在，请重新注册"})
+        return render(request, 'pc/message.html', {'message': u'对不起，您所验证的用户不存在，请重新<a href=\"/register\">注册</a>'})
     user.is_active = True
     user.save()
     msg = UserMessage()
@@ -310,25 +310,29 @@ class RetrieveEmail(View):
 
 
 class Author(View):
-    @method_decorator(login_required(login_url='/login'))
+    #@method_decorator(login_required(login_url='/login'))
     def post(self,request):
-        froms = Follow_Forms(request.POST)
-        username = request.POST.get('username')
-        if froms.is_valid():
-            follow = Follows()
-            if request.POST.get('follow') == str(username):
-                return JsonResponse({'status': 201, 'message': '不能自己关注自己'})
+        print(request.user.is_authenticated)
+        if request.user.is_authenticated:
+            froms = Follow_Forms(request.POST)
+            username = request.POST.get('username')
+            if froms.is_valid():
+                follow = Follows()
+                if request.POST.get('follow') == str(username):
+                    return JsonResponse({'status': 201, 'message': '不能自己关注自己'})
+                else:
+                    cun = Follows.objects.filter(follow=froms.cleaned_data.get('follow'),fan=username)
+                    if cun:
+                        cun.delete()
+                        return JsonResponse({'status': 200, 'message': '已取消关注'})
+                    follow.follow = froms.cleaned_data.get('follow')
+                    follow.fan_id = request.user.id
+                    follow.save()
+                    return JsonResponse({'status':200,'message':'成功关注'})
             else:
-                cun = Follows.objects.filter(follow=froms.cleaned_data.get('follow'),fan=username)
-                if cun:
-                    cun.delete()
-                    return JsonResponse({'status': 200, 'message': '已取消关注'})
-                follow.follow = froms.cleaned_data.get('follow')
-                follow.fan_id = request.user.id
-                follow.save()
-                return JsonResponse({'status':200,'message':'成功关注'})
+                return JsonResponse({'status':400,'message':'失败'})
         else:
-            return JsonResponse({'status':400,'message':'失败'})
+            return JsonResponse({'status': 403, 'message': '请先登录'})
 
 
 """个人中心"""
@@ -495,6 +499,8 @@ def message(request):
     return render(request,'pc/person/message.html')
 
 """drf"""
+
+
 class PersonApiabstohr(viewsets.ReadOnlyModelViewSet):
     queryset = Article.objects.filter(is_show=True)
     serializer_class = ArticleSerializer
@@ -502,7 +508,6 @@ class PersonApiabstohr(viewsets.ReadOnlyModelViewSet):
     filter_class = CategoryFilter
     authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
     pagination_class = StandardResultsSetPagination
-
 
 
 class PersonApi(PersonApiabstohr):
@@ -676,14 +681,16 @@ def to_login(request):
     :param request:
     :return:
     """
+
+    next= request.GET.get('next','')
     state = str(random.randrange(100000, 999999))  # 定义一个随机状态码，防止跨域伪造攻击。
     request.session['state'] = state  # 将随机状态码存入Session，用于授权信息返回时验证。
+    request.session['next'] = next
     client_id = conf.get('QQ','client_id')  # QQ互联中网站应用的APP ID。
     callback = parse.urlencode({'redirect_uri': 'http://www.fengjinqi.com:8000/qq'})
     # 对回调地址进行编码，用户同意授权后将调用此链接。
-    login_url = 'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=%s&%s&state=%s' % (
-        client_id, callback, state)  # 组织QQ第三方登录链接
-    print(request.session['state'])
+    login_url = 'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=%s&%s&state=%s&next=%s' % (
+        client_id, callback, state,next)  # 组织QQ第三方登录链接
     return HttpResponseRedirect(login_url)  # 重定向到QQ第三方登录授权页面
 
 
@@ -706,7 +713,9 @@ def qq(request):
     :param request:
     :return:
     """
+
     if request.session['state'] == request.GET['state']:  # 验证状态码，防止跨域伪造攻击。
+        next = request.session['next']
         code = request.GET['code']  # 获取用户授权码
         client_id = conf.get('QQ','client_id')  # QQ互联中网站应用的APP ID。
         client_secret = conf.get('QQ','key')  # QQ互联中网站应用的APP Key。
@@ -727,11 +736,15 @@ def qq(request):
             nickname = userinfo['nickname']
             authqq = OAuthQQ.objects.filter(qq_openid=openid)
             if not authqq:
-                return render(request,'pc/qqregister.html',{'openid':openid,'figureurl_qq_1':figureurl_qq_1,'nickname':nickname})
+                return render(request,'pc/qqregister.html',{'openid':openid,'figureurl_qq_1':figureurl_qq_1,'nickname':nickname,'next':next})
             else:
                 user = authqq[0].user
                 login(request, user)
-                return HttpResponseRedirect(reverse('home'))
+                if next:
+                    return HttpResponseRedirect(next)
+                else:
+                    return HttpResponseRedirect(reverse('home'))
+
         except Exception as e:
              raise ValueError(e)
     else:
@@ -745,13 +758,15 @@ def getClbackQQ(request):
     :param request:
     :return:
     """
+    next= request.GET.get('next','')
     state = str(random.randrange(100000, 999999))  # 定义一个随机状态码，防止跨域伪造攻击。
     request.session['state'] = state  # 将随机状态码存入Session，用于授权信息返回时验证。
+    request.session['next']=next
     client_id = '101532677'  # QQ互联中网站应用的APP ID。
     callback = parse.urlencode({'redirect_uri': 'http://www.fengjinqi.com:8000/callbackget'})
     # 对回调地址进行编码，用户同意授权后将调用此链接。
-    login_url = 'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=%s&%s&state=%s' % (
-        client_id, callback, state)  # 组织QQ第三方登录链接
+    login_url = 'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=%s&%s&state=%s&next=%s' % (
+        client_id, callback, state,next)  # 组织QQ第三方登录链接
     return HttpResponseRedirect(login_url)  # 重定向到QQ第三方登录授权页面
 
 
@@ -763,6 +778,7 @@ def getClback(request):
     :return:
     """
     if request.session['state'] == request.GET['state']:  # 验证状态码，防止跨域伪造攻击。
+        next = request.session['next']
         code = request.GET['code']  # 获取用户授权码
         client_id = conf.get('QQ','client_id')  # QQ互联中网站应用的APP ID。
         client_secret = conf.get('QQ','key')  # QQ互联中网站应用的APP Key。
@@ -787,7 +803,10 @@ def getClback(request):
                 raise ValueError('qq已绑定')
             else:
                 OAuthQQ.objects.create(qq_openid=openid,nickname=nickname,user_id=request.user.id)
-                return HttpResponseRedirect(reverse('home'))
+                if next:
+                    return HttpResponseRedirect(next)
+                else:
+                    return HttpResponseRedirect(reverse('home'))
         except Exception :
              raise ValueError('user不存在请联系管理员')
     else:

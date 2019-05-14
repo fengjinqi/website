@@ -7,7 +7,11 @@
     <link rel="stylesheet" href="{% static 'css/pagination.css' %}" />
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <link rel="stylesheet" href="{% static 'css/person.css' %}" />
-
+    <style>
+    .blogs_pic.img_cover {
+    background-color:#ccc!important;
+}
+    </style>
 {% endblock %}
 {% block content %}
 
@@ -37,18 +41,22 @@
                 <div style="text-align: center;">
                     <div class="my_head"style="
                     background: url({% if user.user_imag  %}{{ MEDIA_URL }}{{ user.user_imag  }}
-                        {% else %}
+                        {% elif  user.user_image %}
                        {{ user.user_image }}
+                        {% else %}
+                        {% static 'img/pc-icon.png' %}
                              {% endif %}
-                            )no-repeat;background-size: cover;background-color: #ccc;
+                            )no-repeat;background-size: cover;
 
                    "></div>
                     <p style="margin:8px 0 4px 0">{{ user.username }}</p>
-                    <span onclick="flollw('{{ user.id }}')">{% if is_active %}
+                    <span style="cursor: pointer" onclick="flollw('{{ user.id }}')">{% if is_active %}
                         已关注
                         {% else %}
                         关注
                     {% endif %}</span>
+                     <div style="font-size: 12px;">           <p>文章:{{ user.article_set.count }}</p>
+                                             <p>帖子:{{ user.forum_set.count }}</p></div>
                 </div>
             </div>
             <div class="aside_my_num flex_justify">
@@ -98,6 +106,16 @@
     <script src="{% static 'js/sweetalert.min.js' %}"></script>
     <script>
         $(function () {
+                  //监听滚动条事件
+            $(window).scroll(function(){
+                var winPos = $(window).scrollTop();
+                var objTop = $(".left_nav").offset().top;
+                if(winPos >= 300){
+                    $('.left_nav').addClass('fix');
+                }else{
+                    $('.left_nav').removeClass('fix');
+                }
+            });
             $.ajax({
                 url:'api/PersonOthers/?pk={{ user.id }}',
                 type:'get',
@@ -113,8 +131,8 @@
                         }
                     for(var i=0;i<data.results.length;i++){
                         var currentItem = data.results[i];
-                        currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:'/static/img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'
-                        currentItem.authors.user_imag= currentItem.authors.user_imag? currentItem.authors.user_imag: currentItem.authors.user_image
+                        currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:''
+                        currentItem.authors.user_imag= currentItem.authors.user_imag? currentItem.authors.user_imag?currentItem.authors.user_image:currentItem.authors.user_image:'{% static 'img/pc-icon.png' %}'
                         n.push(currentItem.article_comment_set.length);
                         for(var j=0,len=currentItem.article_comment_set.length;j<len;j++){
                             var currentChildItem = currentItem.article_comment_set[j];
@@ -134,7 +152,7 @@
                             "                                    <ul class=\"clearfix \">\n" +
                             "                                        <li class=\"fl\">\n" +
                             "                                             <a href=\"\" class=\"clearfix\">\n" +
-                            "                                                 <span class=\"fl img_cover blogs_avatar\" style=\"background: url('"+data.results[i].authors.user_imag+"')no-repeat;background-color: #ccc;\"></span>\n" +
+                            "                                                 <span class=\"fl img_cover blogs_avatar\" style=\"background: url('"+data.results[i].authors.user_imag+"')no-repeat;\"></span>\n" +
                             "                                                 <span class=\"fl blogs_name\"style=\"white-space: nowrap;\n" +
                             "    text-overflow: ellipsis;max-width: 120px;overflow: hidden;\">"+data.results[i].authors.username+"</span>\n" +
                             "                                             </a>\n" +
@@ -174,8 +192,8 @@
                                     b=[]
                                     for(var i=0;i<data.results.length;i++){
                                         var currentItem = data.results[i];
-                                        currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:'/static/img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'
-                                         currentItem.authors.user_imag= currentItem.authors.user_imag? currentItem.authors.user_imag: currentItem.authors.user_image
+                                        currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:''
+                                         currentItem.authors.user_imag= currentItem.authors.user_imag? currentItem.authors.user_imag?currentItem.authors.user_image:currentItem.authors.user_image:'{% static 'img/pc-icon.png' %}'
                                         b.push(currentItem.article_comment_set.length);
                                         for(var j=0,len=currentItem.article_comment_set.length;j<len;j++){
                                             var currentChildItem = currentItem.article_comment_set[j];
@@ -195,7 +213,7 @@
                                             "                                    <ul class=\"clearfix \">\n" +
                                             "                                        <li class=\"fl\">\n" +
                                             "                                             <a href=\"\" class=\"clearfix\">\n" +
-                                            "                                                 <span class=\"fl img_cover blogs_avatar\" style=\"background: url('"+data.results[i].authors.user_imag+"')no-repeat;background-color: #ccc;\"></span>\n" +
+                                            "                                                 <span class=\"fl img_cover blogs_avatar\" style=\"background: url('"+data.results[i].authors.user_imag+"')no-repeat;\"></span>\n" +
                                             "                                                 <span class=\"fl blogs_name\"  style=\"white-space: nowrap;\n" +
                                             "    text-overflow: ellipsis;max-width: 120px;overflow: hidden;\">"+data.results[i].authors.username+"</span>\n" +
                                             "                                             </a>\n" +
@@ -261,7 +279,7 @@
                                 "                                    <ul class=\"clearfix \">\n" +
                                 "                                        <li class=\"fl\">\n" +
                                 "                                             <a href=\"\" class=\"clearfix\">\n" +
-                                "                                                 <span class=\"fl img_cover blogs_avatar\" style=\"background: url('"+data.results[i].authors.user_imag+"')no-repeat;background-color: #ccc;\"></span>\n" +
+                                "                                                 <span class=\"fl img_cover blogs_avatar\" style=\"background: url('"+data.results[i].authors.user_imag+"')no-repeat;\"></span>\n" +
                                 "                                                 <span class=\"fl blogs_name\" style=\"white-space: nowrap;\n" +
                                 "    text-overflow: ellipsis;max-width: 120px;overflow: hidden;\"style=\"white-space: nowrap;\n" +
                                 "    text-overflow: ellipsis;max-width: 120px;overflow: hidden;\">"+data.results[i].authors.username+"</span>\n" +
@@ -326,7 +344,7 @@
                                                 "                                    <ul class=\"clearfix \">\n" +
                                                 "                                        <li class=\"fl\">\n" +
                                                 "                                             <a href=\"\" class=\"clearfix\">\n" +
-                                                "                                                 <span class=\"fl img_cover blogs_avatar\" style=\"background: url('"+data.results[i].authors.user_imag+"')no-repeat;background-color: #ccc;\"></span>\n" +
+                                                "                                                 <span class=\"fl img_cover blogs_avatar\" style=\"background: url('"+data.results[i].authors.user_imag+"')no-repeat;\"></span>\n" +
                                                 "                                                 <span class=\"fl blogs_name\"style=\"white-space: nowrap;\n" +
                                                 "    text-overflow: ellipsis;max-width: 120px;overflow: hidden;\">"+data.results[i].authors.username+"</span>\n" +
                                                 "                                             </a>\n" +
@@ -360,13 +378,21 @@
                 data:{follow:obj,'username':'{{ request.user.id }}'},
                   headers:{'X-CSRFToken':$.cookie('csrftoken')},
                 success:function (data) {
+                    if(data.status==403){
+                       swal({
+                          text: data.message,
+                          icon: "error",
+                        }).then(function () {
+                           window.location.href = "{% url 'index' %}?next={{ request.path }}"
+                       })
+                    }else{
                     swal({
                           text: data.message,
                           icon: "success",
                         }).then(function () {
-                                   window.location.reload()
-                               })
-                    console.log(data)
+                            window.location.reload()
+                        })
+                     }
                 },
                 error:function (xhr) {
                     console.log(xhr)

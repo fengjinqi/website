@@ -124,7 +124,7 @@
          <span class="error">{{ error }}</span>
   <button type="submit" class="btn login-button" id="login">登录</button>
          <div class="qq" style="padding-left: 40px;padding-top: 10px;">
-             其他登录: <a href="{% url 'qq-login' %}"><img style="width: 25px;" src="{% static 'img/qq2.png' %}" alt="QQ登录"></a>
+             其他登录: <a href="{% url 'qq-login' %}?next={{ next }}"><img style="width: 25px;" src="{% static 'img/qq2.png' %}" alt="QQ登录"></a>
          </div>
 
 </form>
