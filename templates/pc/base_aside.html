@@ -44,9 +44,10 @@
 
                 <li> <i><img src="{% if foo.list_pic %}
                       {{ MEDIA_URL }}{{ foo.list_pic }}
-                          {% else %}
-                          {% static 'img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg' %}{% endif %}" style="width:100%;"></i>
-                <p><a href="{% url 'article:detail' foo.id %}">{{ foo.title }}</a></p>
+                      {% else %}
+
+                   {% endif %}" style="width:100%;background-color: #ccc"></i>
+                <p class="info-title"><a href="{% url 'article:detail' foo.id %}">{{ foo.title|truncatechars:32}}</a></p>
                 <span>{{ foo.add_time}}</span> </li>
         {% endfor %}
         </ul>

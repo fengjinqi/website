@@ -1,4 +1,5 @@
 {% extends 'pc/forum.html' %}
+{% load static %}
 {% block title %}
 论坛社区-{{type.name }}
 {% endblock %}
@@ -13,8 +14,10 @@
                     <li class="clearfix">
                         <img src="{% if foo.authors.user_imag %}
                     {{ MEDIA_URL }}{{ foo.authors.user_imag }}
-                    {% else %}
+                    {% elif foo.authors.user_image %}
                     {{ foo.authors.user_image }}
+                    {% else %}
+                    {% static 'img/pc-icon.png' %}
                     {% endif %}" class="user fl" title="{{ foo.authors.username }}"width="40px">
                     <div class="list-text fl">
                         <p class="forun-title"><a href="{% url 'forum:detail' foo.id %}">{{ foo.title }}</a></p>

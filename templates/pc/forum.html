@@ -61,7 +61,7 @@ author 冯金琪
                     {% endif %}" class="user fl" title="{{ foo.authors.username }}"width="40px">
                     <div class="list-text fl">
                         <div class="fl">
-                                 <p class="forun-title"><a href="{% url 'forum:detail' foo.id %}">{{ foo.title }}</a></p>
+                                 <p class="forun-title"><a href="{% url 'forum:detail' foo.id %}">{{ foo.title |truncatechars:130}}</a></p>
                         <p class="forun-info">来自于 {{ foo.category.name }}  {{ foo.add_time }} </p>
                         </div>
 

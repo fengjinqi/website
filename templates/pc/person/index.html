@@ -153,8 +153,8 @@
 {% endblock %}
 {% block js %}
     <script src="{% static 'js/jquery.pagination.js' %}"></script>
-    <script src="{% static 'js/promise.min.js' %}"></script>
     <script src="{% static 'js/sweetalert.min.js' %}"></script>
+    <script src="{% static 'js/es6-promise.min.js' %}"></script>
     <script>
         $(function () {
             //监听滚动条事件
@@ -181,9 +181,14 @@
                     n=[]
                     for(var i=0;i<data.results.length;i++){
                         var currentItem = data.results[i];
-
-                        currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:'/static/img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'
+                        if(currentItem.desc && currentItem.desc.length>135){
+                            currentItem.desc=currentItem.desc.slice(1,135)+'...'
+                        }else{
+                            currentItem.desc=currentItem.desc
+                        }
+                        currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:''
                         currentItem.authors.user_imag= currentItem.authors.user_imag? currentItem.authors.user_imag?currentItem.authors.user_image:currentItem.authors.user_image:'{% static 'img/pc-icon.png' %}'
+
                         n.push(currentItem.article_comment_set.length);
                         for(var j=0,len=currentItem.article_comment_set.length;j<len;j++){
                             var currentChildItem = currentItem.article_comment_set[j];
@@ -191,16 +196,18 @@
                         }
 
 
+
+
                         html+=" <div class=\"blogs_item\">\n" +
                             "                             <div class=\"blogs_cont blogs_cont1\">\n" +
                             "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+filterXSS(data.results[i].title)+"</a></h3>\n" +
                             "                                     <div class=\"blogs_info clearfix\">\n" +
                             "                                          <div class=\"img_animate  \">\n" +
-                            "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+filterXSS(data.results[i].list_pic)+"')no-repeat;\"></div>\n" +
+                            "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+filterXSS(data.results[i].list_pic)+"')no-repeat;background-color:#ccc;\"></div>\n" +
                             "                                          </div>\n" +
                             "                                          <div class=\" blogs_describe\">\n" +
                             "                                     <div class=\" divp\">\n" +
-                            "                                              <p>"+filterXSS(data.results[i].desc)+"</p>\n" +
+                            "                                              <p>"+filterXSS(currentItem.desc)+"</p>\n" +
                             "                                          <div class=\"blogs_foot blogs_foot1 ulw\">\n" +
                             "                                    <ul class=\"clearfix \">\n" +
                             "                                        <li class=\"fl\">\n" +
@@ -249,9 +256,14 @@
                                     b=[]
                                     for(var i=0;i<data.results.length;i++){
                                         var currentItem = data.results[i];
-                                        currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:'/static/img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'
+                                        currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:''
                                         currentItem.authors.user_imag= currentItem.authors.user_imag? currentItem.authors.user_imag?currentItem.authors.user_image:currentItem.authors.user_image:'{% static 'img/pc-icon.png' %}'
                                         b.push(currentItem.article_comment_set.length);
+                                       if(currentItem.desc && currentItem.desc.length>135){
+                                            currentItem.desc=currentItem.desc.slice(1,135)+'...'
+                                        }else{
+                                            currentItem.desc=currentItem.desc
+                                        }
                                         for(var j=0,len=currentItem.article_comment_set.length;j<len;j++){
                                             var currentChildItem = currentItem.article_comment_set[j];
                                             b[i] += currentChildItem.articlecommentreply_set.length;
@@ -261,11 +273,11 @@
                                             "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+filterXSS(data.results[i].title)+"</a></h3>\n" +
                                             "                                     <div class=\"blogs_info clearfix\">\n" +
                                             "                                          <div class=\"img_animate  \">\n" +
-                                            "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+data.results[i].list_pic+"')no-repeat;\"></div>\n" +
+                                            "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+data.results[i].list_pic+"')no-repeat;background-color:#ccc;\"></div>\n" +
                                             "                                          </div>\n" +
                                             "                                          <div class=\" blogs_describe\">\n" +
                                             "                                     <div class=\" divp\">\n" +
-                                            "                                              <p>"+filterXSS(data.results[i].desc)+"</p>\n" +
+                                            "                                              <p>"+filterXSS(currentItem.desc)+"</p>\n" +
                                             "                                          <div class=\"blogs_foot blogs_foot1 ulw\">\n" +
                                             "                                    <ul class=\"clearfix \">\n" +
                                             "                                        <li class=\"fl\">\n" +
@@ -325,23 +337,28 @@
                         n=[]
                         for(var i=0;i<data.results.length;i++){
                             var currentItem = data.results[i];
-                            currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:'/static/img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'
+                            currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:''
                             currentItem.authors.user_imag= currentItem.authors.user_imag? currentItem.authors.user_imag?currentItem.authors.user_image:currentItem.authors.user_image:'{% static 'img/pc-icon.png' %}'
                             n.push(currentItem.article_comment_set.length);
                             for(var j=0,len=currentItem.article_comment_set.length;j<len;j++){
                                 var currentChildItem = currentItem.article_comment_set[j];
                                 n[i] += currentChildItem.articlecommentreply_set.length;
                             }
+                            if(currentItem.desc && currentItem.desc.length>135){
+                                currentItem.desc=currentItem.desc.slice(1,135)+'...'
+                            }else{
+                                currentItem.desc=currentItem.desc
+                            }
                             html+=" <div class=\"blogs_item\">\n" +
                                 "                             <div class=\"blogs_cont blogs_cont1\">\n" +
                                 "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+filterXSS(data.results[i].title)+"</a></h3>\n" +
                                 "                                     <div class=\"blogs_info clearfix\">\n" +
                                 "                                          <div class=\"img_animate  \">\n" +
-                                "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+data.results[i].list_pic+"')no-repeat;\"></div>\n" +
+                                "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+data.results[i].list_pic+"')no-repeat;background-color:#ccc;\"></div>\n" +
                                 "                                          </div>\n" +
                                 "                                          <div class=\" blogs_describe\">\n" +
                                 "                                     <div class=\" divp\">\n" +
-                                "                                              <p>"+filterXSS(data.results[i].desc)+"</p>\n" +
+                                "                                              <p>"+filterXSS(currentItem.desc)+"</p>\n" +
                                 "                                          <div class=\"blogs_foot blogs_foot1 ulw\">\n" +
                                 "                                    <ul class=\"clearfix \">\n" +
                                 "                                        <li class=\"fl\">\n" +
@@ -389,23 +406,28 @@
                                         b=[]
                                         for(var i=0;i<data.results.length;i++){
                                             var currentItem = data.results[i];
-                                            currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:'/static/img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'
+                                            currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:''
                                               currentItem.authors.user_imag= currentItem.authors.user_imag? currentItem.authors.user_imag?currentItem.authors.user_image:currentItem.authors.user_image:'{% static 'img/pc-icon.png' %}'
                                             b.push(currentItem.article_comment_set.length);
                                             for(var j=0,len=currentItem.article_comment_set.length;j<len;j++){
                                                 var currentChildItem = currentItem.article_comment_set[j];
                                                 b[i] += currentChildItem.articlecommentreply_set.length;
                                             }
+                                            if(currentItem.desc && currentItem.desc.length>135){
+                                                currentItem.desc=currentItem.desc.slice(1,135)+'...'
+                                            }else{
+                                                currentItem.desc=currentItem.desc
+                                            }
                                             html+=" <div class=\"blogs_item\">\n" +
                                                 "                             <div class=\"blogs_cont blogs_cont1\">\n" +
                                                 "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+filterXSS(data.results[i].title)+"</a></h3>\n" +
                                                 "                                     <div class=\"blogs_info clearfix\">\n" +
                                                 "                                          <div class=\"img_animate  \">\n" +
-                                                "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+data.results[i].list_pic+"')no-repeat;\"></div>\n" +
+                                                "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+data.results[i].list_pic+"')no-repeat;background-color:#ccc;\"></div>\n" +
                                                 "                                          </div>\n" +
                                                 "                                          <div class=\" blogs_describe\">\n" +
                                                 "                                     <div class=\" divp\">\n" +
-                                                "                                              <p>"+filterXSS(data.results[i].desc)+"</p>\n" +
+                                                "                                              <p>"+filterXSS(currentItem.desc)+"</p>\n" +
                                                 "                                          <div class=\"blogs_foot blogs_foot1 ulw\">\n" +
                                                 "                                    <ul class=\"clearfix \">\n" +
                                                 "                                        <li class=\"fl\">\n" +
@@ -453,7 +475,7 @@
               buttons: ['取消','确认删除'],
               dangerMode: true,
             })
-            .then((willDelete) => {
+            .then(function (willDelete) {
               if (willDelete) {
                   var obj = {}
                   obj.id = id

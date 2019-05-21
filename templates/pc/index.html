@@ -36,7 +36,7 @@
 
             </div>
         </div>{% endcomment %}
-        <div class="banner" style="background: url({% static 'img/banner.png' %})no-repeat 0 50%;"></div>
+        <div class="banner" style="background: url({{ MEDIA_URL }}{{ banners.image }})no-repeat 0 50%;"></div>
          <div class="blogs">
              <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">
                  <ul class="follow">
@@ -56,7 +56,7 @@
                                       {% endif %})no-repeat;background-color: #ccc"></div></a>
                                   </div>
                                   <div class="fl blogs_describe">
-                                      <p class="blogtext">{{ articles.desc }}</p>
+                                      <p class="blogtext">{{ articles.desc|truncatechars:135 }}</p>
                                   </div>
                                   <div class="blogs_foot blogs_foot1">
                             <ul class="clearfix">
@@ -77,12 +77,8 @@
                                 <li class="fl blogs_time">发布于：{{ articles.add_time }}</li>
                                 <li class="fl blogs_view" style="background: url({% static 'img/eye.png' %})no-repeat 0 50%;"> {{ articles.click_nums }}</li>
                                 <li class="fl blogs_comment" style="background: url({% static 'img/comment.png' %})no-repeat 0 50%;">
-
                                   {{ articles.get_number }}
-
-
-
-                                    </li>
+                                </li>
                             </ul>
                         </div>
                              </div>
@@ -176,63 +172,6 @@
     </div>
 
     </div>
-     {% comment %}   <div class="aside_goodperson">
-            <div class="blogs_head" style="background: url(img/public.png)no-repeat 0 50%;">热门牛人<a class="fr change">更多</a></div>
-            <div>
-            {{ count }}
-                {% for foo in count %}
-                    {% for n in foo.data %}
-                        {{ n.username }}
-                         <div class="aside_goodperson_item clearfix">
-                    <div class="fl aside_goodperson_item_num">{{ forloop.counter }}</div>
-                    <div class="fl aside_goodperson_item_user">
-                        <div class="aside_goodperson_item_user_avatar img_cover" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></div>
-                        <div class="aside_goodperson_item_user_info">
-                            <p>{{ n.username }}</p>
-                            <p>更博：{{ n.article_add_set.count }}</p>
-                        </div>
-                    </div>
-                    <div class="fr aside_goodperson_item_num follow" data-actions-icnt="{{ n.id }}" onclick="flollw(this)">
-
-                    {{ n.follow.count }}
-                        {% if request.user.id == n.follow.first.fan.id%}
-
-                            已关注
-                            {% else %}
-                            关注
-                        {% endif %}</div>
-                    </div>
-
-                    {% endfor %}
-
-
-
-                {% endfor %}
-
-
-            </div>
-        </div>
-        <div class="aside_autor">
-            <div class="blogs_head" style="background: url(img/public.png)no-repeat 0 50%;">推荐作者 <a class="fr change">换一组</a></div>
-            <div class="flex_justify">
-                <div class="aside_autor_item">
-                    <p class="aside_goodperson_item_user_avatar1 img_cover" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></p>
-                    <p>-狙击手-</p>
-                    <p>更博：34</p>
-                </div>
-                <div class="aside_autor_item">
-                    <p class="aside_goodperson_item_user_avatar1 img_cover" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></p>
-                    <p>-狙击手-</p>
-                    <p>更博：34</p>
-                </div>
-                <div class="aside_autor_item">
-                    <p class="aside_goodperson_item_user_avatar1 img_cover" style="background: url(http://www.fengjinqi.com/uploads/avatar/a3fa9ffc500c08522bea28871c0be419.jpg)no-repeat"></p>
-                    <p>-狙击手-</p>
-                    <p>更博：34</p>
-                </div>
-            </div>
-        </div>
-{% endcomment %}
     </aside>
 </section>
 {% endblock %}
@@ -241,6 +180,9 @@
 <script src="{% static 'js/swiper.min.js' %}"></script>
 <script src="{% static 'js/index.js' %}"></script>
     <script>
+    {% comment %}$('.info-title').each(function(index, element) {
+    $clamp(element, { clamp: 3});
+});{% endcomment %}
     $("input[name='page']").blur(function () {
         if($(this).val()==""){
             return false

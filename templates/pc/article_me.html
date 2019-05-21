@@ -14,7 +14,7 @@
                                       {% endif %})no-repeat;background-color: #ccc;"></div></a>
                                   </div>
                                   <div class="fl blogs_describe">
-                                      <p class="blogtext">{{ articles.desc }}</p>
+                                      <p class="blogtext">{{ articles.desc|truncatechars:135 }}</p>
                                   </div>
                                   <div class="blogs_foot blogs_foot1">
                             <ul class="clearfix">

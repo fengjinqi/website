@@ -25,7 +25,7 @@ from apps.article.serializers import ArticleSerializer, Article_CommentSerialize
     Article_CommentSerializerAdd, ArticleCommentReplySerializer, Category_ArticleSerializer, ArticleCreatedSerializer, \
     ArticleCommitSerializer
 from apps.forum.models import Forum
-from apps.support.models import link, QQ
+from apps.support.models import link, QQ, Banners
 from apps.uitls.jsonserializable import DateEncoder
 from apps.uitls.permissions import IsOwnerOrReadOnly, IsOwnerOr
 from apps.user.models import User, Follows, UserMessage
@@ -41,6 +41,7 @@ def test(request):
         WorkList.append(Forum(title='```cpp\n下例 中的某些语句读不太明白：\n 1.   DataTable dt=ds.Tables[\"cs\"] 这句最难理解，意思是读取cs表赋给新建的内存表dt（复制表）?还是dt表指向（引用）cs表，修改dt其实就是修改cs?\n 2.   sda.FillSchema(dt,SchemaType.Mapped); 这句应该是将数据库表中的元数据填入到dt中，为何要填入?cs表中没有元数据吗?\n 3.   此例中修改了dt表，执行Update为何更新了数据库?dt、cs与数据库是个怎么个联系?\n\n\n例：\nSqlConnection ds;\nDataSet ds;\nSqlDataAdapter sda;\n...........        \nDataTable dt=ds.Tables[\"cs\"];\nsda.FillSchema(dt,SchemaType.Mapped);\nDataRow dr=dt.Rows.Find(txtNo.text);\ndr[\"姓名\"]=txtName.Text.Trim();\ndr[\"性别\"]=txtSex.Text.Trim();\nSqlCommandBuilder cmdbuilder=new SqlCommandBuilder(sda);\nsda.Update(dt);\n```%s'%(i),category_id=4,authors_id='2a5ec3edf61c43a6a547851e9ba15071'))
     Forum.objects.bulk_create(WorkList)
     return HttpResponse('ok')
+
 
 def Article_list(request):
     """
@@ -98,7 +99,8 @@ def Article_list(request):
                 article_comment_childer += i.articlecommentreply_set.count()
             json_dict['data'].append(list_dict)
         return JsonResponse(json_dict,safe=False,encoder=DateEncoder)
-    return render(request, 'pc/index.html', {'article':people,'qq':qq,'popular':popular,'count':item,'recommend':recommend,'links':links})
+    banners = Banners.objects.first()
+    return render(request, 'pc/index.html', {'article':people,'qq':qq,'popular':popular,'count':item,'recommend':recommend,'links':links,'banners':banners})
 
 
 def ArticleList(request):
@@ -123,10 +125,10 @@ def ArticleList(request):
     people = p.page(page)
 
     headlines = Headlines.objects.all()[:30]
+    banners = Banners.objects.first()
 
 
-
-    return render(request, 'pc/article.html', {'article': people,'category':category,'Headlines':headlines})
+    return render(request, 'pc/article.html', {'article': people,'category':category,'Headlines':headlines,'banners':banners})
 
 
 def api(request):
@@ -227,7 +229,8 @@ def ArticleMe(request):
     # }
     # r = requests.get(url, headers=headers)
     headlines = Headlines.objects.all()[:20]
-    return render(request, 'pc/article_me.html', {'article': people,'category':category,'Headlines':headlines})
+    banners = Banners.objects.first()
+    return render(request, 'pc/article_me.html', {'article': people,'category':category,'Headlines':headlines,'banners':banners})
 
 
 # Create your views here.

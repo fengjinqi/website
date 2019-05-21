@@ -55,8 +55,11 @@
                         {% else %}
                         关注
                     {% endif %}</span>
-                     <div style="font-size: 12px;">           <p>文章:{{ user.article_set.count }}</p>
-                                             <p>帖子:{{ user.forum_set.count }}</p></div>
+                     <div style="font-size: 12px;text-align: center;">
+                         <span>文章:{{ user.article_set.count }}</span>
+
+                         <span>帖子:{{ user.forum_set.count }}</span>
+                     </div>
                 </div>
             </div>
             <div class="aside_my_num flex_justify">
@@ -138,6 +141,11 @@
                             var currentChildItem = currentItem.article_comment_set[j];
                             n[i] += currentChildItem.articlecommentreply_set.length;
                         }
+                          if(currentItem.desc && currentItem.desc.length>135){
+                                currentItem.desc=currentItem.desc.slice(1,135)+'...'
+                            }else{
+                                currentItem.desc=currentItem.desc
+                            }
                         html+=" <div class=\"blogs_item\">\n" +
                             "                             <div class=\"blogs_cont blogs_cont1\">\n" +
                             "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+filterXSS(data.results[i].title)+"</a></h3>\n" +
@@ -147,7 +155,7 @@
                             "                                          </div>\n" +
                             "                                          <div class=\" blogs_describe\">\n" +
                             "                                     <div class=\" divp\">\n" +
-                            "                                              <p>"+filterXSS(data.results[i].desc)+"</p>\n" +
+                            "                                              <p>"+filterXSS(currentItem.desc)+"</p>\n" +
                             "                                          <div class=\"blogs_foot blogs_foot1 ulw\">\n" +
                             "                                    <ul class=\"clearfix \">\n" +
                             "                                        <li class=\"fl\">\n" +
@@ -199,6 +207,11 @@
                                             var currentChildItem = currentItem.article_comment_set[j];
                                             b[i] += currentChildItem.articlecommentreply_set.length;
                                         }
+                                          if(currentItem.desc && currentItem.desc.length>135){
+                                                currentItem.desc=currentItem.desc.slice(1,135)+'...'
+                                            }else{
+                                                currentItem.desc=currentItem.desc
+                                            }
                                         html+=" <div class=\"blogs_item\">\n" +
                                             "                             <div class=\"blogs_cont blogs_cont1\">\n" +
                                             "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+filterXSS(data.results[i].title)+"</a></h3>\n" +
@@ -208,7 +221,7 @@
                                             "                                          </div>\n" +
                                             "                                          <div class=\" blogs_describe\">\n" +
                                             "                                     <div class=\" divp\">\n" +
-                                            "                                              <p>"+filterXSS(data.results[i].desc)+"</p>\n" +
+                                            "                                              <p>"+filterXSS(currentItem.desc)+"</p>\n" +
                                             "                                          <div class=\"blogs_foot blogs_foot1 ulw\">\n" +
                                             "                                    <ul class=\"clearfix \">\n" +
                                             "                                        <li class=\"fl\">\n" +
@@ -258,13 +271,18 @@
                         n=[]
                         for(var i=0;i<data.results.length;i++){
                             var currentItem = data.results[i];
-                            currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:'/static/img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'
+                            currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:''
                             currentItem.authors.user_imag= currentItem.authors.user_imag? currentItem.authors.user_imag: currentItem.authors.user_image
                             n.push(currentItem.article_comment_set.length);
                             for(var j=0,len=currentItem.article_comment_set.length;j<len;j++){
                                 var currentChildItem = currentItem.article_comment_set[j];
                                 n[i] += currentChildItem.articlecommentreply_set.length;
                             }
+                              if(currentItem.desc && currentItem.desc.length>135){
+                                    currentItem.desc=currentItem.desc.slice(1,135)+'...'
+                                }else{
+                                    currentItem.desc=currentItem.desc
+                                }
                             html+=" <div class=\"blogs_item\">\n" +
                                 "                             <div class=\"blogs_cont blogs_cont1\">\n" +
                                 "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+filterXSS(data.results[i].title)+"</a></h3>\n" +
@@ -274,7 +292,7 @@
                                 "                                          </div>\n" +
                                 "                                          <div class=\" blogs_describe\">\n" +
                                 "                                     <div class=\" divp\">\n" +
-                                "                                              <p>"+filterXSS(data.results[i].desc)+"</p>\n" +
+                                "                                              <p>"+filterXSS(currentItem.desc)+"</p>\n" +
                                 "                                          <div class=\"blogs_foot blogs_foot1 ulw\">\n" +
                                 "                                    <ul class=\"clearfix \">\n" +
                                 "                                        <li class=\"fl\">\n" +
@@ -321,7 +339,7 @@
                                         b=[]
                                         for(var i=0;i<data.results.length;i++){
                                             var currentItem = data.results[i];
-                                            currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:'/static/img/pic/a5e8b0e574b0b165092b069f9c819f9a.jpg'
+                                            currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:''
                                             currentItem.authors.user_imag= currentItem.authors.user_imag? currentItem.authors.user_imag: currentItem.authors.user_image
                                             b.push(currentItem.article_comment_set.length);
                                             for(var j=0,len=currentItem.article_comment_set.length;j<len;j++){
@@ -329,7 +347,11 @@
                                                 b[i] += currentChildItem.articlecommentreply_set.length;
                                             }
 
-
+                                            if(currentItem.desc && currentItem.desc.length>135){
+                                                currentItem.desc=currentItem.desc.slice(1,135)+'...'
+                                            }else{
+                                                currentItem.desc=currentItem.desc
+                                            }
                                             html+=" <div class=\"blogs_item\">\n" +
                                                 "                             <div class=\"blogs_cont blogs_cont1\">\n" +
                                                 "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+filterXSS(data.results[i].title)+"</a></h3>\n" +
@@ -339,7 +361,7 @@
                                                 "                                          </div>\n" +
                                                 "                                          <div class=\" blogs_describe\">\n" +
                                                 "                                     <div class=\" divp\">\n" +
-                                                "                                              <p>"+filterXSS(data.results[i].desc)+"</p>\n" +
+                                                "                                              <p>"+filterXSS(currentItem.desc)+"</p>\n" +
                                                 "                                          <div class=\"blogs_foot blogs_foot1 ulw\">\n" +
                                                 "                                    <ul class=\"clearfix \">\n" +
                                                 "                                        <li class=\"fl\">\n" +

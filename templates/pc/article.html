@@ -19,7 +19,7 @@
 
             </ul>
         </div>
-        <div class="banner" style="background: url({% static 'img/banner.png' %})no-repeat 0 50%;"></div>
+        <div class="banner" style="background: url({{ MEDIA_URL }}{{ banners.image }})no-repeat 0 50%;"></div>
          <div class="blogs">
              <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">
                  <a href="{% url 'article:index' %}" class="{% if request.path|slice:'9' == '/article/' and request.path|slice:'12' != '/article/me/' %}
@@ -40,7 +40,7 @@
                                       {% endif %})no-repeat;background-color: #ccc"></div></a>
                                   </div>
                                   <div class="fl blogs_describe">
-                                      <p class="blogtext">{{ articles.desc }}</p>
+                                      <p class="blogtext">{{ articles.desc|truncatechars:135 }}</p>
                                   </div>
                                   <div class="blogs_foot blogs_foot1">
                             <ul class="clearfix">
@@ -136,7 +136,11 @@
                 <h2 class="hometitle">今日头条</h2>
                 <ul class="sidenews zhan">
                      {% for foo in Headlines %}
-                            <li><a href="{{ foo.url }}" target="_blank" title="{{ foo.title }}">{{ foo.title }}</a></li>
+                            <li><a href="{{ foo.url }}" target="_blank" title="{{ foo.title }}"><p style="width: 270px;
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
+    text-overflow: ellipsis;">{{ foo.title}}</p></a></li>
                         {% endfor %}
                 </ul>
               </div>

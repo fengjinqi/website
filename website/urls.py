@@ -63,7 +63,8 @@ router.register('Parent_CommentView', Parent_CommentView)
 
 urlpatterns = [
 
-    path('admin/', admin.site.urls),
+    #path('admin/', admin.site.urls),
+    path('admin/', TemplateView.as_view(template_name='admin/index.html')),
     # path('',test), # 这是生成验证码的图片
     url(r'^captcha/', include('captcha.urls')),
     path('refresh/', captcha_refresh),  # 这是生成验证码的图片
