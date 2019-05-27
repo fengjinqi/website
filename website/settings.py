@@ -210,7 +210,7 @@ EMAIL_HOST_PASSWORD = conf.get('email','password')
 
 
 EMAIL_USE_TLS = False   #是否使用TLS安全传输协议
-EMAIL_FROM = 'fengjinqi@fengjinqi.com'
+ERROR_FROM = 'tarena_feng@126.com'
 
 #搜索
 HAYSTACK_CONNECTIONS = {

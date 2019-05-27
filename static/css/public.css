@@ -53,9 +53,15 @@
   border-radius: 10px;
 }
 #searchform{
-    display: flex;
+    /*display: flex;*/
+    /*display: -webkit-flex;*/
+    /*position: relative;*/
+
+        display: flex;
     display: -webkit-flex;
     position: relative;
+    height: 34px;
+        top: 14px;
 }
 .form_control {
     display: block;
@@ -64,7 +70,7 @@
     /*padding: 6px 12px;*/
     font-size: 14px;
     line-height: 1.42857143;
-    margin-top: 14px;
+    /*margin-top: 14px;*/
     color: #555;
     background-color: #fff;
     background-image: none;
@@ -80,20 +86,32 @@
 }
 
 #searchform button{
-background: transparent;
-    border: none;
-    outline:none;
-    height: 32px;
-    position: absolute;
-    right: 8px;
-    top: 16px;
+/*background: transparent;*/
+    /*border: none;*/
+    /*outline:none;*/
+    /*height: 32px;*/
+    /*position: absolute;*/
+    /*right: 8px;*/
+    /*top: 16px;*/
+
+
 }
 .form_search{
-    background: url("../img/search.png")no-repeat;
+    background: url("../img/search.png")no-repeat 0 0;
     background-size: contain;
     width: 24px;
     height: 24px;
     cursor: pointer;
+        display: inline-block;
+
+      /*background: transparent;*/
+    border: none;
+    outline: none;
+    height: 32px;
+    position: absolute;
+    right:14px;
+
+    top: 6px;
 }
 .badge:empty {
   display: none;

@@ -61,6 +61,10 @@ key = xxx
 
 key = xxx
 ```
+目前测试环境用的sqlite数据库，若用其他数据库请自行setting配置修改
+
+运行前请先migrate
+
 定时任务：需配置Appkey
 
 Celery -A website worker -l info

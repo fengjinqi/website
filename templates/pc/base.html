@@ -33,9 +33,9 @@
         <div class="fl logo"style="height: 60px"><img style="width: 40px;margin-top: 20px;" src="{% static 'img/logo.png' %}" alt=""></div>
         <nav class="fl">
             <ul class="clearfix headers_nav">
-                <li class="fl"><a class="{% if request.path == '/' %}
+                <li class="fl"><aform_search class="{% if request.path == '/' %}
                 active
-                {% endif %}" href="{% url 'home' %}">首页</a></li>
+                {% endif %}" href="{% url 'home' %}">首页</aform_search></li>
                 <li class="fl"><a class=" {% if request.path|slice:'9' == '/article/' %}
                 active
                 {% endif %}"href="{% url 'article:index' %}">文章</a></li>
@@ -56,7 +56,9 @@
             <li>
                 <form role="search" method="get" id="searchform" action="{% url 'haystack_search' %}">
                   <input type="text" name="q" placeholder="搜索" required class="form_control">
-                  <button type="submit"><span class="form_search"></span></button>
+{#                  <button type="submit">#}
+                      <span class="form_search"></span>
+{#                  </button>#}
                 </form>
             </li>
                 <li class="fl style" style="background: url({% static 'img/public.png' %})no-repeat 0 50%;"><a href="{% url 'article:created' %}">写文章</a></li>
