@@ -33,9 +33,9 @@
         <div class="fl logo"style="height: 60px"><img style="width: 40px;margin-top: 20px;" src="{% static 'img/logo.png' %}" alt=""></div>
         <nav class="fl">
             <ul class="clearfix headers_nav">
-                <li class="fl"><aform_search class="{% if request.path == '/' %}
+                <li class="fl"><a class="{% if request.path == '/' %}
                 active
-                {% endif %}" href="{% url 'home' %}">首页</aform_search></li>
+                {% endif %}" href="{% url 'home' %}">首页</a></li>
                 <li class="fl"><a class=" {% if request.path|slice:'9' == '/article/' %}
                 active
                 {% endif %}"href="{% url 'article:index' %}">文章</a></li>
