@@ -57,7 +57,7 @@ client_id = xxx
 
 key = xxx
 
-[AppKey] #此key是聚合数据的，若想使用其它的需要去apps/article/tasks文件中getApi方法修改地址
+[AppKey] #此key是聚合数据的，若想使用其它的需要去apps/article/tasks文件中getApi方法修改地址并且修改getApi方法中对应的获取字段
 
 key = xxx
 ```
