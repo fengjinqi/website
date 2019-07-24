@@ -5,6 +5,67 @@
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
 <style>
     span.highlighted { color: red; }
+.list li{
+    padding: 15px 0;
+    border-bottom: 1px  solid #eee;
+}
+.forun-title{
+    font-size: 16px;
+
+}
+.forun-title a{
+    overflow:hidden;
+
+text-overflow:ellipsis;
+
+display:-webkit-box;
+
+-webkit-box-orient:vertical;
+
+-webkit-line-clamp:2;
+    height: 42px;
+}
+.forun-info{
+    color: #999;    margin-top: 8px;
+
+}
+.forun-num{
+    position: absolute;
+    right: 15px;
+    bottom: 0;
+    color: #999;
+}
+.f-name{
+    font-size: 16px;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+.f-name>.active{
+    font-weight: bold;
+}
+.f-name>span{
+    margin-right: 24px;
+}
+.list-text{
+    padding-left: 15px;
+    width:785px;
+    position: relative;
+}
+#plate{
+        padding: 15px 15px 0 15px;
+    margin-bottom: 15px;
+    background: #fff;
+}
+.forun-num>div{
+    margin-left:12px
+}
+img.user{
+    width: 48px;
+    height: 48px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
 </style>
 {% endblock %}
 
@@ -12,22 +73,27 @@
      <section class="main clearfix">
      <article>
     {% if query %}
+
         {% for result in page.object_list %}
-
-                   <div class="blogs">
-
-                <div class="blogs_cont">
-
-                    <h3><span class="blogs_type">{{ result.object.category.name }} </span>    <a href="{% url 'article:detail' result.object.id %}">{% highlight result.object.title with query %}</a></h3>
+            <div class="blogs">
+                {% if result.model_name == 'article' %}
+                 <div class="blogs_cont">
+                    <h3 style="overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    "><span class="blogs_type">{{ result.object.category.name }} </span>    <a style="overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    vertical-align: sub;" href="{% url 'article:detail' result.object.id %}">{% highlight result.object.title with query %}</a></h3>
                     <div class="blogs_foot clearfix">
                         <ul class="clearfix">
-
-                        <li style="margin-bottom: 10px; max-height: 60px;height: auto;
-"><a style="overflow: hidden;
+                            <li style="margin-bottom: 10px; max-height: 60px;height: auto;">
+                                <a style="overflow: hidden;
     text-overflow: ellipsis;
     -webkit-box-orient: vertical;
     display: -webkit-box;
-    -webkit-line-clamp: 3;" href="{% url 'article:detail' result.object.id %}" > {% highlight result.object.desc with query %}</a></li>
+    -webkit-line-clamp: 3;" href="{% url 'article:detail' result.object.id %}" > {% highlight result.object.desc with query %}</a>
+                            </li>
                             <li class="fl">
                                  <a href="{% url 'article:detail' result.object.id %}" class="clearfix">
                                      <span class="fl img_cover blogs_avatar" style="background: url({% if result.object.authors.user_imag %}
@@ -45,6 +111,33 @@
                     </div>
 
                 </div>
+                    {% elif result.model_name == 'forum' %}
+                        <ul class="list">
+                        <li class="clearfix">
+                        <img src="{% if result.object.authors.user_imag %}
+                    {{ MEDIA_URL }}{{ result.object.authors.user_imag }}
+                    {% elif result.object.authors.user_image %}
+                        {{ result.object.authors.user_image }}
+                        {% else %}
+                        {% static 'img/pc-icon.png' %}
+                    {% endif %}" class="user fl" title="{{ result.object.authors.username }}"width="40px">
+                    <div class="list-text fl">
+                        <div class="fl">
+                                 <p class="forun-title"><a href="{% url 'forum:detail' result.object.id %}"> {% highlight result.object.title with query%}</a></p>
+                        <p class="forun-info">来自于 {{ result.object.category.name }}  {{ result.object.add_time }} </p>
+                        </div>
+
+                           <div class="fr flex forun-num">
+                        <div>评论{{ result.object.get_number }}</div>
+                        <div>浏览 {{ result.object.click_nums}}</div>
+                    </div>
+                    </div>
+
+                    </li>
+
+                        </ul>
+                {% endif %}
+
             </div>
 
 

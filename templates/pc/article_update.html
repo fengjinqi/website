@@ -83,103 +83,116 @@
     </section>
 {% endblock %}
 {% block js %}
+ <script src="{% static 'js/promise.min.js' %}"></script>
+<script src="{% static 'js/sweetalert.min.js' %}"></script>
+<script>
+    var testEditor;
+    $(function() {
+            testEditor = editormd("test-editormd", {
+                width   : "100%",
+                height  : 800,
+                syncScrolling : "single",
+                path    : "/static/markdown/lib/",
 
-      <script>
-    	var testEditor;
-            $(function() {
-                testEditor = editormd("test-editormd", {
-                    width   : "100%",
-                    height  : 800,
-                    syncScrolling : "single",
-                    path    : "/static/markdown/lib/",
-
-                    saveHTMLToTextarea : true,//注意3：这个配置，textarea可以提交
-                     emoji: true,//emoji表情，默认关闭
-                    /**上传图片相关配置如下*/
-                    imageUpload : true,
-                    imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-                    imageUploadURL : "/article/blog_img_upload/",
-                });
-
+                saveHTMLToTextarea : true,//注意3：这个配置，textarea可以提交
+                 emoji: true,//emoji表情，默认关闭
+                /**上传图片相关配置如下*/
+                imageUpload : true,
+                imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                imageUploadURL : "/article/blog_img_upload/",
             });
-        function validate(obj,el){
-             if(!obj||obj.trim() == ""){
-                el.css('border-color','red');
-                 return false;
-            }else {
-                 return true
-             }
-        }
-        $("#btn").on('click',function () {
-            if(validate($('.validate').val(),$('.validate')) && validate($('select').val(),$('select')) && validate(testEditor.getMarkdown(),$('#test-editormd'))){
-                var title = $("input[name='title']").val();
-                var desc = $("input[name='desc']").val();
-                var keywords =$("input[name='keywords']").val();
-                console.log($("input[name='list_pic']")[0].files[0]?$("input[name='list_pic']")[0].files[0]:'56')
-                var list_pic =$("input[name='list_pic']")[0].files[0]?$("input[name='list_pic']")[0].files[0]:'{{ article.list_pic }}'
-                var type = $("input[name='list_pic']")[0].files[0]?1:''
-                var category =$("select[name='category']").val();
-                var form = new FormData()
-                form.append('authors','{{ request.user.id }}')
-                form.append('title',title)
-                form.append('desc',desc)
-                form.append('keywords',keywords)
-                form.append('list_pic',list_pic)
-                form.append('content',testEditor.getMarkdown())
-                form.append('csrfmiddlewaretoken','{{ csrf_token }}')
-                form.append('category',category)
-                form.append('type',type)
-                $.ajax({
-                    url:'/article/update/{{ article.id }}',
-                    type:'post',
-                    contentType : false,
-                    data:form,
-                    processData:false,
-                    success:function (data) {
-                        if(data.code==200){
-                           window.location.href='{% url 'home' %}'
-                        }
-                    },
-                error:function (xhr) {
-                    console.log(xhr)
-                }
-                })
+
+        });
+
+    /**
+     * 验证
+     * @param obj
+     * @param el
+     * @returns {boolean}
+     */
+    function validate(obj,el){
+         if(!obj||obj.trim() == ""){
+            el.css('border-color','red');
+             return false;
+        }else {
+             return true
+         }
+    }
+    $("#btn").on('click',function () {
+        if(validate($('.validate').val(),$('.validate')) && validate($('select').val(),$('select')) && validate(testEditor.getMarkdown(),$('#test-editormd'))){
+            var title = $("input[name='title']").val();
+            var desc = $("input[name='desc']").val();
+            var keywords =$("input[name='keywords']").val();
+            console.log($("input[name='list_pic']")[0].files[0]?$("input[name='list_pic']")[0].files[0]:'56')
+            var list_pic =$("input[name='list_pic']")[0].files[0]?$("input[name='list_pic']")[0].files[0]:'{{ article.list_pic }}'
+            var type = $("input[name='list_pic']")[0].files[0]?1:''
+            var category =$("select[name='category']").val();
+            var form = new FormData()
+            form.append('authors','{{ request.user.id }}')
+            form.append('title',title)
+            form.append('desc',desc)
+            form.append('keywords',keywords)
+            form.append('list_pic',list_pic)
+            form.append('content',testEditor.getMarkdown())
+            form.append('csrfmiddlewaretoken','{{ csrf_token }}')
+            form.append('category',category)
+            form.append('type',type)
+            $.ajax({
+                url:'/article/update/{{ article.id }}',
+                type:'post',
+                contentType : false,
+                data:form,
+                processData:false,
+                success:function (data) {
+                    if(data.code==200){
+                       window.location.href='{% url 'home' %}'
+                    }else{
+                        swal({
+                          text: data.data,
+                          icon: "error",
+                        })
+                    }
+                },
+            error:function (xhr) {
+                console.log(xhr)
             }
+            })
+        }
 
 
 })
     $('body').on('change','#file',function () {
-         var read=new FileReader() // 创建FileReader对像;
+     var read=new FileReader() // 创建FileReader对像;
            read.readAsDataURL(this.files[0])  // 调用readAsDataURL方法读取文件;
        read.onload=function(){
             url=read.result  // 拿到读取结果;
             var img=new Image();
             img.src=url;
-                $(".img").show()
-                $(".img").append(img)
+            $(".img").show()
+            $(".img").append(img)
             $('.file_style').hide()
            }
-            $('.img i').show()
-            console.log($("form").serialize())
-    })
+        $('.img i').show()
+        console.log($("form").serialize())
+})
 
-      function localremove(n) {
-          $(n).parent().find('img').remove();
-           $('#file').val('');
-          $(this).parent().hide();
-          $('.file_style').show();
-      }
-      function serverremove(n) {
-          $.ajax({
-              url:'/article/update_image/{{ article.id }}',
-              type: "POST",
-              headers:{'X-CSRFToken':$.cookie('csrftoken')},
-              success:function (data) {
-                   $(n).parent().find('img').remove();
-                  $(n).hide()
-                  $('.file_style').show();
-              }
-          })
-      }
-    </script>
+    function localremove(n) {
+      $(n).parent().find('img').remove();
+       $('#file').val('');
+      $(this).parent().hide();
+      $('.file_style').show();
+  }
+    function serverremove(n) {
+      $.ajax({
+          url:'/article/update_image/{{ article.id }}',
+          type: "POST",
+          headers:{'X-CSRFToken':$.cookie('csrftoken')},
+          success:function (data) {
+               $(n).parent().find('img').remove();
+              $(n).hide()
+              $('.file_style').show();
+          }
+      })
+  }
+</script>
 {% endblock %}

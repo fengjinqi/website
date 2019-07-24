@@ -613,6 +613,9 @@ class UserGetInfo(mixins.UpdateModelMixin,viewsets.ReadOnlyModelViewSet):
 
 
 class UserMessages(mixins.ListModelMixin,mixins.DestroyModelMixin,mixins.UpdateModelMixin,viewsets.GenericViewSet):
+    """
+    消息
+    """
     queryset = UserMessage.objects.all()
     serializer_class = UserMessageSerializer
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
@@ -713,7 +716,7 @@ def qq(request):
     :param request:
     :return:
     """
-
+    print(request.session['state'])
     if request.session['state'] == request.GET['state']:  # 验证状态码，防止跨域伪造攻击。
         next = request.session['next']
         code = request.GET['code']  # 获取用户授权码
@@ -845,8 +848,8 @@ def bindingQQ(request):
                 qq.user_id = user_id
                 msg = UserMessage()
                 msg.user_id = user_id
-                msg.to_user = User.objects.get(username='admin')
-                msg.message = '欢迎加入本站,在使用过程中有什么疑问,请联系管理员'
+                msg.to_user = User.objects.get(is_superuser=True)
+                msg.message = '欢迎加入本站,在使用过程中有什么疑问,请联系管理员,Email: <a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=iuzv5O3g4_T748rs7_Tt4OPk__Ok6eXn" style="text-decoration:none;">fengjinqi@fengjinqi.com</a>'
                 msg.has_read = False
                 msg.is_supper = True
                 msg.save()

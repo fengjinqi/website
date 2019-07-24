@@ -65,6 +65,7 @@ class Forum(models.Model):
 
 
 class Forum_click(models.Model):
+    """帖子浏览量"""
     forums = models.ForeignKey(Forum, verbose_name='帖子', on_delete=models.CASCADE)
     thumbs = models.IntegerField(default=0)
     models.ForeignKey(User, on_delete=models.CASCADE)

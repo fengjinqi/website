@@ -201,7 +201,7 @@ MEDIA_ROOT = (
 conf = ConfigParser()
 conf.read('config.ini')
 
-DOMAIN = 'http://127.0.0.1:8000'
+DOMAIN = 'http://127.0.0.1:8000'#用户验证邮箱访问地址
 EMAIL_HOST = "smtp.exmail.qq.com"
 EMAIL_PORT = 25
 EMAIL_HOST_USER = 'fengjinqi@fengjinqi.com'

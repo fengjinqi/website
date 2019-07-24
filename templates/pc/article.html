@@ -19,7 +19,11 @@
 
             </ul>
         </div>
-        <div class="banner" style="background: url({{ MEDIA_URL }}{{ banners.image }})no-repeat 0 50%;"></div>
+        <div class="banner" style="background: url({% if banners.image %}
+            {{ MEDIA_URL }}{{ banners.image }}
+            {% else %}
+            {% static  'img/banner.png'%}
+        {% endif %})no-repeat 0 50%;"></div>
          <div class="blogs">
              <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">
                  <a href="{% url 'article:index' %}" class="{% if request.path|slice:'9' == '/article/' and request.path|slice:'12' != '/article/me/' %}
@@ -66,11 +70,13 @@
                              </div>
                      </div>
                  </div>
+                        {% empty %}
+                     <p class="empty">暂无文章...</p>
                  {% endfor %}
                     {% if article.object_list.count >= 1 %}
              <div class="pageturn" >
 
-           <ul class="pagination">
+                <ul class="pagination">
 
                <li class="first"><a href="?page=1">首页</a></li>
                {% if article.has_previous %}
@@ -97,9 +103,9 @@
                <li class="last"><a href="?page={{ article.paginator.num_pages }}">尾页</a></li>
 {#               <li class="hrefto">跳转到<input type="text"class="form-control" name="page"></li>#}
            </ul>
-             <div class="num_pages" style="display: none;">{{ article.paginator.num_pages }}</div>
+                <div class="num_pages" style="display: none;">{{ article.paginator.num_pages }}</div>
 {#            当前{{ article.number }}/总共{{ article.paginator.num_pages }}页#}
-       </div>
+             </div>
              </div>
                 {% endif %}
 

@@ -36,7 +36,11 @@
 
             </div>
         </div>{% endcomment %}
-        <div class="banner" style="background: url({{ MEDIA_URL }}{{ banners.image }})no-repeat 0 50%;"></div>
+        <div class="banner" style="background: url({% if banners.image %}
+            {{ MEDIA_URL }}{{ banners.image }}
+            {% else %}
+            {% static  'img/banner.png'%}
+        {% endif %})no-repeat 0 50%;"></div>
          <div class="blogs">
              <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">
                  <ul class="follow">
@@ -84,7 +88,10 @@
                              </div>
                      </div>
                  </div>
+                     {% empty %}
+                     <p class="empty">暂无文章...</p>
                  {% endfor %}
+
              </div>
 
            {% if article.object_list.count >= 1 %}
