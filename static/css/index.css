@@ -8,6 +8,10 @@
     padding: 0 16px;
     margin-top: 20px;
 }
+.empty{
+    text-align: center;
+    padding: 10px 0;
+}
 .blogs_head{
     padding-left:24px;
     height: 44px;

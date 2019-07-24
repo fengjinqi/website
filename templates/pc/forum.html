@@ -24,7 +24,8 @@ author 冯金琪
     <section class="main" style="overflow: hidden">
         <article class="fl">
         <div class="forum">
-            <ul id="plate" class="clearfix">
+            {% if plate %}
+              <ul id="plate" class="clearfix">
                 {% for foo in plate %}
                     <li class="flex">
                         <div class="tieImg"><img src="{% if forloop.counter == 1 %}
@@ -43,6 +44,8 @@ author 冯金琪
                     </li>
                 {% endfor %}
             </ul>
+            {% endif %}
+
         {% block childer %}
          <div style="background: #fff;">
             <div class="f-name">

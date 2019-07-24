@@ -416,3 +416,7 @@ section,.container{
     margin-left: 8px;
     border: 1px solid #dcdcdc;
 }
+.empty{
+    text-align: center;
+    padding: 10px 0;
+}
