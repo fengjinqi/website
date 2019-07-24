@@ -78,7 +78,7 @@ def send_register_email(email,username=None,token=None,send_type='register'):
 
 
 @app.task()
-def error_email(email,title=None,body=None):
+def error_email(title=None,body=None,email=None):
     email_title = title
     email_body = body
     send_mail(email_title, email_body, settings.EMAIL_HOST_USER, [email])
@@ -98,9 +98,11 @@ def add():
     print('success')
     return True
 
-conf = ConfigParser()
 
+conf = ConfigParser()
 conf.read('config.ini')
+
+
 @app.task()
 def getApi():
     print('正在获取数据...')
@@ -137,7 +139,7 @@ def getApi():
     except Exception as e:
         print('数据添加失败===正在发生邮件通知管理员',e)
 
-        error_email.delay(settings.ERROR_FROM,'抓取数据错误','{0}'.format(e))
+        print(error_email.delay(settings.EMAIL_WEBITE_NAME,'抓取数据错误','{0}'.format(e),settings.ERROR_FROM))
         print('邮件发送成功')
 
 

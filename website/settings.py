@@ -205,7 +205,7 @@ DOMAIN = 'http://127.0.0.1:8000'
 EMAIL_HOST = "smtp.exmail.qq.com"
 EMAIL_PORT = 25
 EMAIL_HOST_USER = 'fengjinqi@fengjinqi.com'
-
+EMAIL_WEBITE_NAME = '晓晓'
 EMAIL_HOST_PASSWORD = conf.get('email','password')
 
 
