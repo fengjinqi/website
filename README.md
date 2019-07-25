@@ -1,6 +1,8 @@
 # website
 **django 开发的web项目**
 
+(喜欢麻烦动动你的小手给个start 谢谢)
+
 Python>=3.6
 
 Django>=2.0.8
