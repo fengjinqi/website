@@ -1,7 +1,9 @@
 import requests
 #res = requests.get('https://www.biqiuge.com/book/4772/')
 #print(res.content.decode("gbk"))
-ser = '一剑'
+"""
+
+ser = '剑起风云'
 
 header = {
     'ie':'gbk',
@@ -11,3 +13,8 @@ header = {
 }
 res = requests.get('https://so.biqusoso.com/s.php',header)
 print(res.content.decode('utf8'))
+"""
+
+
+res = requests.get('https://www.biqushu.com/book_107713/44411383.html')
+print(res.content.decode('gbk'))

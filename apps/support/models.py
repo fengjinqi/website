@@ -14,6 +14,7 @@ class Banners(models.Model):
 
 
 class Emails(models.Model):
+    """联系方式"""
     qq = models.CharField(max_length=11,blank=True,null=True)
     iphone = models.CharField(max_length=11,blank=True,null=True)
     email = models.EmailField(blank=True,null=True)
@@ -21,12 +22,22 @@ class Emails(models.Model):
 
 
 class link(models.Model):
+    """友情链接"""
     title =  models.CharField(max_length=100)
     url = models.URLField()
     add_time = models.DateTimeField(auto_now_add=True)
 
 
 class QQ(models.Model):
+    """交流群"""
     title =  models.CharField(max_length=100)
     qq = models.IntegerField()
     is_active = models.BooleanField(default=False)
+
+
+class Seo(models.Model):
+    """SEO"""
+    title = models.CharField(max_length=150)
+    author = models.CharField(max_length=20)
+    desc = models.CharField(max_length=200)
+    keywords = models.CharField(max_length=200)

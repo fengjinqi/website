@@ -10,7 +10,9 @@
 {% block desc %}
     {{ article.desc }}
 {% endblock %}
-
+{% block authors %}
+{{ article.authors.username }}
+{% endblock %}
 {% block css %}
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">
