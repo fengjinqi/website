@@ -7,9 +7,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from apps.article.views import StandardResultsSetPagination
-from apps.support.models import Banners, Emails, link, QQ
+from apps.support.models import Banners, Emails, link, QQ, Seo
 from apps.uitls.permissions import IsOwnerOrReadOnly
-from apps.support.serializers import BannersSerializer, EmailsSerializer, LinkSerializer
+from apps.support.serializers import BannersSerializer, EmailsSerializer, LinkSerializer, QQSerializer, SEOSerializer
 
 
 def index(request):
@@ -41,3 +41,17 @@ class LinkList(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
     authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
     pagination_class = StandardResultsSetPagination
+
+
+class QQList(viewsets.ModelViewSet):
+    queryset = QQ.objects.all()
+    serializer_class = QQSerializer
+    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
+    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+
+
+class SeoList(mixins.CreateModelMixin,mixins.DestroyModelMixin,mixins.ListModelMixin,mixins.RetrieveModelMixin,viewsets.GenericViewSet):
+    queryset = Seo.objects.all()
+    serializer_class = SEOSerializer
+    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
+    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]

@@ -716,7 +716,8 @@ def qq(request):
     :param request:
     :return:
     """
-    print(request.session['state'])
+    #print(request.session['state'])
+    print('为什么执行')
     if request.session['state'] == request.GET['state']:  # 验证状态码，防止跨域伪造攻击。
         next = request.session['next']
         code = request.GET['code']  # 获取用户授权码
