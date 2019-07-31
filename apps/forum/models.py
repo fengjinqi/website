@@ -11,6 +11,7 @@ from apps.user.models import User
 class Forum_plate(models.Model):
     """论坛版块表"""
     name = models.CharField(max_length=64, unique=True, verbose_name="板块名称")
+    image = models.ImageField(upload_to='forum/%Y%m%d',verbose_name='图标',blank=True)
     # CATEGORY_CHOICES = (
     #     (1, '一级类目'),
     #     (2, '二级类目'),

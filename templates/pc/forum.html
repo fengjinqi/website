@@ -28,15 +28,7 @@ author 冯金琪
               <ul id="plate" class="clearfix">
                 {% for foo in plate %}
                     <li class="flex">
-                        <div class="tieImg"><img src="{% if forloop.counter == 1 %}
-                        {% static 'img/问题求助.png' %}
-                        {% elif forloop.counter == 2 %}
-                         {% static 'img/讨论.png' %}
-                           {% elif forloop.counter == 3 %}
-                         {% static 'img/反馈.png' %}
-                             {% elif forloop.counter == 4 %}
-                         {% static 'img/求职招聘.png' %}
-                        {% endif %}" alt=""></div>
+                        <div class="tieImg"><img src="{{ MEDIA_URL }}{{ foo.image }}" alt=""></div>
                         <div>
                             <div class="tieNUm">{{ foo.get_count}}</div>
                             <div class="tieNmae"><a href="{% url 'forum:id' foo.id%}">{{ foo.name }}</a></div>

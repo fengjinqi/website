@@ -18,3 +18,5 @@ print(res.content.decode('utf8'))
 
 res = requests.get('https://www.biqushu.com/book_107713/44411383.html')
 print(res.content.decode('gbk'))
+
+#mysqldump -ufeng -padmin123456 --databases php_blog > C:/php_blog.sql
