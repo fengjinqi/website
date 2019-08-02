@@ -156,7 +156,7 @@ class Register(View):
             token = token_confirm.generate_validate_token(username)
             # message = "\n".join([u'{0},欢迎加入我的博客'.format(username), u'请访问该链接，完成用户验证,该链接1个小时内有效',
             #                      '/'.join([settings.DOMAIN, 'activate', token])])
-            # send_mail(u'注册用户验证信息', message, settings.EMAIL_HOST_USER, [email], fail_silently=False)
+            #send_mail(u'注册用户验证信息', message, settings.EMAIL_HOST_USER, [email], fail_silently=False)
             send_register_email.delay(email=email,username=username,token=token,send_type="register")
             return JsonResponse({'valid':True,'status':200, 'message': u"请登录到注册邮箱中验证用户，有效期为1个小时"})
         return JsonResponse({'status':400,'data':form.errors,'valid':False})
@@ -690,7 +690,7 @@ def to_login(request):
     request.session['state'] = state  # 将随机状态码存入Session，用于授权信息返回时验证。
     request.session['next'] = next
     client_id = conf.get('QQ','client_id')  # QQ互联中网站应用的APP ID。
-    callback = parse.urlencode({'redirect_uri': 'http://www.fengjinqi.com:8000/qq'})
+    callback = parse.urlencode({'redirect_uri': 'https://www.fengjinqi.com/qq'})
     # 对回调地址进行编码，用户同意授权后将调用此链接。
     login_url = 'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=%s&%s&state=%s&next=%s' % (
         client_id, callback, state,next)  # 组织QQ第三方登录链接
@@ -723,7 +723,7 @@ def qq(request):
         code = request.GET['code']  # 获取用户授权码
         client_id = conf.get('QQ','client_id')  # QQ互联中网站应用的APP ID。
         client_secret = conf.get('QQ','key')  # QQ互联中网站应用的APP Key。
-        callback = parse.urlencode({'redirect_uri': 'http://www.fengjinqi.com:8000/qq'})
+        callback = parse.urlencode({'redirect_uri': 'https://www.fengjinqi.com/qq'})
         # 对回调地址进行编码，用户同意授权后将调用此链接。
         login_url = 'https://graph.qq.com/oauth2.0/token?grant_type=authorization_code&code=%s&client_id=%s&client_secret=%s&%s' % (
             code, client_id, client_secret, callback)  # 组织获取访问令牌的链接
@@ -767,7 +767,7 @@ def getClbackQQ(request):
     request.session['state'] = state  # 将随机状态码存入Session，用于授权信息返回时验证。
     request.session['next']=next
     client_id = '101532677'  # QQ互联中网站应用的APP ID。
-    callback = parse.urlencode({'redirect_uri': 'http://www.fengjinqi.com:8000/callbackget'})
+    callback = parse.urlencode({'redirect_uri': 'https://www.fengjinqi.com/callbackget'})
     # 对回调地址进行编码，用户同意授权后将调用此链接。
     login_url = 'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=%s&%s&state=%s&next=%s' % (
         client_id, callback, state,next)  # 组织QQ第三方登录链接
@@ -786,7 +786,7 @@ def getClback(request):
         code = request.GET['code']  # 获取用户授权码
         client_id = conf.get('QQ','client_id')  # QQ互联中网站应用的APP ID。
         client_secret = conf.get('QQ','key')  # QQ互联中网站应用的APP Key。
-        callback = parse.urlencode({'redirect_uri': 'http://www.fengjinqi.com:8000/callbackget'})
+        callback = parse.urlencode({'redirect_uri': 'https://www.fengjinqi.com/callbackget'})
         # 对回调地址进行编码，用户同意授权后将调用此链接。
         login_url = 'https://graph.qq.com/oauth2.0/token?grant_type=authorization_code&code=%s&client_id=%s&client_secret=%s&%s' % (
             code, client_id, client_secret, callback)  # 组织获取访问令牌的链接
@@ -842,6 +842,9 @@ def bindingQQ(request):
                 user.username = nickname
                 user.email = email
                 user.user_image = figureurl_qq_1
+                user.is_staff = False
+                user.is_superuser = False
+                user.is_active = True
                 user.password = make_password(password1)
                 user.save()
                 qq = OAuthQQ()

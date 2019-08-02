@@ -1,10 +1,10 @@
 import os
-from celery import Celery
+from celery import Celery,platforms
 
 from django.conf import settings
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'website.settings')
-
+platforms.C_FORCE_ROOT = True  #加上这一行
 #Celery的参数是你当前项目的名称
 app = Celery('website')
 

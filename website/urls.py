@@ -65,7 +65,7 @@ router.register('seo-list',SeoList,basename='seo-list')
 
 urlpatterns = [
 
-    #path('admin/', admin.site.urls),
+    #path('admins/', admin.site.urls),
     path('admin/', TemplateView.as_view(template_name='admin/index.html')),
     # path('',test), # 这是生成验证码的图片
     url(r'^captcha/', include('captcha.urls')),

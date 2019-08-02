@@ -51,7 +51,7 @@ def send_register_email(email,username=None,token=None,send_type='register'):
                                  '/'.join([settings.DOMAIN, 'activate', token])])
         print('========发送邮件中')
         send_stutas = send_mail(email_title,email_body,settings.EMAIL_HOST_USER,[email])
-
+        print(send_stutas)
         if send_stutas:
             print('========发送成功')
             pass

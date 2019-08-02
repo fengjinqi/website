@@ -24,7 +24,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'iejntz(i+3am$yj@c+fp76raf84u^tvpua299wm-0$ulj9b%#^'
-
+conf = ConfigParser()
+conf.read('config.ini')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -119,21 +120,21 @@ WSGI_APPLICATION = 'website.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
-        'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME':os.path.join(BASE_DIR,'db.sqlite3')
-        }
-    #    'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME':"web",
-    #     "HOST":"127.0.0.1",
-    #     "POST":"3306",
-    #     "USER":"root",
-    #     "PASSWORD":"root",
-    #      'OPTIONS': {
-    #                 'init_command': 'SET storage_engine=INNODB',
-    #             },
-    # }
+        # 'default': {
+        #         'ENGINE': 'django.db.backends.sqlite3',
+        #         'NAME':os.path.join(BASE_DIR,'db.sqlite3')
+        # }
+       'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME':conf.get('Mysql','NAME'),
+        "HOST":conf.get('Mysql','HOST'),
+        "POST":conf.get('Mysql','POST'),
+        "USER":conf.get('Mysql','USER'),
+        "PASSWORD":conf.get('Mysql','PASSWORD'),
+         'OPTIONS': {
+                    'init_command': 'SET default_storage_engine=INNODB',
+                },
+    }
 }
 
 
@@ -198,18 +199,18 @@ MEDIA_URL = "/upload/"   # 媒体文件别名(相对路径) 和 绝对路径
 MEDIA_ROOT = (
     os.path.join(BASE_DIR, 'upload')
 )
-conf = ConfigParser()
-conf.read('config.ini')
 
-DOMAIN = 'http://127.0.0.1:8000'#用户验证邮箱访问地址
+
+DOMAIN = 'https://www.fengjinqi.com'#用户验证邮箱访问地址
 EMAIL_HOST = "smtp.exmail.qq.com"
-EMAIL_PORT = 25
+EMAIL_PORT = 465
 EMAIL_HOST_USER = 'fengjinqi@fengjinqi.com'
 EMAIL_WEBITE_NAME = '晓晓'
 EMAIL_HOST_PASSWORD = conf.get('email','password')
-
+EMAIL_USE_SSL = True    #是否使用SSL加密，qq企业邮箱要求使用
 
 EMAIL_USE_TLS = False   #是否使用TLS安全传输协议
+
 ERROR_FROM = 'tarena_feng@126.com'
 
 #搜索
@@ -232,6 +233,9 @@ CELERY_IMPORTS = ('apps.article.tasks', )
 CELERY_TIMEZONE = TIME_ZONE
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 CELERYD_MAX_TASKS_PER_CHILD = 5
+CELERY_ENABLE_UTC = True
+
+
 
 #CELERY_ENABLE_UTC=True
 # 下面是定时任务的设置，我一共配置了三个定时任务.
