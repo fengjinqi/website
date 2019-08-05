@@ -1,4 +1,4 @@
-# website
+﻿# website
 **django 开发的web项目**
 
 (喜欢麻烦动动你的小手给个start 谢谢)
@@ -75,4 +75,5 @@ Celery -A website worker -l info
 
 Celery -A website beat -l info
 
+supervisord -c conf/supervisord.conf
 #(ps:项目还在开发中，若有更好的建议或者功能请联系我qq:1218525402,邮箱：fengjinqi@fengjinqi.com)

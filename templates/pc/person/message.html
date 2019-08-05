@@ -1,7 +1,7 @@
 {% extends 'pc/base.html' %}
 {% load static %}
 {% block title %}
-消息
+我的消息
 {% endblock %}
 {% block css %}
      <link rel="stylesheet" href="{% static 'css/pagination.css' %}" />
@@ -20,8 +20,8 @@
 <div class="main" id="menu">
     <div class="meun">
         <ul>
-            <li onclick="unread(this)"class="active">未读信息 <span class="badge" style="background-color: red">0</span></li>
-            <li onclick="read(this)">已读信息</li>
+            <li onclick="unread(this)"class="active">未读信息 <span class="badge unread" style="background-color: red;display: none;">0</span></li>
+            <li onclick="read(this)">已读信息 <span class="badge read" style="background-color: red;display: none;">0</span></li>
         </ul>
     </div>
 <div class="meun-main">
@@ -64,6 +64,7 @@
         $(function () {
             $("#menu").css('height',$(window).height()-160+'px');
             unread();
+            readCount()
         });
 
         /**
@@ -79,7 +80,9 @@
                 success:function (msg) {
                     var data = msg.results;
                    // if (data.status==200){
-                        $('.meun .badge').text(data.count);
+                        $('.meau_hide .badge').text(data.count);
+                        $('.unread').text(data.count)
+                        msg.count==0?$('.unread').hide():$('.unread').show()
                         msg.count>=10?$('#page').show():$("#page").hide()
                         var html = '';
                         for (var i=0;i<data.length;i++){
@@ -118,7 +121,20 @@
                 }
             })
         }
-
+        function unreadCount() {
+            $.ajax({
+                url:'/api/UserMessages/?type=unread',
+                type:'get',
+                data:{'type':'unread'},
+                success:function (msg) {
+                    var data = msg.results;
+                    $('.meau_hide .badge').text(msg.count);
+                    $('.unread').text(msg.count)
+                    msg.count==0?$('.unread').hide():$('.unread').show()
+                    msg.count==0?$("#yuan").hide():$('#yuan').show()
+                }
+            })
+        }
 
         /**
          * 已读
@@ -131,6 +147,9 @@
                 type:'get',
                 success:function (msg) {
                     var data = msg.results;
+                    console.log(msg)
+                    $('.read').text(msg.count)
+                       msg.count==0?$('.read').hide():$('.read').show()
                     msg.count>=10?$('#page').show():$("#page").hide()
                     var html = '';
                     for (var i=0;i<data.length;i++){
@@ -170,6 +189,16 @@
         }
 
 
+        function readCount() {
+            $.ajax({
+                url:'/api/UserMessages/?type=read',
+                type:'get',
+                success:function (msg) {
+                    $('.read').text(msg.count)
+                    msg.count==0?$('.read').hide():$('.read').show()
+                }
+            })
+        }
 
         /**
          * 查看消息跳转详情页
@@ -224,15 +253,16 @@
     
     
     function Already (obj,id) {
+        console.log( $('.meau_hide .badge'))
         $.ajax({
             url:"/person/message/",
             type:'post',
             data:{id:id},
             headers:{'X-CSRFToken':$.cookie('csrftoken')},
             success:function (msg) {
-                $('span.badge').first().text($('span.badge').first().text()-1)
-                $('.meun .badge').text($('.meun .badge').text()-1);
                 $(obj).parents('li').remove()
+                unreadCount()
+                readCount()
             }
         })
     }

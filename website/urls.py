@@ -82,7 +82,8 @@ urlpatterns = [
     path('course/', include('apps.course.urls')),
     path('support/', include('apps.support.urls')),
     path('forum/', include('apps.forum.urls')),
-    url(r'^activate/(?P<token>\w+.[-_\w]*\w+.[-_\w]*\w+)/$', active_user, name='active_user'),
+    #url(r'^activate/(?P<token>\w+.[-_\w]*\w+.[-_\w]*\w+)/$', active_user, name='active_user'),
+    path('activate/<str:token>', active_user, name='active_user'),
     url(r'^search/', include('haystack.urls'), name='haystack_search'),
 
     re_path(r'^upload/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
