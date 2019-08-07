@@ -6,15 +6,11 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1">
-    <!-- 页面关键词 keywords -->
     <meta name="keywords" content="{% block keywords %}
     {% endblock %}">
-    <!-- 页面描述内容 description -->
     <meta name="description" content="{% block desc %}
     {% endblock %}">
-    <!-- 定义网页作者 author -->
     <meta name="author" content="{% block authors %}
-
     {% endblock %}">
     <title>{% block title %}{% endblock %}</title>
     <link rel="shortcut icon" href="{% static 'img/logo.png' %}">
@@ -26,11 +22,27 @@
     <script src="{% static 'js/xss.js' %}"></script>
     {% block link_js %}
     {% endblock %}
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({
+google_ad_client: "pub-1595090025336102",
+enable_page_level_ads: true
+});
+</script>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-1595090025336102",
+          enable_page_level_ads: true
+     });
+</script>
 </head>
 <body>
 <header>
     <div class="main clearfix">
-        <div class="fl logo"style="height: 60px"><img style="width: 40px;margin-top: 20px;" src="{% static 'img/logo.png' %}" alt=""></div>
+        <a class="fl logo" href="" style="height:45px;background: url({% static 'img/logo.png' %})no-repeat;width: 120px;background-size: 120px 45px;
+    margin-top: 7px;">
+            {% comment %}<img style="width: 40px;margin-top: 20px;" src="{% static 'img/logo.png' %}" alt="">{% endcomment %}
+        </a>
         <nav class="fl">
             <ul class="clearfix headers_nav">
                 <li class="fl"><a class="{% if request.path == '/' %}

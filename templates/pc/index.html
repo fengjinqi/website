@@ -2,10 +2,16 @@
 {% load static %}
 {% load i18n %}
 {% block title %}
-首页
+首页|冯金琪-技术交流社区博客
 {% endblock %}
 {% block authors %}
 冯金琪
+{% endblock %}
+{% block keywords %}
+首页|冯金琪-技术交流社区博客
+{% endblock %}
+{% block desc %}
+首页|冯金琪-技术交流社区博客
 {% endblock %}
 {% block css %}
 {#    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">#}
@@ -41,6 +47,7 @@
             {% else %}
             {% static  'img/banner.png'%}
         {% endif %})no-repeat 0 50%;"></div>
+
          <div class="blogs">
              <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">
                  <ul class="follow">
@@ -57,7 +64,7 @@
                                       <a href="{% url 'article:detail' articles.id %}"><div class="blogs_pic img_cover" style="background: url({% if articles.list_pic %}
                                       {{ MEDIA_URL }}{{ articles.list_pic }}
 
-                                      {% endif %})no-repeat;background-color: #ccc"></div></a>
+                                      {% endif %})no-repeat;background-color: #ccc;background-size: 200px 120px !important;"></div></a>
                                   </div>
                                   <div class="fl blogs_describe">
                                       <p class="blogtext">{{ articles.desc|truncatechars:135 }}</p>
@@ -184,6 +191,9 @@
 {% endblock %}
 
 {% block js %}
+    <script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 <script src="{% static 'js/swiper.min.js' %}"></script>
 <script src="{% static 'js/index.js' %}"></script>
     <script>

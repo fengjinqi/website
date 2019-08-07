@@ -186,8 +186,7 @@
                             currentItem.desc=currentItem.desc
                         }
                         currentItem.list_pic=currentItem.list_pic?currentItem.list_pic:''
-                        currentItem.authors.user_imag= currentItem.authors.user_imag? currentItem.authors.user_imag?currentItem.authors.user_image:currentItem.authors.user_image:'{% static 'img/pc-icon.png' %}'
-
+                        currentItem.authors.user_imag= currentItem.authors.user_imag? currentItem.authors.user_imag:currentItem.authors.user_image?currentItem.authors.user_image:'{% static 'img/pc-icon.png' %}'
                         n.push(currentItem.article_comment_set.length);
                         for(var j=0,len=currentItem.article_comment_set.length;j<len;j++){
                             var currentChildItem = currentItem.article_comment_set[j];
@@ -202,7 +201,7 @@
                             "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+filterXSS(data.results[i].title)+"</a></h3>\n" +
                             "                                     <div class=\"blogs_info clearfix\">\n" +
                             "                                          <div class=\"img_animate  \">\n" +
-                            "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+filterXSS(data.results[i].list_pic)+"')no-repeat;background-color:#ccc;\"></div>\n" +
+                            "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+filterXSS(data.results[i].list_pic)+"')no-repeat;background-color:#ccc;background-size:200px 120px !important;\"></div>\n" +
                             "                                          </div>\n" +
                             "                                          <div class=\" blogs_describe\">\n" +
                             "                                     <div class=\" divp\">\n" +
@@ -272,7 +271,7 @@
                                             "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+filterXSS(data.results[i].title)+"</a></h3>\n" +
                                             "                                     <div class=\"blogs_info clearfix\">\n" +
                                             "                                          <div class=\"img_animate  \">\n" +
-                                            "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+data.results[i].list_pic+"')no-repeat;background-color:#ccc;\"></div>\n" +
+                                            "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+data.results[i].list_pic+"')no-repeat;background-color:#ccc;background-size:200px 120px !important;\"></div>\n" +
                                             "                                          </div>\n" +
                                             "                                          <div class=\" blogs_describe\">\n" +
                                             "                                     <div class=\" divp\">\n" +
@@ -353,7 +352,7 @@
                                 "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+filterXSS(data.results[i].title)+"</a></h3>\n" +
                                 "                                     <div class=\"blogs_info clearfix\">\n" +
                                 "                                          <div class=\"img_animate  \">\n" +
-                                "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+data.results[i].list_pic+"')no-repeat;background-color:#ccc;\"></div>\n" +
+                                "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+data.results[i].list_pic+"')no-repeat;background-color:#ccc;background-size:200px 120px !important;\"></div>\n" +
                                 "                                          </div>\n" +
                                 "                                          <div class=\" blogs_describe\">\n" +
                                 "                                     <div class=\" divp\">\n" +
@@ -422,7 +421,7 @@
                                                 "                                 <h3><span class=\"blogs_type\">"+data.results[i].category.name+"</span><a href=\"/article/detail/"+data.results[i].id+"\">"+filterXSS(data.results[i].title)+"</a></h3>\n" +
                                                 "                                     <div class=\"blogs_info clearfix\">\n" +
                                                 "                                          <div class=\"img_animate  \">\n" +
-                                                "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+data.results[i].list_pic+"')no-repeat;background-color:#ccc;\"></div>\n" +
+                                                "                                              <div class=\"blogs_pic img_cover\" style=\"background: url('"+data.results[i].list_pic+"')no-repeat;background-color:#ccc;background-size:200px;120px !important;\"></div>\n" +
                                                 "                                          </div>\n" +
                                                 "                                          <div class=\" blogs_describe\">\n" +
                                                 "                                     <div class=\" divp\">\n" +

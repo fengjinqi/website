@@ -1,10 +1,7 @@
 {% extends 'pc/base.html' %}
 {% load static %}
 {% block title %}
-社区论坛
-{% endblock %}
-{% block authors %}
-author 冯金琪
+社区论坛|冯金琪-问题求助、代码、技术分享、综合讨论、求职招聘
 {% endblock %}
 {% block keywords %}
 问题求助、代码、技术分享、综合讨论、求职招聘
@@ -30,8 +27,9 @@ author 冯金琪
                     <li class="flex">
                         <div class="tieImg"><img src="{{ MEDIA_URL }}{{ foo.image }}" alt=""></div>
                         <div>
+                            <a href="{% url 'forum:id' foo.id%}">
                             <div class="tieNUm">{{ foo.get_count}}</div>
-                            <div class="tieNmae"><a href="{% url 'forum:id' foo.id%}">{{ foo.name }}</a></div>
+                            <div class="tieNmae">{{ foo.name }}</div></a>
                         </div>
                     </li>
                 {% endfor %}

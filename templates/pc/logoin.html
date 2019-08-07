@@ -16,7 +16,6 @@
             height: calc(100vh);
             {#background: url("{% static 'img/bg-01.jpg' %}")no-repeat;#}
             {#background-size: cover;#}
-
         }
         #main{
             position: fixed;
@@ -42,6 +41,10 @@
     box-sizing: border-box;
     color: #333333;
     margin-bottom: 20px;
+    display: flex;
+    padding-right: 40px;
+    justify-content: space-between;
+    align-items: center;
 }
 .login-center {
     width: 100%;
@@ -100,7 +103,7 @@
     <div id="main">
      <form class="form-inline" action="{% url 'index' %}?next={{ next }}" method="post">
          <div class="login-top">
-				登录
+				登录 <a href="{% url 'home' %}" style="font-size: 14px;">首页</a>
 			</div>
       <div class="form-group login-center">
 

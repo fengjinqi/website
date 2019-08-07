@@ -17,6 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.static import serve
+
 from rest_framework.documentation import include_docs_urls
 
 from rest_framework_jwt.views import obtain_jwt_token
@@ -82,6 +83,7 @@ urlpatterns = [
     path('course/', include('apps.course.urls')),
     path('support/', include('apps.support.urls')),
     path('forum/', include('apps.forum.urls')),
+    path('ads.txt/',TemplateView.as_view(template_name='ads.txt')),
     #url(r'^activate/(?P<token>\w+.[-_\w]*\w+.[-_\w]*\w+)/$', active_user, name='active_user'),
     path('activate/<str:token>', active_user, name='active_user'),
     url(r'^search/', include('haystack.urls'), name='haystack_search'),

@@ -214,14 +214,30 @@
                     validators: {
                         notEmpty: {
                             message: '不能为空'
-                        }
+                        },
+                          identical: {//相同
+                         field: 'password', //需要进行比较的input name值
+                         message: '两次密码不一致'
+                     },
+                          stringLength: {  //长度限制
+                          min: 6,
+                          message: '密码不能小于6位'
+                        },
                     }
                 },
                 password1: {
                     validators: {
                         notEmpty: {
                             message: '不能为空'
-                        }
+                        },
+                          identical: {//相同
+                         field: 'password', //需要进行比较的input name值
+                         message: '两次密码不一致'
+                     },
+                          stringLength: {  //长度限制
+                          min: 6,
+                          message: '密码不能小于6位'
+                        },
                     }
                 },
 
