@@ -128,7 +128,11 @@
     margin-left: 610px;
     width: 50px;
     height: 50px;
-    background: url(../img/top.png) no-repeat #1F2729 10px 15px;
+   /* background: url(../img/top.png) no-repeat #1F2729 10px 15px;*/
+    text-align: center;
+    line-height: 50px;
+    color: #fff;
+    background-color: rgba(0,0,0,.5);
 }
 
 body{

@@ -15,6 +15,7 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="shortcut icon" href="{% static 'img/logo.png' %}">
     <link rel="stylesheet" href="{% static 'css/public.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
     {% block css %}{% endblock %}
     <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'js/jquery.cookie.min.js' %}"></script>
@@ -35,6 +36,21 @@ enable_page_level_ads: true
           enable_page_level_ads: true
      });
 </script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
 </head>
 <body>
 <header>
@@ -112,14 +128,14 @@ enable_page_level_ads: true
 
 <footer class="footer">
     <p class="main">Powered by
-        <a>会飞的鱼</a>
+        <a>爱上她的歌</a>
                     <a href="http://www.miitbeian.gov.cn" target="_blank">蜀ICP备18023241号-1</a>
 
 
     </p>
 
 </footer>
- <a href="javascript:;" id="toTop"></a>
+ <a href="javascript:;" id="toTop" class=" fa fa-chevron-up"></a>
 <script>
     $(function(){
         {% if request.user.is_authenticated %}

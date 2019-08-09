@@ -8,10 +8,10 @@
 冯金琪
 {% endblock %}
 {% block keywords %}
-首页|冯金琪-技术交流社区博客
+首页|冯金琪,js,js学习,Vue,React,前端学习,后台学习,服务器学习教程,数据库,mysql等学习,Java学习，ssh框架,PHP学习等，技术交流社区博客
 {% endblock %}
 {% block desc %}
-首页|冯金琪-技术交流社区博客
+首页|冯金琪-技术交流社区博客,欢迎大家加入本站，本站是纯IT技术交流学术网站,在这里大家可以技术交流学习,发布文章,发布教程，一起学习成长
 {% endblock %}
 {% block css %}
 {#    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">#}
@@ -42,12 +42,16 @@
 
             </div>
         </div>{% endcomment %}
-        <div class="banner" style="background: url({% if banners.image %}
+       {% comment %} <div class="banner" style="background: url({% if banners.image %}
             {{ MEDIA_URL }}{{ banners.image }}
             {% else %}
             {% static  'img/banner.png'%}
-        {% endif %})no-repeat 0 50%;"></div>
-
+        {% endif %})no-repeat 0 50%;"></div>{% endcomment %}
+<!-- 网站banner -->
+        <ins class="adsbygoogle banner"
+     style="display:inline-block;width:880px;height:90px"
+     data-ad-client="ca-pub-1595090025336102"
+     data-ad-slot="7764407434"></ins>
          <div class="blogs">
              <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">
                  <ul class="follow">
@@ -100,41 +104,38 @@
                  {% endfor %}
 
              </div>
-
-           {% if article.object_list.count >= 1 %}
-        <div class="pageturn">
-           <ul class="pagination">
-               <li><a href="/">首页</a></li>
-               {% if article.has_previous %}
-                   <li class="long"><a href="?{{ article.previous_page_number.querystring }}" class="prev">上一页</a></li>
-               {% else %}
-                   <li class="long"><span class="disabled prev btn"disabled="">上一页</span></li>
-               {% endif %}
-               {% for page in article.pages %}
-                   {% if page %}
-                       {% ifequal page article.number %}
-                           <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
-                       {% else %}
-                           <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
-                       {% endifequal %}
+             {% if article.object_list.count >= 1 %}
+                    <div class="pageturn">
+               <ul class="pagination">
+                   <li><a href="/">首页</a></li>
+                   {% if article.has_previous %}
+                       <li class="long"><a href="?{{ article.previous_page_number.querystring }}" class="prev">上一页</a></li>
                    {% else %}
-                       <li><span class="disabled  btn" disabled="">...</span></li>
+                       <li class="long"><span class="disabled prev btn"disabled="">上一页</span></li>
                    {% endif %}
-               {% endfor %}
-               {% if article.has_next %}
-                   <li class="long"><a href="?{{ article.next_page_number.querystring }}" class="next"> 下一页</a></li>
-               {% else %}
-                   <li class="long"><span class="disabled next btn"disabled=""> 下一页</span></li>
-               {% endif %}
-               <li><a href="?page={{ article.paginator.num_pages }}">尾页</a></li>
-               <li class="hrefto">跳转到<input type="text"class="form-control" name="page"></li>
-           </ul>
-            当前{{ article.number }}/总共{{ article.paginator.num_pages }}页
-       </div>
-    {% endif %}
+                   {% for page in article.pages %}
+                       {% if page %}
+                           {% ifequal page article.number %}
+                               <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                           {% else %}
+                               <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
+                           {% endifequal %}
+                       {% else %}
+                           <li><span class="disabled  btn" disabled="">...</span></li>
+                       {% endif %}
+                   {% endfor %}
+                   {% if article.has_next %}
+                       <li class="long"><a href="?{{ article.next_page_number.querystring }}" class="next"> 下一页</a></li>
+                   {% else %}
+                       <li class="long"><span class="disabled next btn"disabled=""> 下一页</span></li>
+                   {% endif %}
+                   <li><a href="?page={{ article.paginator.num_pages }}">尾页</a></li>
+                   <li class="hrefto">跳转到<input type="text"class="form-control" name="page"></li>
+               </ul>
+                当前{{ article.number }}/总共{{ article.paginator.num_pages }}页
+           </div>
+             {% endif %}
          </div>
-
-
     </article>
 
     <aside class="fr">
@@ -152,40 +153,39 @@
     </div>{% endcomment %}
         {% if links.count > 0 %}
              <div class="sidebar">
-      <div class="tuijian">
-        <h2 class="hometitle">友情链接</h2>
-        <ul class="sidenews zhan">
-             {% for foo in links %}
-                    <li><a href="{{ foo.url }}">{{ foo.title }}</a></li>
-                {% endfor %}
-        </ul>
-    </div>
+                  <div class="tuijian sidebars">
+                    <h2 class="hometitle">友情链接</h2>
+                    <ul class="sidenews zhan">
+                         {% for foo in links %}
+                                <li><a href="{{ foo.url }}">{{ foo.title }}</a></li>
+                            {% endfor %}
+                    </ul>
+                </div>
 
-    </div>
+             </div>
         {% endif %}
         <div class="sidebar">
-            <div class="tuijian">
-        <h2 class="hometitle">交流群</h2>
-        <ul class="sidenews zhan">
+            <div class="tuijian sidebars">
+                <h2 class="hometitle">交流群</h2>
+                <ul class="sidenews zhan">
            {% for foo in qq %}
                      <p >{{ foo.title }}:{{ foo.qq }}{% if foo.is_active == True %}
                             (已满)
                         {% endif %}</p><br>
                     {% endfor %}
         </ul>
-    </div>
+            </div>
         </div>
         <div class="sidebar">
-      <div class="tuijian">
-        <h2 class="hometitle">商务合作</h2>
-        <ul class="sidenews zhan">
+        <div class="tuijian sidebars">
+            <h2 class="hometitle">商务合作</h2>
+            <ul class="sidenews zhan">
             <p>邮箱:<a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=iuzv5O3g4_T748rs7_Tt4OPk__Ok6eXn" style="text-decoration:none;">fengjinqi@fengjinqi.com</a></p>
             <br>
             <p>QQ:1218525402</p>
         </ul>
-    </div>
-
-    </div>
+        </div>
+        </div>
     </aside>
 </section>
 {% endblock %}

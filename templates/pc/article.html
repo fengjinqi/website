@@ -4,10 +4,10 @@
     文章|冯金琪-技术交流社区博客
 {% endblock %}
 {% block keywords %}
-首页|冯金琪-技术交流社区博客
+文章|冯金琪,js,js学习,Vue,React,前端学习,后台学习,服务器学习教程,数据库,mysql等学习,Java学习，ssh框架,PHP学习等，技术交流社区博客
 {% endblock %}
 {% block desc %}
-首页|冯金琪-技术交流社区博客
+文章|冯金琪-技术交流社区博客,欢迎大家加入本站，本站是纯IT技术交流学术网站,在这里大家可以技术交流学习,发布文章,发布教程，一起学习成长
 {% endblock %}
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">
@@ -25,11 +25,16 @@
 
             </ul>
         </div>
-        <div class="banner" style="background: url({% if banners.image %}
+{% comment %}        <div class="banner" style="background: url({% if banners.image %}
             {{ MEDIA_URL }}{{ banners.image }}
             {% else %}
             {% static  'img/banner.png'%}
-        {% endif %})no-repeat 0 50%;"></div>
+        {% endif %})no-repeat 0 50%;"></div>{% endcomment %}
+    <!-- 网站banner -->
+        <ins class="adsbygoogle banner"
+     style="display:inline-block;width:880px;height:90px"
+     data-ad-client="ca-pub-1595090025336102"
+     data-ad-slot="7764407434"></ins>
          <div class="blogs">
              <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">
                  <a href="{% url 'article:index' %}" class="{% if request.path|slice:'9' == '/article/' and request.path|slice:'12' != '/article/me/' %}
@@ -143,8 +148,8 @@
 {#            </div>#}
 {#        </div>#}
             {% include 'pc/base_aside.html' %}
-        <div class="sidebar">
-              <div class="tuijian">
+            <div class="sidebar">
+              <div class="tuijian sidebars">
                 <h2 class="hometitle">今日头条</h2>
                 <ul class="sidenews zhan">
                      {% for foo in Headlines %}
@@ -164,10 +169,11 @@
 {% block js %}
     <script src="{% static 'js/swiper.min.js' %}"></script>
     <script src="{% static 'js/index.js' %}"></script>
+    <script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 <script>
-
     $(function () {
-
         $('.fiter_nav>ul>li').mouseover(function(){
            $(this).siblings().removeClass('fiter_active');
            $(this).addClass('fiter_active');

@@ -1,7 +1,7 @@
 {% load forum %}
 {% if fourm.count > 0 %}
 <div class="sidebar">
-                <div class="tuijian">
+      <div class="tuijian sidebars">
                     <h2 class="hometitle" style="margin-bottom: 0">最新求职</h2>
                     <ul class="zhan">
                         {% for foo in fourm %}
@@ -20,11 +20,11 @@
                         {% endfor %}
                     </ul>
                 </div>
-             </div>
+</div>
 {% endif %}
 
 <div class="sidebar">
-                <div class="tuijian">
+   <div class="tuijian sidebars">
                     <h2 class="hometitle" style="margin-bottom: 0">最热帖子</h2>
                     <ul class="zhan">
                         {% for foo in Hottest %}
@@ -43,9 +43,9 @@
                         {% endfor %}
                     </ul>
                 </div>
-             </div>
+</div>
 <div class="sidebar">
-                <div class="tuijian">
+     <div class="tuijian sidebars">
                     <h2 class="hometitle">交流群</h2>
                     <ul class="sidenews zhan">
                     {% for foo in qq %}
@@ -56,13 +56,13 @@
 
                     </ul>
                 </div>
-             </div>
+</div>
 <div class="sidebar">
-                <div class="tuijian tie">
+    <div class="tuijian sidebars tie">
                     <h2 class="hometitle">帖子统计</h2>
                     <p>帖子总数:{{ count }}</p>
                    <p>总人数:{{ user }}</p>
                     <p>在线人数:{{ sessions }}</p>
                     <p>今日发布帖数:{{ days }}</p>
                 </div>
-             </div>
+</div>

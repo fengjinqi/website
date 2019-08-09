@@ -109,7 +109,9 @@
     <script src="{% static 'js/sweetalert.min.js' %}"></script>
     <script>
         $(function () {
-                  //监听滚动条事件
+            if($('.left_nav').height()>$(window).height()){
+                $('.left_nav').css('height',$(window).height()-30+'px').css('overflow-y','auto')
+            }
             $(window).scroll(function(){
                 var winPos = $(window).scrollTop();
                 var objTop = $(".left_nav").offset().top;
@@ -177,7 +179,6 @@
                             "                         </div>"
                     }
                     $("#mains").append(html)
-                    console.log(data)
                     $('.M-box').pagination({
                         pageCount:Math.ceil(data.count/10),   //总页码
                         coping:true,                 //是否开启首页和末页
@@ -195,7 +196,6 @@
                                     page:api.getCurrent()    //这个方法就是用来获取点击了哪一页的，因为我  //的接口文档中页数是从0开始的，所以减1，当我点击第一页的时候去获取第0页的数据
                                 },
                                 success:function (data) {
-                                    console.log(data);             //返回那一页的数据
                                     var html =''
                                     b=[]
                                     for(var i=0;i<data.results.length;i++){
@@ -417,7 +417,6 @@
                      }
                 },
                 error:function (xhr) {
-                    console.log(xhr)
                 }
             })
     }

@@ -158,6 +158,9 @@
     <script>
         $(function () {
             //监听滚动条事件
+                 if($('.left_nav').height()>$(window).height()){
+                $('.left_nav').css('height',$(window).height()-30+'px').css('overflow-y','auto')
+            }
             $(window).scroll(function(){
                 var winPos = $(window).scrollTop();
                 var objTop = $(".left_nav").offset().top;
