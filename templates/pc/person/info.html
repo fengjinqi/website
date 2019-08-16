@@ -147,16 +147,18 @@
             })
     }
 //修改信息
+    var is_imag;
     function editInfo() {
         $('.info_item textarea').removeClass('origin');
         $('.info_item textarea').attr('disabled',false);
         $('.info_item input').removeClass('origin');
         $('.info_item input').attr('disabled',false);
         $('.editshow').fadeIn();
+        is_imag = true
     }
     //上传预览图片
     function fileCliick() {
-        $('#file').click();
+        if(is_imag)$('#file').click();
     }
    function changepic() {
          var reads = new FileReader();
@@ -275,7 +277,14 @@
             })
 
         })
-
+        $('#cancel').on('click',function () {
+            is_imag = false;
+            $('.info_item textarea').addClass('origin');
+        $('.info_item textarea').attr('disabled',true);
+        $('.info_item input').addClass('origin');
+        $('.info_item input').attr('disabled',true);
+        $('.editshow').fadeOut();
+        })
 
     </script>
 {% endblock %}

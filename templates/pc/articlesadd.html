@@ -1,7 +1,13 @@
 {% extends 'pc/base.html' %}
 {% load static %}
 {% block title %}
-    新增文章
+    新增文章{{ seo_list.title }}
+{% endblock %}
+{% block keywords %}
+{{ seo_list.keywords}}
+{% endblock %}
+{% block desc %}
+{{ seo_list.desc }}
 {% endblock %}
 {% block css %}
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">

@@ -50,8 +50,8 @@ class QQList(viewsets.ModelViewSet):
     authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
 
 
-class SeoList(mixins.CreateModelMixin,mixins.DestroyModelMixin,mixins.ListModelMixin,mixins.RetrieveModelMixin,viewsets.GenericViewSet):
+class SeoList(mixins.CreateModelMixin,mixins.DestroyModelMixin,mixins.ListModelMixin,mixins.UpdateModelMixin,mixins.RetrieveModelMixin,viewsets.GenericViewSet):
     queryset = Seo.objects.all()
     serializer_class = SEOSerializer
-    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
-    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    # permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
+    # authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]

@@ -25,7 +25,7 @@ from apps.article.serializers import ArticleSerializer, Article_CommentSerialize
     Article_CommentSerializerAdd, ArticleCommentReplySerializer, Category_ArticleSerializer, ArticleCreatedSerializer, \
     ArticleCommitSerializer
 from apps.forum.models import Forum
-from apps.support.models import link, QQ, Banners
+from apps.support.models import link, QQ, Banners, Seo
 from apps.uitls.jsonserializable import DateEncoder
 from apps.uitls.permissions import IsOwnerOrReadOnly, IsOwnerOr
 from apps.user.models import User, Follows, UserMessage
@@ -52,6 +52,7 @@ def Article_list(request):
     article=Article.objects.filter(is_show=True)[:100]
     popular = Article.objects.filter(is_show=True).order_by('click_nums')[:5]
     recommend = Recommend.objects.filter(is_recommend=True)[:10]
+    seo_list = get_object_or_404(Seo, name='首页')
     qq = QQ.objects.all()
     links = link.objects.all()
     #user = Follow.objects.values('follow_id').distinct().order_by('-follow_id')
@@ -100,7 +101,7 @@ def Article_list(request):
             json_dict['data'].append(list_dict)
         return JsonResponse(json_dict,safe=False,encoder=DateEncoder)
     banners = Banners.objects.first()
-    return render(request, 'pc/index.html', {'article':people,'qq':qq,'popular':popular,'count':item,'recommend':recommend,'links':links,'banners':banners})
+    return render(request, 'pc/index.html', {'seo_list':seo_list,'article':people,'qq':qq,'popular':popular,'count':item,'recommend':recommend,'links':links,'banners':banners})
 
 
 def ArticleList(request):
@@ -109,6 +110,7 @@ def ArticleList(request):
     :param request:
     :return:
     """
+    seo_list = get_object_or_404(Seo, name='文章')
     article = Article.objects.filter(is_show=True)
     category = Category_Article.objects.all()
     type = request.GET.get('type', '')
@@ -128,7 +130,7 @@ def ArticleList(request):
     banners = Banners.objects.first()
 
 
-    return render(request, 'pc/article.html', {'article': people,'category':category,'Headlines':headlines,'banners':banners})
+    return render(request, 'pc/article.html', {'seo_list':seo_list,'article': people,'category':category,'Headlines':headlines,'banners':banners})
 
 
 def api(request):
@@ -241,9 +243,10 @@ def Article_Add(request):
     :param request:
     :return:
     """
+    seo_list = get_object_or_404(Seo, name='文章')
     if request.method == 'GET':
         category = Category_Article.objects.all()
-        return render(request,'pc/articlesadd.html',{"category":category})
+        return render(request,'pc/articlesadd.html',{"category":category,'seo_list':seo_list})
 
     if request.method == 'POST':
         forms = Article_form(request.POST)

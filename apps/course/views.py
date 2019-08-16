@@ -17,6 +17,7 @@ from apps.article.views import StandardResultsSetPagination
 from apps.course.filter import CoursesFilter
 from apps.course.models import Courses, CourseList
 from apps.course.serializers import CourseSerializers, CreatedCourseSerializers, AddtutorialSerializers
+from apps.support.models import Seo
 from apps.uitls.jsonserializable import DateEncoder
 from apps.uitls.permissions import IsOwnerOrReadOnly, IsOwnerOrRead
 
@@ -24,7 +25,8 @@ from apps.uitls.permissions import IsOwnerOrReadOnly, IsOwnerOrRead
 def List(request):
     """TODO 教程列表  a标签根据uuid进 Detail视图渲染对应的所有文章"""
     course = Courses.objects.all()
-    return render(request,'pc/course/index.html',{'course':course})
+    seo_list =get_object_or_404(Seo,name='教程')
+    return render(request,'pc/course/index.html',{'course':course,'seo_list':seo_list})
 
 
 def Detail(request,course_id,list_id):

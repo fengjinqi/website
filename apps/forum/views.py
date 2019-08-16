@@ -23,6 +23,7 @@ from apps.forum.forms import Forum_form, ParentComment
 from apps.forum.models import Forum_plate, Forum, Comment, Parent_Comment
 from apps.forum.serializers import Forum_plateSerializers, ForumSerializers, CommentSerializers, \
     Pernents_CommentSerializers
+from apps.support.models import Seo
 from apps.uitls.permissions import IsOwnerOr, IsOwnerOrReadOnly
 from apps.user.models import UserMessage, User
 
@@ -42,6 +43,7 @@ def index(request):
     :param request:
     :return:
     """
+    seo_list = get_object_or_404(Seo, name='社区论坛')
     plate = Forum_plate.objects.all()
     forum = Forum.objects.filter(hidden=False)
     job = Forum.objects.filter(category__name='求职招聘')

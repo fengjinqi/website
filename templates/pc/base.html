@@ -6,6 +6,10 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1">
+    <meta name="sogou_site_verification" content="KyUYfNQHr5"/>
+    <meta name="360-site-verification" content="809891f94b37ddaef0edde649234de9e" />
+    <meta name="baidu-site-verification" content="ERi24bXcVX" />
+    <meta name="msvalidate.01" content="E02DAEAC571668CD032A487D5EFF5F01" />
     <meta name="keywords" content="{% block keywords %}
     {% endblock %}">
     <meta name="description" content="{% block desc %}
@@ -16,6 +20,14 @@
     <link rel="shortcut icon" href="{% static 'img/logo.png' %}">
     <link rel="stylesheet" href="{% static 'css/public.css' %}">
     <link rel="stylesheet" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+    <style>
+        #cnzz_stat_icon_1277918196{
+        position: absolute;
+        bottom: 15px;
+        z-index: 1;
+            margin-bottom: 0;
+        }
+    </style>
     {% block css %}{% endblock %}
     <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'js/jquery.cookie.min.js' %}"></script>
@@ -50,12 +62,18 @@ enable_page_level_ads: true
     s.parentNode.insertBefore(bp, s);
 })();
 </script>
-
+<script>
+(function(){
+var src = (document.location.protocol == "http:") ? "http://js.passport.qihucdn.com/11.0.1.js?7d553af6cd362b8ae466889542d8651f":"https://jspassport.ssl.qhimg.com/11.0.1.js?7d553af6cd362b8ae466889542d8651f";
+document.write('<script src="' + src + '" id="sozz"><\/script>');
+})();
+</script>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277918196'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1277918196%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 </head>
 <body>
 <header>
     <div class="main clearfix">
-        <a class="fl logo" href="" style="height:45px;background: url({% static 'img/logo.png' %})no-repeat;width: 120px;background-size: 120px 45px;
+        <a class="fl logo" href="{% url 'home' %}" style="height:45px;background: url({% static 'img/logo.png' %})no-repeat;width: 120px;background-size: 120px 45px;
     margin-top: 7px;">
             {% comment %}<img style="width: 40px;margin-top: 20px;" src="{% static 'img/logo.png' %}" alt="">{% endcomment %}
         </a>
@@ -110,7 +128,7 @@ enable_page_level_ads: true
                             <li><a href="{% url 'user:person' %}">个人中心</a></li>
                          <li><a href="{% url 'user:message' %}">消息<span class="badge"></span></a></li>
                             {% if user.is_staff  %}
-                                <li><a href="">系统管理</a></li>
+                                <li><a href="/admin">系统管理</a></li>
                             {% endif %}
                             <li><a href="{% url 'logou' %}">退出</a></li>
                         </ul>

@@ -19,7 +19,7 @@
         <div class="person_bannerbgd img_cover">
             <div></div>
         </div>
-        <div class="person_nav main">
+        <div class="person_nav main" id="main">
             <ul class="clearfix">
                 <li class="fl">
 
@@ -161,10 +161,12 @@
                  if($('.left_nav').height()>$(window).height()){
                 $('.left_nav').css('height',$(window).height()-30+'px').css('overflow-y','auto')
             }
+                 if($('article').height()<$('.left_nav').height())$('article').css('height',$('.left_nav').height()+'px')
             $(window).scroll(function(){
                 var winPos = $(window).scrollTop();
                 var objTop = $(".left_nav").offset().top;
-                if(winPos >= 300){
+                console.log($('#main').offset().top)
+                if(winPos >= $('#main').offset().top){
                     $('.left_nav').addClass('fix');
                 }else{
                     $('.left_nav').removeClass('fix');

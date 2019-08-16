@@ -35,7 +35,7 @@ from apps.article.views import StandardResultsSetPagination
 from apps.uitls.EmailToken import token_confirm
 
 from apps.uitls.jsonserializable import DateEncoder
-from apps.uitls.permissions import IsOwnerOrReadOnly
+from apps.uitls.permissions import IsOwnerOrReadOnly, IsOwnerOrReadOnlyInfo
 from apps.user.filter import CategoryFilter
 from apps.user.models import User, Follows, VerifyCode, UserMessage, OAuthQQ
 from apps.user.serializers import UserSerializer, UserMessageSerializer
@@ -80,7 +80,8 @@ class CustomBackend(ModelBackend):
 
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
-            user = User.objects.get(Q(email=username) | Q(username=username))
+            user = User.objects.get(Q(email=username))
+            #user = User.objects.get(Q(email=username) | Q(username=username))
             if user.check_password(password):
                 return user
         except Exception as e:
@@ -116,7 +117,7 @@ def login_view(request):
                     else:
                         return redirect(reverse('home'))
                 else:
-                    return render(request, 'pc/logoin.html', {'next': next,'error':'此账号暂未激活，请联系管理员'})
+                    return render(request, 'pc/logoin.html', {'next': next,'error':'此账号暂未激活，请先激活'})
                     #return JsonResponse({"code": 401, "message": "此账号暂未激活，请联系管理员", "data": {}})
                     #return restful.unauth(message='此账号暂无权限，请联系管理员')
             else:
@@ -591,7 +592,7 @@ class UserGetInfo(mixins.UpdateModelMixin,viewsets.ReadOnlyModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
+    permission_classes = (IsAuthenticated, IsOwnerOrReadOnlyInfo)  # 未登录禁止访问
     authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
 
     def get_queryset(self):
