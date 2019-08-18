@@ -35,7 +35,7 @@
     <script src="{% static 'js/xss.js' %}"></script>
     {% block link_js %}
     {% endblock %}
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+{% comment %}<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({
 google_ad_client: "pub-1595090025336102",
@@ -47,7 +47,7 @@ enable_page_level_ads: true
           google_ad_client: "ca-pub-1595090025336102",
           enable_page_level_ads: true
      });
-</script>
+</script>{% endcomment %}
 <script>
 (function(){
     var bp = document.createElement('script');

@@ -25,16 +25,16 @@
 
             </ul>
         </div>
-{% comment %}        <div class="banner" style="background: url({% if banners.image %}
+        <div class="banner" style="background: url({% if banners.image %}
             {{ MEDIA_URL }}{{ banners.image }}
             {% else %}
             {% static  'img/banner.png'%}
-        {% endif %})no-repeat 0 50%;"></div>{% endcomment %}
+        {% endif %})no-repeat 0 50%;"></div>
     <!-- 网站banner -->
-        <ins class="adsbygoogle banner"
+   {% comment %}     <ins class="adsbygoogle banner"
      style="display:inline-block;width:880px;height:90px"
      data-ad-client="ca-pub-1595090025336102"
-     data-ad-slot="7764407434"></ins>
+     data-ad-slot="7764407434"></ins>{% endcomment %}
          <div class="blogs">
              <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">
                  <a href="{% url 'article:index' %}" class="{% if request.path|slice:'9' == '/article/' and request.path|slice:'12' != '/article/me/' %}
@@ -169,9 +169,9 @@
 {% block js %}
     <script src="{% static 'js/swiper.min.js' %}"></script>
     <script src="{% static 'js/index.js' %}"></script>
-    <script>
+{% comment %}    <script>
      (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
+</script>{% endcomment %}
 <script>
     $(function () {
         $('.fiter_nav>ul>li').mouseover(function(){
