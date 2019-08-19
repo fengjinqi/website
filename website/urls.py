@@ -68,6 +68,7 @@ urlpatterns = [
 
     #path('admins/', admin.site.urls),
     path('admin/', TemplateView.as_view(template_name='admin/index.html')),
+   # path('404/', TemplateView.as_view(template_name='500.html')),
     # path('',test), # 这是生成验证码的图片
     url(r'^captcha/', include('captcha.urls')),
     path('refresh/', captcha_refresh),  # 这是生成验证码的图片
@@ -97,5 +98,9 @@ urlpatterns = [
     url('qq', qq, name='qq'),
     url('callbackget', getClback, name='callbackget'),
     url('getClbackQQ', getClbackQQ, name='getClbackQQ'),
-    # re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATI_ROOT})  # 配置文件上传html显示
+    re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT})  # 配置文件上传html显示
 ]
+
+#全局404
+handler404='apps.user.views.page_not_found'
+handler500='apps.user.views.page_error'

@@ -195,6 +195,7 @@ STATICFILES_DIRS = (
 )
 # STATIC_ROOT 配置部署的时候才用
 
+STATIC_ROOT = os.path.join(BASE_DIR, "/static/")
 MEDIA_URL = "/upload/"   # 媒体文件别名(相对路径) 和 绝对路径
 MEDIA_ROOT = (
     os.path.join(BASE_DIR, 'upload')

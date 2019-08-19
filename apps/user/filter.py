@@ -9,7 +9,7 @@ from apps.user.models import User
 
 class CategoryFilter(django_filters.rest_framework.FilterSet):
 
-    category = django_filters.rest_framework.CharFilter(field_name='category__id', lookup_expr='icontains')
+    category = django_filters.rest_framework.CharFilter(field_name='category__id')
     title = django_filters.rest_framework.CharFilter(field_name='title', lookup_expr='icontains')
     # top_category = django_filters.rest_framework.NumberFilter(method='top_category_filter')
     #

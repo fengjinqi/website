@@ -88,7 +88,7 @@
                     {% endfor %}
                 </ul>
             </div>
-            <article class="fr">
+            <article class="fr" id="article">
                  <div class="blogs">
                      <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">最新文章</div>
                      <div id="mains">
@@ -109,19 +109,8 @@
     <script src="{% static 'js/sweetalert.min.js' %}"></script>
     <script>
         $(function () {
-            if($('.left_nav').height()>$(window).height()){
-                $('.left_nav').css('height',$(window).height()-30+'px').css('overflow-y','auto')
-            }
-              if($('article').height()<$('.left_nav').height())$('article').css('height',$('.left_nav').height()+'px')
-            $(window).scroll(function(){
-                var winPos = $(window).scrollTop();
-                var objTop = $(".left_nav").offset().top;
-                if(winPos >= 300){
-                    $('.left_nav').addClass('fix');
-                }else{
-                    $('.left_nav').removeClass('fix');
-                }
-            });
+
+
             $.ajax({
                 url:'api/PersonOthers/?pk={{ user.id }}',
                 type:'get',
@@ -421,5 +410,36 @@
                 }
             })
     }
+
+
+{% comment %}
+      if($('.left_nav').height()>$(window).height()){
+          $('.left_nav').css('height',$(window).height()-30+'px').css('overflow-y','auto')
+      }
+
+
+
+        var timer = null;
+        var objTop = $(".left_nav").offset().top;
+            $(window).scroll(function(){
+                clearTimeout(timer)
+                var winPos = $(document).scrollTop();
+                timer = setTimeout(function () {
+
+                     console.log($('article').height(),$('.left_nav').height())
+                    if($('article').height()<$('.left_nav').height()){
+                        $('article').css('height','calc(100vh)')
+                    }else{
+                        $('article').css('height','auto')
+                    }
+                      if(winPos >= objTop){
+                           $('.left_nav').addClass('fix');
+                        }else{
+                            $('.left_nav').removeClass('fix');
+                        }
+                },100)
+
+
+            });{% endcomment %}
     </script>
 {% endblock %}
