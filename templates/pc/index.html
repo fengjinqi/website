@@ -65,10 +65,9 @@
                          <h3><span class="blogs_type">{{ articles.category.name }}</span><a href="{% url 'article:detail' articles.id %}">{{ articles.title }}</a></h3>
                              <div class="blogs_info clearfix">
                                   <div class="img_animate fl ">
-                                      <a href="{% url 'article:detail' articles.id %}"><div class="blogs_pic img_cover" style="background: url({% if articles.list_pic %}
-                                      {{ MEDIA_URL }}{{ articles.list_pic }}
-
-                                      {% endif %})no-repeat;background-color: #ccc;background-size: 200px 120px !important;"></div></a>
+                                      <a href="{% url 'article:detail' articles.id %}"><div class="blogs_pic img_cover" style="{% if articles.list_pic %}
+                                      background: url({{ MEDIA_URL }}{{ articles.list_pic }})no-repeat;;
+                                      {% endif %}background-color: #ccc;background-size: 200px 120px !important;"></div></a>
                                   </div>
                                   <div class="fl blogs_describe">
                                       <p class="blogtext">{{ articles.desc|truncatechars:135 }}</p>

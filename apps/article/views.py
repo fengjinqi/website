@@ -43,27 +43,24 @@ def test(request):
     return HttpResponse('ok')
 
 
-def Article_list(request):
+def Home(request):
     """
     首页
     :param request:
     :return:
     """
-    article=Article.objects.filter(is_show=True)[:100]
-    popular = Article.objects.filter(is_show=True).order_by('click_nums')[:5]
     recommend = Recommend.objects.filter(is_recommend=True)[:10]
     seo_list = get_object_or_404(Seo, name='首页')
     qq = QQ.objects.all()
     links = link.objects.all()
     #user = Follow.objects.values('follow_id').distinct().order_by('-follow_id')
-    user = Follows.objects.values('follow_id').distinct().order_by('-follow_id')
-    item=[]
-    for i in user:
-        data={}
-        #print(User.objects.filter(follow__follow__id=i['follow_id']))
-        data['data']=User.objects.filter(follow__follow__id=i['follow_id']).distinct()
-        item.append(data)
-    #print(item)
+    # user = Follows.objects.values('follow_id').distinct().order_by('-follow_id')
+    # item=[]
+    # for i in user:
+    #     data={}
+    #     #print(User.objects.filter(follow__follow__id=i['follow_id']))
+    #     data['data']=User.objects.filter(follow__follow__id=i['follow_id']).distinct()
+    #     item.append(data)
     try:
         page = request.GET.get('page',1)
         if page == '':
@@ -71,37 +68,11 @@ def Article_list(request):
     except PageNotAnInteger:
         page = request.GET.get('page')
     # Provide Paginator with the request object for complete querystring generation
+    article = Article.objects.filter(is_show=True)[:100]
     p = Paginator(article,10,request=request)
     people = p.page(page)
-    if request.is_ajax():
-        json_dict={}
-        json_dict['data'] = []
-        data = p.page(page).object_list
-        print(people.has_next())
-        json_dict['status'] = people.has_next()
-        json_dict['num_pages'] = p.num_pages
-        json_dict['page'] = page
-        for i in data:
-            list_dict = {}
-            list_dict['title'] = i.title
-            list_dict['id'] = i.id
-            list_dict['username'] = i.authors.username
-            list_dict['userId'] = i.authors.id
-            list_dict['userImag'] = i.authors.user_imag
-            list_dict['userImage'] = i.authors.user_image
-            list_dict['category'] = i.category.name
-            list_dict['click_nums'] = i.click_nums
-            list_dict['desc'] = i.desc
-            list_dict['list_pic'] = i.list_pic
-            list_dict['add_time'] = i.add_time
-            article_comment = i.article_comment_set.all()
-            article_comment_childer = i.article_comment_set.count()
-            for i in article_comment:
-                article_comment_childer += i.articlecommentreply_set.count()
-            json_dict['data'].append(list_dict)
-        return JsonResponse(json_dict,safe=False,encoder=DateEncoder)
     banners = Banners.objects.first()
-    return render(request, 'pc/index.html', {'seo_list':seo_list,'article':people,'qq':qq,'popular':popular,'count':item,'recommend':recommend,'links':links,'banners':banners})
+    return render(request, 'pc/index.html', {'seo_list':seo_list,'article':people,'qq':qq,'recommend':recommend,'links':links,'banners':banners})
 
 
 def ArticleList(request):

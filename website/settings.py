@@ -27,7 +27,7 @@ SECRET_KEY = 'iejntz(i+3am$yj@c+fp76raf84u^tvpua299wm-0$ulj9b%#^'
 conf = ConfigParser()
 conf.read('config.ini')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -120,6 +120,7 @@ WSGI_APPLICATION = 'website.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
+
         # 'default': {
         #         'ENGINE': 'django.db.backends.sqlite3',
         #         'NAME':os.path.join(BASE_DIR,'db.sqlite3')
@@ -251,6 +252,11 @@ CELERYBEAT_SCHEDULE = {
     u'每周一进行数据库清理': {
         'task': 'apps.article.tasks.removeApi',
         'schedule': crontab(hour='*/9', minute='*/50', day_of_week='*/5'),
+        "args": ()
+    },
+    u'每天进行数据库备份': {
+        'task': 'apps.article.tasks.backups',
+        'schedule': crontab(0,1,'*','*','*'),
         "args": ()
     },
 }

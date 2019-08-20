@@ -73,7 +73,7 @@ urlpatterns = [
     url(r'^captcha/', include('captcha.urls')),
     path('refresh/', captcha_refresh),  # 这是生成验证码的图片
     path('yan/', yan),  # 这是生成验证码的图片
-    path('', views.Article_list, name='home'),
+    path('', views.Home, name='home'),
     path('54', views.test, name='54'),
     path('login/', login_view, name='index'),
     path('info/', get_message, name='info'),

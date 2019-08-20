@@ -155,3 +155,20 @@ def removeApi():
     # 查询前一周数据,也可以用range,我用的是glt,lte大于等于
     Headlines.objects.filter(add_time__lte=day).delete()
     print('======已删除=========')
+import os
+@app.task()
+def backups():
+    # 你需要导入这个模块 因为需要在shell中执行
+    os.system("/usr/bin/mysqldump website > /data/website_$(date +%Y%m%d_%H%M%S).sql")
+
+
+    print('数据库备份---')
+    # os中的system模块用来将()中的代码在shell中执行
+    # ()中的参数 "调用mysqldump  -uroot -ppassword 需要备份的数据库名 >  生成的文件名.sql"
+
+    #           二     你也可以自定义保存路径(这个文件必须存在)
+    # path = "d://新建文件夹//DB_name_table"
+    # os.system("mysql -uroot -p%s DB_name table> %s.sql" % (key,path))    #这是对DB_name中的table表进行备份
+
+    #os.system('mysqldump -uroot -pmysql website > /data/website/website_$(date +%Y%m%d_%H%M%S).sql')
+
