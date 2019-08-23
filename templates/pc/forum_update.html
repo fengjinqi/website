@@ -1,13 +1,13 @@
 {% extends 'pc/base.html' %}
 {% load static %}
 {% block title %}
-    发布帖子|{{seo_list.title }}
+    修改帖子|{{ seos.title }}
 {% endblock %}
 {% block keywords %}
-社区论坛{{ seo_list.keywords }}
+{{ forum.keywords }}
 {% endblock %}
 {% block desc %}
-社区论坛{{ seo_list.desc }}
+{{ seos.desc }}
 {% endblock %}
 {% block css %}
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
@@ -19,33 +19,36 @@
 {% endblock %}
 {% block content %}
     <section class="main">
-        <h4>发布帖子</h4>
+        <h4>修改帖子</h4>
         <form>
           <div class="form-group">
             <label >标题</label>
-            <input type="text" class="form-control validate" name="title"  placeholder="请输入帖子标题">
+            <input type="text" class="form-control validate" name="title" value="{{ forum.title }}"  placeholder="请输入帖子标题">
           </div>
           <div class="form-group">
             <label >关键字(Keywords)</label>
-            <input type="text" class="form-control" name="keywords"  placeholder="请输入关键字，以英文逗号分割，利于搜索引擎收录">
+            <input type="text" class="form-control" name="keywords" value="{{ forum.keywords }}"  placeholder="请输入关键字，以英文逗号分割，利于搜索引擎收录">
           </div>
 
             <div class="form-group">
             <label >帖子内容</label>
             <div id="test-editormd">
-                <textarea name="" class="form-control" ></textarea></div>
+                <textarea name="" class="form-control" >{{ forum.content }}</textarea></div>
             </div>
           <div class="form-group">
             <label >选择帖子分类</label>
-              <select name="category" class="form-control">
+             <select name="category" class="form-control">
                   <option value="">--请选择--</option>
-                 {% for foo in category %}
-                     <option value="{{ foo.id }}">{{ foo.name }}</option>
+                 {% for foo in plate %}
+                     {% if forum.category.name == foo.name %}
+                        <option value="{{ foo.id }}" selected="selected">{{ foo.name }}</option>
+                         {% else %}
+                            <option value="{{ foo.id }}">{{ foo.name }}</option>
+                     {% endif %}
                  {% endfor %}
-
               </select>
           </div>
-          <button type="button" class="btn btn-default" id="btn">帖子发布</button>
+          <button type="button" class="btn btn-default" id="btn" onclick="submitUpdate('{{ forum.id }}')">帖子修改</button>
         </form>
     </section>
 {% endblock %}
@@ -53,7 +56,7 @@
 
       <script>
     	var testEditor;
-            $(function() {
+        $(function() {
                 testEditor = editormd("test-editormd", {
                     width   : "100%",
                     height  : 800,
@@ -77,10 +80,10 @@
                  return true
              }
         }
-        $("#btn").on('click',function () {
-    if(validate($('.validate').val(),$('.validate')) && validate($('select').val(),$('select')) && validate(testEditor.getMarkdown(),$('#test-editormd'))){
-                $("#btn").attr('disabled',true)
-        var title = $("input[name='title']").val();
+        function submitUpdate(id) {
+            if(validate($('.validate').val(),$('.validate')) && validate($('select').val(),$('select')) && validate(testEditor.getMarkdown(),$('#test-editormd'))){
+            $("#btn").attr('disabled',true)
+            var title = $("input[name='title']").val();
         var keywords =$("input[name='keywords']").val();
         var category =$("select[name='category']").val();
         var form = new FormData()
@@ -91,7 +94,7 @@
         form.append('csrfmiddlewaretoken','{{ csrf_token }}')
         form.append('category',category)
         $.ajax({
-            url:'{% url 'forum:add' %}',
+            url:'/forum/update/'+id+'/',
             type:'post',
             contentType : false,
             data:form,
@@ -100,7 +103,7 @@
                 if(data.code==200){
                     window.location.href='{% url 'forum:forum' %}'
                 }else{
-                            $("#btn").attr('disabled',false)
+                    $("#btn").attr('disabled',false)
                      swal({
                           text: data.data,
                           icon: "error",
@@ -114,6 +117,8 @@
     }
 
 
-})
+}
+
+
     </script>
 {% endblock %}

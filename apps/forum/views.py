@@ -90,13 +90,14 @@ def add_forum(request):
     :return:
     """
     category = Forum_plate.objects.all()
+    seo_list = get_object_or_404(Seo, name='社区论坛')
     if request.method == 'POST':
         form = Forum_form(request.POST)
         if form.is_valid():
             forum = Forum()
             forum.title = form.cleaned_data.get('title')
             forum.category_id = form.cleaned_data.get('category')
-            forum.keywords = form.cleaned_data.get('keywords')
+            forum.keywords = request.POST.get('keywords')
             forum.content = form.cleaned_data.get('content')
             forum.authors = form.cleaned_data.get('authors')
             try:
@@ -105,6 +106,31 @@ def add_forum(request):
             except Exception:
                 return JsonResponse({"code": 400, "data": "发布失败"})
     return render(request,'pc/forum_add.html',locals())
+
+@login_required(login_url='/login')
+def update_forum(request,forum_id):
+    if request.method == 'GET':
+        item = get_object_or_404(Forum,pk=forum_id)
+        plate = Forum_plate.objects.all()
+        seos = get_object_or_404(Seo, name='社区论坛')
+        return render(request,'pc/forum_update.html',{'plate':plate,'seos':seos,'forum':item})
+    elif request.method == 'POST':
+        form = Forum_form(request.POST)
+        if form.is_valid():
+            forum = get_object_or_404(Forum,pk=forum_id)
+            forum.title = form.cleaned_data.get('title')
+            forum.category_id = form.cleaned_data.get('category')
+            forum.keywords = request.POST.get('keywords')
+            forum.content = form.cleaned_data.get('content')
+            forum.authors = form.cleaned_data.get('authors')
+            try:
+                forum.save()
+                return JsonResponse({"code": 200, "data": "发布成功"})
+            except Exception:
+                return JsonResponse({"code": 400, "data": "发布失败"})
+        else:
+            return JsonResponse({"code": 400, "data": "发布失败"})
+
 
 @login_required(login_url='/login')
 def delForum(request,id):
@@ -208,7 +234,7 @@ class Forum_plateView(mixins.UpdateModelMixin,mixins.CreateModelMixin,viewsets.R
     queryset = Forum_plate.objects.all()
     serializer_class = Forum_plateSerializers
     permission_classes = (IsAuthenticated, IsOwnerOr)  # 未登录禁止访问
-    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication]
 
 
 class ForumView(viewsets.ModelViewSet):
@@ -219,7 +245,7 @@ class ForumView(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated, IsOwnerOr)  # 未登录禁止访问
     filter_backends = (DjangoFilterBackend,)
     filter_class = ForumFilter
-    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication]
 
     def get_queryset(self):
         if self.request.user.is_superuser and self.request.user:
@@ -234,7 +260,7 @@ class CommentView(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializers
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
-    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [SessionAuthentication,JSONWebTokenAuthentication]
 
 
 @receiver(post_save, sender=Comment)
@@ -262,4 +288,4 @@ class Parent_CommentView(viewsets.ModelViewSet):
     queryset = Parent_Comment.objects.all()
     serializer_class = Pernents_CommentSerializers
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
-    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [SessionAuthentication,JSONWebTokenAuthentication]

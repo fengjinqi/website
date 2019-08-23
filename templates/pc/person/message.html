@@ -21,7 +21,9 @@
     <div class="meun">
         <ul>
             <li onclick="unread(this)"class="active">未读信息 <span class="badge unread" style="background-color: red;display: none;">0</span></li>
-            <li onclick="read(this)">已读信息 <span class="badge read" style="background-color: red;display: none;">0</span></li>
+            <li onclick="read(this)">已读信息
+{#                <span class="badge read" style="background-color: red;display: none;">0</span>#}
+            </li>
         </ul>
     </div>
 <div class="meun-main">
@@ -88,7 +90,13 @@
                         for (var i=0;i<data.length;i++){
                             html+="<li><div><p class='meun-main-text'>"+data[i].add_time+" "+ data[i].message+"</p><p><span onclick=see(this,"+data[i].is_supper+",'"+data[i].url+"')>查看</span><span onclick=Already(this,"+data[i].id+")>设置已读</span></p></div></li>"
                         }
-                       $('.meun-main ul').html(html)
+                        if (msg.count==0) {
+                             var html ="<li>暂无信息</li>";
+                             $('.meun-main ul').html(html)
+                        }else{
+                            $('.meun-main ul').html(html)
+                        }
+
                    // }
                     $('.M-box').pagination({
                         pageCount:Math.ceil(msg.count/10),   //总页码
@@ -147,7 +155,6 @@
                 type:'get',
                 success:function (msg) {
                     var data = msg.results;
-                    console.log(msg)
                     $('.read').text(msg.count)
                        msg.count==0?$('.read').hide():$('.read').show()
                     msg.count>=10?$('#page').show():$("#page").hide()
@@ -155,7 +162,12 @@
                     for (var i=0;i<data.length;i++){
                         html+="<li><div><p class='meun-main-text'>"+data[i].add_time+" "+ data[i].message+"</p><p><span onclick=see(this,"+data[i].is_supper+",'"+data[i].url+"')>查看</span><span onclick=remove(this,"+data[i].id+")>删除</span></p></div></li>"
                     }
-                    $('.meun-main ul').html(html)
+                      if (msg.count==0) {
+                             var html ="<li>暂无信息</li>";
+                             $('.meun-main ul').html(html)
+                        }else{
+                            $('.meun-main ul').html(html)
+                        }
                     $('.M-box').pagination({
                         pageCount:Math.ceil(msg.count/10),   //总页码
                         coping:true,                 //是否开启首页和末页
@@ -253,7 +265,6 @@
     
     
     function Already (obj,id) {
-        console.log( $('.meau_hide .badge'))
         $.ajax({
             url:"/person/message/",
             type:'post',
@@ -261,6 +272,7 @@
             headers:{'X-CSRFToken':$.cookie('csrftoken')},
             success:function (msg) {
                 $(obj).parents('li').remove()
+                $('span.badge').hide()
                 unreadCount()
                 readCount()
             }

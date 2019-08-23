@@ -407,7 +407,7 @@ class ArticleListView(viewsets.ReadOnlyModelViewSet):
     filter_backends = (DjangoFilterBackend,)
     filter_class = ArticleFilter
     permission_classes = (IsAuthenticated, IsOwnerOr)  # 未登录禁止访问
-    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication]
 
 class MeArticleListView(viewsets.ReadOnlyModelViewSet):
     """
@@ -419,7 +419,7 @@ class MeArticleListView(viewsets.ReadOnlyModelViewSet):
     filter_backends = (DjangoFilterBackend,)
     filter_class = ArticleFilter
     permission_classes = (IsAuthenticated, IsOwnerOr)  # 未登录禁止访问
-    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication]
 
     def get_queryset(self):
         return Article.objects.filter(authors_id=self.request.user.id).filter(is_show=True).order_by(
@@ -435,7 +435,7 @@ class FollowListView(viewsets.ReadOnlyModelViewSet):
     serializer_class = ArticleSerializer
     pagination_class = StandardResultsSetPagination
     permission_classes = (IsAuthenticated, IsOwnerOr)  # 未登录禁止访问
-    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication]
     def list(self, request, *args, **kwargs):
 
         queryset = Article.objects.filter(authors__follow__fan_id=self.request.user.id).filter(is_show=True).order_by('-add_time')
@@ -454,7 +454,7 @@ class ArticleCreated(mixins.CreateModelMixin,mixins.UpdateModelMixin,viewsets.Ge
     queryset = Article.objects.filter(is_show=True)
     serializer_class = ArticleCreatedSerializer
     permission_classes = (IsAuthenticated,IsOwnerOr)  # 未登录禁止访问
-    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication]
 
 
 class ArticleCommintView(mixins.CreateModelMixin,viewsets.ReadOnlyModelViewSet):
@@ -462,7 +462,7 @@ class ArticleCommintView(mixins.CreateModelMixin,viewsets.ReadOnlyModelViewSet):
     serializer_class = Article_CommentSerializerAdd
     queryset = Article_Comment.objects.all()
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
-    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [SessionAuthentication,JSONWebTokenAuthentication]
 
 @receiver(post_save, sender=Article_Comment)
 def my_callback(sender, **kwargs):
@@ -488,7 +488,7 @@ class ArticleCommentReplyView(mixins.CreateModelMixin,viewsets.GenericViewSet):
     serializer_class = ArticleCommentReplySerializer
     queryset = ArticleCommentReply.objects.all()
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
-    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [SessionAuthentication,JSONWebTokenAuthentication]
 
 @receiver(post_save, sender=ArticleCommentReply)
 def my_callback_reply(sender, **kwargs):
@@ -513,7 +513,7 @@ class CategoryView(mixins.UpdateModelMixin,mixins.CreateModelMixin,viewsets.Read
     queryset = Category_Article.objects.all()
     serializer_class = Category_ArticleSerializer
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
-    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication]
 
 
 
@@ -522,4 +522,4 @@ class ArticleCommit(viewsets.ModelViewSet):
     queryset = Recommend.objects.filter(is_recommend=True)
     serializer_class = ArticleCommitSerializer
     permission_classes = (IsAuthenticated,)  # 未登录禁止访问
-    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication]

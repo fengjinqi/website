@@ -22,7 +22,7 @@ class BannerList(viewsets.ModelViewSet):
     queryset = Banners.objects.all()
     serializer_class = BannersSerializer
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
-    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication]
     pagination_class = StandardResultsSetPagination
 
 
@@ -31,7 +31,7 @@ class EmailsList(viewsets.ModelViewSet):
     queryset = Emails.objects.all()
     serializer_class = EmailsSerializer
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
-    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication]
     pagination_class = StandardResultsSetPagination
 
 
@@ -39,7 +39,7 @@ class LinkList(viewsets.ModelViewSet):
     queryset = link.objects.all()
     serializer_class = LinkSerializer
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
-    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication]
     pagination_class = StandardResultsSetPagination
 
 
@@ -47,7 +47,7 @@ class QQList(viewsets.ModelViewSet):
     queryset = QQ.objects.all()
     serializer_class = QQSerializer
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
-    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication]
 
 
 class SeoList(mixins.CreateModelMixin,mixins.DestroyModelMixin,mixins.ListModelMixin,mixins.UpdateModelMixin,mixins.RetrieveModelMixin,viewsets.GenericViewSet):

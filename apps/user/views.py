@@ -507,7 +507,7 @@ class PersonApiabstohr(viewsets.ReadOnlyModelViewSet):
     serializer_class = ArticleSerializer
     filter_backends = (DjangoFilterBackend,)
     filter_class = CategoryFilter
-    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication]
     pagination_class = StandardResultsSetPagination
 
 
@@ -516,6 +516,7 @@ class PersonApi(PersonApiabstohr):
     个人中心
     """
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
+    authentication_classes = [JSONWebTokenAuthentication,SessionAuthentication]
     # def list(self, request, *args, **kwargs):
     #         queryset =  Article_add.objects.filter(authors_id=self.request.user.id).order_by('-add_time')
     #         serializer = ArticleSerializer(queryset, many=True)
@@ -562,7 +563,7 @@ class UserGetAllInfo(mixins.ListModelMixin,mixins.UpdateModelMixin,mixins.Retrie
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
-    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication]
     pagination_class = StandardResultsSetPagination
 
     def update(self, request, *args, **kwargs):
@@ -593,7 +594,7 @@ class UserGetInfo(mixins.UpdateModelMixin,viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnlyInfo)  # 未登录禁止访问
-    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication]
 
     def get_queryset(self):
         return User.objects.filter(pk=self.request.user.id)
@@ -620,7 +621,7 @@ class UserMessages(mixins.ListModelMixin,mixins.DestroyModelMixin,mixins.UpdateM
     queryset = UserMessage.objects.all()
     serializer_class = UserMessageSerializer
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
-    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication,SessionAuthentication]
     pagination_class = StandardResultsSetPagination
     def list(self, request, *args, **kwargs):
         if self.request.query_params.get('type'):

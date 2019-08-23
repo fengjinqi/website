@@ -10,6 +10,7 @@
     <meta name="360-site-verification" content="809891f94b37ddaef0edde649234de9e" />
     <meta name="baidu-site-verification" content="ERi24bXcVX" />
     <meta name="msvalidate.01" content="E02DAEAC571668CD032A487D5EFF5F01" />
+    <meta name="google-site-verification" content="6o-HaRvScQ73katZaLAhzdYHe8ml7c69maH1G3zX6KY" />
     <meta name="keywords" content="{% block keywords %}
     {% endblock %}">
     <meta name="description" content="{% block desc %}
@@ -33,6 +34,8 @@
     <script src="{% static 'js/jquery.cookie.min.js' %}"></script>
     <script src="{% static 'js/public.js' %}"></script>
     <script src="{% static 'js/xss.js' %}"></script>
+    <script src="{% static 'js/promise.min.js' %}"></script>
+    <script src="{% static 'js/sweetalert.min.js' %}"></script>
     {% block link_js %}
     {% endblock %}
 {% comment %}<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -136,7 +139,7 @@ document.write('<script src="' + src + '" id="sozz"><\/script>');
                         </a>
                         <ul class="meau meau_hide">
                             <li><a href="{% url 'user:person' %}">个人中心</a></li>
-                         <li><a href="{% url 'user:message' %}">消息<span class="badge"></span></a></li>
+                         <li><a href="{% url 'user:message' %}">消息<span class="badge" style="display: none;"></span></a></li>
                             {% if user.is_staff  %}
                                 <li><a href="/admin">系统管理</a></li>
                             {% endif %}
@@ -172,6 +175,7 @@ document.write('<script src="' + src + '" id="sozz"><\/script>');
                 $('span.badge').text(data.count)
                 if(data.count>0){
                     $("#yuan").show()
+                     $('span.badge').show()
                 }
             }
         })

@@ -38,7 +38,7 @@ class Forum_plate(models.Model):
 class Forum(models.Model):
     """帖子表"""
     id = models.UUIDField(default=uuid.uuid4,primary_key=True)
-    title = models.CharField(max_length = 255, unique = True)
+    title = models.CharField(max_length = 255)
     keywords = models.CharField(max_length=200,verbose_name='关键字',default='',blank=True,null=True)
     category = models.ForeignKey(Forum_plate, verbose_name='板块名称',on_delete=models.CASCADE)
     content = models.TextField(u"内容")

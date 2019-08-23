@@ -65,7 +65,7 @@ class CoursesList(viewsets.ReadOnlyModelViewSet):
     queryset = Courses.objects.filter(is_delete=False)
     serializer_class = CourseSerializers
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
-    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication]
     pagination_class = StandardResultsSetPagination
 
 
@@ -75,7 +75,7 @@ class MeCoursesList(viewsets.ReadOnlyModelViewSet):
     queryset = Courses.objects.filter(is_delete=False)
     serializer_class = CourseSerializers
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
-    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication]
     pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
@@ -86,7 +86,7 @@ class CourseCreatedList(mixins.CreateModelMixin,mixins.UpdateModelMixin,viewsets
     serializer_class = CreatedCourseSerializers
     pagination_class = StandardResultsSetPagination
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
-    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication]
     filter_backends = (DjangoFilterBackend,)
     filter_class = CoursesFilter
 
@@ -95,5 +95,5 @@ class CourseListCreated(mixins.CreateModelMixin,mixins.UpdateModelMixin,viewsets
     queryset = CourseList.objects.all()
     serializer_class = AddtutorialSerializers
     permission_classes = (IsAuthenticated, IsOwnerOrRead)  # 未登录禁止访问
-    authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication]
 

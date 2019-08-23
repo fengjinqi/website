@@ -94,6 +94,7 @@
         }
         $("#btn").on('click',function () {
     if(validate($('.validate').val(),$('.validate')) && validate($('select').val(),$('select')) && validate(testEditor.getMarkdown(),$('#test-editormd'))){
+         $("#btn").attr('disabled',true)
         var title = $("input[name='title']").val();
         var desc = $("input[name='desc']").val();
         var keywords =$("input[name='keywords']").val();
@@ -117,6 +118,12 @@
             success:function (data) {
                 if(data.code==200){
                     window.location.href='{% url 'home' %}'
+                }else{
+                    swal({
+                          text: data.data,
+                          icon: "error",
+                        })
+                     $("#btn").attr('disabled',false)
                 }
             },
         error:function (xhr) {

@@ -10,7 +10,6 @@
 
 {% block css %}
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-    <link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
 
     <link rel="stylesheet" href="{% static 'css/article_detail.css' %}">
@@ -142,9 +141,7 @@
 {% endblock %}
 
 {% block js %}
-    <script src="{% static 'js/index.js' %}"></script>
-    <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
-
+    <script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
     <script>
     html="<div class='clearfix text'><textarea name=''class='form-control' rows='5'></textarea><button class='btn btn-primary fr 'onclick=\"masks(this)\">评论</button></div>";
         function establish(obj) {

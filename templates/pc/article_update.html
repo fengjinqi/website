@@ -83,8 +83,7 @@
     </section>
 {% endblock %}
 {% block js %}
- <script src="{% static 'js/promise.min.js' %}"></script>
-<script src="{% static 'js/sweetalert.min.js' %}"></script>
+
 <script>
     var testEditor;
     $(function() {
@@ -120,6 +119,7 @@
     }
     $("#btn").on('click',function () {
         if(validate($('.validate').val(),$('.validate')) && validate($('select').val(),$('select')) && validate(testEditor.getMarkdown(),$('#test-editormd'))){
+            $("#btn").attr('disabled',true)
             var title = $("input[name='title']").val();
             var desc = $("input[name='desc']").val();
             var keywords =$("input[name='keywords']").val();
@@ -147,6 +147,7 @@
                     if(data.code==200){
                        window.location.href='{% url 'home' %}'
                     }else{
+                         $("#btn").attr('disabled',false)
                         swal({
                           text: data.data,
                           icon: "error",
