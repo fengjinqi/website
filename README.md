@@ -34,7 +34,11 @@ Django>=2.0.8
 
 
 # 移动端
-(待续。。。采用React开发)
+项目已启动开发，采用react开发，
+
+**架构**
+
+react、react-router-dom、redux、react-redux、redux-thunk，antd-mobile，项目地址：https://github.com/fengjinqi/website-react-webapp
 
 # 使用方法
 

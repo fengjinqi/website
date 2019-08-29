@@ -245,7 +245,7 @@ class ForumView(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated, IsOwnerOr)  # 未登录禁止访问
     filter_backends = (DjangoFilterBackend,)
     filter_class = ForumFilter
-    authentication_classes = [JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication,SessionAuthentication]
 
     def get_queryset(self):
         if self.request.user.is_superuser and self.request.user:
@@ -254,8 +254,8 @@ class ForumView(viewsets.ModelViewSet):
             return Forum.objects.filter(authors=self.request.user)
 
 
-
 class CommentView(viewsets.ModelViewSet):
+
     """TODO 评论"""
     queryset = Comment.objects.all()
     serializer_class = CommentSerializers
@@ -281,9 +281,8 @@ def my_callback(sender, **kwargs):
     message.save()
 
 
-
-
 class Parent_CommentView(viewsets.ModelViewSet):
+
     """TODO 评论回复"""
     queryset = Parent_Comment.objects.all()
     serializer_class = Pernents_CommentSerializers
