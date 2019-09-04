@@ -83,7 +83,7 @@ def ArticleList(request):
     """
     seo_list = get_object_or_404(Seo, name='文章')
     article = Article.objects.filter(is_show=True)
-    category = Category_Article.objects.all()
+    category = Category_Article.objects.all().order_by('order')
     type = request.GET.get('type', '')
     try:
         page = request.GET.get('page', 1)
@@ -99,8 +99,6 @@ def ArticleList(request):
 
     headlines = Headlines.objects.all()[:30]
     banners = Banners.objects.first()
-
-
     return render(request, 'pc/article.html', {'seo_list':seo_list,'article': people,'category':category,'Headlines':headlines,'banners':banners})
 
 
@@ -153,9 +151,6 @@ def api(request):
 
 
     return HttpResponse({'ee':'43'})
-
-
-
 
 
 from apps.article.tasks import add, error_email, conf

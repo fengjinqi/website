@@ -1,5 +1,7 @@
 #!/usr/bin/python  
 # -*- coding:utf-8 -*-
+import datetime
+
 from apps.article.models import Article
 from django import template
 
@@ -17,4 +19,7 @@ def get_aside():
 
 @register.simple_tag
 def get_categories():
-    return Article.objects.filter(is_show=True).order_by('-click_nums')[:5]
+    cur_date = datetime.datetime.now().date()
+    yester_day = cur_date - datetime.timedelta(days=30)
+
+    return Article.objects.filter(add_time__gte=yester_day,is_show=True).order_by('-click_nums')[:5]

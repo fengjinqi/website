@@ -14,7 +14,7 @@ register = template.Library()
 @register.inclusion_tag('pc/aside/forum_side.html')
 def get_fourm():
     qq = QQ.objects.all()
-    fourm = Forum.objects.filter(category__name='求职招聘')[:10]
+    fourm = Forum.objects.filter(hidden=False,category__name='求职招聘')[:10]
     sessions = Session.objects.filter(expire_date__gte=datetime.now()).count()
     #print(get_online_count())
 
@@ -22,6 +22,6 @@ def get_fourm():
     cur_date = now().date() + timedelta(days=0)
     days = Forum.objects.filter(add_time__gte=cur_date).count()
     count = Forum.objects.count()
-    Hottest = Forum.objects.order_by('-click_nums')[:10]
+    Hottest = Forum.objects.filter(hidden=False).order_by('-click_nums')[:10]
     return {'fourm':fourm,'qq':qq,'user':user,'sessions':sessions,'days':days,'count':count,'Hottest':Hottest}
 

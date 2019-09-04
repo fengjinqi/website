@@ -13,6 +13,7 @@ class Category_Article(models.Model):
     分类
     """
     name = models.CharField(max_length=100)
+    order = models.IntegerField(default=0,verbose_name='排序')
     add_time = models.DateTimeField(default=datetime.now)
     class Meta:
         verbose_name = '分类'
