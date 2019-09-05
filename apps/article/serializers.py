@@ -13,10 +13,10 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('username','user_imag','id','user_image')
 
 
-class UsersSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id',)
+# class UsersSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = User
+#         fields = ('id',)
 
 
 class Category_ArticleSerializer(serializers.ModelSerializer):
@@ -41,7 +41,8 @@ class ArticleCommentReplySerializer(serializers.ModelSerializer):
 class ArticleCommentReplySerializer1(serializers.ModelSerializer):
     """回复"""
     user = UserSerializer()
-    to_uids = UsersSerializer()
+    to_uids = UserSerializer()
+    add_time = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
     class Meta:
         model = ArticleCommentReply
         fields = '__all__'
@@ -60,6 +61,7 @@ class Article_CommentSerializer(serializers.ModelSerializer):
     #         return
     #sub_cat = Article_CommentSerializer1(many=True)
     user = UserSerializer()
+    add_time = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
     articlecommentreply_set = ArticleCommentReplySerializer1(many=True,read_only=True)
 
     class Meta:

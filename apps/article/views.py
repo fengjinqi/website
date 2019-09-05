@@ -13,7 +13,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, mixins
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 import requests
 import urllib3
@@ -401,8 +401,8 @@ class ArticleListView(viewsets.ReadOnlyModelViewSet):
     pagination_class = StandardResultsSetPagination
     filter_backends = (DjangoFilterBackend,)
     filter_class = ArticleFilter
-    permission_classes = (IsAuthenticated, IsOwnerOr)  # 未登录禁止访问
-    authentication_classes = [JSONWebTokenAuthentication]
+    #permission_classes = (IsAuthenticated, IsOwnerOr)  # 未登录禁止访问
+    #authentication_classes = [JSONWebTokenAuthentication]
 
 class MeArticleListView(viewsets.ReadOnlyModelViewSet):
     """
@@ -453,11 +453,29 @@ class ArticleCreated(mixins.CreateModelMixin,mixins.UpdateModelMixin,viewsets.Ge
 
 
 class ArticleCommintView(mixins.CreateModelMixin,viewsets.ReadOnlyModelViewSet):
+
     """TODO 評論"""
-    serializer_class = Article_CommentSerializerAdd
+    #serializer_class = Article_CommentSerializerAdd
     queryset = Article_Comment.objects.all()
-    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
+    #permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
     authentication_classes = [SessionAuthentication,JSONWebTokenAuthentication]
+
+    def get_permissions(self):
+        if self.action == 'list':
+            return []
+        elif self.action =='retrieve':
+            return []
+        else:
+            return [IsAuthenticated(),IsOwnerOrReadOnly()]
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return Article_CommentSerializer
+        elif self.action == 'retrieve':
+            return Article_CommentSerializer
+        else:
+            return Article_CommentSerializerAdd
+
 
 @receiver(post_save, sender=Article_Comment)
 def my_callback(sender, **kwargs):
