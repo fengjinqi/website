@@ -37,6 +37,7 @@ class OAuthQQ(models.Model):
     qq_openid = models.CharField(max_length=100)
     figureurl_qq = models.URLField()
 
+
 class Follows(models.Model):
     """关注表"""
     follow = models.ForeignKey(User,on_delete=models.CASCADE,related_name='follow',verbose_name='被关注的，作者')

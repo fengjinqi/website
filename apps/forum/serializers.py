@@ -45,22 +45,32 @@ class ForumSerializers(serializers.ModelSerializer):
         fields ='__all__'
 
 
-
+class Pernents_CommentSerializers(serializers.ModelSerializer):
+    """
+    评论回复
+    """
+    #parent_comments = CommentSerializers()
+    add_time = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+    class Meta:
+        model = Parent_Comment
+        fields = '__all__'
 
 class CommentSerializers(serializers.ModelSerializer):
     """
     评论
     """
+    add_time = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+    parent_comment_set = Pernents_CommentSerializers(many=True)
     class Meta:
         model = Comment
         fields = '__all__'
 
+class CommentSerializersAdd(serializers.ModelSerializer):
+    """
+    评论
+    """
 
-class Pernents_CommentSerializers(serializers.ModelSerializer):
-    """
-    评论回复
-    """
-    parent_comments = CommentSerializers()
     class Meta:
-        model = Parent_Comment
+        model = Comment
         fields = '__all__'
+

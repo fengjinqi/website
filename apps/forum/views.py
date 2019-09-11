@@ -22,7 +22,7 @@ from apps.forum.filter import ForumFilter
 from apps.forum.forms import Forum_form, ParentComment
 from apps.forum.models import Forum_plate, Forum, Comment, Parent_Comment
 from apps.forum.serializers import Forum_plateSerializers, ForumSerializers, CommentSerializers, \
-    Pernents_CommentSerializers
+    Pernents_CommentSerializers, CommentSerializersAdd
 from apps.support.models import Seo
 from apps.uitls.permissions import IsOwnerOr, IsOwnerOrReadOnly
 from apps.user.models import UserMessage, User
@@ -242,25 +242,52 @@ class ForumView(viewsets.ModelViewSet):
     queryset = Forum.objects.filter(hidden=False)
     serializer_class = ForumSerializers
     pagination_class = StandardResultsSetPagination
-    permission_classes = (IsAuthenticated, IsOwnerOr)  # 未登录禁止访问
+    #permission_classes = (IsAuthenticated, IsOwnerOr)  # 未登录禁止访问
     filter_backends = (DjangoFilterBackend,)
     filter_class = ForumFilter
     authentication_classes = [JSONWebTokenAuthentication,SessionAuthentication]
 
+    def get_permissions(self):
+        if self.action == 'list':
+            return []
+        elif self.action == 'retrieve':
+            return []
+        else:
+            return [IsAuthenticated(), IsOwnerOr()]
+
     def get_queryset(self):
         if self.request.user.is_superuser and self.request.user:
             return Forum.objects.filter(hidden=False)
+        elif self.request.user.is_active:
+            return Forum.objects.filter(authors=self.request.user,hidden=False)
         else:
-            return Forum.objects.filter(authors=self.request.user)
+            return Forum.objects.filter(hidden=False)
 
 
 class CommentView(viewsets.ModelViewSet):
 
     """TODO 评论"""
     queryset = Comment.objects.all()
-    serializer_class = CommentSerializers
-    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
+    #serializer_class = CommentSerializers
+    #permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
     authentication_classes = [SessionAuthentication,JSONWebTokenAuthentication]
+
+    def get_permissions(self):
+        if self.action == 'list':
+            return []
+        elif self.action == 'retrieve':
+            return []
+        else:
+            return [IsAuthenticated(), IsOwnerOrReadOnly()]
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return CommentSerializers
+        elif self.action == 'retrieve':
+            return CommentSerializers
+        else:
+            return CommentSerializersAdd
+
 
 
 @receiver(post_save, sender=Comment)
@@ -288,3 +315,23 @@ class Parent_CommentView(viewsets.ModelViewSet):
     serializer_class = Pernents_CommentSerializers
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
     authentication_classes = [SessionAuthentication,JSONWebTokenAuthentication]
+
+
+@receiver(post_save, sender=Parent_Comment)
+def my_callback_reply(sender, **kwargs):
+    """
+    评论通知
+    :param sender:
+    :param kwargs:
+    :return:
+    """
+    message = UserMessage()
+
+    message.user=kwargs['instance'].to_Parent_Comments
+    message.ids = kwargs['instance'].forums.id
+    message.to_user_id = kwargs['instance'].user_id
+    message.has_read = False
+
+    message.url =kwargs['instance'].url
+    message.message="你参与的%s帖子评论有人回复了,快去看看吧!"%kwargs['instance'].forums.title
+    message.save()

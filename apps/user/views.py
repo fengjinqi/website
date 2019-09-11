@@ -38,7 +38,7 @@ from apps.uitls.jsonserializable import DateEncoder
 from apps.uitls.permissions import IsOwnerOrReadOnly, IsOwnerOrReadOnlyInfo
 from apps.user.filter import CategoryFilter
 from apps.user.models import User, Follows, VerifyCode, UserMessage, OAuthQQ
-from apps.user.serializers import UserSerializer, UserMessageSerializer
+from apps.user.serializers import UserSerializer, UserMessageSerializer, FollowsSerializer
 from website import settings
 from .forms import CaptchaTestForm, LoginForms, Follow_Forms, RegisterForm, ModifyForm, EmailForm, InfoForm
 from rest_framework import viewsets, mixins, status, permissions
@@ -557,6 +557,20 @@ class PersonOthers(PersonApiabstohr):
         user_id = self.request.query_params.get('pk')
         if user_id:
             return Article.objects.filter(authors_id=user_id).filter(is_show=True).order_by('-add_time')
+
+class UserFollows(viewsets.ReadOnlyModelViewSet):
+    queryset = Follows.objects.all()
+    serializer_class = FollowsSerializer
+    permission_classes = (IsAuthenticated,)  # 未登录禁止访问
+    authentication_classes = [JSONWebTokenAuthentication,SessionAuthentication]
+    pagination_class = StandardResultsSetPagination
+
+    def get_queryset(self):
+
+        if self.request.query_params.get('fan'):
+            return Follows.objects.filter(follow=self.request.user)
+        elif self.request.query_params.get('follow'):
+            return  Follows.objects.filter(fan=self.request.user)
 
 
 class UserGetAllInfo(mixins.ListModelMixin,mixins.UpdateModelMixin,mixins.RetrieveModelMixin,viewsets.GenericViewSet):

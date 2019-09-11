@@ -3,7 +3,7 @@
 from rest_framework import serializers
 from apps.article.models import User
 from apps.article.serializers import ArticleSerializer
-from apps.user.models import UserMessage
+from apps.user.models import UserMessage, Follows
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -26,4 +26,11 @@ class UserMessageSerializer(serializers.ModelSerializer):
     add_time = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
     class Meta:
         model = UserMessage
+        fields = '__all__'
+
+
+class FollowsSerializer(serializers.ModelSerializer):
+    fan = UserSerializer()
+    class Meta:
+        model = Follows
         fields = '__all__'
