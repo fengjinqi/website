@@ -30,7 +30,23 @@ class UserMessageSerializer(serializers.ModelSerializer):
 
 
 class FollowsSerializer(serializers.ModelSerializer):
+
+    def to_representation(self, instance):
+        access = None
+        res = super(FollowsSerializer, self).to_representation(instance=instance)
+        is_active = Follows.objects.filter(follow=res.get('fan')['id'], fan=res.get('follow')['id']).exists()
+        access=is_active
+        res.setdefault('access', access)
+        return res
     fan = UserSerializer()
+    follow = UserSerializer()
+    class Meta:
+        model = Follows
+        fields = '__all__'
+
+
+class FollowsSerializerAdd(serializers.ModelSerializer):
+
     class Meta:
         model = Follows
         fields = '__all__'

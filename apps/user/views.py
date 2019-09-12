@@ -26,6 +26,7 @@ from rest_framework import filters
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.settings import api_settings
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from apps.article.models import Article, Category_Article
@@ -38,7 +39,7 @@ from apps.uitls.jsonserializable import DateEncoder
 from apps.uitls.permissions import IsOwnerOrReadOnly, IsOwnerOrReadOnlyInfo
 from apps.user.filter import CategoryFilter
 from apps.user.models import User, Follows, VerifyCode, UserMessage, OAuthQQ
-from apps.user.serializers import UserSerializer, UserMessageSerializer, FollowsSerializer
+from apps.user.serializers import UserSerializer, UserMessageSerializer, FollowsSerializer, FollowsSerializerAdd
 from website import settings
 from .forms import CaptchaTestForm, LoginForms, Follow_Forms, RegisterForm, ModifyForm, EmailForm, InfoForm
 from rest_framework import viewsets, mixins, status, permissions
@@ -558,19 +559,49 @@ class PersonOthers(PersonApiabstohr):
         if user_id:
             return Article.objects.filter(authors_id=user_id).filter(is_show=True).order_by('-add_time')
 
-class UserFollows(viewsets.ReadOnlyModelViewSet):
+
+class UserFollows(viewsets.ModelViewSet):
     queryset = Follows.objects.all()
-    serializer_class = FollowsSerializer
     permission_classes = (IsAuthenticated,)  # 未登录禁止访问
     authentication_classes = [JSONWebTokenAuthentication,SessionAuthentication]
     pagination_class = StandardResultsSetPagination
 
-    def get_queryset(self):
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return FollowsSerializer
+        elif self.action == 'retrieve':
+            return FollowsSerializer
+        else:
+            return FollowsSerializerAdd
 
+    def get_queryset(self):
         if self.request.query_params.get('fan'):
             return Follows.objects.filter(follow=self.request.user)
         elif self.request.query_params.get('follow'):
             return  Follows.objects.filter(fan=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        headers = self.get_success_headers(serializer.data)
+        if serializer.data.get('fan')==serializer.data.get('follow'):
+            return Response({"message":"不能自己关注自己"}, status=status.HTTP_201_CREATED, headers=headers)
+        elif Follows.objects.filter(fan=serializer.data.get('fan'),follow=serializer.data.get('follow')).exists():
+            return Response({"message": "不能重复关注"}, status=status.HTTP_201_CREATED, headers=headers)
+        else:
+            self.perform_create(serializer)
+            return Response({"message": "关注成功"}, status=status.HTTP_201_CREATED, headers=headers)
+
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+    def get_success_headers(self, data):
+        try:
+            return {'Location': str(data[api_settings.URL_FIELD_NAME])}
+        except (TypeError, KeyError):
+            return {}
 
 
 class UserGetAllInfo(mixins.ListModelMixin,mixins.UpdateModelMixin,mixins.RetrieveModelMixin,viewsets.GenericViewSet):
