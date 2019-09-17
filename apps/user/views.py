@@ -585,17 +585,16 @@ class UserFollows(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
 
         headers = self.get_success_headers(serializer.data)
-        if serializer.data.get('fan')==serializer.data.get('follow'):
+        #if serializer.data.get('fan')==serializer.data.get('follow'):
+        if serializer.validated_data['fan']==serializer.validated_data['follow']:
             return Response({"message":"不能自己关注自己"}, status=status.HTTP_201_CREATED, headers=headers)
-        elif Follows.objects.filter(fan=serializer.data.get('fan'),follow=serializer.data.get('follow')).exists():
+        #elif Follows.objects.filter(fan=serializer.data.get('fan'),follow=serializer.data.get('follow')).exists():
+        elif Follows.objects.filter(fan=serializer.validated_data['fan'],follow=serializer.validated_data['follow']).exists():
             return Response({"message": "不能重复关注"}, status=status.HTTP_201_CREATED, headers=headers)
         else:
-            self.perform_create(serializer)
+            save = Follows(follow=serializer.validated_data['follow'],fan=serializer.validated_data['fan'])
+            save.save()
             return Response({"message": "关注成功"}, status=status.HTTP_201_CREATED, headers=headers)
-
-
-    def perform_create(self, serializer):
-        serializer.save()
 
     def get_success_headers(self, data):
         try:

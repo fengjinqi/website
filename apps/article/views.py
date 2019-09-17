@@ -525,9 +525,16 @@ class CategoryView(mixins.UpdateModelMixin,mixins.CreateModelMixin,viewsets.Read
     """TODO 分類"""
     queryset = Category_Article.objects.all()
     serializer_class = Category_ArticleSerializer
-    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
+    #permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
     authentication_classes = [JSONWebTokenAuthentication]
 
+    def get_permissions(self):
+        if self.action == 'list':
+            return []
+        elif self.action == 'retrieve':
+            return []
+        else:
+            return [IsAuthenticated(),IsOwnerOrReadOnly()]
 
 
 class ArticleCommit(viewsets.ModelViewSet):
