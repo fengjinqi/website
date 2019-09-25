@@ -80,4 +80,41 @@ Celery -A website worker -l info
 Celery -A website beat -l info
 
 supervisord -c conf/supervisord.conf
+
+【进程管理】
+
+1. 启动supervisord管理的所有进程
+
+supervisorctl start all
+
+2. 停止supervisord管理的所有进程
+
+supervisorctl stop all
+
+3. 启动supervisord管理的某一个特定进程
+
+supervisorctl start program-name // program-name为[program:xx]中的xx
+
+4.  停止supervisord管理的某一个特定进程 
+
+supervisorctl stop program-name  // program-name为[program:xx]中的xx
+
+5.  重启所有进程或所有进程
+
+supervisorctl restart all  // 重启所有
+
+supervisorctl reatart program-name // 重启某一进程，program-name为[program:xx]中的xx
+
+6. 查看supervisord当前管理的所有进程的状态
+
+supervisorctl status
+
+【遇到问题及解决方案】
+
+在使用命令supervisorctl start all启动控制进程时，遇到如下错误
+
+unix:///tmp/supervisor.sock no such file
+
+出现上述错误的原因是supervisord并未启动，只要在命令行中使用命令sudo supervisord启动supervisord即可。
+
 #(ps:项目还在开发中，若有更好的建议或者功能请联系我qq:1218525402,邮箱：fengjinqi@fengjinqi.com)

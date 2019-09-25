@@ -561,6 +561,9 @@ class PersonOthers(PersonApiabstohr):
 
 
 class UserFollows(viewsets.ModelViewSet):
+    """
+    关注
+    """
     queryset = Follows.objects.all()
     permission_classes = (IsAuthenticated,)  # 未登录禁止访问
     authentication_classes = [JSONWebTokenAuthentication,SessionAuthentication]
@@ -650,12 +653,13 @@ class UserGetInfo(mixins.UpdateModelMixin,viewsets.ReadOnlyModelViewSet):
         users.info = request.data['info']
         users.position = request.data['position']
         if request.data['list_pic']:
-
             users.user_imag = request.data['list_pic']
             users.save()
             return Response({'success': 'ok'})
         users.save()
         return Response({'success': 'ok'})
+
+
 
 
 class UserMessages(mixins.ListModelMixin,mixins.DestroyModelMixin,mixins.UpdateModelMixin,viewsets.GenericViewSet):

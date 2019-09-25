@@ -52,6 +52,42 @@
 {% block js %}
 
       <script>
+      document.getElementById('test-editormd').addEventListener('paste',function(e){
+        if ( !(e.clipboardData && e.clipboardData.items) ) {
+            return;
+        }
+        for (var i = 0, len = e.clipboardData.items.length; i < len; i++) {
+            var item = e.clipboardData.items[i];
+            if (item.kind === "string") {
+                item.getAsString(function (str) {
+                    //console.log(str);
+                })
+            } else if (item.kind === "file") {
+                var f= item.getAsFile();
+                let form =new FormData()
+                form.append('editormd-image-file',f)
+                $.ajax({
+                    contentType : false,
+                    processData:false,
+                    url:'/article/blog_img_upload/',
+                    type:'post',
+                    data:form,
+                     beforeSend:function(){
+                        $("body").append("<p class='loading'><img src='/static/img/5-121204193R5-50.gif'></p>")
+                    },
+                    success:function (res) {
+                          $('.loading').remove()
+                        if(res.success==1)testEditor.insertValue("![]("+res.url+")");
+                    },
+                    error:function (err) {
+                          $('.loading').remove()
+                        console.log(err)
+                    }
+                })
+            }
+        }
+    });
+
     	var testEditor;
             $(function() {
                 testEditor = editormd("test-editormd", {

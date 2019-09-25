@@ -17,6 +17,12 @@
     pre span{
         display: initial!important;
     }
+    .loading{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        z-index: 999;
+    }
     </style>
 {% endblock %}
 {% block link_js %}
@@ -72,14 +78,50 @@
 {% block js %}
 
       <script>
+      document.getElementById('test-editormd').addEventListener('paste',function(e){
+        if ( !(e.clipboardData && e.clipboardData.items) ) {
+            return;
+        }
+        for (var i = 0, len = e.clipboardData.items.length; i < len; i++) {
+            var item = e.clipboardData.items[i];
+            if (item.kind === "string") {
+                item.getAsString(function (str) {
+                    //console.log(str);
+                })
+            } else if (item.kind === "file") {
+                var f= item.getAsFile();
+                let form =new FormData()
+                form.append('editormd-image-file',f)
+                $.ajax({
+                    contentType : false,
+                    processData:false,
+                    url:'/article/blog_img_upload/',
+                    type:'post',
+                    data:form,
+                     beforeSend:function(){
+                        $("body").append("<p class='loading'><img src='/static/img/5-121204193R5-50.gif'></p>")
+                    },
+                    success:function (res) {
+                          $('.loading').remove()
+                        if(res.success==1)testEditor.insertValue("![]("+res.url+")");
+                    },
+                    error:function (err) {
+                          $('.loading').remove()
+                        console.log(err)
+                    }
+                })
+            }
+        }
+    });
+
     	var testEditor;
-            $(function() {
+        $(function() {
                 testEditor = editormd("test-editormd", {
                     width   : "100%",
                     height  : 800,
                     syncScrolling : "single",
                     path    : "/static/markdown/lib/",
-
+                    flowChart : true,
                     saveHTMLToTextarea : true,//注意3：这个配置，textarea可以提交
                      emoji: true,//emoji表情，默认关闭
                     /**上传图片相关配置如下*/
@@ -98,48 +140,48 @@
              }
         }
         $("#btn").on('click',function () {
-    if(validate($('.validate').val(),$('.validate')) && validate($('select').val(),$('select')) && validate(testEditor.getMarkdown(),$('#test-editormd'))){
-         $("#btn").attr('disabled',true)
-        var title = $("input[name='title']").val();
-        var desc = $("input[name='desc']").val();
-        var keywords =$("input[name='keywords']").val();
-        var list_pic =$("input[name='list_pic']")[0].files[0];
-        var category =$("select[name='category']").val();
-        var form = new FormData()
-        form.append('authors','{{ request.user.id }}')
-        form.append('title',title)
-        form.append('desc',desc)
-        form.append('keywords',keywords)
-        form.append('list_pic',list_pic)
-        form.append('content',testEditor.getMarkdown())
-        form.append('csrfmiddlewaretoken','{{ csrf_token }}')
-        form.append('category',category)
-        $.ajax({
-            url:'/article/created/',
-            type:'post',
-            contentType : false,
-            data:form,
-            processData:false,
-            success:function (data) {
-                if(data.code==200){
-                    window.location.href='{% url 'home' %}'
-                }else{
-                    swal({
-                          text: data.data,
-                          icon: "error",
-                        })
-                     $("#btn").attr('disabled',false)
-                }
-            },
-        error:function (xhr) {
-            console.log(xhr)
+        if(validate($('.validate').val(),$('.validate')) && validate($('select').val(),$('select')) && validate(testEditor.getMarkdown(),$('#test-editormd'))){
+             $("#btn").attr('disabled',true)
+            var title = $("input[name='title']").val();
+            var desc = $("input[name='desc']").val();
+            var keywords =$("input[name='keywords']").val();
+            var list_pic =$("input[name='list_pic']")[0].files[0];
+            var category =$("select[name='category']").val();
+            var form = new FormData()
+            form.append('authors','{{ request.user.id }}')
+            form.append('title',title)
+            form.append('desc',desc)
+            form.append('keywords',keywords)
+            form.append('list_pic',list_pic)
+            form.append('content',testEditor.getMarkdown())
+            form.append('csrfmiddlewaretoken','{{ csrf_token }}')
+            form.append('category',category)
+            $.ajax({
+                url:'/article/created/',
+                type:'post',
+                contentType : false,
+                data:form,
+                processData:false,
+                success:function (data) {
+                    if(data.code==200){
+                        window.location.href='{% url 'home' %}'
+                    }else{
+                        swal({
+                              text: data.data,
+                              icon: "error",
+                            })
+                         $("#btn").attr('disabled',false)
+                    }
+                },
+            error:function (xhr) {
+                console.log(xhr)
+            }
+            })
         }
+
+
         })
-    }
-
-
-})
-    $('#file').on('change',function () {
+        $('#file').on('change',function () {
          var read=new FileReader() // 创建FileReader对像;
           read.readAsDataURL(this.files[0])  // 调用readAsDataURL方法读取文件;
        read.onload=function(){
@@ -164,11 +206,11 @@
             }
         })*/
     })
-      $('.img i').on('click',function () {
-          $(this).parent().find('img').remove();
-           $('#file').val('');
-          $(this).parent().hide();
-          $('.file_style').show();
-      })
+          $('.img i').on('click',function () {
+              $(this).parent().find('img').remove();
+               $('#file').val('');
+              $(this).parent().hide();
+              $('.file_style').show();
+          })
     </script>
 {% endblock %}

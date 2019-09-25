@@ -1,7 +1,7 @@
 {% extends 'pc/base.html' %}
 {% load static %}
 {% block title %}
-    {{ seo_list.title }}
+    {{ request.GET.name }}-{{ seo_list.title }}
 {% endblock %}
 {% block keywords %}
 {{ seo_list.keywords }}
@@ -18,9 +18,11 @@
     <article class="fl">
         <div class="fiter clearfix">
             <ul class="nav">
+
             <li class="all" style="padding: 10px 15px;display: inline-block"><a class="active" href="{% url 'article:index' %}">全部</a></li>
                 {% for foo in category %}
-                    <li class="nav_item" data-key="{{ foo.id }}"  style="padding: 10px 15px;display: inline-block"><a href="?type={{ foo.id }}">{{ foo.name }}</a></li>
+
+                    <li class="nav_item" data-key="{{ foo.id }}"  style="padding: 10px 15px;display: inline-block"><a href="?type={{ foo.id }}&name={{ foo.name }}">{{ foo.name }}</a></li>
                 {% endfor %}
 
             </ul>
@@ -204,7 +206,6 @@
             }
             return paramValue == "" && (paramValue = null), paramValue
         }
-        console.log(getParam("type"));
         var type=getParam("type");
         //$('[data-key='+type+']').find("a").addClass('active');
         $('.nav_item').each(function(){
