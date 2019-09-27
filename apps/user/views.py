@@ -48,6 +48,7 @@ def test(request):
     form = CaptchaTestForm()
     return render(request,'test.html',{'form':form})
 
+
 def captcha_refresh(request):
     print('=========')
     """  Return json with new captcha for ajax refresh request """
@@ -62,6 +63,7 @@ def captcha_refresh(request):
     print(to_json_response)
     return HttpResponse(json.dumps(to_json_response), content_type='application/json')
 
+
 def yan(request):
     cs = CaptchaStore.objects.filter(response=request.POST['response'], hashkey=request.POST['hashkey'])
     print(cs)
@@ -69,11 +71,6 @@ def yan(request):
         return JsonResponse({"valid":True})
     else:
         return JsonResponse({'valid':False})
-
-
-
-
-    #===============
 
 
 class CustomBackend(ModelBackend):
@@ -184,7 +181,6 @@ def active_user(request, token):
     user.is_active = True
     user.save()
     msg = UserMessage()
-
     msg.user=user
     msg.to_user =User.objects.get(is_superuser=True)
     msg.message = '欢迎加入本站,在使用过程中有什么疑问,请联系管理员'
@@ -653,13 +649,12 @@ class UserGetInfo(mixins.UpdateModelMixin,viewsets.ReadOnlyModelViewSet):
         users.info = request.data['info']
         users.position = request.data['position']
         if request.data['list_pic']:
+
             users.user_imag = request.data['list_pic']
             users.save()
             return Response({'success': 'ok'})
         users.save()
         return Response({'success': 'ok'})
-
-
 
 
 class UserMessages(mixins.ListModelMixin,mixins.DestroyModelMixin,mixins.UpdateModelMixin,viewsets.GenericViewSet):

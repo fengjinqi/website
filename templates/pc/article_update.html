@@ -22,15 +22,15 @@
         <form>
           <div class="form-group">
             <label >标题</label>
-            <input type="text" class="form-control validate" name="title" value="{{ article.title }}" placeholder="请输入文章标题">
+            <input type="text" class="form-control validate" name="title" value="{{ article.title }}" placeholder="请输入文章标题-不超过100字">
           </div>
           <div class="form-group">
             <label >关键字(Keywords)</label>
-            <input type="text" class="form-control" name="keywords" value="{{ article.keywords }}" placeholder="请输入关键字，以英文逗号分割，利于搜索引擎收录">
+            <input type="text" class="form-control" name="keywords" value="{{ article.keywords }}" placeholder="请输入关键字，以英文逗号分割，利于搜索引擎收录-不超过200字">
           </div>
             <div class="form-group">
             <label >描述(Description)</label>
-            <input type="text" class="form-control" name="desc" value="{{ article.desc }}" placeholder="请输入文章描述">
+            <input type="text" class="form-control" name="desc" value="{{ article.desc }}" placeholder="请输入文章描述-不超过256">
           </div>
             <div class="form-group">
             <label >列表图(List_pic)</label>

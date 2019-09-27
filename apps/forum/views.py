@@ -1,3 +1,4 @@
+import re
 from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
@@ -59,7 +60,6 @@ def index(request):
     return render(request,'pc/forum.html',locals())
 
 
-
 @login_required(login_url='/login')
 def indexMe(request):
     """
@@ -82,6 +82,7 @@ def indexMe(request):
     people = p.page(page)
     return render(request,'pc/forum_me.html',locals())
 
+
 @login_required(login_url='/login')
 def add_forum(request):
     """
@@ -103,9 +104,13 @@ def add_forum(request):
             try:
                 forum.save()
                 return JsonResponse({"code": 200, "data": "发布成功"})
-            except Exception:
+            except Exception as e:
                 return JsonResponse({"code": 400, "data": "发布失败"})
+        pattern = re.compile(r'<[^>]+>', re.S)
+        result = pattern.sub("", str(form.errors))
+        return JsonResponse({"code": 400, "data": result})
     return render(request,'pc/forum_add.html',locals())
+
 
 @login_required(login_url='/login')
 def update_forum(request,forum_id):
@@ -125,11 +130,13 @@ def update_forum(request,forum_id):
             forum.authors = form.cleaned_data.get('authors')
             try:
                 forum.save()
-                return JsonResponse({"code": 200, "data": "发布成功"})
+                return JsonResponse({"code": 200, "data": "修改成功"})
             except Exception:
-                return JsonResponse({"code": 400, "data": "发布失败"})
+                return JsonResponse({"code": 400, "data": "修改失败"})
         else:
-            return JsonResponse({"code": 400, "data": "发布失败"})
+            pattern = re.compile(r'<[^>]+>', re.S)
+            result = pattern.sub("", str(form.errors))
+            return JsonResponse({"code": 400, "data": result})
 
 
 @login_required(login_url='/login')

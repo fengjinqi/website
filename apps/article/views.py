@@ -1,5 +1,7 @@
 import datetime
 import json
+import re
+
 from django.db.models import Q, Count
 from django.dispatch import receiver
 from django.db.models.signals import pre_save, post_save
@@ -237,7 +239,11 @@ def Article_Add(request):
                 return JsonResponse({"code": 200, "data": "发布成功"})
             except Exception:
                 return JsonResponse({"code":400,"data":"发布失败"})
-        return JsonResponse({"code": 400, "data": "验证失败"})
+        pattern = re.compile(r'<[^>]+>', re.S)
+        result = pattern.sub("", str(forms.errors))
+        return JsonResponse({"code": 400, "data":result})
+
+
 
 
 @login_required(login_url='/login')
@@ -282,7 +288,9 @@ def ArticleUpdate(request,article_id):
                 return JsonResponse({"code": 200, "data": "发布成功"})
             except Exception:
                 return JsonResponse({"code": 400, "data": "发布失败"})
-        return JsonResponse({"code": 400, "data": "验证失败"})
+        pattern = re.compile(r'<[^>]+>', re.S)
+        result = pattern.sub("", str(forms.errors))
+        return JsonResponse({"code": 400, "data": result})
 
 
 #@login_required(login_url='/login')

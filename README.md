@@ -117,4 +117,9 @@ unix:///tmp/supervisor.sock no such file
 
 出现上述错误的原因是supervisord并未启动，只要在命令行中使用命令sudo supervisord启动supervisord即可。
 
+
+ps aux | grep redis-server
+
+./bin/redis-server /usr/local/redis/etc/redis.conf
+
 #(ps:项目还在开发中，若有更好的建议或者功能请联系我qq:1218525402,邮箱：fengjinqi@fengjinqi.com)
