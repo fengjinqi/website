@@ -710,7 +710,15 @@ class UserMessages(mixins.ListModelMixin,mixins.DestroyModelMixin,mixins.UpdateM
                 return Response(serializer.data)
 
 
+class AppMessage( mixins.UpdateModelMixin,
+                   mixins.DestroyModelMixin,viewsets.ReadOnlyModelViewSet):
+    queryset = UserMessage.objects.all()
+    serializer_class = UserMessageSerializer
+    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
+    authentication_classes = [JSONWebTokenAuthentication, SessionAuthentication]
 
+    def get_queryset(self):
+        return UserMessage.objects.filter(user=self.request.user)
 
 
 

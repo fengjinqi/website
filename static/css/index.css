@@ -1,4 +1,8 @@
 /*列表开始*/
+.blogs_listPic{
+
+}
+
 .blogs{
 -webkit-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); -moz-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);
     -webkit-border-radius: 3px;

@@ -1,7 +1,12 @@
 {% extends 'pc/base.html' %}
 {% load static %}
 {% block title %}
-    {{ request.GET.name }}-{{ seo_list.title }}
+    {% if request.GET.name %}
+        {{ request.GET.name }}-{{ seo_list.title }}
+    {% else %}
+        {{ seo_list.title }}
+    {% endif %}
+
 {% endblock %}
 {% block keywords %}
 {{ seo_list.keywords }}
@@ -51,16 +56,23 @@
                      <div class="blogs_cont blogs_cont1">
                          <h3><span class="blogs_type">{{ articles.category.name }}</span><a href="{% url 'article:detail' articles.id %}">{{ articles.title }}</a></h3>
                              <div class="blogs_info clearfix">
-                                  <div class="img_animate fl ">
+                             {% if articles.list_pic %}
+                                <div class="img_animate fl ">
                                       <a href="{% url 'article:detail' articles.id %}"><div class="blogs_pic img_cover" style="{% if articles.list_pic %}
                                       background: url( {{ MEDIA_URL }}{{ articles.list_pic }})no-repeat;
                                       {% endif %}background-color: #ccc;background-size: 200px 120px !important;"></div></a>
                                   </div>
-                                  <div class="fl blogs_describe">
+                             {% endif %}
+
+                                  <div class="{% if articles.list_pic %}
+                                    fl blogs_describe
+                                  {% endif %}">
                                       <p class="blogtext">{{ articles.desc|truncatechars:135 }}</p>
                                   </div>
-                                  <div class="blogs_foot blogs_foot1">
-                            <ul class="clearfix">
+                                  <div class="blogs_foot{% if articles.list_pic %}
+                                    blogs_foot1
+                                  {% endif %}">
+                                    <ul class="clearfix">
                                 <li class="fl">
                                      <a href="{% url 'user:author_detaile' articles.authors.id %}" class="clearfix">
                                          <span class="fl img_cover blogs_avatar" style="
@@ -79,7 +91,7 @@
                                 <li class="fl blogs_view" style="background: url({% static 'img/eye.png' %})no-repeat 0 50%;"> {{ articles.click_nums }}</li>
                                 <li class="fl blogs_comment" style="background: url({% static 'img/comment.png' %})no-repeat 0 50%;"> {{ articles.get_number }}</li>
                             </ul>
-                        </div>
+                                  </div>
                              </div>
                      </div>
                  </div>

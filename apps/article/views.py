@@ -387,6 +387,7 @@ def blog_img_upload(request):
             url = request.build_absolute_uri(settings.MEDIA_URL+'blogimg/'+data.name)
             return JsonResponse({'success': 1, 'message': '成功', 'url': url})
         except Exception as e:
+            print(e)
             return JsonResponse({'success': 0, 'message': '上传失败'})
 
 

@@ -39,6 +39,7 @@
 
         <div style="padding: 20px" class="flex">
              <div>
+                 <a href="{% url 'user:person'%}{{ article.authors_id }}">
                  <span class="fl img_cover blogs_avatar" style="
                                                  background: url({% if article.authors.user_imag%}
                             {{ MEDIA_URL }}{{ article.authors.user_imag }}
@@ -46,10 +47,10 @@
                             {{ article.authors.user_image }}
                      {% else %}
                      {% static 'img/pc-icon.png' %}
-                        {% endif %})no-repeat;"></span>
+                        {% endif %})no-repeat;"></span></a>
              </div>
             <div>
-                <div class="de-username">{{ article.authors.username }}</div>
+                <div class="de-username"> <a class="a" href="{% url 'user:person'%}{{ article.authors_id }}">{{ article.authors.username }}</a></div>
                 <div class="de-time flex">
                     <div class="de-margin">{{ article.add_time }}</div>
                     <div class="de-margin">阅读 {{ article.click_nums }}</div>
