@@ -47,7 +47,7 @@ def index(request):
     seo_list = get_object_or_404(Seo, name='社区论坛')
     plate = Forum_plate.objects.all()
     forum = Forum.objects.filter(hidden=False)
-    job = Forum.objects.filter(category__name='求职招聘')
+    job = Forum.objects.filter(hidden=False,category__name='求职招聘')
     try:
         page = request.GET.get('page', 1)
         if page == '':
@@ -167,7 +167,7 @@ def forum_category(request,category):
     cate_list = Forum.objects.filter(category_id=category,hidden=False)
     plate = Forum_plate.objects.all()
 
-    job = Forum.objects.filter(category__name='求职招聘')
+    job = Forum.objects.filter(hidden=False,category__name='求职招聘')
     type = get_object_or_404(Forum_plate,pk=category)
     try:
         page = request.GET.get('page', 1)

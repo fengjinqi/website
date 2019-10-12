@@ -57,8 +57,8 @@
                             {% endif %}
                             )no-repeat;background-size: cover;"></div>
                     <p style="margin:16px 0 4px 0">{{ request.user.username }}</p>
-                    <div style="font-size: 12px;">           <p>文章:{{ request.user.article_set.count }}</p>
-                                             <p>帖子:{{ request.user.forum_set.count }}</p></div>
+                    <div style="font-size: 12px;">           <span>文章:{{ request.user.article_set.count }}</span>
+                                             <span>帖子:{{ request.user.forum_set.count }}</span></div>
                 </div>
             </div>
             <div class="aside_my_num flex_justify">

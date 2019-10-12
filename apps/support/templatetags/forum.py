@@ -20,8 +20,17 @@ def get_fourm():
 
     user = User.objects.count()
     cur_date = now().date() + timedelta(days=0)
-    days = Forum.objects.filter(add_time__gte=cur_date).count()
-    count = Forum.objects.count()
+    days = Forum.objects.filter(hidden=False,add_time__gte=cur_date).count()
+    count = Forum.objects.filter(hidden=False).count()
     Hottest = Forum.objects.filter(hidden=False).order_by('-click_nums')[:10]
     return {'fourm':fourm,'qq':qq,'user':user,'sessions':sessions,'days':days,'count':count,'Hottest':Hottest}
 
+
+@register.filter
+def get_count(x):
+    return x.filter(hidden=False).count()
+
+
+@register.filter
+def get_counts(x):
+    return x.filter(is_show=True).count()

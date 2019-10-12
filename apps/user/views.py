@@ -605,14 +605,22 @@ class UserFollows(viewsets.ModelViewSet):
 class UserGetAllInfo(mixins.ListModelMixin,mixins.UpdateModelMixin,mixins.RetrieveModelMixin,viewsets.GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
-    authentication_classes = [JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication,SessionAuthentication]
     pagination_class = StandardResultsSetPagination
+
+    def get_permissions(self):
+        if self.action == 'list':
+            return []
+        elif self.action =='retrieve':
+            return []
+        else:
+            return [IsAuthenticated(),IsOwnerOrReadOnly()]
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         type = request.data['type']
+        print(instance)
         if type:
             users = instance
             users.is_active=request.data['is_active']
