@@ -39,7 +39,8 @@ from apps.uitls.jsonserializable import DateEncoder
 from apps.uitls.permissions import IsOwnerOrReadOnly, IsOwnerOrReadOnlyInfo
 from apps.user.filter import CategoryFilter
 from apps.user.models import User, Follows, VerifyCode, UserMessage, OAuthQQ
-from apps.user.serializers import UserSerializer, UserMessageSerializer, FollowsSerializer, FollowsSerializerAdd
+from apps.user.serializers import UserSerializer, UserMessageSerializer, FollowsSerializer, FollowsSerializerAdd, \
+    FollowsOthesSerializer
 from website import settings
 from .forms import CaptchaTestForm, LoginForms, Follow_Forms, RegisterForm, ModifyForm, EmailForm, InfoForm
 from rest_framework import viewsets, mixins, status, permissions
@@ -600,6 +601,19 @@ class UserFollows(viewsets.ModelViewSet):
             return {'Location': str(data[api_settings.URL_FIELD_NAME])}
         except (TypeError, KeyError):
             return {}
+
+
+class UserFollowOther(viewsets.ReadOnlyModelViewSet):
+    """TODO 查询其它用户的粉丝与关注并且当前用户是否关注"""
+    queryset = Follows.objects.all()
+    serializer_class = FollowsOthesSerializer
+
+    def get_queryset(self):
+        if self.request.query_params.get('fan'):
+            res = Follows.objects.filter(follow=self.request.query_params.get('fan'))
+            return res
+        elif self.request.query_params.get('follow'):
+            return Follows.objects.filter(fan=self.request.query_params.get('follow'))
 
 
 class UserGetAllInfo(mixins.ListModelMixin,mixins.UpdateModelMixin,mixins.RetrieveModelMixin,viewsets.GenericViewSet):

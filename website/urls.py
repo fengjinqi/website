@@ -27,7 +27,8 @@ from apps.course.views import CoursesList, CourseCreatedList, CourseListCreated,
 from apps.forum.views import Forum_plateView, ForumView, CommentView, Parent_CommentView
 from apps.support.views import LinkList, EmailsList, BannerList, QQList, SeoList
 from apps.user.views import test, captcha_refresh, yan, login_view, UserGetInfo, UserGetAllInfo, \
-    PersonOthers, Register, active_user, get_message, UserMessages, qq, getClback, getClbackQQ, UserFollows, AppMessage
+    PersonOthers, Register, active_user, get_message, UserMessages, qq, getClback, getClbackQQ, UserFollows, AppMessage, \
+    UserFollowOther
 from django.views.generic import TemplateView
 
 from website import settings
@@ -65,6 +66,7 @@ router.register('get-list',QQList)
 router.register('seo-list',SeoList,basename='seo-list')
 router.register('UserFollows',UserFollows)
 router.register('AppMessage',AppMessage)
+router.register('UserFollowOther',UserFollowOther)
 
 urlpatterns = [
 

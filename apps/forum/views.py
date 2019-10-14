@@ -263,12 +263,17 @@ class ForumView(viewsets.ModelViewSet):
             return [IsAuthenticated(), IsOwnerOr()]
 
     def get_queryset(self):
+        user_id = self.request.query_params.get('pk')
+        if user_id:
+            return Forum.objects.filter(authors_id=user_id, hidden=False)
+
         if self.request.user.is_superuser and self.request.user:
             return Forum.objects.filter(hidden=False)
         elif self.request.user.is_active:
             return Forum.objects.filter(authors=self.request.user,hidden=False)
         else:
             return Forum.objects.filter(hidden=False)
+
 
 
 class CommentView(viewsets.ModelViewSet):
