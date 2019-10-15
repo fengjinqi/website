@@ -50,7 +50,7 @@ react、react-router-dom、redux、react-redux、redux-thunk，antd-mobile，项
 
 4、settings进行数据库等各种配置
 
-5、项目根目录下创建 congfig.ini 邮箱等密码配置文件 并填写
+5、项目根目录下创建 config.ini 邮箱等密码配置文件 并填写
 ```cython
 
 [email]
