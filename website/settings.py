@@ -237,7 +237,7 @@ CELERY_TIMEZONE = TIME_ZONE
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 CELERYD_MAX_TASKS_PER_CHILD = 5# 每个worker执行了多少任务就会销毁，防止内存泄露，默认是无限的
 # 设置并发的worker数量
-CELERYD_CONCURRENCY = 4
+CELERYD_CONCURRENCY = 2
 # 有些情况可以防止死锁
 CELERY_FORCE_EXECV = True
 CELERY_ENABLE_UTC = True

@@ -603,10 +603,17 @@ class UserFollows(viewsets.ModelViewSet):
             return {}
 
 
-class UserFollowOther(viewsets.ReadOnlyModelViewSet):
+class UserFollowOther(mixins.DestroyModelMixin,viewsets.ReadOnlyModelViewSet):
     """TODO 查询其它用户的粉丝与关注并且当前用户是否关注"""
     queryset = Follows.objects.all()
     serializer_class = FollowsOthesSerializer
+    authentication_classes = [JSONWebTokenAuthentication, SessionAuthentication]
+
+    def get_permissions(self):
+        if self.action=='destroy':
+            return [IsAuthenticated()]
+        else:
+            return []
 
     def get_queryset(self):
         if self.request.query_params.get('fan'):
@@ -614,6 +621,20 @@ class UserFollowOther(viewsets.ReadOnlyModelViewSet):
             return res
         elif self.request.query_params.get('follow'):
             return Follows.objects.filter(fan=self.request.query_params.get('follow'))
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        access = request.data.get('access')
+        user_id = request.data.get('user_id')
+        id = request.data.get('id')
+        if access and user_id and id:
+            try:
+                Follows.objects.filter(fan__id=user_id,follow_id=id).delete()
+                print(access,user_id,id)
+                return Response({"message":'取消成功'},status=status.HTTP_202_ACCEPTED)
+            except Exception as e:
+                print(e)
+                return Response({"message": '取消失败'}, status=status.HTTP_202_ACCEPTED)
 
 
 class UserGetAllInfo(mixins.ListModelMixin,mixins.UpdateModelMixin,mixins.RetrieveModelMixin,viewsets.GenericViewSet):
