@@ -23,7 +23,7 @@ from apps.forum.filter import ForumFilter
 from apps.forum.forms import Forum_form, ParentComment
 from apps.forum.models import Forum_plate, Forum, Comment, Parent_Comment
 from apps.forum.serializers import Forum_plateSerializers, ForumSerializers, CommentSerializers, \
-    Pernents_CommentSerializers, CommentSerializersAdd
+    Pernents_CommentSerializers, CommentSerializersAdd, ForumSerializerss, Pernents_CommentSerializers1
 from apps.support.models import Seo
 from apps.uitls.permissions import IsOwnerOr, IsOwnerOrReadOnly
 from apps.user.models import UserMessage, User
@@ -240,8 +240,16 @@ class Forum_plateView(mixins.UpdateModelMixin,mixins.CreateModelMixin,viewsets.R
     """TODO 版块分類"""
     queryset = Forum_plate.objects.all()
     serializer_class = Forum_plateSerializers
-    permission_classes = (IsAuthenticated, IsOwnerOr)  # 未登录禁止访问
+    #permission_classes = (IsAuthenticated, IsOwnerOr)  # 未登录禁止访问
     authentication_classes = [JSONWebTokenAuthentication]
+
+    def get_permissions(self):
+        if self.action == 'list':
+            return []
+        elif self.action == 'retrieve':
+            return []
+        else:
+            return [IsAuthenticated(), IsOwnerOr()]
 
 
 class ForumView(viewsets.ModelViewSet):
@@ -274,6 +282,14 @@ class ForumView(viewsets.ModelViewSet):
         else:
             return Forum.objects.filter(hidden=False)
 
+
+class ForumListView(viewsets.ReadOnlyModelViewSet):
+    """TODO 帖子"""
+    queryset = Forum.objects.filter(hidden=False)
+    serializer_class = ForumSerializerss
+    pagination_class = StandardResultsSetPagination
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = ForumFilter
 
 
 class CommentView(viewsets.ModelViewSet):
@@ -324,7 +340,7 @@ class Parent_CommentView(viewsets.ModelViewSet):
 
     """TODO 评论回复"""
     queryset = Parent_Comment.objects.all()
-    serializer_class = Pernents_CommentSerializers
+    serializer_class = Pernents_CommentSerializers1
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
     authentication_classes = [SessionAuthentication,JSONWebTokenAuthentication]
 

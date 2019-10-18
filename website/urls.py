@@ -24,7 +24,7 @@ from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
 from apps.article.views import ArticleCreated
 from apps.course.views import CoursesList, CourseCreatedList, CourseListCreated, MeCoursesList
-from apps.forum.views import Forum_plateView, ForumView, CommentView, Parent_CommentView
+from apps.forum.views import Forum_plateView, ForumView, CommentView, Parent_CommentView, ForumListView
 from apps.support.views import LinkList, EmailsList, BannerList, QQList, SeoList
 from apps.user.views import test, captcha_refresh, yan, login_view, UserGetInfo, UserGetAllInfo, \
     PersonOthers, Register, active_user, get_message, UserMessages, qq, getClback, getClbackQQ, UserFollows, AppMessage, \
@@ -67,6 +67,7 @@ router.register('seo-list',SeoList,basename='seo-list')
 router.register('UserFollows',UserFollows)
 router.register('AppMessage',AppMessage)
 router.register('UserFollowOther',UserFollowOther)
+router.register('ForumListView',ForumListView)
 
 urlpatterns = [
 
@@ -89,6 +90,9 @@ urlpatterns = [
     path('support/', include('apps.support.urls')),
     path('forum/', include('apps.forum.urls')),
     path('ads.txt/',TemplateView.as_view(template_name='ads.txt')),
+    path('root.txt/', TemplateView.as_view(template_name='root.txt')),
+    path('jd_root.txt/', TemplateView.as_view(template_name='jd_root.txt')),
+    path('gome_20943.txt/', TemplateView.as_view(template_name='gome_20943.txt')),
     #url(r'^activate/(?P<token>\w+.[-_\w]*\w+.[-_\w]*\w+)/$', active_user, name='active_user'),
     path('activate/<str:token>', active_user, name='active_user'),
     url(r'^search/', include('haystack.urls'), name='haystack_search'),
