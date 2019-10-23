@@ -16,6 +16,7 @@ from pure_pagination import Paginator
 from rest_framework import mixins, viewsets
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from apps.article.views import StandardResultsSetPagination
@@ -291,6 +292,12 @@ class ForumListView(viewsets.ReadOnlyModelViewSet):
     filter_backends = (DjangoFilterBackend,)
     filter_class = ForumFilter
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.click_nums+=1
+        instance.save()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 class CommentView(viewsets.ModelViewSet):
 

@@ -405,6 +405,7 @@ class ArticleListView(viewsets.ReadOnlyModelViewSet):
     """
      TODO 列出所有的文章 详情页
     """
+
     queryset = Article.objects.filter(is_show=True).order_by('-add_time')
     serializer_class = ArticleSerializer
     pagination_class = StandardResultsSetPagination
@@ -412,6 +413,14 @@ class ArticleListView(viewsets.ReadOnlyModelViewSet):
     filter_class = ArticleFilter
     #permission_classes = (IsAuthenticated, IsOwnerOr)  # 未登录禁止访问
     #authentication_classes = [JSONWebTokenAuthentication]
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.click_nums+=1
+        instance.save()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
 
 class MeArticleListView(viewsets.ReadOnlyModelViewSet):
     """

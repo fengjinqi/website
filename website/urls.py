@@ -79,6 +79,7 @@ urlpatterns = [
     path('refresh/', captcha_refresh),  # 这是生成验证码的图片
     path('yan/', yan),  # 这是生成验证码的图片
     path('', views.Home, name='home'),
+    path('webapp/', TemplateView.as_view(template_name='webapp/index.html')),
     path('54', views.test, name='54'),
     path('login/', login_view, name='index'),
     path('info/', get_message, name='info'),
