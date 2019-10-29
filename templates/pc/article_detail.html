@@ -54,7 +54,7 @@
                 <div class="de-time flex">
                     <div class="de-margin">{{ article.add_time }}</div>
                     <div class="de-margin">阅读 {{ article.click_nums }}</div>
-                    <div class="de-margin">评论 {{ article.get_number }}</div>
+{#                    <div class="de-margin">评论 {{ article.get_number }}</div>#}
                 </div>
             </div>
             {#{{ article.category.name }}#}
@@ -64,7 +64,7 @@
                 <textarea id="append-test" name="test-editormd-markdown-doc" style="display:none;">{{ article.content }}</textarea>
             </div>
             <div class="social-share"></div>
-            <div class="comment">
+{% comment %}            <div class="comment">
                 <div class="comment-main clearfix">
                     <textarea  class="form-control" name="" id=""{% if request.user.is_authenticated  %}{% else %}disabled{% endif %}  rows="3" placeholder="来说点什么吧..."> </textarea>
                     <button class="btn btn-primary fr "{% if request.user.is_authenticated %}
@@ -130,7 +130,7 @@
                     {% endfor %}
                     </div>
                 </div>
-            </div>
+            </div>{% endcomment %}
         </article>
     <aside class="fr">
         {% include 'pc/base_aside.html' %}
