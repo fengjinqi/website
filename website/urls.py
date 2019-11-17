@@ -24,10 +24,11 @@ from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
 from apps.article.views import ArticleCreated
 from apps.course.views import CoursesList, CourseCreatedList, CourseListCreated, MeCoursesList
-from apps.forum.views import Forum_plateView, ForumView, CommentView, Parent_CommentView
+from apps.forum.views import Forum_plateView, ForumView, CommentView, Parent_CommentView, ForumListView
 from apps.support.views import LinkList, EmailsList, BannerList, QQList, SeoList
 from apps.user.views import test, captcha_refresh, yan, login_view, UserGetInfo, UserGetAllInfo, \
-    PersonOthers, Register, active_user, get_message, UserMessages, qq, getClback, getClbackQQ, UserFollows, AppMessage
+    PersonOthers, Register, active_user, get_message, UserMessages, qq, getClback, getClbackQQ, UserFollows, AppMessage, \
+    UserFollowOther
 from django.views.generic import TemplateView
 
 from website import settings
@@ -65,6 +66,8 @@ router.register('get-list',QQList)
 router.register('seo-list',SeoList,basename='seo-list')
 router.register('UserFollows',UserFollows)
 router.register('AppMessage',AppMessage)
+router.register('UserFollowOther',UserFollowOther)
+router.register('ForumListView',ForumListView)
 
 urlpatterns = [
 
@@ -76,6 +79,7 @@ urlpatterns = [
     path('refresh/', captcha_refresh),  # 这是生成验证码的图片
     path('yan/', yan),  # 这是生成验证码的图片
     path('', views.Home, name='home'),
+    path('webapp/', TemplateView.as_view(template_name='webapp/index.html')),
     path('54', views.test, name='54'),
     path('login/', login_view, name='index'),
     path('info/', get_message, name='info'),
@@ -87,6 +91,9 @@ urlpatterns = [
     path('support/', include('apps.support.urls')),
     path('forum/', include('apps.forum.urls')),
     path('ads.txt/',TemplateView.as_view(template_name='ads.txt')),
+    path('root.txt/', TemplateView.as_view(template_name='root.txt')),
+    path('jd_root.txt/', TemplateView.as_view(template_name='jd_root.txt')),
+    path('gome_20943.txt/', TemplateView.as_view(template_name='gome_20943.txt')),
     #url(r'^activate/(?P<token>\w+.[-_\w]*\w+.[-_\w]*\w+)/$', active_user, name='active_user'),
     path('activate/<str:token>', active_user, name='active_user'),
     url(r'^search/', include('haystack.urls'), name='haystack_search'),

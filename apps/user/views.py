@@ -39,7 +39,8 @@ from apps.uitls.jsonserializable import DateEncoder
 from apps.uitls.permissions import IsOwnerOrReadOnly, IsOwnerOrReadOnlyInfo
 from apps.user.filter import CategoryFilter
 from apps.user.models import User, Follows, VerifyCode, UserMessage, OAuthQQ
-from apps.user.serializers import UserSerializer, UserMessageSerializer, FollowsSerializer, FollowsSerializerAdd
+from apps.user.serializers import UserSerializer, UserMessageSerializer, FollowsSerializer, FollowsSerializerAdd, \
+    FollowsOthesSerializer
 from website import settings
 from .forms import CaptchaTestForm, LoginForms, Follow_Forms, RegisterForm, ModifyForm, EmailForm, InfoForm
 from rest_framework import viewsets, mixins, status, permissions
@@ -602,17 +603,59 @@ class UserFollows(viewsets.ModelViewSet):
             return {}
 
 
+class UserFollowOther(mixins.DestroyModelMixin,viewsets.ReadOnlyModelViewSet):
+    """TODO 查询其它用户的粉丝与关注并且当前用户是否关注"""
+    queryset = Follows.objects.all()
+    serializer_class = FollowsOthesSerializer
+    authentication_classes = [JSONWebTokenAuthentication, SessionAuthentication]
+
+    def get_permissions(self):
+        if self.action=='destroy':
+            return [IsAuthenticated()]
+        else:
+            return []
+
+    def get_queryset(self):
+        if self.request.query_params.get('fan'):
+            res = Follows.objects.filter(follow=self.request.query_params.get('fan'))
+            return res
+        elif self.request.query_params.get('follow'):
+            return Follows.objects.filter(fan=self.request.query_params.get('follow'))
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        access = request.data.get('access')
+        user_id = request.data.get('user_id')
+        id = request.data.get('id')
+        if access and user_id and id:
+            try:
+                Follows.objects.filter(fan__id=user_id,follow_id=id).delete()
+                print(access,user_id,id)
+                return Response({"message":'取消成功'},status=status.HTTP_202_ACCEPTED)
+            except Exception as e:
+                print(e)
+                return Response({"message": '取消失败'}, status=status.HTTP_202_ACCEPTED)
+
+
 class UserGetAllInfo(mixins.ListModelMixin,mixins.UpdateModelMixin,mixins.RetrieveModelMixin,viewsets.GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
-    authentication_classes = [JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication,SessionAuthentication]
     pagination_class = StandardResultsSetPagination
+
+    def get_permissions(self):
+        if self.action == 'list':
+            return []
+        elif self.action =='retrieve':
+            return []
+        else:
+            return [IsAuthenticated(),IsOwnerOrReadOnly()]
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         type = request.data['type']
+        print(instance)
         if type:
             users = instance
             users.is_active=request.data['is_active']

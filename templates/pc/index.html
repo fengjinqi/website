@@ -42,16 +42,16 @@
 
             </div>
         </div>{% endcomment %}
-        <div class="banner" style="background: url({% if banners.image %}
+{% comment %}        <div class="banner" style="background: url({% if banners.image %}
             {{ MEDIA_URL }}{{ banners.image }}
             {% else %}
             {% static  'img/banner.png'%}
-        {% endif %})no-repeat 0 50%;"></div>
+        {% endif %})no-repeat 0 50%;"></div>{% endcomment %}
 <!-- 网站banner -->
-     {% comment %}   <ins class="adsbygoogle banner"
-     style="display:inline-block;width:880px;height:90px"
+        <ins class="adsbygoogle banner"
+     style="display:inline-block;width:880px;max-height:90px"
      data-ad-client="ca-pub-1595090025336102"
-     data-ad-slot="7764407434"></ins>{% endcomment %}
+     data-ad-slot="7764407434"></ins>
          <div class="blogs">
              <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">
                  <ul class="follow">
@@ -199,15 +199,15 @@
 {% endblock %}
 
 {% block js %}
- {% comment %}   <script>
+    <script>
      (adsbygoogle = window.adsbygoogle || []).push({});
-</script>{% endcomment %}
-{% comment %}<script src="{% static 'js/swiper.min.js' %}"></script>{% endcomment %}
-{% comment %}<script src="{% static 'js/index.js' %}"></script>{% endcomment %}
+</script>
+
     <script>
     {% comment %}$('.info-title').each(function(index, element) {
     $clamp(element, { clamp: 3});
 });{% endcomment %}
+
     $("input[name='page']").blur(function () {
         if($(this).val()==""){
             return false

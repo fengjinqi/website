@@ -56,9 +56,10 @@
                         关注
                     {% endif %}</span>
                      <div style="font-size: 12px;text-align: center;">
-                         <span>文章:{{ user.article_set.count }}</span>
+                         {% load forum %}
+                         <span>文章:{{ user.article_set|get_counts }}</span>
 
-                         <span>帖子:{{ user.forum_set.count }}</span>
+                         <span>帖子:{{ user.forum_set|get_count }}</span>
                      </div>
                 </div>
             </div>

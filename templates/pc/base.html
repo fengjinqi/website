@@ -38,14 +38,14 @@
     <script src="{% static 'js/sweetalert.min.js' %}"></script>
     {% block link_js %}
     {% endblock %}
-{% comment %}<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({
 google_ad_client: "pub-1595090025336102",
 enable_page_level_ads: true
 });
 </script>
-{% endcomment %}
+
 <script>
 (function(){
     var bp = document.createElement('script');
@@ -83,7 +83,7 @@ document.write('<script src="' + src + '" id="sozz"><\/script>');
     <div class="main clearfix">
         <a class="fl logo" href="{% url 'home' %}" style="height:45px;background: url({% static 'img/logo.png' %})no-repeat;width: 120px;background-size: 120px 45px;
     margin-top: 7px;">
-            {% comment %}<img style="width: 40px;margin-top: 20px;" src="{% static 'img/logo.png' %}" alt="">{% endcomment %}
+{#            <img style="width: 40px;margin-top: 20px;" src="{% static 'img/logo.png' %}" alt="">#}
         </a>
         <nav class="fl">
             <ul class="clearfix headers_nav">
@@ -160,6 +160,28 @@ document.write('<script src="' + src + '" id="sozz"><\/script>');
 </footer>
  <a href="javascript:;" id="toTop" class=" fa fa-chevron-up"></a>
 <script>
+var os = function() {
+    var ua = navigator.userAgent,
+        isWindowsPhone = /(?:Windows Phone)/.test(ua),
+        isSymbian = /(?:SymbianOS)/.test(ua) || isWindowsPhone,
+        isAndroid = /(?:Android)/.test(ua),
+        isFireFox = /(?:Firefox)/.test(ua),
+        isChrome = /(?:Chrome|CriOS)/.test(ua),
+        isTablet = /(?:iPad|PlayBook)/.test(ua) || (isAndroid && !/(?:Mobile)/.test(ua)) || (isFireFox && /(?:Tablet)/.test(ua)),
+        isPhone = /(?:iPhone)/.test(ua) && !isTablet,
+        isPc = !isPhone && !isAndroid && !isSymbian;
+    return {
+        isTablet: isTablet,
+        isPhone: isPhone,
+        isAndroid: isAndroid,
+        isPc: isPc
+    };
+}();
+   if(os.isAndroid || os.isPhone) {
+   window.location.href=window.location.hash+'/webapp/#'
+} else if(os.isTablet) {
+    window.location.href=window.location.hash+'/webapp/#'
+}
     $(function(){
         {% if request.user.is_authenticated %}
 

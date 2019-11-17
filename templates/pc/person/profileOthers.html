@@ -36,8 +36,9 @@
                                             <a target="_blank" title="" alt="" href="{% url 'user:author_detaile' foo.id %}">{{ foo.username }}</a>
                                          </div>
                                          <div class="follow_item_info">
-                                            <p>文章:{{ foo.article_set.count }}</p>
-                                             <p>帖子:{{ foo.forum_set.count }}</p>
+                                             {% load forum %}
+                                            <p>文章:{{ foo.article_set|get_counts }}</p>
+                                             <p>帖子:{{ foo.forum_set|get_count}}</p>
                                          </div>
                                      </dd>
 
@@ -67,8 +68,8 @@
                                             <a target="_blank" title="" alt="" href="{% url 'user:author_detaile' foo.id %}">{{ foo.username }}</a>
                                          </div>
                                          <div class="follow_item_info">
-                                             <p>文章:{{ foo.article_set.count }}</p>
-                                             <p>帖子:{{ foo.forum_set.count }}</p>
+                                             <p>文章:{{ foo.article_set|get_counts }}</p>
+                                             <p>帖子:{{ foo.forum_set|get_count }}</p>
                                          </div>
                                      </dd>
 

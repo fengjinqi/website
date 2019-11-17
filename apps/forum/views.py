@@ -16,6 +16,7 @@ from pure_pagination import Paginator
 from rest_framework import mixins, viewsets
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from apps.article.views import StandardResultsSetPagination
@@ -23,7 +24,7 @@ from apps.forum.filter import ForumFilter
 from apps.forum.forms import Forum_form, ParentComment
 from apps.forum.models import Forum_plate, Forum, Comment, Parent_Comment
 from apps.forum.serializers import Forum_plateSerializers, ForumSerializers, CommentSerializers, \
-    Pernents_CommentSerializers, CommentSerializersAdd
+    Pernents_CommentSerializers, CommentSerializersAdd, ForumSerializerss, Pernents_CommentSerializers1
 from apps.support.models import Seo
 from apps.uitls.permissions import IsOwnerOr, IsOwnerOrReadOnly
 from apps.user.models import UserMessage, User
@@ -47,7 +48,7 @@ def index(request):
     seo_list = get_object_or_404(Seo, name='社区论坛')
     plate = Forum_plate.objects.all()
     forum = Forum.objects.filter(hidden=False)
-    job = Forum.objects.filter(category__name='求职招聘')
+    job = Forum.objects.filter(hidden=False,category__name='求职招聘')
     try:
         page = request.GET.get('page', 1)
         if page == '':
@@ -167,7 +168,7 @@ def forum_category(request,category):
     cate_list = Forum.objects.filter(category_id=category,hidden=False)
     plate = Forum_plate.objects.all()
 
-    job = Forum.objects.filter(category__name='求职招聘')
+    job = Forum.objects.filter(hidden=False,category__name='求职招聘')
     type = get_object_or_404(Forum_plate,pk=category)
     try:
         page = request.GET.get('page', 1)
@@ -240,8 +241,16 @@ class Forum_plateView(mixins.UpdateModelMixin,mixins.CreateModelMixin,viewsets.R
     """TODO 版块分類"""
     queryset = Forum_plate.objects.all()
     serializer_class = Forum_plateSerializers
-    permission_classes = (IsAuthenticated, IsOwnerOr)  # 未登录禁止访问
+    #permission_classes = (IsAuthenticated, IsOwnerOr)  # 未登录禁止访问
     authentication_classes = [JSONWebTokenAuthentication]
+
+    def get_permissions(self):
+        if self.action == 'list':
+            return []
+        elif self.action == 'retrieve':
+            return []
+        else:
+            return [IsAuthenticated(), IsOwnerOr()]
 
 
 class ForumView(viewsets.ModelViewSet):
@@ -263,6 +272,10 @@ class ForumView(viewsets.ModelViewSet):
             return [IsAuthenticated(), IsOwnerOr()]
 
     def get_queryset(self):
+        user_id = self.request.query_params.get('pk')
+        if user_id:
+            return Forum.objects.filter(authors_id=user_id, hidden=False)
+
         if self.request.user.is_superuser and self.request.user:
             return Forum.objects.filter(hidden=False)
         elif self.request.user.is_active:
@@ -270,6 +283,21 @@ class ForumView(viewsets.ModelViewSet):
         else:
             return Forum.objects.filter(hidden=False)
 
+
+class ForumListView(viewsets.ReadOnlyModelViewSet):
+    """TODO 帖子"""
+    queryset = Forum.objects.filter(hidden=False)
+    serializer_class = ForumSerializerss
+    pagination_class = StandardResultsSetPagination
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = ForumFilter
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.click_nums+=1
+        instance.save()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 class CommentView(viewsets.ModelViewSet):
 
@@ -319,7 +347,7 @@ class Parent_CommentView(viewsets.ModelViewSet):
 
     """TODO 评论回复"""
     queryset = Parent_Comment.objects.all()
-    serializer_class = Pernents_CommentSerializers
+    serializer_class = Pernents_CommentSerializers1
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)  # 未登录禁止访问
     authentication_classes = [SessionAuthentication,JSONWebTokenAuthentication]
 
