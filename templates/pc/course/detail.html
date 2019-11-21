@@ -13,6 +13,7 @@
         background: #f3f3f3;
         margin: 0 auto;
     }
+
     </style>
 {% endblock %}
 {% block link_js %}
@@ -36,7 +37,10 @@
             <ul id="menu">
 
                 {% for foo in course %}
-                    <li data-key="{{ foo.id }}"><a style="display: block;padding: 0 15px" href="/course/{{uuid }}/{{ foo.id }}.html">{{ foo.titles }}</a></li>
+                    <li data-key="{{ foo.id }}"><a style="display: block;padding: 0 15px;    white-space: nowrap;
+    overflow: hidden;
+    display: block;
+    text-overflow: ellipsis;" href="/course/{{uuid }}/{{ foo.id }}.html">{{ foo.titles }}</a></li>
                 {% endfor %}
 
             </ul>
@@ -81,7 +85,7 @@
             }
         });
             $(function() {
-                $('.content').css('height',$(document).height()-140+'px')
+                //$('.content').css('height',$(document).height()-140+'px')
             var testEditormdView;
             testEditormdView = editormd.markdownToHTML("test-editormd-view2", {
                 htmlDecode      : "style,script,iframe",  // you can filter tags decode
