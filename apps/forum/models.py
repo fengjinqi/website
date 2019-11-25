@@ -48,6 +48,7 @@ class Forum(models.Model):
     add_time = models.DateTimeField(auto_now_add=True, verbose_name="发布日期")
     # 是否关闭
     hidden = models.BooleanField(default=False, verbose_name="是否隐藏")
+    is_type = models.BooleanField(default=False,verbose_name="是否隐藏可见")
 
     def __str__(self):
         return self.title
@@ -113,6 +114,7 @@ class Parent_Comment(models.Model):
 
 class Priority(models.Model):
     """置顶"""
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True)
     stick = models.ForeignKey(Forum,on_delete=models.CASCADE)
     add_time = models.DateTimeField(auto_now_add=True, verbose_name="发布日期")
 

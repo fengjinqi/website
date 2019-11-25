@@ -22,7 +22,7 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from apps.article.views import StandardResultsSetPagination
 from apps.forum.filter import ForumFilter
 from apps.forum.forms import Forum_form, ParentComment
-from apps.forum.models import Forum_plate, Forum, Comment, Parent_Comment
+from apps.forum.models import Forum_plate, Forum, Comment, Parent_Comment, Priority
 from apps.forum.serializers import Forum_plateSerializers, ForumSerializers, CommentSerializers, \
     Pernents_CommentSerializers, CommentSerializersAdd, ForumSerializerss, Pernents_CommentSerializers1
 from apps.support.models import Seo
@@ -47,7 +47,8 @@ def index(request):
     """
     seo_list = get_object_or_404(Seo, name='社区论坛')
     plate = Forum_plate.objects.all()
-    forum = Forum.objects.filter(hidden=False)
+    forum = Forum.objects.filter(hidden=False).exclude(priority=Priority.objects.first())
+    zd = Priority.objects.all()
     job = Forum.objects.filter(hidden=False,category__name='求职招聘')
     try:
         page = request.GET.get('page', 1)
@@ -59,6 +60,8 @@ def index(request):
     p = Paginator(forum, 10, request=request)
     people = p.page(page)
     return render(request,'pc/forum.html',locals())
+
+
 
 
 @login_required(login_url='/login')

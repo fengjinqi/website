@@ -121,21 +121,21 @@ WSGI_APPLICATION = 'website.wsgi.application'
 
 DATABASES = {
 
-        'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME':os.path.join(BASE_DIR,'db.sqlite3')
-        }
-    #    'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME':conf.get('Mysql','NAME'),
-    #     "HOST":conf.get('Mysql','HOST'),
-    #     "POST":conf.get('Mysql','POST'),
-    #     "USER":conf.get('Mysql','USER'),
-    #     "PASSWORD":conf.get('Mysql','PASSWORD'),
-    #      'OPTIONS': {
-    #                 'init_command': 'SET default_storage_engine=INNODB',
-    #             },
-    # }
+        # 'default': {
+        #         'ENGINE': 'django.db.backends.sqlite3',
+        #         'NAME':os.path.join(BASE_DIR,'db.sqlite3')
+        # }
+       'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME':conf.get('Mysql','NAME'),
+        "HOST":conf.get('Mysql','HOST'),
+        "POST":conf.get('Mysql','POST'),
+        "USER":conf.get('Mysql','USER'),
+        "PASSWORD":conf.get('Mysql','PASSWORD'),
+         'OPTIONS': {
+                    'init_command': 'SET default_storage_engine=INNODB',
+                },
+    }
 }
 
 

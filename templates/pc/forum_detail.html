@@ -65,9 +65,21 @@
             </div>
         </div>
         <h3 style="padding: 0 20px">{{ dicts.title }}</h3>
+        {% if dicts.is_type %}
+
+            {% if request.user.is_authenticated %}
+             <div id="test-editormd-view2">
+                <textarea id="append-test" name="test-editormd-markdown-doc" style="display:none;">{{ dicts.content }}</textarea>
+            </div>
+                {% else %}
+                 <a href="{% url 'index' %}?next=/forum/detail/{{ dicts.id }}" style="text-align: center;margin: 10px 0;display: block">登录可见</a>
+            {% endif %}
+            {% else %}
             <div id="test-editormd-view2">
                 <textarea id="append-test" name="test-editormd-markdown-doc" style="display:none;">{{ dicts.content }}</textarea>
             </div>
+        {% endif %}
+
             <div class="social-share"></div>
             <div class="comment">
                 <div class="comment-main clearfix">

@@ -81,6 +81,24 @@ Celery -A website beat -l info
 
 supervisord -c conf/supervisord.conf
 
+pip安装supervisord
+pip install supervisor
+
+
+
+生成配置文件
+echo_supervisord_conf > /etc/supervisord.conf
+
+
+
+启动：supervisord -c /etc/supervisord.conf
+
+
+关闭：supervisorctl shutdown
+
+
+
+service mysqld start
 【进程管理】
 
 1. 启动supervisord管理的所有进程

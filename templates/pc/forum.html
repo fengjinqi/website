@@ -44,6 +44,30 @@
             </div>
 
             <ul class="list">
+            {% for foo in zd %}
+             <li class="clearfix">
+                        <img src="{% if foo.stick.authors.user_imag %}
+                    {{ MEDIA_URL }}{{ foo.stick.authors.user_imag }}
+                    {% elif foo.stick.authors.user_image %}
+                        {{ foo.stick.authors.user_image }}
+                        {% else %}
+                        {% static 'img/pc-icon.png' %}
+                    {% endif %}" class="user fl" title="{{ foo.stick.authors.username }}"width="40px">
+                    <div class="list-text fl">
+                        <div class="fl">
+                                 <p class="forun-title"><a href="{% url 'forum:detail' foo.stick.id %}">{{ foo.stick.title |truncatechars:130}}</a></p>
+                        <p class="forun-info">来自于 {{ foo.stick.category.name }}  {{ foo.stick.add_time }} </p>
+                        </div>
+
+                           <div class="fr flex forun-num">
+                        <div>评论{{ foo.stick.get_number }}</div>
+                        <div>浏览 {{ foo.stick.click_nums}}</div>
+                    </div>
+                    </div>
+
+                    </li>
+            {% endfor %}
+
                 {% for foo in people.object_list %}
                     <li class="clearfix">
                         <img src="{% if foo.authors.user_imag %}
