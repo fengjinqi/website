@@ -139,7 +139,7 @@ def getApi():
     except Exception as e:
         print('数据添加失败===正在发生邮件通知管理员',e)
 
-        print(error_email.delay(settings.EMAIL_WEBITE_NAME,'抓取数据错误','{0}'.format(e),settings.ERROR_FROM))
+        print(error_email.delay('抓取数据错误','{0}'.format(e),settings.ERROR_FROM))
         print('邮件发送成功')
 
 
