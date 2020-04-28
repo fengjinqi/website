@@ -192,12 +192,6 @@ def ArticleMe(request):
         page = 1
     p = Paginator(article,10,request=request)
     people = p.page(page)
-    # url = 'http://api01.idataapi.cn:8000/article/idataapi?KwPosition=3&catLabel1=科技&apikey=Xtv7doa2SrBskcf0X7fLwfKaLEyvXycJ2RRKGPvhLisMIASRtFtmGzzIvef2QSFs'
-    # headers = {
-    #     "Accept-Encoding": "gzip",
-    #     "Connection": "close"
-    # }
-    # r = requests.get(url, headers=headers)
     headlines = Headlines.objects.all()[:20]
     banners = Banners.objects.first()
     return render(request, 'pc/article_me.html', {'article': people,'category':category,'Headlines':headlines,'banners':banners})

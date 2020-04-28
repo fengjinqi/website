@@ -27,7 +27,7 @@ jieba==0.39
 Jinja2==2.10.1
 kombu==3.0.37
 MarkupSafe==1.1.1
-Pillow==5.4.1
+Pillow==7.1.0
 PyJWT==1.7.1
 PyMySQL==0.9.3
 pytz==2018.9

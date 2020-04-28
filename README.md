@@ -5,7 +5,33 @@
 
 Python>=3.6
 
-Django>=2.0.8
+Django>=2.0.12
+
+
+celery>=3.1.25
+
+coreschema>=0.0.4
+
+django-appconf>=1.0.3
+
+django-celery>=3.2.2
+
+django-filter>=2.0.0
+
+django-haystack>=2.8.1
+
+django-pure-pagination>=0.3.0
+
+django-ranged-response==0.2.0
+
+django-shortuuidfield>=0.1.3
+
+django-simple-captcha>=0.5.9
+
+djangorestframework>=3.9.1
+
+redis>=2.10.6
+
 
 
 功能：
@@ -67,7 +93,9 @@ key = xxx
 
 key = xxx
 ```
-6、因目前消息表需要发送人字段，所有先创建一个超级管理员账号再注册新用户
+# 6、***因目前消息表需要发送人字段，所有先创建一个超级管理员账号再注册新用户***
+
+#7、 **因我本地配置了seo，初次访问可能会报错，原因是未配置seo**
 
 目前测试环境用的sqlite数据库，若用其他数据库请自行setting配置修改
 

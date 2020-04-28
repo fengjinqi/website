@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'apps.course.apps.CourseConfig',
     'apps.support.apps.SupportConfig',
     'apps.forum.apps.ForumConfig',
+    'apps.dynamic.apps.DynamicConfig',
     'rest_framework',
     'pure_pagination',
     'django_filters',
