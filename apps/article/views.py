@@ -37,13 +37,6 @@ import random
 from .models import Article, Category_Article, Article_Comment, Recommend, Headlines
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
-def test(request):
-    WorkList = []
-    for i in range(1,100):
-        WorkList.append(Forum(title='```cpp\n下例 中的某些语句读不太明白：\n 1.   DataTable dt=ds.Tables[\"cs\"] 这句最难理解，意思是读取cs表赋给新建的内存表dt（复制表）?还是dt表指向（引用）cs表，修改dt其实就是修改cs?\n 2.   sda.FillSchema(dt,SchemaType.Mapped); 这句应该是将数据库表中的元数据填入到dt中，为何要填入?cs表中没有元数据吗?\n 3.   此例中修改了dt表，执行Update为何更新了数据库?dt、cs与数据库是个怎么个联系?\n\n\n例：\nSqlConnection ds;\nDataSet ds;\nSqlDataAdapter sda;\n...........        \nDataTable dt=ds.Tables[\"cs\"];\nsda.FillSchema(dt,SchemaType.Mapped);\nDataRow dr=dt.Rows.Find(txtNo.text);\ndr[\"姓名\"]=txtName.Text.Trim();\ndr[\"性别\"]=txtSex.Text.Trim();\nSqlCommandBuilder cmdbuilder=new SqlCommandBuilder(sda);\nsda.Update(dt);\n```%s'%(i),category_id=4,authors_id='2a5ec3edf61c43a6a547851e9ba15071'))
-    Forum.objects.bulk_create(WorkList)
-    return HttpResponse('ok')
-
 
 def Home(request):
     """
@@ -102,71 +95,6 @@ def ArticleList(request):
     headlines = Headlines.objects.all()[:30]
     banners = Banners.objects.first()
     return render(request, 'pc/article.html', {'seo_list':seo_list,'article': people,'category':category,'Headlines':headlines,'banners':banners})
-
-
-def api(request):
-
-    url =  'http://v.juhe.cn/toutiao/index?type=keji&key={0}'.format(conf.get('AppKey','key'))
-    headers = {
-        "Accept-Encoding": "gzip",
-        "Connection": "close"
-    }
-
-    # r = requests.get(url, headers=headers)
-    # print(r.json())
-    # if r.status_code == requests.codes.ok:
-    #
-    #     dict_json = r.json()
-    #     print(dict_json['result']['data'])
-    #     main = Headlines()
-    #     list_dict = []
-    #     for item in dict_json['result']['data']:
-    #         obj = Headlines(
-    #         url = item['url'],
-    #         title = item['title'],
-    #         category = item['category'],
-    #         #conent = item['content'],
-    #         author_name = item['author_name'],
-    #         )
-    #         list_dict.append(obj)
-    #     Headlines.objects.bulk_create(list_dict)
-    #     error_email.delay('fengjinqi@fengjinqi.com', '抓取数据错误', '抓取数据错误，请尽快查看')
-    # http = urllib3.PoolManager()
-    # fields = {
-    #     'KwPosition':'3',
-    #     'catLabel1':'科技',
-    #     'apikey':'Xtv7doa2SrBskcf0X7fLwfKaLEyvXycJ2RRKGPvhLisMIASRtFtmGzzIvef2QSFs'
-    # }
-    # r = http.request('GET',url='http://api01.idataapi.cn:8000/article/idataapi',fields=fields,headers=headers)
-    # print(r.data.decode('utf-8'))
-    # r = requests.get('http://v.juhe.cn/toutiao/index?type=keji&key=06207ed4627997cd7ec09c6d5eb95a61')
-    # print(r.status_code)
-    # for i in r.json():
-    #     print(i)
-    cur_date = datetime.datetime.now().date()
-
-    # 前四天
-    day = cur_date - datetime.timedelta(days=7)
-
-    # 查询前一周数据,也可以用range,我用的是glt,lte大于等于
-    Headlines.objects.filter(add_time__lte=day).delete()
-
-
-    return HttpResponse({'ee':'43'})
-
-
-from apps.article.tasks import add, error_email, conf
-
-
-def addModel(request):
-    add.delay()
-    print('定时任务')
-
-    return HttpResponse('ok')
-
-
-
-
 
 
 

@@ -91,12 +91,6 @@ def error_email(title=None,body=None,email=None):
 
 
 
-@app.task()
-def add():
-    print('发送邮件到**************************************************************' )
-    sleep(5)  # 休息5秒
-    print('success')
-    return True
 
 
 conf = ConfigParser()
