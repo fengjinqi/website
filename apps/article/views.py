@@ -1,24 +1,23 @@
-import datetime
+
 import json
 import re
 
-from django.db.models import Q, Count
+
 from django.dispatch import receiver
 from django.db.models.signals import pre_save, post_save
 from django.shortcuts import render, redirect,reverse,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
-from django.http import JsonResponse,Http404,HttpResponse
+from django.http import JsonResponse,Http404
 from django.views.decorators.csrf import csrf_exempt
 from PIL import Image
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, mixins
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-import requests
-import urllib3
+
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from apps.article.filter import  ArticleFilter
@@ -35,39 +34,9 @@ from website import settings
 import os
 import random
 from .models import Article, Category_Article, Article_Comment, Recommend, Headlines
-from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
+from pure_pagination import Paginator, PageNotAnInteger
 
 
-def Home(request):
-    """
-    首页
-    :param request:
-    :return:
-    """
-    recommend = Recommend.objects.filter(is_recommend=True)[:10]
-    seo_list = get_object_or_404(Seo, name='首页')
-    qq = QQ.objects.all()
-    links = link.objects.all()
-    #user = Follow.objects.values('follow_id').distinct().order_by('-follow_id')
-    # user = Follows.objects.values('follow_id').distinct().order_by('-follow_id')
-    # item=[]
-    # for i in user:
-    #     data={}
-    #     #print(User.objects.filter(follow__follow__id=i['follow_id']))
-    #     data['data']=User.objects.filter(follow__follow__id=i['follow_id']).distinct()
-    #     item.append(data)
-    try:
-        page = request.GET.get('page',1)
-        if page == '':
-                page = 1
-    except PageNotAnInteger:
-        page = request.GET.get('page')
-    # Provide Paginator with the request object for complete querystring generation
-    article = Article.objects.filter(is_show=True)[:100]
-    p = Paginator(article,10,request=request)
-    people = p.page(page)
-    banners = Banners.objects.first()
-    return render(request, 'pc/index.html', {'seo_list':seo_list,'article':people,'qq':qq,'recommend':recommend,'links':links,'banners':banners})
 
 
 def ArticleList(request):

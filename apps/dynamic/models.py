@@ -11,13 +11,14 @@ class dynamic(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField(verbose_name='内容')
+    name = models.ManyToManyField("dynamicCategory")
     image = models.ImageField(upload_to="course/%Y%m%d", blank=True, null=True)
     is_delete = models.BooleanField(default=False, verbose_name='是否删除')
     location = models.CharField(max_length=50, verbose_name="位置")
     add_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
     class Meta:
         verbose_name = '话题'
@@ -27,7 +28,6 @@ class dynamic(models.Model):
 
 class dynamicCategory(models.Model):
     title = models.CharField(max_length=256, verbose_name="话题")
-    name = models.ManyToManyField(dynamic)
     add_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

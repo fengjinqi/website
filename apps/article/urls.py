@@ -5,8 +5,8 @@ app_name='article'
 from . import views
 urlpatterns = [
   path('created/',views.Article_Add,name='created'),
-  path('',views.ArticleList,name='index'),
   path('me/',views.ArticleMe,name='me'),
+  path('',views.ArticleList,name='index'),
   path('blog_img_upload/',views.blog_img_upload,name='blog_img_upload'),
   path('detail/<uuid:article_id>',views.Article_detail,name='detail'),
   path('update/<uuid:article_id>',views.ArticleUpdate,name='update'),

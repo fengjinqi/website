@@ -1,5 +1,6 @@
 {% extends 'pc/base.html' %}
 {% load static %}
+{% load getDate %}
 {% load i18n %}
 {% block title %}
 {{ seo_list.title }}
@@ -51,60 +52,35 @@
          <div class="blogs">
              <div class="blogs_head" style="background: url({% static 'img/recommend.png' %})no-repeat 0 50%;">
                  <ul class="follow">
-                     <li>最新文章</li>
+                     <li>最新动态</li>
                  </ul>
              </div>
              <div id="article_main">
-                 {% for articles in article.object_list %}
-                    <div class="blogs_item">
-                     <div class="blogs_cont blogs_cont1">
-                         <h3><span class="blogs_type">{{ articles.category.name }}</span><a href="{% url 'article:detail' articles.id %}">{{ articles.title }}</a></h3>
-                             <div class="blogs_info clearfix">
-                             {% if articles.list_pic %}
-                                <div class="img_animate fl ">
-                                      <a href="{% url 'article:detail' articles.id %}"><div class="blogs_pic img_cover" style="{% if articles.list_pic %}
-                                      background: url({{ MEDIA_URL }}{{ articles.list_pic }})no-repeat;;
-                                      {% endif %}background-color: #ccc;background-size: 200px 120px !important;"></div></a>
-                                  </div>
-                             {% endif %}
 
-                                  <div class="{% if articles.list_pic %}
-                                  fl blogs_describe
-                                  {% else %}
-                                  blogs_listPic
-                                  {% endif %}">
-                                      <p class="blogtext">{{ articles.desc|truncatechars:135 }}</p>
-                                  </div>
-                                  <div class="blogs_foot {% if articles.list_pic %}
-                                  blogs_foot1
-                                  {% endif %}">
-                                    <ul class="clearfix">
-                                <li class="fl">
-                                     <a href="{% url 'user:author_detaile' articles.authors.id %}" class="clearfix">
-                                         <span class="fl img_cover blogs_avatar"
-                                               style="background: url({% if articles.authors.user_imag%}
+
+                 {% for item in dynamicPage.object_list %}
+                    <div class="blogs_item">
+                        <div class="item_title">
+                            <img src="{% if articles.authors.user_imag%}
                                 {{ MEDIA_URL }}{{ articles.authors.user_imag }}
                             {% elif articles.authors.user_image%}
                                 {{ articles.authors.user_image }}
-                            {% else %}
+                             {% else %}
                                 {% static 'img/pc-icon.png' %}
-                        {% endif %})no-repeat;"></span>
-                                         <span class="fl blogs_name" style="white-space: nowrap;
-    text-overflow: ellipsis;max-width: 120px;overflow: hidden;">{{ articles.authors.username }}</span>
-                                     </a>
-                                 </li>
-                                <li class="fl blogs_time">发布于：{{ articles.add_time }}</li>
-                                <li class="fl blogs_view" style="background: url({% static 'img/eye.png' %})no-repeat 0 50%;"> {{ articles.click_nums }}</li>
-                                <li class="fl blogs_comment" style="background: url({% static 'img/comment.png' %})no-repeat 0 50%;">
-                                  {{ articles.get_number }}
-                                </li>
-                            </ul>
-                                  </div>
-                             </div>
-                     </div>
+                        {% endif %}" alt="">
+                            <div>{{ item.user.username }}
+                                <p>{{ item.add_time|getTimer }}</p>
+                            </div>
+                        </div>
+
+                        {% for foo in item.name.all %}
+                            {{ foo.title }}
+                        {% endfor %}
+
+                    {{ item.content }}
                  </div>
                      {% empty %}
-                     <p class="empty">暂无文章...</p>
+                     <p class="empty">暂无动态...</p>
                  {% endfor %}
 
              </div>

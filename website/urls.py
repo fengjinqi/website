@@ -24,6 +24,7 @@ from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
 from apps.article.views import ArticleCreated
 from apps.course.views import CoursesList, CourseCreatedList, CourseListCreated, MeCoursesList
+from apps.dynamic .views import Home
 from apps.forum.views import Forum_plateView, ForumView, CommentView, Parent_CommentView, ForumListView
 from apps.support.views import LinkList, EmailsList, BannerList, QQList, SeoList
 from apps.user.views import test, captcha_refresh, yan, login_view, UserGetInfo, UserGetAllInfo, \
@@ -78,7 +79,7 @@ urlpatterns = [
     url(r'^captcha/', include('captcha.urls')),
     path('refresh/', captcha_refresh),  # 这是生成验证码的图片
     path('yan/', yan),  # 这是生成验证码的图片
-    path('', views.Home, name='home'),
+    path('', Home, name='home'),
     path('webapp/', TemplateView.as_view(template_name='webapp/index.html')),
     path('login/', login_view, name='index'),
     path('info/', get_message, name='info'),
