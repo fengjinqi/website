@@ -30,7 +30,8 @@
     text-overflow: ellipsis;max-width: 120px;overflow: hidden;">{{ articles.authors.username }}</span>
                                      </a>
                                  </li>
-                                <li class="fl blogs_time">发布于：{{ articles.add_time }}</li>
+                                        {% load getDate %}
+                                <li class="fl blogs_time">发布于：{{ articles.add_time|getTimer}}</li>
                                 <li class="fl blogs_view" style="background: url({% static 'img/eye.png' %})no-repeat 0 50%;"> {{ articles.click_nums }}</li>
                                 <li class="fl blogs_comment" style="background: url({% static 'img/comment.png' %})no-repeat 0 50%;"> {{ articles.click_nums }}</li>
                             </ul>

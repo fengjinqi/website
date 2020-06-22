@@ -52,7 +52,8 @@
             <div>
                 <div class="de-username"> <a class="a" href="{% url 'user:person'%}{{ article.authors_id }}">{{ article.authors.username }}</a></div>
                 <div class="de-time flex">
-                    <div class="de-margin">{{ article.add_time }}</div>
+                    {% load getDate %}
+                    <div class="de-margin">{{ article.add_time |getTimer}}</div>
                     <div class="de-margin">阅读 {{ article.click_nums }}</div>
                     <div class="de-margin">评论 {{ article.get_number }}</div>
                 </div>
