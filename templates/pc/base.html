@@ -72,7 +72,7 @@
                 </form>
             </li>
                 <li class="fl style" style="background: url({% static 'img/public.png' %})no-repeat 0 50%;"><a href="{% url 'article:created' %}">写文章</a></li>
-                <li class="fl style" style="background: url({% static 'img/phone.png' %})no-repeat 0 50%;"><a href="">手机阅读</a></li>
+{#                <li class="fl style" style="background: url({% static 'img/phone.png' %})no-repeat 0 50%;"><a href="">手机阅读</a></li>#}
                 {% if request.user.is_authenticated %}
                     <li class="fl avatar">
                         <a class="img_cover" style="background: url({% if request.user.user_imag %}
