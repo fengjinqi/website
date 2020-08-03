@@ -37,6 +37,37 @@ from .models import Article, Category_Article, Article_Comment, Recommend, Headl
 from pure_pagination import Paginator, PageNotAnInteger
 
 
+def Home(request):
+    """
+    首页
+    :param request:
+    :return:
+    """
+    recommend = Recommend.objects.filter(is_recommend=True)[:10]
+    #seo_list = get_object_or_404(Seo, name='首页')
+    qq = QQ.objects.all()
+    links = link.objects.all()
+    #user = Follow.objects.values('follow_id').distinct().order_by('-follow_id')
+    # user = Follows.objects.values('follow_id').distinct().order_by('-follow_id')
+    # item=[]
+    # for i in user:
+    #     data={}
+    #     #print(User.objects.filter(follow__follow__id=i['follow_id']))
+    #     data['data']=User.objects.filter(follow__follow__id=i['follow_id']).distinct()
+    #     item.append(data)
+    try:
+        page = request.GET.get('page',1)
+        if page == '':
+                page = 1
+    except PageNotAnInteger:
+        page = request.GET.get('page')
+    # Provide Paginator with the request object for complete querystring generation
+    article = Article.objects.filter(is_show=True)
+    p = Paginator(article,10,request=request)
+    people = p.page(page)
+    banners = Banners.objects.first()
+    return render(request, 'pc/index.html', {'article':people,'qq':qq,'recommend':recommend,'links':links,'banners':banners})
+
 
 
 def ArticleList(request):
@@ -45,7 +76,7 @@ def ArticleList(request):
     :param request:
     :return:
     """
-    seo_list = get_object_or_404(Seo, name='文章')
+   # seo_list = get_object_or_404(Seo, name='文章')
     article = Article.objects.filter(is_show=True)
     category = Category_Article.objects.all().order_by('order')
     type = request.GET.get('type', '')
@@ -63,7 +94,7 @@ def ArticleList(request):
 
     headlines = Headlines.objects.all()[:30]
     banners = Banners.objects.first()
-    return render(request, 'pc/article.html', {'seo_list':seo_list,'article': people,'category':category,'Headlines':headlines,'banners':banners})
+    return render(request, 'pc/article.html', {'article': people,'category':category,'Headlines':headlines,'banners':banners})
 
 
 

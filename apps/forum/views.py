@@ -45,7 +45,7 @@ def index(request):
     :param request:
     :return:
     """
-    seo_list = get_object_or_404(Seo, name='社区论坛')
+    #seo_list = get_object_or_404(Seo, name='社区论坛')
     plate = Forum_plate.objects.all()
     forum = Forum.objects.filter(hidden=False).exclude(priority=Priority.objects.first())
     zd = Priority.objects.all()
