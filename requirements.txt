@@ -36,6 +36,6 @@ requests==2.21.0
 shortuuid==0.5.0
 six==1.12.0
 uritemplate==3.0.0
-urllib3==1.24.1
+urllib3==1.24.2
 vine==1.2.0
 Whoosh==2.7.4
