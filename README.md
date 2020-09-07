@@ -1,3 +1,7 @@
+#v1.0
+
+适合初学者新手，接口以及模版功能知识点都有导致代码臃肿，下一版本重构简约版，版本也升级 使用django3版本，采取redis缓存等，websocket聊天等下一版本全部采取接口方式开发
+
 ﻿# website
 **django 开发的web项目**
 
@@ -168,4 +172,4 @@ ps aux | grep redis-server
 
 ./bin/redis-server /usr/local/redis/etc/redis.conf
 
-#(ps:项目还在开发中，若有更好的建议或者功能请联系我qq:1218525402,邮箱：fengjinqi@fengjinqi.com)
+#(ps:若有更好的建议或者功能请联系我qq:1218525402,邮箱：fengjinqi@fengjinqi.com)
