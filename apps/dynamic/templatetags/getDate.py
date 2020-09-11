@@ -18,8 +18,8 @@ def getTimer(data):
         now = datetime.now()
         #now = now.replace(tzinfo=pytz.timezone('UTC'))
         # 确定settings里面的设置
-        print('最新时间{}'.format(now))  # 大陆时间
-        print('数据库的时间{}'.format(data))
+        #print('最新时间{}'.format(now))  # 大陆时间
+        #print('数据库的时间{}'.format(data))
         #减去相差得到天数并且转化时间戳
         timestamp = (now - data).total_seconds()
 

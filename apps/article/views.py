@@ -2,7 +2,6 @@
 import json
 import re
 
-
 from django.dispatch import receiver
 from django.db.models.signals import pre_save, post_save
 from django.shortcuts import render, redirect,reverse,get_object_or_404
@@ -66,7 +65,8 @@ def Home(request):
     p = Paginator(article,10,request=request)
     people = p.page(page)
     banners = Banners.objects.first()
-    return render(request, 'pc/index.html', {'article':people,'qq':qq,'recommend':recommend,'links':links,'banners':banners})
+    return redirect("/article")
+   # return render(request, 'pc/index.html', {'article':people,'qq':qq,'recommend':recommend,'links':links,'banners':banners})
 
 
 

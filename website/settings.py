@@ -122,21 +122,21 @@ WSGI_APPLICATION = 'website.wsgi.application'
 
 DATABASES = {
 
-        'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME':os.path.join(BASE_DIR,'db.sqlite3')
-        }
-    #    'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME':conf.get('Mysql','NAME'),
-    #     "HOST":conf.get('Mysql','HOST'),
-    #     "POST":conf.get('Mysql','POST'),
-    #     "USER":conf.get('Mysql','USER'),
-    #     "PASSWORD":conf.get('Mysql','PASSWORD'),
-    #      'OPTIONS': {
-    #                 'init_command': 'SET default_storage_engine=INNODB',
-    #             },
-    # }
+        # 'default': {
+        #         'ENGINE': 'django.db.backends.sqlite3',
+        #         'NAME':os.path.join(BASE_DIR,'db.sqlite3')
+        # }
+       'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME':conf.get('Mysql','NAME'),
+        "HOST":conf.get('Mysql','HOST'),
+        "POST":conf.get('Mysql','POST'),
+        "USER":conf.get('Mysql','USER'),
+        "PASSWORD":conf.get('Mysql','PASSWORD'),
+         'OPTIONS': {
+                    'init_command': 'SET default_storage_engine=INNODB',
+                },
+    }
 }
 
 
@@ -206,10 +206,12 @@ MEDIA_ROOT = (
 
 
 DOMAIN = 'https://www.fengjinqi.com'#用户验证邮箱访问地址
+# 发送邮件配置
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = "smtp.exmail.qq.com"
 EMAIL_PORT = 465
 EMAIL_HOST_USER = 'fengjinqi@fengjinqi.com'
-EMAIL_WEBITE_NAME = '晓晓'
+EMAIL_NAME = '爱上她的歌<fengjinqi@fengjinqi.com>'
 EMAIL_HOST_PASSWORD = conf.get('email','password')
 EMAIL_USE_SSL = True    #是否使用SSL加密，qq企业邮箱要求使用
 
