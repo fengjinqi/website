@@ -1,3 +1,4 @@
+Logs - an amazing projects
 # v1.0
 
 适合初学者新手，采取djangorestframework接口开发以及模版功能开发，主要用于新手练手巩固
