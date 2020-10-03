@@ -2,6 +2,7 @@
 
 适合初学者新手，采取djangorestframework接口开发以及模版功能开发，主要用于新手练手巩固
 知识点都有所以导致代码臃肿，下一版本重构简约版，版本也升级 使用django3版本，采取redis缓存等，websocket聊天等下一版本全部采取接口方式开发
+Suitable for beginners and novices, adopt djangorestframework interface development and template function development, mainly used for novices to practice and consolidate knowledge points, which leads to bloated code. The next version is refactored to the simple version, and the version is also upgraded to use django3 version, adopt redis cache, etc., websocket The next version such as chat is all developed by interface.
 
 ﻿# website
 **django 开发的web项目**
