@@ -1,12 +1,12 @@
 # v1.0
 
-适合初学者新手，采取djangorestframework接口开发以及模版功能开发，主要用于新手练手巩固
-知识点都有所以导致代码臃肿，下一版本重构简约版，版本也升级 使用django3版本，采取redis缓存等，websocket聊天等下一版本全部采取接口方式开发
+Suitable for beginners and novices, adopt djangorestframework interface development and template function development, mainly for novices to practice and consolidate
+There are knowledge points, which leads to bloated code. The next version is refactored to a simple version, and the version is also upgraded. Use django3 version, adopt redis cache, etc., websocket chat and other next versions are all developed in interface mode
+
 
 ﻿# website
-**django 开发的web项目**
-
-(喜欢麻烦动动你的小手给个start 谢谢)
+**django web project developed**
+(I like the trouble to move your little hand to start, thank you)
 
 Python>=3.6
 
@@ -39,49 +39,43 @@ redis>=2.10.6
 
 
 
-功能：
+Features：
 
 **V1:**
 
-1、多用户注册 目前采用QQ快捷登录以及邮箱注册登录发送验证token 60分钟有效
+1、Multi-user registration currently uses QQ quick login and email registration login to send verification token valid for 60 minutes.
 
-2、包含用户关注，查看我关注的文章，查看用户等
+2、Include user attention, view articles I follow, view users, etc.
 
-3、文章包含评论，消息提示
+3、The article contains comments, message tips.
+4、The tutorial module is used to recruit authors, you can go to the background admin system to publish tutorials.
+5、Mail is sent asynchronously by Celery.
+6、Have a timed task Use Celery redis as a message queue to collect data every 30 minutes, and process the database in a week. If there is an error, the administrator will be notified by email in time.
 
-4、教程模块用于招募作者，可以去后台admin系统进行发布教程
-
-5、邮件采用Celery异步发送
-
-6、拥有定时任务 采用Celery redis用做消息队列进行每30分钟采取一次数据，一周进行数据库处理,若出错会及时给管理员发邮件通知
-
-7，社区功能
-
+7，Community function.
 # admin
-目前在另外一个项目里，请移步https://github.com/fengjinqi/website-admin 后续完成会打包配置到本项目
+Currently in another project, please move to https://github.com/fengjinqi/website-admin. Follow-up completion will be packaged and configured to this project.
 
-采用 vue iview-admin模板开发 ，接口用drf, 作者拥有可以在admin发布文章，当然也可以在前台发布，同时拥有发布教程的功能
-登录采用JWT方式登录
+Use vue iview-admin template development, interface with drf, the author has the ability to publish articles in admin, of course, can also publish in the foreground, and has the function of publishing tutorials
+Login using JWT method.
 
+# Mobile
+The project has started development, using react development,
 
-# 移动端
-项目已启动开发，采用react开发，
+**Architecture**
 
-**架构**
+react, react-router-dom, redux, react-redux, redux-thunk, antd-mobile, project address: https://github.com/fengjinqi/website-react-webapp.
+# Instructions
 
-react、react-router-dom、redux、react-redux、redux-thunk，antd-mobile，项目地址：https://github.com/fengjinqi/website-react-webapp
+1. Download python3 and install
 
-# 使用方法
+2. Enter the project root directory pip3 install requirements.txt in the virtual environment
 
-1、下载python3安装
+3. Install redis and start it
 
-2、在虚拟环境下进入项目根目录 pip3 install requirements.txt
+4. Settings for various configurations such as database
 
-3、安装redis 并进行启动
-
-4、settings进行数据库等各种配置
-
-5、项目根目录下创建 congfig.ini 邮箱等密码配置文件 并填写
+5. Create a password configuration file such as congfig.ini in the project root directory and fill in it.
 ```cython
 
 [email]
@@ -98,79 +92,78 @@ key = xxx
 
 key = xxx
 ```
-# 6、***因目前消息表需要发送人字段，所有先创建一个超级管理员账号再注册新用户***
+# 6、***Because the sender field is currently required in the message table, create a super administrator account before registering a new user***
 
-#7、 **因我本地配置了seo，初次访问可能会报错，原因是未配置seo**
+#7, **Because I have configured seo locally, an error may be reported during the first visit because seo is not configured**
 
-目前测试环境用的sqlite数据库，若用其他数据库请自行setting配置修改
+The sqlite database currently used in the test environment, if you use other databases, please modify the settings yourself
 
-运行前请先migrate
+Please migrate before running
 
-定时任务：需配置Appkey
-
+Timed tasks: Appkey needs to be configured
 Celery -A website worker -l info
 
 Celery -A website beat -l info
 
 supervisord -c conf/supervisord.conf
 
-pip安装supervisord
+pip installation supervisord
 pip install supervisor
 
 
 
-生成配置文件
+Generate configuration file
 echo_supervisord_conf > /etc/supervisord.conf
 
 
 
-启动：supervisord -c /etc/supervisord.conf
+Start：supervisord -c /etc/supervisord.conf
 
 
-关闭：supervisorctl shutdown
+Shut down：supervisorctl shutdown
 
 
 
 service mysqld start
-【进程管理】
+[Process Management]
 
-1. 启动supervisord管理的所有进程
+1. Start all processes managed by supervisord
 
 supervisorctl start all
 
-2. 停止supervisord管理的所有进程
+2.Stop all processes managed by supervisord
 
 supervisorctl stop all
 
-3. 启动supervisord管理的某一个特定进程
+3. Start a specific process managed by supervisord
 
-supervisorctl start program-name // program-name为[program:xx]中的xx
+supervisorctl start program-name // program-name is xx in [program:xx]
 
-4.  停止supervisord管理的某一个特定进程 
+4. Stop a specific process managed by supervisord
 
-supervisorctl stop program-name  // program-name为[program:xx]中的xx
+supervisorctl stop program-name // program-name is xx in [program:xx]
 
-5.  重启所有进程或所有进程
+5. Restart all processes or all processes
 
-supervisorctl restart all  // 重启所有
+supervisorctl restart all // restart all
 
-supervisorctl reatart program-name // 重启某一进程，program-name为[program:xx]中的xx
+supervisorctl reatart program-name // Restart a process, program-name is xx in [program:xx]
 
-6. 查看supervisord当前管理的所有进程的状态
+6. View the status of all processes currently managed by supervisord
 
 supervisorctl status
 
-【遇到问题及解决方案】
+[Encountered problems and solutions]
 
-在使用命令supervisorctl start all启动控制进程时，遇到如下错误
+When using the command supervisorctl start all to start the control process, the following error is encountered
 
 unix:///tmp/supervisor.sock no such file
 
-出现上述错误的原因是supervisord并未启动，只要在命令行中使用命令sudo supervisord启动supervisord即可。
+The reason for the above error is that supervisord has not been started. Just use the command sudo supervisord to start supervisord on the command line.
 
 
 ps aux | grep redis-server
 
 ./bin/redis-server /usr/local/redis/etc/redis.conf
 
-#(ps:若有更好的建议或者功能请联系我qq:1218525402,邮箱：fengjinqi@fengjinqi.com)
+#(ps: If you have better suggestions or features, please contact me qq:1218525402, email: fengjinqi@fengjinqi.com)
