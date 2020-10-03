@@ -1,12 +1,12 @@
 # v1.0
 
-Suitable for beginners and novices, adopt djangorestframework interface development and template function development, mainly for novices to practice and consolidate
-There are knowledge points, which leads to bloated code. The next version is refactored to a simple version, and the version is also upgraded. Use django3 version, adopt redis cache, etc., websocket chat and other next versions are all developed in interface mode
+Suitable for beginners and novices, adopt djangorestframework interface development and template function development, mainly for novices to practice and consolidate.
+There are knowledge points, which leads to bloated code. The next version is refactored to a simple version, and the version is also upgraded. Use django3 version, adopt redis cache, etc., websocket chat and other next versions are all developed in interface mode.
 
 
 ﻿# website
 **django web project developed**
-(I like the trouble to move your little hand to start, thank you)
+(I like the trouble to move your little hand to start, thank you.)
 
 Python>=3.6
 
@@ -67,13 +67,13 @@ The project has started development, using react development,
 react, react-router-dom, redux, react-redux, redux-thunk, antd-mobile, project address: https://github.com/fengjinqi/website-react-webapp.
 # Instructions
 
-1. Download python3 and install
+1. Download python3 and install.
 
-2. Enter the project root directory pip3 install requirements.txt in the virtual environment
+2. Enter the project root directory pip3 install requirements.txt in the virtual environment.
 
-3. Install redis and start it
+3. Install redis and start it.
 
-4. Settings for various configurations such as database
+4. Settings for various configurations such as database.
 
 5. Create a password configuration file such as congfig.ini in the project root directory and fill in it.
 ```cython
@@ -88,17 +88,17 @@ client_id = xxx
 
 key = xxx
 
-[AppKey] #此key是聚合数据的，若想使用其它的需要去apps/article/tasks文件中getApi方法修改地址并且修改getApi方法中对应的获取字段
+[AppKey] #This key is aggregated data, if you want to use other, you need to go to the getApi method in the apps/article/tasks file to modify the address and modify the corresponding get field in the getApi method.
 
 key = xxx
 ```
-# 6、***Because the sender field is currently required in the message table, create a super administrator account before registering a new user***
+# 6、***Because the sender field is currently required in the message table, create a super administrator account before registering a new user.***
 
-#7, **Because I have configured seo locally, an error may be reported during the first visit because seo is not configured**
+#7, **Because I have configured seo locally, an error may be reported during the first visit because seo is not configured.**
 
-The sqlite database currently used in the test environment, if you use other databases, please modify the settings yourself
+The sqlite database currently used in the test environment, if you use other databases, please modify the settings yourself.
 
-Please migrate before running
+Please migrate before running.
 
 Timed tasks: Appkey needs to be configured
 Celery -A website worker -l info
