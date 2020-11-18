@@ -133,10 +133,10 @@ def Article_Add(request):
     :param request:
     :return:
     """
-    seo_list = get_object_or_404(Seo, name='文章')
+    #seo_list = get_object_or_404(Seo, name='文章')
     if request.method == 'GET':
         category = Category_Article.objects.all()
-        return render(request,'pc/articlesadd.html',{"category":category,'seo_list':seo_list})
+        return render(request,'pc/articlesadd.html',{"category":category})
 
     if request.method == 'POST':
         forms = Article_form(request.POST)
