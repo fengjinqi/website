@@ -26,7 +26,7 @@ importlib-metadata==1.6.1
 itsdangerous==1.1.0
 itypes==1.1.0
 jieba==0.39
-Jinja2==2.10.1
+Jinja2==2.11.3
 kombu==4.6.11
 MarkupSafe==1.1.1
 Pillow==7.1.0
