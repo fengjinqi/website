@@ -7,7 +7,7 @@ certifi==2018.11.29
 chardet==3.0.4
 coreapi==2.3.3
 coreschema==0.0.4
-Django==2.2.18
+Django==2.2.20
 django-appconf==1.0.3
 django-celery==3.3.1
 django-filter==2.0.0
