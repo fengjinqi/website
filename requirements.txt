@@ -30,7 +30,7 @@ Jinja2==2.11.3
 kombu==4.6.11
 MarkupSafe==1.1.1
 Pillow==7.1.0
-PyJWT==1.7.1
+PyJWT==2.4.0
 PyMySQL==0.9.3
 pytz==2018.9
 redis==3.5.3
