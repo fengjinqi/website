@@ -130,7 +130,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME':conf.get('Mysql','NAME'),
         "HOST":conf.get('Mysql','HOST'),
-        "POST":conf.get('Mysql','POST'),
+        "PORT":conf.get('Mysql','PORT'),
         "USER":conf.get('Mysql','USER'),
         "PASSWORD":conf.get('Mysql','PASSWORD'),
          'OPTIONS': {
